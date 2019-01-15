@@ -1,0 +1,47 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Factoshiny 1.0.3\n"
+"POT-Creation-Date: 2016-02-03 10:58\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "df is not a dataframe, the results of the CAshiny function or a CA result"
+msgstr ""
+
+msgid "not enought row/column"
+msgstr ""
+
+msgid "df is not a dataframe, the results of the FAMDshiny function or a FAMD result"
+msgstr ""
+
+msgid "you data is not mixed"
+msgstr ""
+
+msgid "df is not the result of a factorial analysis or a dataframe"
+msgstr ""
+
+msgid "X is not a dataframe or a result from a MCA analysis"
+msgstr ""
+
+msgid "not enought qualitative variables in your dataset"
+msgstr ""
+
+msgid "df is not a dataframe or the result of the MFA function"
+msgstr ""
+
+msgid "not enough variables in your dataset"
+msgstr ""
+
+msgid "df is not a dataframe, the results of the PCAshiny function or a PCA result"
+msgstr ""
+
+msgid "not enough quantitative variables in your dataset"
+msgstr ""
+
+msgid "non convenient data"
+msgstr ""

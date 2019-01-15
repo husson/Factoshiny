@@ -1,0 +1,13 @@
+### Modify 01.05.2016
+import(FactoMineR)
+importFrom(tcltk, tkfont.create, tkbutton, tkcanvas)
+importFrom(shiny,runApp)
+importFrom(colourpicker,colourInput)
+export(CAshiny,FAMDshiny,PCAshiny,MFAshiny,HCPCshiny,MCAshiny,print.CAshiny,print.FAMDshiny,print.PCAshiny,print.MCAshiny,print.HCPCshiny)
+
+S3method(print, CAshiny)
+S3method(print, FAMDshiny)
+S3method(print, MCAshiny)
+S3method(print, PCAshiny)
+S3method(print, MFAshiny)
+S3method(print, HCPCshiny)

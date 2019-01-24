@@ -7,5 +7,6 @@ Author: Pauline Vaissie, Astrid Monge, Francois Husson
 Maintainer: Francois Husson <husson@agrocampus-ouest.fr>
 Depends: FactoMineR,colourpicker,shiny
 Description: Perform factorial analysis with a menu and draw graphs interactively thanks to 'FactoMineR' and a Shiny application.
+URL: http://factominer.free.fr/graphs/factoshiny.html
 License: GPL (>= 2)
 Encoding: latin1

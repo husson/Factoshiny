@@ -152,9 +152,9 @@ shinyUI(fluidPage(
         #              choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png"),
         # br(),
         # div(align="center",actionButton("Investigate", gettext("Get a report")))
-        gettext("Get an automatic report in"),
+        gettext("Automatic report in"),
 #        div(actionButton("Investigatehtml", gettext("html")), actionButton("InvestigateRmd", gettext("Rmd")), actionButton("Investigatedoc", gettext("doc"))),
-        div(downloadButton("downloadInvestigate", gettext("html")), downloadButton("downloadInvestigateRmd", gettext("Rmd")), downloadButton("downloadInvestigatedoc", gettext("doc"))),
+        div(downloadButton("downloadInvestigateRmd", gettext("Rmd")), actionButton("Investigatehtml", gettext("html")), actionButton("Investigatedoc", gettext("doc"))),
         align="center"
       ),
       div(align="center",actionButton("PCAcode", gettext("Get the PCA code"))),

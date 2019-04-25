@@ -292,29 +292,6 @@ shinyServer(
       }
     })
 
-    # observe({
-    #   if(input$Investigatehtml!=0){
-    #     isolate({
-    #       FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE)
-    #     })
-    #   }
-    # })
-    # observe({
-    #   if(input$InvestigateRmd!=0){
-    #     isolate({
-    #       FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE, keepRmd=TRUE)
-    #     })
-    #   }
-    # })
-    # observe({
-    #   if(input$Investigatedoc!=0){
-    #     isolate({
-    #       FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=FALSE)
-    #     })
-    #   }
-    # })
-    
-    
     ### Bouton pour quitter l'application
     ### Recuperation parametres
     observe({
@@ -961,34 +938,56 @@ shinyServer(
       hist(newdata[,input$bam],main="",xlab="")
     })
     
-    output$downloadInvestigate  <-  downloadHandler(
-      filename = function() {
-        paste('Investigate','.html', sep='')
-      },
-      content = function(file) {
-#        Investigate(values()$res.PCA,document="html_document",file=file)
-        FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE,file=file)
-      },
-      contentType='text/txt')
+    observe({
+      if(input$Investigatehtml!=0){
+        isolate({
+          FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE)
+        })
+      }
+    })
+
+    observe({
+      if(input$Investigatehtml!=0){
+        isolate({
+          FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE)
+        })
+      }
+    })
+    observe({
+      if(input$Investigatedoc!=0){
+        isolate({
+          FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=FALSE)
+        })
+      }
+    })
+
+    # output$downloadInvestigate  <-  downloadHandler(
+    #   filename = function() {
+    #     paste('Investigate','.html', sep='')
+    #   },
+    #   content = function(file) {
+    #     FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE,keepRmd=TRUE)
+    #   },
+    #   contentType='text/txt')
 
     output$downloadInvestigateRmd  <-  downloadHandler(
       filename = function() {
         paste('Investigate','.Rmd', sep='')
       },
       content = function(file) {
-        FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE, keepRmd=TRUE,file=file)
+        FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,keepRmd=TRUE)
       },
       contentType='text/txt')
 
-    output$downloadInvestigatedoc  <-  downloadHandler(
-      filename = function() {
-        paste('Investigate','doc', sep='')
-      },
-      content = function(file) {
-#        Investigate(values()$res.PCA,document="word_document",file=file)
-        FactoInvestigate::Investigate(values()$res.PCA,document="word_document", openFile=FALSE)
-      },
-      contentType='text/txt')
+#     output$downloadInvestigatedoc  <-  downloadHandler(
+#       filename = function() {
+#         paste('Investigate','doc', sep='')
+#       },
+#       content = function(file) {
+# #        Investigate(values()$res.PCA,document="word_document",file=file)
+#         FactoInvestigate::Investigate(values()$res.PCA,document="word_document", openFile=FALSE, keepRmd=TRUE)
+#       },
+#       contentType='text/txt')
 
 
     output$downloadData  <-  downloadHandler(

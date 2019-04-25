@@ -13,8 +13,8 @@ function(X){
     if(dim(X)[1]<3 && dim(X)[2]<3)
       stop(gettext('not enough row/column'))
   }
-  a=shiny::runApp(system.file("FactoCAapp2", package="Factoshiny"),launch.browser = TRUE)
-  #a=shiny::runApp('C:/Users/Ordinateur/Dropbox/Factoshiny/Factoshiny/inst/FactoCAapp2')
+#  a=shiny::runApp(system.file("FactoCAapp2", package="Factoshiny"),launch.browser = TRUE)
+  a=shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoPCAapp2')
   return(invisible(a))
 }
 

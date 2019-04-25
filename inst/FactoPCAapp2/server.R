@@ -949,14 +949,14 @@ shinyServer(
     observe({
       if(input$Investigatehtml!=0){
         isolate({
-          FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE)
+          FactoInvestigate::Investigate(values()$res.PCA, openFile=TRUE)
         })
       }
     })
     observe({
       if(input$Investigatedoc!=0){
         isolate({
-          FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=FALSE)
+          FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=TRUE)
         })
       }
     })

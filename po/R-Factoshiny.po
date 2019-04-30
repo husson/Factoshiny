@@ -752,3 +752,6 @@ msgstr "individus sont particuliers et contribuent fortement à la construction 
 
 msgid "The cumulative contribution of these individuals to the construction of the plane equals"
 msgstr "La contribution cumulée de ces individus à la construction du plan est de"
+
+msgid "Automatic report in"
+msgstr "Rapport automatique en"

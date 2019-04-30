@@ -9,7 +9,7 @@ shinyUI(fluidPage(
         tags$style(type='text/css', "#title2 { height: 25px; }")
       ),
       wellPanel(
-        div(align="center",checkboxInput("pcaparam",gettext("Show PCA parameters"),FALSE)),
+        div(align="center",checkboxInput("pcaparam",gettext("PCA parameters"),FALSE)),
         conditionalPanel(
           condition="input.pcaparam==true",
           if(is.null(quantisup)){
@@ -58,10 +58,10 @@ shinyUI(fluidPage(
             selectInput("indsup","",choices=list(num=nom), multiple=TRUE,selected=indsupl)
           },
           checkboxInput("nor",gettext("Scale data to unit value"),norme)
-        )
-      ),
+        ),
+        style = "padding: 3px;"),
       wellPanel(
-        div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
+        div(align="center",checkboxInput("graph",gettext("Graphs options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
           fluidRow(
@@ -144,18 +144,21 @@ shinyUI(fluidPage(
           colourpicker::colourInput("coloractvar", h6(gettext("Choose colour for active variables")), coloractvar),
           uiOutput("varsu")
         )
-      )
+      ),
+      style = "padding: 3px;"
       ),
       wellPanel(
-        # h5(gettext("Save graphs as"),align="center"),
-        # radioButtons("paramdown","",
-        #              choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png"),
-        # br(),
-        # div(align="center",actionButton("Investigate", gettext("Get a report")))
+        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving PCA app?"),hcpcpara)),
+         conditionalPanel(
+           condition="input.hcpcparam==true",
+           uiOutput("NbDimForClustering")
+         ),
+        align="center", style = "padding: 3px;"
+       ),
+      wellPanel(
         gettext("Automatic report in"),
-#        div(actionButton("Investigatehtml", gettext("html")), actionButton("InvestigateRmd", gettext("Rmd")), actionButton("Investigatedoc", gettext("doc"))),
         div(downloadButton("downloadInvestigateRmd", gettext("Rmd")), actionButton("Investigatehtml", gettext("html")), actionButton("Investigatedoc", gettext("doc"))),
-        align="center"
+        align="center", style = "padding: 3px;"
       ),
       div(align="center",actionButton("PCAcode", gettext("Get the PCA code"))),
       div(align="center",actionButton("Quit", gettext("Quit the app")))

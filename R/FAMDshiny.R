@@ -7,9 +7,10 @@ function(X){
   nameJDD=nom[2]
 #  gassign("nomData",nameJDD)
   assign("nomData",nameJDD, envir=G)
-  if (!(inherits(X, "FAMDshiny") | inherits(X, "data.frame") | inherits(X, "FAMD"))){
-    stop(gettext('df is not a dataframe, the results of the FAMDshiny function or a FAMD result'))
+  if (!(inherits(X, "FAMDshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "FAMD"))){
+    stop(gettext('X is not a dataframe, a matrix, the results of the FAMDshiny function or a FAMD result'))
   }
+  if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   if(is.data.frame(X)==TRUE){
     quanti=names(which(sapply(X,is.numeric)))
     quali=names(which(!(sapply(X,is.numeric))))

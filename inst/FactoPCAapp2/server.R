@@ -82,7 +82,7 @@ shinyServer(
     else{
 	  suple <- which(nom%in%input$indsup)
     }
-    list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
+    list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
     })
     
     Plot1 <- reactive({
@@ -301,7 +301,8 @@ shinyServer(
         })
       }
     })
-    
+
+
     valeuretour <- function(){
       res <- list()
       res$nomData <- nomData
@@ -394,6 +395,9 @@ shinyServer(
       res$norme <- input$nor
       res$poids1 <- values()$res.PCA$call$row.W
       res$poids2 <- values()$res.PCA$call$col.W
+## ADD for clustering
+      res$hcpcparam <- input$hcpcparam
+      res$nbdimclust <- input$nbDimClustering
       class(res) <- "PCAshiny"
       return(res)
     }
@@ -449,7 +453,6 @@ shinyServer(
       }
     })
   
-    
     code<-function(){
       vecquant<-values()$choixquant
       choixqual<-values()$choixqual
@@ -684,6 +687,12 @@ shinyServer(
       }
     })
     
+    output$NbDimForClustering <- renderUI({
+      if(input$hcpcparam==TRUE){
+        return(numericInput("nbDimClustering", label = h6(gettext("Number of dimensions kept for clustering")), nbdimclust))
+      } 
+    })
+
     output$sorties <- renderTable({
         return(as.data.frame(values()$res.PCA$eig))
     },rownames <- TRUE)

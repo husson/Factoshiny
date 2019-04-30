@@ -4,9 +4,10 @@ function(X){
     G <- .GlobalEnv
     assign("x", X, envir=G)
 
-    if (!(inherits(X, "MFA") | inherits(X, "data.frame") | inherits(X, "MFAshiny"))){
-      stop(gettext('df is not a dataframe or the result of the MFA function'))
+    if (!(inherits(X, "MFA") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "MFAshiny"))){
+      stop(gettext('X is not a dataframe or the result of the MFA function'))
     }
+    if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
     if(is.data.frame(X)==TRUE){
       nom=sys.calls()[[1]]
       nameJDD=nom[2]

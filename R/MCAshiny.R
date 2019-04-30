@@ -8,13 +8,11 @@ MCAshiny <-
 #    gassign("nomData", nameJDD)
     assign("nomData", nameJDD, envir=G)
     
-    if((is.data.frame(X)==FALSE)&&(class(X)!="MCAshiny")&&!(inherits(X, "MCA")))
-      stop(gettext('X is not a dataframe or a result from a MCA analysis'))
+    if (!(inherits(X, "MCAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "MCA"))){
+        stop(gettext('X is not a dataframe, a matrix, the results of the MCAshiny function or a MCA result'))
+    }
     
-   
-    
-    if((class(X)=="MCAshiny")||(is.data.frame(X)==TRUE)||(inherits(X, "MCA"))){
-      ###
+      if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
       if(is.data.frame(X)==TRUE){
         quali=names(which(!(sapply(X,is.numeric))))
       if(length(quali)<=2)
@@ -23,5 +21,4 @@ MCAshiny <-
       ###
       a=shiny::runApp(system.file("FactoMCAapp2",package="Factoshiny"),launch.browser = TRUE)
       return(invisible(a))
-    }
   }

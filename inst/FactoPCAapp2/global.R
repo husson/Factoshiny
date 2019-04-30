@@ -9,6 +9,8 @@ if(inherits(x, "data.frame")){
   indmod <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   axe1 <- 1
   axe2 <- 2
+  nbdimclust <- 5
+  hcpcpara <- FALSE
   habillageind <- NULL
   selection <- gettext("No selection")
   selection2 <- NULL
@@ -56,6 +58,8 @@ if(inherits(x, "PCAshiny")){
   norme <- x$norme
   poids1 <- x$poids1
   poids2 <- x$poids2
+  hcpcpara <- x$hcpcparam
+  nbdimclust <- x$nbdimclust
 }
 if(inherits(x, "PCA")){
   nomData <- as.character(x$call$call[2])
@@ -67,6 +71,8 @@ if(inherits(x, "PCA")){
   indmod <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   axe1 <- 1
   axe2 <- 2
+  nbdimclust <- 5
+  hcpcpara <- FALSE
   habillageind <- NULL
   selection <- gettext("No selection")
   selection2 <- NULL

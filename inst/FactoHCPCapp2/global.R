@@ -3,8 +3,8 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "MF
   results=x
   anafact=lignecode
   baba=HCPC(results,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-  if (inherits(x, "CA")) nbindiv=dim(results$row$coord)[1]
-  else nbindiv=dim(results$ind$coord)[1]
+  if (inherits(x, "CA")) nbindiv=nrow(results$row$coord)
+  else nbindiv=nrow(results$ind$coord)
   nomData=nomData
   clustdf=baba
   consolidf=FALSE

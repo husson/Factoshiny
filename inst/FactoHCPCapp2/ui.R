@@ -2,8 +2,7 @@
 
 shinyUI(fluidPage(
   titlePanel(div(paste(gettext("HCPC on the dataset "),nomData),style="color:#0A2A12",align="center"),windowTitle="HCPCshiny"),
-#  titlePanel(div(paste("HCPC on the ",unlist(strsplit(nomData, split='[', fixed=TRUE))[1]," dataset"),style="color:#0A2A12",align="center")),
-  
+
   sidebarLayout(
     sidebarPanel(
       tags$head(
@@ -36,7 +35,6 @@ shinyUI(fluidPage(
                    choices=list(gettext("Hierarchical tree"),gettext("Factorial map"),gettext("3D plot")),inline=TRUE),
       hr(),
       conditionalPanel(
-#        condition="input.HCPCgraph=='3D'",
         condition=paste("input.HCPCgraph=='",gettext("3D plot"),"'",sep=''),
         textInput("title1",h6(gettext("Title of the graph: ")), title1),
         checkboxInput("nom3D",gettext("Names on 3D plot"),df),
@@ -45,21 +43,19 @@ shinyUI(fluidPage(
         sliderInput("num",gettext("Angle (in degrees)"),value=numdf,min=0,max=360,step=1)
         ),
       conditionalPanel(
-#        condition="input.HCPCgraph=='ind'",
         condition=paste("input.HCPCgraph=='",gettext("Factorial map"),"'",sep=''),
         textInput("title2",h6(gettext("Title of the graph:")), title2),
         checkboxInput("drawtree",gettext("Draw tree"),drawdf)
         ),
       conditionalPanel(
- #       condition="input.HCPCgraph=='tree'",
          condition=paste("input.HCPCgraph=='",gettext("Hierarchical tree"),"'",sep=''),
        textInput("title3",h6(gettext("Title of the graph:")), title3))
       )),
       wellPanel(
-        h5(gettext("Save graphs as"),align="center"),
-        radioButtons("paramdown","",
-                     choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png"),
-      br(),
+      #   h5(gettext("Save graphs as"),align="center"),
+      #   radioButtons("paramdown","",
+      #                choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png"),
+      # br(),
       div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code")))),
       div(align="center",actionButton("Quit", gettext("Quit the app")))
       ,width=3),
@@ -71,44 +67,45 @@ shinyUI(fluidPage(
 fluidRow(
                            br(),
                  column(width = 6,plotOutput("map4", width = "500", height="500"),
-#                             div(align="center",plotOutput("map4",width = 650, height=500)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData6",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData7",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData8",gettext("Download as pdf")),align="center")),
+                        p(gettext("Download as"),downloadButton("downloadData6","jpg"),downloadButton("downloadData7","png"),downloadButton("downloadData8","pdf"),align="center"),
+                            # conditionalPanel(
+                             #   condition="input.paramdown=='jpg'",
+                             #   p(downloadButton("downloadData6",gettext("Download as jpg")),align="center")),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='png'",
+                             #   p(downloadButton("downloadData7",gettext("Download as png")),align="center")),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='pdf'",
+                             #   p(downloadButton("downloadData8",gettext("Download as pdf")),align="center")),
                              br(),
 							 align="center"),
                  column(width = 6,plotOutput("map", width = "500", height="500"),
-#                             div(align="center",plotOutput("map",width = 500, height=500)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
+                        p(gettext("Download as"),downloadButton("downloadData1","jpg"),downloadButton("downloadData","png"),downloadButton("downloadData2","pdf"),align="center"),
+                        # conditionalPanel(
+                             #   condition="input.paramdown=='jpg'",
+                             #   p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='png'",
+                             #   p(downloadButton("downloadData",gettext("Download as png")),align="center")),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='pdf'",
+                             #   p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
  							 align="center")),
                             br(),
                              div(align="center",plotOutput("map2",width=750,height=500)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData4",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData3",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData5",gettext("Download as pdf")),align="center")),                             
+                p(gettext("Download as"),downloadButton("downloadData4","jpg"),downloadButton("downloadData3","png"),downloadButton("downloadData5","pdf"),align="center"),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='jpg'",
+                             #   p(downloadButton("downloadData4",gettext("Download as jpg")),align="center")),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='png'",
+                             #   p(downloadButton("downloadData3",gettext("Download as png")),align="center")),
+                             # conditionalPanel(
+                             #   condition="input.paramdown=='pdf'",
+                             #   p(downloadButton("downloadData5",gettext("Download as pdf")),align="center")),                             
                              br()
                              ),
 
@@ -117,16 +114,13 @@ fluidRow(
                              radioButtons("out",gettext("Which outputs do you want?"),
                                           choices=list(gettext("Description of classes by variables"),gettext("Description of classes by axes"),gettext("Parangons")),selected=gettext("Description of classes by variables"),inline=TRUE),
                              conditionalPanel(
-#                               condition="input.out=='var'",
                                condition=paste("input.out=='",gettext("Description of classes by variables"),"'",sep=''),
                                div(align="center",tableOutput("descript"))
                                ),
                              conditionalPanel(
-#                               condition="input.out=='para'",
                                condition=paste("input.out=='",gettext("Parangons"),"'",sep=''),
                                div(align="center",tableOutput("parangons"))),
                              conditionalPanel(
-#                               condition="input.out=='axe'",
                                condition=paste("input.out=='",gettext("Description of classes by axes"),"'",sep=''),
                                div(align="center",tableOutput("axes")))
                              )

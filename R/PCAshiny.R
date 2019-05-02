@@ -15,8 +15,8 @@ function(X){
     if(length(quanti)<=2)
       stop(gettext('not enough quantitative variables in your dataset'))
   }
-#  a <- shiny::runApp(system.file("FactoPCAapp2", package="Factoshiny"),launch.browser = TRUE)
-  a <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoPCAapp2')
+  a <- shiny::runApp(system.file("FactoPCAapp2", package="Factoshiny"),launch.browser = TRUE)
+#  a <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoPCAapp2')
   if (a$hcpcparam==TRUE) {
     resHCPC <- HCPCshiny(a)
     print(list(invisible(a),resHCPC))

@@ -80,9 +80,13 @@ shinyServer(
       suple <- NULL
     }
     else{
-	  suple <- which(nom%in%input$indsup)
+	    suple <- which(nom%in%input$indsup)
     }
-    list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
+    if(input$hcpcparam==FALSE){
+      list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
+    } else{
+      list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(2,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
+    }
     })
     
     Plot1 <- reactive({
@@ -534,7 +538,7 @@ shinyServer(
         pcol <- paste(",col.w=c(",paste(poids2,collapse=","),")",sep="")
       }
 
-        Call1 <- as.name(paste0("res.PCA<-PCA(",vec,if(vecqual!="NULL") paste0(",quali.sup=",vecqual),if(vecquant!="NULL") paste0(",quanti.sup=",vecquant),if(indsupl!="NULL") paste0(",ind.sup=",indsupl),if (!is.null(poids1)) prow,if (!is.null(poids2)) pcol,if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),if(max(5,as.numeric(input$nb1),as.numeric(input$nb2))!=5) paste0(",ncp=",max(5,as.numeric(input$nb1),as.numeric(input$nb2))),",graph=FALSE)"))
+        Call1 <- as.name(paste0("res.PCA<-PCA(",vec,if(vecqual!="NULL") paste0(",quali.sup=",vecqual),if(vecquant!="NULL") paste0(",quanti.sup=",vecquant),if(indsupl!="NULL") paste0(",ind.sup=",indsupl),if (!is.null(poids1)) prow,if (!is.null(poids2)) pcol,if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),if (!is.null(input$nbDimClustering)) paste0(",ncp=",max(as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),",graph=FALSE)"))
       return(Call1)
     }
     
@@ -689,8 +693,15 @@ shinyServer(
     
     output$NbDimForClustering <- renderUI({
       if(input$hcpcparam==TRUE){
-        return(numericInput("nbDimClustering", label = h6(gettext("Number of dimensions kept for clustering")), nbdimclust))
-      } 
+        fluidRow(
+          tags$head(
+            tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
+                #inline .form-group { display: table-row;}")
+          ),
+          return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclust,min=1)))
+        )
+#    return(numericInput("nbDimClustering", label = h6(gettext("Number of dimensions kept for clustering")), nbdimclust))
+      }
     })
 
     output$sorties <- renderTable({
@@ -947,57 +958,48 @@ shinyServer(
       hist(newdata[,input$bam],main="",xlab="")
     })
     
-    observe({
-      if(input$Investigatehtml!=0){
-        isolate({
-          FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE)
-        })
-      }
-    })
+    # observe({
+    #   if(input$Investigatehtml!=0){
+    #     isolate({
+    #       FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE)
+    #     })
+    #   }
+    # })
 
     observe({
       if(input$Investigatehtml!=0){
         isolate({
+          path.aux <- getwd()
+          setwd(pathsave)
           FactoInvestigate::Investigate(values()$res.PCA, openFile=TRUE)
+          setwd(path.aux)
         })
       }
     })
+    
     observe({
       if(input$Investigatedoc!=0){
         isolate({
+          path.aux <- getwd()
+          setwd(pathsave)
           FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=TRUE)
+          setwd(path.aux)
         })
       }
     })
-
-    # output$downloadInvestigate  <-  downloadHandler(
-    #   filename = function() {
-    #     paste('Investigate','.html', sep='')
-    #   },
-    #   content = function(file) {
-    #     FactoInvestigate::Investigate(values()$res.PCA,openFile=FALSE,keepRmd=TRUE)
-    #   },
-    #   contentType='text/txt')
 
     output$downloadInvestigateRmd  <-  downloadHandler(
       filename = function() {
         paste('Investigate','.Rmd', sep='')
       },
       content = function(file) {
+        path.aux <- getwd()
+        setwd(pathsave)
         FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,keepRmd=TRUE)
+        setwd(path.aux)
       },
       contentType='text/txt')
-
-#     output$downloadInvestigatedoc  <-  downloadHandler(
-#       filename = function() {
-#         paste('Investigate','doc', sep='')
-#       },
-#       content = function(file) {
-# #        Investigate(values()$res.PCA,document="word_document",file=file)
-#         FactoInvestigate::Investigate(values()$res.PCA,document="word_document", openFile=FALSE, keepRmd=TRUE)
-#       },
-#       contentType='text/txt')
-
+    
 
     output$downloadData  <-  downloadHandler(
       filename = function() { 

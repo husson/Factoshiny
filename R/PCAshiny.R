@@ -15,6 +15,7 @@ function(X){
     if(length(quanti)<=2)
       stop(gettext('not enough quantitative variables in your dataset'))
   }
+  assign("pathsave",getwd(),envir=G)
   a <- shiny::runApp(system.file("FactoPCAapp2", package="Factoshiny"),launch.browser = TRUE)
 #  a <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoPCAapp2')
   if (a$hcpcparam==TRUE) {

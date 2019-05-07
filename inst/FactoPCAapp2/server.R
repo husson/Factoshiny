@@ -1,30 +1,29 @@
 # server script for PCA2
-shinyServer(
   function(input, output,session) {
     values <- reactive({
     if (input$selecactive==gettext("All")){
-      data.selec <- newdata[,VariableChoices]
+      data.selec <- .newdata[,.VariableChoices]
     }
     else{
       validate(
         need(length(input$supvar)>0, gettext("Please select at least one supplementary variable"))
       )
-      data.selec <- newdata[,c(getactive())]
+      data.selec <- .newdata[,c(getactive())]
     }
       
 ## pour avoir les indices des variables quanti (pb si variables quali pas dans le jeu de donnees)
-#    if (!is.null(input$supvar)) cat(paste0("c(",paste0(which(colnames(newdata)%in%input$supvar),collapse=","),")"))
+#    if (!is.null(input$supvar)) cat(paste0("c(",paste0(which(colnames(.newdata)%in%input$supvar),collapse=","),")"))
 
-    if(length(QualiChoice)==0){
+    if(length(.QualiChoice)==0){
       choixquali <- NULL
     }
-    else if (length(QualiChoice)==1){
+    else if (length(.QualiChoice)==1){
       if(input$supquali==FALSE){
         choixquali <- NULL
       }
       else{
-        data.selec <- cbind(data.selec,newdata[,QualiChoice])
-        colnames(data.selec)[ncol(data.selec)] <- QualiChoice
+        data.selec <- cbind(data.selec,.newdata[,.QualiChoice])
+        colnames(data.selec)[ncol(data.selec)] <- .QualiChoice
         choixquali <- length(data.selec)
       }
     }
@@ -33,7 +32,7 @@ shinyServer(
         choixquali <- NULL
       }
       else{
-        data.selec <- cbind(data.selec,newdata[,input$supquali])
+        data.selec <- cbind(data.selec,.newdata[,input$supquali])
         if(length(input$supquali)==1){
           choixquali <- length(data.selec)
           colnames(data.selec)[choixquali] <- input$supquali
@@ -44,11 +43,11 @@ shinyServer(
         }
       }
     }
-#numQualiNotChosen  <- which(colnames(newdata)%in%setdiff(QualiChoice,input$supquali))
-#don <- newdata[,-numQualiNotChosen]
+#numQualiNotChosen  <- which(colnames(.newdata)%in%setdiff(QualiChoice,input$supquali))
+#don <- .newdata[,-numQualiNotChosen]
 #numQualiChosen <- which(colnames(don)%in%input$supquali)
 #numQuantiChosen <- which(colnames(don)%in%input$supvar)
-#numHab  <- which(colnames(newdata)%in%input$habi)
+#numHab  <- which(colnames(.newdata)%in%input$habi)
 
 #resu <- paste0("res <- PCA(don",if (length(numQualiNotChosen)!=0) paste0("[,-c(",paste0(numQualiNotChosen,collapse=","),")]"), if (length(numQuantiChosen)!=0) paste0(",quanti.sup=c(",paste0(numQuantiChosen,collapse=","),")"), if (length(numQualiChosen)!=0) paste0(",quali.sup=c(",paste0(numQualiChosen,collapse=","),")"),")")
 #cat(paste(numQualiNotChosen," zz ",numQualiChosen," yy ",numQuantiChosen))
@@ -63,7 +62,7 @@ shinyServer(
       choixquanti <- NULL
     }
     else {
-      data.selec <- cbind(data.selec,newdata[,input$supvar])
+      data.selec <- cbind(data.selec,.newdata[,input$supvar])
 	  if(length(input$supvar)==1){
         choixquanti <- length(data.selec)
         colnames(data.selec)[choixquanti]<-input$supvar
@@ -73,19 +72,19 @@ shinyServer(
       }
     }
     if (length(input$habiller)==2 && input$habi==TRUE){
-      data.selec <- data.frame(data.selec,newCol=paste(newdata[,input$habiller[1]],newdata[,input$habiller[2]],sep="/"))
+      data.selec <- data.frame(data.selec,newCol=paste(.newdata[,input$habiller[1]],.newdata[,input$habiller[2]],sep="/"))
       choixquali <- c(choixquali,ncol(data.selec))
     }
     if(length(input$indsup)==0){
       suple <- NULL
     }
     else{
-	    suple <- which(nom%in%input$indsup)
+	    suple <- which(.nom%in%input$indsup)
     }
     if(input$hcpcparam==FALSE){
-      list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
+      list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=.poids1,col.w=.poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
     } else{
-      list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(2,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=poids1,col.w=poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
+      list(res.PCA=(PCA(data.selec,quali.sup=choixquali,quanti.sup=choixquanti,scale.unit=input$nor,graph=FALSE,ncp=max(2,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering)),ind.sup=suple,row.w=.poids1,col.w=.poids2)),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),choixsuple=(suple))
     }
     })
     
@@ -113,12 +112,12 @@ shinyServer(
         selecindiv <- paste("contrib ",input$slider4)
         selecindivText <- paste("'",selecindiv,"'",sep="")
       }
-      if(is.null(input$colorsupvar)){
+      if(is.null(input$.colorsupvar)){
         colo <- "blue"
       }else{
-        colo <- input$colorsupvar
+        colo <- input$.colorsupvar
       }
-      list(PLOT=(plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",select=selecindiv,unselect=0,col.quanti.sup=colo,col.var=input$coloractvar,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2)),SELECTION=(selecindiv),selecindivText=(selecindivText))
+      list(PLOT=(plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",select=selecindiv,unselect=0,col.quanti.sup=colo,col.var=input$.coloractvar,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2)),SELECTION=(selecindiv),selecindivText=(selecindivText))
     })
     
     output$map <- renderPlot({
@@ -126,18 +125,19 @@ shinyServer(
     })
     
     output$choixindmod <- renderUI({
-      choix <- list(gettext("Individuals"))
+      choix <- gettext("Individuals")
       bool1 <- FALSE
       if(!(is.null(input$indsup))){
         choix <- c(choix,gettext("Supplementary individuals"))
         bool1 <- TRUE
       }
-      if(length(QualiChoice)>0 & length(input$supquali)>0){
-        choix <- c(choix,gettext("Supplementary categories"))
-        bool1 <- TRUE
-      }
+      if (length(input$supquali)>0){
+        if(length(.QualiChoice)>0 & (input$supquali!=FALSE)){
+          choix <- c(choix,gettext("Supplementary categories"))
+          bool1 <- TRUE
+      }}
       if(bool1==TRUE){
-        div(align="left",checkboxGroupInput("ind_mod","", choices=choix, selected = indmod))
+        div(align="left",checkboxGroupInput("ind_mod","", choices=choix, selected = .indmod))
       }
     })
 
@@ -154,7 +154,7 @@ shinyServer(
       if(sum(gettext("Supplementary categories")==reponse)==0){
         choix <- c(choix,gettext("Supplementary categories"))
       }
-      div(align="center",checkboxGroupInput("indmodpoint","",choices=choix,selected=labmod))
+      div(align="center",checkboxGroupInput("indmodpoint","",choices=choix,selected=.labmod))
     })
     
     observe({
@@ -198,12 +198,12 @@ shinyServer(
       if(input$select==gettext("Manual")){
         selecindiv <- c(input$indiv)
       }
-      if(input$supquali==FALSE || length(QualiChoice)==0 || length(input$supquali)==0 || input$habi==FALSE){
+      if(input$supquali==FALSE || length(.QualiChoice)==0 || length(input$supquali)==0 || input$habi==FALSE){
         hab <- "none"
       }
-      else if(length(QualiChoice)==1 && input$supquali==TRUE){
+      else if(length(.QualiChoice)==1 && input$supquali==TRUE){
         if(input$habi==TRUE){
-          hab <- QualiChoice
+          hab <- .QualiChoice
         }
         else{
           hab <- "none"
@@ -277,8 +277,8 @@ shinyServer(
     output$colourn2 <- renderUI({
       sup <- values()$choixsuple
       if(!is.null(sup)){
-        if(!is.null(supind)){
-        return(colourpicker::colourInput("colorsup", h6(gettext("Choose colour for supplementary individuals")), supind))
+        if(!is.null(.supind)){
+        return(colourpicker::colourInput("colorsup", h6(gettext("Choose colour for supplementary individuals")), .supind))
         }else{
           return(colourpicker::colourInput("colorsup", h6(gettext("Choose colour for supplementary individuals")), "blue")) 
         }
@@ -288,8 +288,8 @@ shinyServer(
     output$colourn3 <- renderUI({
       sup <- values()$choixqual
       if(!is.null(sup)){
-        if(!is.null(categ)){
-        return(colourpicker::colourInput("colorquali", h6(gettext("Choose colour for the categories")), categ))
+        if(!is.null(.categ)){
+        return(colourpicker::colourInput("colorquali", h6(gettext("Choose colour for the categories")), .categ))
         }else{
           return(colourpicker::colourInput("colorquali", h6(gettext("Choose colour for the categories")), "magenta"))
         }
@@ -309,35 +309,35 @@ shinyServer(
 
     valeuretour <- function(){
       res <- list()
-      res$nomData <- nomData
-      res$data <- newdata
+      res$.nomData <- .nomData
+      res$data <- .newdata
       res$a <- values()$DATA
-      if (length(QualiChoice)==1){
+      if (length(.QualiChoice)==1){
         if(input$supquali==FALSE){
-          quali <- NULL
+          .quali <- NULL
         }
         else{
-          quali <- QualiChoice
+          .quali <- .QualiChoice
         }
       }
       else{
         if(length(input$supquali)==0){
-          quali <- NULL
+          .quali <- NULL
         }
         else{
-          quali <- input$supquali
+          .quali <- input$supquali
         }
       }
-      res$b <- quali
+      res$b <- .quali
       res$c <- input$supvar
       res$d <- input$indsup
       res$y <- input$ind_mod
       res$e <- input$nb1
       res$f <- input$nb2
       hab <- NULL
-      if(length(QualiChoice)==1 && input$supquali==TRUE){
+      if(length(.QualiChoice)==1 && input$supquali==TRUE){
         if(input$habi==TRUE){
-          hab <- QualiChoice
+          hab <- .QualiChoice
         }
       }
       else if (length(input$supquali)==1){
@@ -390,18 +390,18 @@ shinyServer(
       res$title1 <- input$title1
       res$title2 <- input$title2
       res$anafact <- values()$res.PCA
-      res$ellipses <- input$elip
+      res$.ellipses <- input$elip
       res$supin <- input$colorsup
-      res$categ <- input$colorquali
-      res$activeind <- input$coloract
-      res$coloractvar <- input$coloractvar
-      res$colorsupvar <- input$colorsupvar
-      res$norme <- input$nor
-      res$poids1 <- values()$res.PCA$call$row.W
-      res$poids2 <- values()$res.PCA$call$col.W
+      res$.categ <- input$colorquali
+      res$.activeind <- input$coloract
+      res$.coloractvar <- input$.coloractvar
+      res$.colorsupvar <- input$.colorsupvar
+      res$.norme <- input$nor
+      res$.poids1 <- values()$res.PCA$call$row.W
+      res$.poids2 <- values()$res.PCA$call$col.W
 ## ADD for clustering
       res$hcpcparam <- input$hcpcparam
-      res$nbdimclust <- input$nbDimClustering
+      res$.nbdimclust <- input$nbDimClustering
       class(res) <- "PCAshiny"
       return(res)
     }
@@ -443,7 +443,7 @@ shinyServer(
       if(input$PCAcode!=0){
         isolate({
           if (length(input$habiller)==2 & input$habi==TRUE){
-            cat(paste("newCol<-paste(",nomData,"[,'",input$habiller[1],"'],",nomData,"[,'",input$habiller[2],"'],","sep='/')",sep=""),sep="\n")
+            cat(paste("newCol<-paste(",.nomData,"[,'",input$habiller[1],"'],",.nomData,"[,'",input$habiller[2],"'],","sep='/')",sep=""),sep="\n")
           }
           cat(code(),sep="\n")
           cat(codeGraphVar(),sep="\n")
@@ -461,14 +461,14 @@ shinyServer(
       vecquant<-values()$choixquant
       choixqual<-values()$choixqual
       Datasel<-values()$DATA
-      indsupl<-values()$choixsuple
-      test <- identical(newdata,Datasel)
+      .indsupl<-values()$choixsuple
+      test <- identical(.newdata,Datasel)
 	  vec <-colnames(Datasel)
       vec2<-paste("'",paste(colnames(Datasel),collapse="','"),"'",sep="")
       if(test==FALSE){
-      vecfinal<-paste(nomData,"[,c(",vec2,")","]",sep="")
+      vecfinal<-paste(.nomData,"[,c(",vec2,")","]",sep="")
       }else{
-        vecfinal <- nomData
+        vecfinal <- .nomData
       }
       
       vec4 <- paste(vecquant,collapse=",")
@@ -480,19 +480,19 @@ shinyServer(
       vecqual1<-paste("c(",vec5,")",sep="")
       vecqual2<-vecqual
       
-      vecind <- paste(indsupl,collapse=",")
+      vecind <- paste(.indsupl,collapse=",")
       vecind1<-paste("c(",vecind,")",sep="")
-      vecind2<-indsupl
+      vecind2<-.indsupl
       vec<-vecfinal
       
       if(length(input$indsup)==0){
-        indsupl<-"NULL"
+        .indsupl<-"NULL"
       }
       else if(length(input$indsup)==1){
-        indsupl<-vecind2
+        .indsupl<-vecind2
       }
       else if(length(input$indsup)>1){
-        indsupl<-vecind1
+        .indsupl<-vecind1
       }
       
       if(length(input$supvar)>1){
@@ -508,7 +508,7 @@ shinyServer(
       if (length(input$supquali)>1){ 
         vecqual<-vecqual1
       }
-      if(length(QualiChoice)==1){
+      if(length(.QualiChoice)==1){
         if(input$supquali==TRUE){
           vecqual<-vecqual2 
         }
@@ -517,7 +517,7 @@ shinyServer(
         }
       }
       
-      else if(length(QualiChoice)>1){
+      else if(length(.QualiChoice)>1){
         if(length(input$supquali)==1){
           vecqual<-vecqual2  
         }
@@ -528,17 +528,17 @@ shinyServer(
           vecqual<-"NULL"
         }  
       }
-      else if(length(QualiChoice)==0){
+      else if(length(.QualiChoice)==0){
         vecqual<-"NULL"
       }
-      if(!is.null(poids1)){
-        prow <- paste(",row.w=c(",paste(poids1,collapse=","),")",sep="")
+      if(!is.null(.poids1)){
+        prow <- paste(",row.w=c(",paste(.poids1,collapse=","),")",sep="")
       }
-      if(!is.null(poids2)){
-        pcol <- paste(",col.w=c(",paste(poids2,collapse=","),")",sep="")
+      if(!is.null(.poids2)){
+        pcol <- paste(",col.w=c(",paste(.poids2,collapse=","),")",sep="")
       }
 
-        Call1 <- as.name(paste0("res.PCA<-PCA(",vec,if(vecqual!="NULL") paste0(",quali.sup=",vecqual),if(vecquant!="NULL") paste0(",quanti.sup=",vecquant),if(indsupl!="NULL") paste0(",ind.sup=",indsupl),if (!is.null(poids1)) prow,if (!is.null(poids2)) pcol,if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),if (!is.null(input$nbDimClustering)) paste0(",ncp=",max(as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),",graph=FALSE)"))
+        Call1 <- as.name(paste0("res.PCA<-PCA(",vec,if(vecqual!="NULL") paste0(",quali.sup=",vecqual),if(vecquant!="NULL") paste0(",quanti.sup=",vecquant),if(.indsupl!="NULL") paste0(",ind.sup=",.indsupl),if (!is.null(.poids1)) prow,if (!is.null(.poids2)) pcol,if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),if (!is.null(input$nbDimClustering)) paste0(",ncp=",max(as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5,as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),",graph=FALSE)"))
       return(Call1)
     }
     
@@ -546,23 +546,23 @@ shinyServer(
     codeGraphVar<-function(){
       
       if(length(input$slider4)==0){
-        selection <- "NULL"
+        .selection <- "NULL"
       }
       else{
-        selection <- Plot1()$selecindivText
+        .selection <- Plot1()$selecindivText
       }
-      if(is.null(input$colorsupvar)){
+      if(is.null(input$.colorsupvar)){
         colo <- "blue"
       }else{
-        colo <- input$colorsupvar
+        colo <- input$.colorsupvar
       }
-      Call1 <- paste("plot.PCA(res.PCA,axes=c(",input$nb1,",",input$nb2,"),choix='var'",if(selection!="NULL") paste0(",select=",selection,",unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="Variables factor map (PCA)") paste0(",title='",input$title2),if (colo!="blue"&colo!="#0000FF") paste0(",col.quanti.sup='",colo,"'"),if(input$coloractvar!="#000000") paste0(",col.var='",input$coloractvar,"'"),")",sep="")
+      Call1 <- paste("plot.PCA(res.PCA,axes=c(",input$nb1,",",input$nb2,"),choix='var'",if(.selection!="NULL") paste0(",select=",.selection,",unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="Variables factor map (PCA)") paste0(",title='",input$title2),if (colo!="blue"&colo!="#0000FF") paste0(",col.quanti.sup='",colo,"'"),if(input$.coloractvar!="#000000") paste0(",col.var='",input$.coloractvar,"'"),")",sep="")
       return(Call1)
     }
     
     codeellipses <- function(){
       Datasel<-values()$DATA
-      indsupl<-values()$choixsuple
+      .indsupl<-values()$choixsuple
       
       vec<-NULL
       for (i in 1:length(colnames(Datasel))){
@@ -573,15 +573,15 @@ shinyServer(
       for (i in 2:(length(vec))){
         vec2<-paste(vec2,paste("'",vec[i],"'",sep=""),sep=",")
       }
-      vecfinal<-paste(nomData,"[,c(",vec2,")","]",sep="")
+      vecfinal<-paste(.nomData,"[,c(",vec2,")","]",sep="")
       vec <- vecfinal
-      if(input$supquali==FALSE || length(QualiChoice)==0 || length(input$supquali)==0 || input$habi==FALSE){
+      if(input$supquali==FALSE || length(.QualiChoice)==0 || length(input$supquali)==0 || input$habi==FALSE){
         hab <- "none"
         colquali <- "magenta"
       }
-      else if(length(QualiChoice)==1 && input$supquali==TRUE){
+      else if(length(.QualiChoice)==1 && input$supquali==TRUE){
         if(input$habi==TRUE){
-          hab <- QualiChoice
+          hab <- .QualiChoice
           colquali <- "blue"
         }
         else{
@@ -656,12 +656,12 @@ shinyServer(
       if(input$selecactive==gettext("Choose")){
       sup <- NULL
       if(length(input$supvar)==0){
-        activevar <- VariableChoices
+        activevar <- .VariableChoices
       }
       else{
-	    sup <- which(VariableChoices%in%input$supvar)
+	    sup <- which(.VariableChoices%in%input$supvar)
 	    if (length(sup)==0) sup <- NULL
-        activevar <- VariableChoices[-sup]
+        activevar <- .VariableChoices[-sup]
       }
       return(activevar)
     }
@@ -672,10 +672,10 @@ shinyServer(
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variable"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        return(textInput("nb1", label = h6(gettext("x axis")), axe1,width='50%'))
+        return(textInput("nb1", label = h6(gettext("x axis")), .axe1,width='50%'))
       } else{
         baba <- c(1:length(getactive()))
-        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1,width='80%'))
+        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=.axe1,width='80%'))
       }
     })
     
@@ -684,10 +684,10 @@ shinyServer(
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variable"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        return(textInput("nb2", label = h6(gettext("y axis")), axe2,width='50%'))
+        return(textInput("nb2", label = h6(gettext("y axis")), .axe2,width='50%'))
       } else{
         baba <- c(1:length(getactive()))
-        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2,width='80%'))
+        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=.axe2,width='80%'))
       }
     })
     
@@ -698,9 +698,9 @@ shinyServer(
             tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
                 #inline .form-group { display: table-row;}")
           ),
-          return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclust,min=1)))
+          return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=.nbdimclust,min=1)))
         )
-#    return(numericInput("nbDimClustering", label = h6(gettext("Number of dimensions kept for clustering")), nbdimclust))
+#    return(numericInput("nbDimClustering", label = h6(gettext("Number of dimensions kept for clustering")), .nbdimclust))
       }
     })
 
@@ -869,13 +869,13 @@ shinyServer(
     })
     
     output$JDD <- renderDataTable({
-      cbind(Names=rownames(newdata),newdata)},
+      cbind(Names=rownames(.newdata),.newdata)},
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,
                          "pageLength" = 10))
   
     output$summary <- renderPrint({
-      summary(newdata)
+      summary(.newdata)
     })
   
     output$summaryPCA <- renderPrint({
@@ -901,12 +901,12 @@ shinyServer(
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variable"))
       )
       if(input$selecactive==gettext("All")){
-        maxvar=length(VariableChoices)
+        maxvar=length(.VariableChoices)
       }
       if(input$selecactive==gettext("Choose")){
         maxvar=length(getactive())
       }
-      if(selection3=="contrib"){
+      if(.selection3=="contrib"){
         return(div(align="center",sliderInput("slider4",label=gettext("Number of the most contributive variables"),
                                               min=1,max=maxvar,value=selection4,step=1)))  
       }
@@ -917,45 +917,45 @@ shinyServer(
 
     
     output$habillage2 <- renderUI({
-      if(length(QualiChoice)==0 || input$supquali==FALSE || length(input$supquali)==0){
+      if(length(.QualiChoice)==0 || input$supquali==FALSE || length(input$supquali)==0){
         return(p(gettext("No categorical variable")))
       }
       if(length(input$supquali)>1){
-        if(is.null(habillageind)){
-        num <- c(1:length(input$supquali))
-        return(selectInput("habiller",gettext("Select 1 or 2 variables"), choices=list(num=input$supquali),multiple=TRUE))
+        if(is.null(.habillageind)){
+        .num <- c(1:length(input$supquali))
+        return(selectInput("habiller",gettext("Select 1 or 2 variables"), choices=list(.num=input$supquali),multiple=TRUE))
         }
         else{
-          num <- c(1:length(input$supquali))
-          return(selectInput("habiller",gettext("Select 1 or 2 variables"), choices=list(num=input$supquali),multiple=TRUE,selected=habillageind))
+          .num <- c(1:length(input$supquali))
+          return(selectInput("habiller",gettext("Select 1 or 2 variables"), choices=list(.num=input$supquali),multiple=TRUE,selected=.habillageind))
         }
       }
     })
 
-  output$ellipses <- renderUI({
+  output$.ellipses <- renderUI({
     #validate(need(!is.null(input$habiller),""))
-    if(length(QualiChoice)==0 || input$supquali==FALSE || length(input$supquali)==0){
+    if(length(.QualiChoice)==0 || input$supquali==FALSE || length(input$supquali)==0){
       return(p(" "))
     }else{
-    return(checkboxInput("elip",gettext("Draw the confidence ellipses around the categories"),ellipses))
+    return(checkboxInput("elip",gettext("Draw the confidence ellipses around the categories"),.ellipses))
     }
   })
   
   output$varsu <- renderUI({
     test <- values()$choixquant
     if(!is.null(test)){
-      if(!is.null(colorsupvar)){
-        return(colourpicker::colourInput("colorsupvar", h6(gettext("Choose colour for supplementary variables")), colorsupvar))
+      if(!is.null(.colorsupvar)){
+        return(colourpicker::colourInput(".colorsupvar", h6(gettext("Choose colour for supplementary variables")), .colorsupvar))
       }else{
-      return(colourpicker::colourInput("colorsupvar", h6(gettext("Choose colour for supplementary variables")), "blue"))
+      return(colourpicker::colourInput(".colorsupvar", h6(gettext("Choose colour for supplementary variables")), "blue"))
       }
     }
   })
 	
     output$histo <- renderPlot({
       par(mfrow=c(1,2))
-      boxplot(newdata[,input$bam])
-      hist(newdata[,input$bam],main="",xlab="")
+      boxplot(.newdata[,input$bam])
+      hist(.newdata[,input$bam],main="",xlab="")
     })
     
     # observe({
@@ -1082,12 +1082,12 @@ shinyServer(
       if(input$select0=="contrib"){
         selecindiv=paste("contrib ",input$slider4)
       }
-      if(is.null(input$colorsupvar)){
+      if(is.null(input$.colorsupvar)){
         colo <- "blue"
       }else{
-        colo <- input$colorsupvar
+        colo <- input$.colorsupvar
       }
-      plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",select=selecindiv,unselect=0,col.quanti.sup=colo,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2,col.var=input$coloractvar)
+      plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",select=selecindiv,unselect=0,col.quanti.sup=colo,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2,col.var=input$.coloractvar)
     }
     Plot22 <- function(){
       if(input$select=="cos2"){
@@ -1107,13 +1107,13 @@ shinyServer(
       if(input$select==gettext("Manual")){
         selecindiv <- c(input$indiv)
       }
-      if(input$supquali==FALSE || length(QualiChoice)==0 || length(input$supquali)==0 || input$habi==FALSE){
+      if(input$supquali==FALSE || length(.QualiChoice)==0 || length(input$supquali)==0 || input$habi==FALSE){
         hab <- "none"
         colquali <- "magenta"
       }
-      else if(length(QualiChoice)==1 && input$supquali==TRUE){
+      else if(length(.QualiChoice)==1 && input$supquali==TRUE){
         if(input$habi==TRUE){
-          hab <- QualiChoice
+          hab <- .QualiChoice
           colquali <- "blue"
         }
         else{
@@ -1165,6 +1165,4 @@ shinyServer(
     }
     
   }
-)
-      
-
+  

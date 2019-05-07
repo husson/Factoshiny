@@ -1,6 +1,6 @@
 # ui script for PCA2
-shinyUI(fluidPage(
-  titlePanel(div(paste(gettext("PCA on the dataset"),nomData),style="color:#6E6E6E",align="center"),windowTitle="PCAshiny"),
+fluidPage(
+  titlePanel(div(paste(gettext("PCA on the dataset"),.nomData),style="color:#6E6E6E",align="center"),windowTitle="PCAshiny"),
   sidebarLayout(
     sidebarPanel(
       tags$head(
@@ -12,7 +12,7 @@ shinyUI(fluidPage(
         div(align="center",checkboxInput("pcaparam",gettext("PCA parameters"),FALSE)),
         conditionalPanel(
           condition="input.pcaparam==true",
-          if(is.null(quantisup)){
+          if(is.null(.quantisup)){
             radioButtons("selecactive",label=h6(gettext("Choose the active variables")),
                          choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))
           }
@@ -23,41 +23,41 @@ shinyUI(fluidPage(
           conditionalPanel(
             condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
             selectInput("supvar",label=gettext("Select the supplementary quantitative variables"),
-                        choices=list(IdChoices=VariableChoices),
-                        selected=quantisup,multiple=TRUE)
+                        choices=list(.IdChoices=.VariableChoices),
+                        selected=.quantisup,multiple=TRUE)
           ),
           br(),      
           h6(gettext("Select the supplementary categorical variables")),
           
-          if(length(QualiChoice)>1){
-            if(is.null(qualisup)){
-              selectInput("supquali",label="",choices=list(Idqualisup=as.vector(QualiChoice)),multiple=TRUE)
+          if(length(.QualiChoice)>1){
+            if(is.null(.qualisup)){
+              selectInput("supquali",label="",choices=list(.Idqualisup=as.vector(.QualiChoice)),multiple=TRUE)
             }
             else{
-              selectInput("supquali",label="",choices=list(Idqualisup=as.vector(QualiChoice)),multiple=TRUE,selected=qualisup)  
+              selectInput("supquali",label="",choices=list(.Idqualisup=as.vector(.QualiChoice)),multiple=TRUE,selected=.qualisup)  
             }
           }
-          else if (length(QualiChoice)==1){
-            if(is.null(qualisup)){
-              checkboxInput("supquali",QualiChoice,FALSE)
+          else if (length(.QualiChoice)==1){
+            if(is.null(.qualisup)){
+              checkboxInput("supquali",.QualiChoice,FALSE)
             }
             else{
-              checkboxInput("supquali",QualiChoice,TRUE)
+              checkboxInput("supquali",.QualiChoice,TRUE)
             }
           }
-          else if(length(QualiChoice)==0){
+          else if(length(.QualiChoice)==0){
             p(gettext("No categorical variable in your dataset"))
           },
           
           br(),
           h6(gettext("Select the supplementary individuals")),
-          if(is.null(indsupl)){
-            selectInput("indsup","",choices=list(num=nom), multiple=TRUE)
+          if(is.null(.indsupl)){
+            selectInput("indsup","",choices=list(.num=.nom), multiple=TRUE)
           }
           else{
-            selectInput("indsup","",choices=list(num=nom), multiple=TRUE,selected=indsupl)
+            selectInput("indsup","",choices=list(.num=.nom), multiple=TRUE,selected=.indsupl)
           },
-          checkboxInput("nor",gettext("Scale data to unit value"),norme)
+          checkboxInput("nor",gettext("Scale data to unit value"),.norme)
         ),
         style = "padding: 3px;"),
       wellPanel(
@@ -71,45 +71,44 @@ shinyUI(fluidPage(
           div(align="center",radioButtons("ind_var","",
                         choices=list(gettext("Graph of individuals"),gettext("Graph of variables")),selected=gettext("Graph of individuals"),inline=TRUE)),
           conditionalPanel(
-            #          condition="input.ind_var=='Ind'",
-            condition=paste("input.ind_var=='",gettext("Graph of individuals"),"'",sep=''),
-            textInput("title1",h6(gettext("Title of the graph: ")), titre1),
+            condition=paste0("input.ind_var=='",gettext("Graph of individuals"),"'"),
+            textInput("title1",h6(gettext("Title of the graph: ")), .titre1),
             uiOutput("choixindmod"),
-            sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size,step=0.05,ticks=FALSE),
+            sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=.size,step=0.05,ticks=FALSE),
             selectInput("select",label=h6(gettext("Draw individuals according to:")),
-                      choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib",gettext("Manual")),selected=selection),
+                      choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib",gettext("Manual")),selected=.selection),
           conditionalPanel(
             condition="input.select=='cos2'",
-            if(selection=="cos2"){
+            if(.selection=="cos2"){
             div(align="center",sliderInput("slider1", label = "cos2",
-                        min = 0, max = 1, value =as.numeric(selection2),step=0.05))}
+                        min = 0, max = 1, value =as.numeric(.selection2),step=0.05))}
             else{
               div(align="center",sliderInput("slider1", label = "cos2",
                                              min = 0, max = 1, value =0,step=0.05))
             }),
           conditionalPanel(
             condition="input.select=='contrib'",
-            if(selection=="contrib"){
+            if(.selection=="contrib"){
             div(align="center",sliderInput("slider0", label = gettext("Number of the most contributive individuals"),
-                                           min = 1, max = length(nom), value =as.numeric(selection2),step=1))}
+                                           min = 1, max = length(.nom), value =as.numeric(.selection2),step=1))}
             else{
               div(align="center",sliderInput("slider0", label = gettext("Number of the most contributive individuals"),
-                                             min = 1, max = length(nom), value =length(nom),step=1)) 
+                                             min = 1, max = length(.nom), value =length(.nom),step=1)) 
             }),
           conditionalPanel(
             condition=paste("input.select=='",gettext("Manual"),"'",sep=''),
-            if(selection==gettext("Manual")){
+            if(.selection==gettext("Manual")){
             selectInput("indiv",label=gettext("Select individuals:"),
-                        choices=list(num=nom),multiple=TRUE,selected=selection2)}
+                        choices=list(.num=.nom),multiple=TRUE,selected=.selection2)}
             else{
               selectInput("indiv",label=gettext("Select individuals:"),
-                          choices=list(num=nom),multiple=TRUE)
+                          choices=list(.num=.nom),multiple=TRUE)
             }),
           #colourInput("colour1","Colour of active points",value="blue"),
-          colourpicker::colourInput("coloract", h6(gettext("Choose colour for active individuals")), activeind),
+          colourpicker::colourInput("coloract", h6(gettext("Choose colour for active individuals")), .activeind),
           uiOutput("colourn2"),
           uiOutput("colourn3"),
-            if(is.null(habillageind)){
+            if(is.null(.habillageind)){
               checkboxInput("habi",gettext("Points colour depend on categorical variable"),FALSE)
             }
             else{
@@ -118,37 +117,37 @@ shinyUI(fluidPage(
             conditionalPanel(
               condition="input.habi==true",
               uiOutput("habillage2"),
-              uiOutput("ellipses")
+              uiOutput(".ellipses")
             )
         ),
         conditionalPanel(
            condition=paste("input.ind_var=='",gettext("Graph of variables"),"'",sep=''),
-          textInput("title2",h6(gettext("Title of the graph:")), titre2),
-          sliderInput("cex2",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size2,step=0.05,ticks=FALSE),
+          textInput("title2",h6(gettext("Title of the graph:")), .titre2),
+          sliderInput("cex2",h6(gettext("Size of labels")),min=0.5,max=2.5,value=.size2,step=0.05,ticks=FALSE),
           selectInput("select0",label=h6(gettext("Draw variables according to:")),
-                      choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib"),selected=selection3),
+                      choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib"),selected=.selection3),
           conditionalPanel(
             condition="input.select0=='contrib'",
             uiOutput("slider3")
             ),
           conditionalPanel(
             condition="input.select0=='cos2'",
-            if(selection3=="cos2"){
+            if(.selection3=="cos2"){
               div(align="center",sliderInput("slider00", label = "cos2",
-                                             min = 0, max = 1, value =as.numeric(selection4),step=0.05))  
+                                             min = 0, max = 1, value =as.numeric(.selection4),step=0.05))  
             }
             else{
             div(align="center",sliderInput("slider00", label = "cos2",
                                            min = 0, max = 1, value =0,step=0.05))}
           ),
-          colourpicker::colourInput("coloractvar", h6(gettext("Choose colour for active variables")), coloractvar),
+          colourpicker::colourInput(".coloractvar", h6(gettext("Choose colour for active variables")), .coloractvar),
           uiOutput("varsu")
         )
       ),
       style = "padding: 3px;"
       ),
       wellPanel(
-        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving PCA app?"),hcpcpara)),
+        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving PCA app?"),.hcpcpara)),
          conditionalPanel(
            condition="input.hcpcparam==true",
            uiOutput("NbDimForClustering")
@@ -291,7 +290,7 @@ shinyUI(fluidPage(
                              br(),
                              verbatimTextOutput("summary"),
                              br(),
-                             selectInput("bam",h6(gettext("Graphs for")),choices=list(IdChoices=VariableChoices),multiple=FALSE),
+                             selectInput("bam",h6(gettext("Graphs for")),choices=list(.IdChoices=.VariableChoices),multiple=FALSE),
                              plotOutput("histo")),
                     
                     tabPanel(gettext("Data"),
@@ -301,4 +300,4 @@ shinyUI(fluidPage(
         )
       ,width=9)
     )
-))
+)

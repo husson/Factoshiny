@@ -1,112 +1,112 @@
 #global script for PCA2
-if(inherits(.x, "data.frame")){
-#  .nomData <- .nomData
-  .newdata <- .x
-  .quantisup <- NULL
-  .qualisup <- NULL
-  .indsupl <- NULL
-  .labmod <- c()
-  .indmod <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
-  .axe1 <- 1
-  .axe2 <- 2
-  .nbdimclust <- 5
-  .hcpcpara <- FALSE
-  .habillageind <- NULL
-  .selection <- gettext("No selection")
-  .selection2 <- NULL
-  .selection3 <- gettext("No selection")
-  .selection4 <- NULL
-  .size <- 1
-  .size2 <- 1
-  .titre1 <- gettext("Individuals factor map (PCA)")
-  .titre2 <- gettext("Variables factor map (PCA)")
-  .ellipses <- FALSE
-  .activeind <- "black"
-  .supind <- "blue"
-  .categ <- "magenta"
-  .coloractvar <- "black"
-  .colorsupvar <- "blue"
-  .norme <- TRUE
-  .poids1 <- NULL
-  .poids2 <- NULL
+if(inherits(x, "data.frame")){
+  nomDataPCAshiny <- nomDataPCAshiny
+  newdataPCAshiny <- x
+  quantisupPCAshiny <- NULL
+  qualisupPCAshiny <- NULL
+  indsuplPCAshiny <- NULL
+  labmodPCAshiny <- c()
+  indmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  axe1PCAshiny <- 1
+  axe2PCAshiny <- 2
+  nbdimclustPCAshiny <- 5
+  hcpcparaPCAshiny <- FALSE
+  habillageindPCAshiny <- NULL
+  selectionPCAshiny <- gettext("No selection")
+  selection2PCAshiny <- NULL
+  selection3PCAshiny <- gettext("No selection")
+  selection4PCAshiny <- NULL
+  sizePCAshiny <- 1
+  size2PCAshiny <- 1
+  titre1PCAshiny <- gettext("Individuals factor map (PCA)")
+  titre2PCAshiny <- gettext("Variables factor map (PCA)")
+  ellipsesPCAshiny <- FALSE
+  activeindPCAshiny <- "black"
+  supindPCAshiny <- "blue"
+  categPCAshiny <- "magenta"
+  coloractvarPCAshiny <- "black"
+  colorsupvarPCAshiny <- "blue"
+  normePCAshiny <- TRUE
+  poids1PCAshiny <- NULL
+  poids2PCAshiny <- NULL
 }
 
-if(inherits(.x, "PCAshiny")){
-  .nomData <- .x$.nomData
-  .newdata <- .x$data
-  .quantisup <- .x$c
-  .qualisup <- .x$b
-  .indsupl <- .x$d
-  .indmod <- .x$y
-  .axe1 <- .x$e
-  .axe2 <- .x$f
-  .habillageind <- .x$g
-  .selection <- .x$h
-  .selection2 <- .x$i
-  .selection3 <- .x$j
-  .selection4 <- .x$k
-  .size <- .x$l
-  .size2 <- .x$m
-  .titre1 <- .x$title1
-  .titre2 <- .x$title2
-  .ellipses <- .x$.ellipses
-  .activeind <- .x$.activeind
-  .supind <- .x$supin
-  .categ <- .x$.categ
-  .coloractvar <- .x$.coloractvar
-  .colorsupvar <- .x$.colorsupvar
-  .norme <- .x$.norme
-  .poids1 <- .x$.poids1
-  .poids2 <- .x$.poids2
-  .hcpcpara <- .x$hcpcparam
-  .nbdimclust <- .x$.nbdimclust
+if(inherits(x, "PCAshiny")){
+  nomDataPCAshiny <- x$nomDataPCAshiny
+  newdataPCAshiny <- x$data
+  quantisupPCAshiny <- x$c
+  qualisupPCAshiny <- x$b
+  indsuplPCAshiny <- x$d
+  indmodPCAshiny <- x$y
+  axe1PCAshiny <- x$e
+  axe2PCAshiny <- x$f
+  habillageindPCAshiny <- x$g
+  selectionPCAshiny <- x$h
+  selection2PCAshiny <- x$i
+  selection3PCAshiny <- x$j
+  selection4PCAshiny <- x$k
+  sizePCAshiny <- x$l
+  size2PCAshiny <- x$m
+  titre1PCAshiny <- x$title1
+  titre2PCAshiny <- x$title2
+  ellipsesPCAshiny <- x$ellipsesPCAshiny
+  activeindPCAshiny <- x$activeindPCAshiny
+  supindPCAshiny <- x$supin
+  categPCAshiny <- x$categPCAshiny
+  coloractvarPCAshiny <- x$coloractvarPCAshiny
+  colorsupvarPCAshiny <- x$colorsupvarPCAshiny
+  normePCAshiny <- x$normePCAshiny
+  poids1PCAshiny <- x$poids1PCAshiny
+  poids2PCAshiny <- x$poids2PCAshiny
+  hcpcparaPCAshiny <- x$hcpcparam
+  nbdimclustPCAshiny <- x$nbdimclustPCAshiny
 }
-if(inherits(.x, "PCA")){
-  .nomData <- as.character(.x$call$call[2])
-  .newdata <- .x$call$X
-  .quantisup <- colnames(.x$call$quanti.sup)
-  .qualisup <- colnames(.x$call$quali.sup$quali.sup)
-  .indsupl <- rownames(.x$ind.sup$coord)
-  .labmod <- c()
-  .indmod <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
-  .axe1 <- 1
-  .axe2 <- 2
-  .nbdimclust <- 5
-  .hcpcpara <- FALSE
-  .habillageind <- NULL
-  .selection <- gettext("No selection")
-  .selection2 <- NULL
-  .selection3 <- gettext("No selection")
-  .selection4 <- NULL
-  .size <- 1
-  .size2 <- 1
-  .titre1 <- gettext("Individuals factor map (PCA)")
-  .titre2 <- gettext("Variables factor map (PCA)")
-  .ellipses <- FALSE
-  .activeind <- "black"
-  .supind <- "blue"
-  .categ <- "magenta"
-  .coloractvar <- "black"
-  .colorsupvar <- "blue"
-  .norme <- .x$call$scale.unit
-  .poids1 <- .x$call$row.w.init
-  if(!is.null(.poids1)){
-    if(sum(.poids1!=rep(1,length(.poids1)))==0){
-    .poids1 <- NULL
-  }}
-  .poids2 <- .x$call$col.w
-  if(!is.null(.poids2)){
-    if(sum(.poids2!=rep(1,length(.poids2)))==0){
-      .poids2 <- NULL
+if(inherits(x, "PCA")){
+  nomDataPCAshiny <- as.character(x$call$call[2])
+  newdataPCAshiny <- x$call$X
+  quantisupPCAshiny <- colnames(x$call$quanti.sup)
+  qualisupPCAshiny <- colnames(x$call$quali.sup$quali.sup)
+  indsuplPCAshiny <- rownames(x$ind.sup$coord)
+  labmodPCAshiny <- c()
+  indmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  axe1PCAshiny <- 1
+  axe2PCAshiny <- 2
+  nbdimclustPCAshiny <- 5
+  hcpcparaPCAshiny <- FALSE
+  habillageindPCAshiny <- NULL
+  selectionPCAshiny <- gettext("No selection")
+  selection2PCAshiny <- NULL
+  selection3PCAshiny <- gettext("No selection")
+  selection4PCAshiny <- NULL
+  sizePCAshiny <- 1
+  size2PCAshiny <- 1
+  titre1PCAshiny <- gettext("Individuals factor map (PCA)")
+  titre2PCAshiny <- gettext("Variables factor map (PCA)")
+  ellipsesPCAshiny <- FALSE
+  activeindPCAshiny <- "black"
+  supindPCAshiny <- "blue"
+  categPCAshiny <- "magenta"
+  coloractvarPCAshiny <- "black"
+  colorsupvarPCAshiny <- "blue"
+  normePCAshiny <- x$call$scale.unit
+  poids1PCAshiny <- x$call$row.w.init
+  if(!is.null(poids1PCAshiny)){
+    if(sum(poids1PCAshiny!=rep(1,length(poids1PCAshiny)))==0){
+      poids1PCAshiny <- NULL
+    }}
+  poids2PCAshiny <- x$call$col.w
+  if(!is.null(poids2PCAshiny)){
+    if(sum(poids2PCAshiny!=rep(1,length(poids2PCAshiny)))==0){
+      poids2PCAshiny <- NULL
     }}
 }  
 
-.nom <- rownames(.newdata)
-.num <- c(1:length(.nom))
-.quanti <- names(which(sapply(.newdata,is.numeric)))
-.quali <- names(which(!(sapply(.newdata,is.numeric))))
-.VariableChoices <- .quanti
-.QualiChoice <- .quali
-.IdChoices <- c(1:length(.VariableChoices))
-.Idqualisup <- c(1:length(.QualiChoice))
-.nomData <- unlist(strsplit(as.character(.nomData),"\\["))[1]
+nomPCAshiny <- rownames(newdataPCAshiny)
+numPCAshiny <- c(1:length(nomPCAshiny))
+quantiPCAshiny <- names(which(sapply(newdataPCAshiny,is.numeric)))
+qualiPCAshiny <- names(which(!(sapply(newdataPCAshiny,is.numeric))))
+VariableChoicesPCAshiny <- quantiPCAshiny
+QualiChoicePCAshiny <- qualiPCAshiny
+IdChoicesPCAshiny <- c(1:length(VariableChoicesPCAshiny))
+IdqualisupPCAshiny <- c(1:length(QualiChoicePCAshiny))
+nomDataPCAshiny <- unlist(strsplit(as.character(nomDataPCAshiny),"\\["))[1]

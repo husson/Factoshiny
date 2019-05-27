@@ -1,7 +1,7 @@
 # ui script for CA2
 
-shinyUI(fluidPage(
-  titlePanel(div(paste(gettext("CA on the dataset"),nomData),style="color:#2A0A29",align="center"),windowTitle="CAshiny"),
+fluidPage(
+  titlePanel(div(paste(gettext("CA on the dataset"),nomDataCAshiny),style="color:#2A0A29",align="center"),windowTitle="CAshiny"),
   
   sidebarLayout(
     sidebarPanel(
@@ -14,7 +14,7 @@ shinyUI(fluidPage(
         conditionalPanel(
           condition="input.caparam==true",
           br(),
-          if(is.null(colonnesup)){
+          if(is.null(colonnesupCAshiny)){
             radioButtons("selecactive",label=h6(gettext("Choose the active columns")),
                          choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))}
           else{
@@ -24,41 +24,41 @@ shinyUI(fluidPage(
           conditionalPanel(
             #        condition="input.selecactive=='choix'",
             condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
-            if(is.null(colonnesup)){
+            if(is.null(colonnesupCAshiny)){
               selectInput("supvar",label=h6(gettext("Select the supplementary columns")),
-                          choices=list(IdChoices=VariableChoices),
+                          choices=list(IdChoicesCAshiny=VariableChoicesCAshiny),
                           multiple=TRUE)}
             else{
               selectInput("supvar",label=h6(gettext("Select the supplementary columns")),
-                          choices=list(IdChoices=VariableChoices),
-                          multiple=TRUE,selected=colonnesup)  
+                          choices=list(IdChoicesCAshiny=VariableChoicesCAshiny),
+                          multiple=TRUE,selected=colonnesupCAshiny)  
             }
           ),
-          if(is.null(catsup)){
-            if(length(QualiChoice)>1){
-              selectInput("supquali",label=h6(gettext("Select the supplementary categorical variables")),choices=list(Idqualisup=as.vector(QualiChoice)),multiple=TRUE)
+          if(is.null(catsupCAshiny)){
+            if(length(QualiChoiceCAshiny)>1){
+              selectInput("supquali",label=h6(gettext("Select the supplementary categorical variables")),choices=list(IdqualisupCAshiny=as.vector(QualiChoiceCAshiny)),multiple=TRUE)
             }
-            if (length(QualiChoice)==1){
+            if (length(QualiChoiceCAshiny)==1){
               h6(gettext("Select the supplementary categorical variables"))
-              checkboxInput("supquali",QualiChoice,FALSE)
+              checkboxInput("supquali",QualiChoiceCAshiny,FALSE)
             }}
           else{
-            if(length(QualiChoice)>1){
-              selectInput("supquali",label=h6(gettext("Select the supplementary categorical variables")),choices=list(Idqualisup=as.vector(QualiChoice)),multiple=TRUE,selected=catsup)
+            if(length(QualiChoiceCAshiny)>1){
+              selectInput("supquali",label=h6(gettext("Select the supplementary categorical variables")),choices=list(IdqualisupCAshiny=as.vector(QualiChoiceCAshiny)),multiple=TRUE,selected=catsupCAshiny)
             }
-            if (length(QualiChoice)==1){
+            if (length(QualiChoiceCAshiny)==1){
               h6(gettext("Select the supplementary categorical variables"))
-              checkboxInput("supquali",QualiChoice,TRUE)
+              checkboxInput("supquali",QualiChoiceCAshiny,TRUE)
             } 
           },
           br(),
-          if(is.null(lignesup)){
-            selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(num=nom),multiple=TRUE)}
+          if(is.null(lignesupCAshiny)){
+            selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(numCAshiny=nomCAshiny),multiple=TRUE)}
           else{
-            selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(num=nom),multiple=TRUE,selected=lignesup)
+            selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(numCAshiny=nomCAshiny),multiple=TRUE,selected=lignesupCAshiny)
           }
-        )
-      ),
+        ),
+      style = "padding: 3px;"),
       wellPanel(
         div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
         conditionalPanel(
@@ -67,37 +67,37 @@ shinyUI(fluidPage(
             column(5,uiOutput("NB1")),
             column(5,uiOutput("NB2"))),
           hr(),
-          textInput("title1",h6(gettext("Title of the graph: ")),title1),
-          if(is.null(Invisible)){
+          textInput("title1CAshiny",h6(gettext("Title of the graph: ")),title1CAshiny),
+          if(is.null(InvisibleCAshiny)){
             #          selectInput("invis",h6(gettext("Invisible elements")),choices=list("Rows"="row","Columns"="col","Supplementary rows"="row.sup","Supplementary columns"="col.sup","Supplementary qualitative variable"="quali.sup"),multiple=TRUE)}
             selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE)}
           else{
-            #          selectInput("invis",h6(gettext("Invisible elements")),choices=list("Rows"="row","Columns"="col","Supplementary rows"="row.sup","Supplementary columns"="col.sup","Supplementary qualitative variable"="quali.sup"),multiple=TRUE,selected=Invisible)
-            selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE,selected=Invisible)
+            #          selectInput("invis",h6(gettext("Invisible elements")),choices=list("Rows"="row","Columns"="col","Supplementary rows"="row.sup","Supplementary columns"="col.sup","Supplementary qualitative variable"="quali.sup"),multiple=TRUE,selected=InvisibleCAshiny)
+            selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE,selected=InvisibleCAshiny)
           },
           br(),
-          sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=1.5,value=size,step=0.05),
+          sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=1.5,value=sizeCAshiny,step=0.05),
           br(),
-          uiOutput("col1"),
-          uiOutput("col2"),
-          uiOutput("col3"),
-          uiOutput("col4"),
+          uiOutput("col1CAshiny"),
+          uiOutput("col2CAshiny"),
+          uiOutput("col3CAshiny"),
+          uiOutput("col4CAshiny"),
           br(),
-          if(is.null(ellipses)){
+          if(is.null(ellipsesCAshiny)){
             div(align="left",checkboxInput("el",h6(gettext("Draw confidence ellipses")),FALSE))
           }else{
           div(align="left",checkboxInput("el",h6(gettext("Draw confidence ellipses")),TRUE))},
           conditionalPanel(
             condition='input.el==true',
-            uiOutput("ellipses")
+            uiOutput("ellipsesCAshiny")
           ),
           hr(),
-          radioButtons("seleccol",h6(gettext("Draw columns according to:")), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec1,inline=TRUE),
+          radioButtons("seleccol",h6(gettext("Draw columns according to:")), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec1CAshiny,inline=TRUE),
           conditionalPanel(
             condition="input.seleccol=='cos2'",
-            if(selec1=="cos2"){
+            if(selec1CAshiny=="cos2"){
               sliderInput("slider3",label=h6(gettext("Draw columns that have a cos2 greater than:")),
-                          min=0,max=1,value=valueselec1,step=0.05)
+                          min=0,max=1,value=valueselec1CAshiny,step=0.05)
             }
             else{
               sliderInput("slider3",label=h6(gettext("Draw columns that have a cos2 greater than:")),
@@ -107,24 +107,38 @@ shinyUI(fluidPage(
           condition="input.seleccol=='contrib'",
           uiOutput("contribcol")),
         br(),
-        radioButtons("selecrow",h6(gettext("Draw rows according to:")), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec2,inline=TRUE),
+        radioButtons("selecrow",h6(gettext("Draw rows according to:")), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec2CAshiny,inline=TRUE),
         conditionalPanel(
           condition="input.selecrow=='cos2'",
-          if(selec2=="cos2"){sliderInput("slider4",label=h6(gettext("Draw rows that have a cos2 greater than:")),
-                                         min=0,max=1,value=valueselec2,step=0.05)}
+          if(selec2CAshiny=="cos2"){sliderInput("slider4",label=h6(gettext("Draw rows that have a cos2 greater than:")),
+                                         min=0,max=1,value=valueselec2CAshiny,step=0.05)}
           else{sliderInput("slider4",label=h6(gettext("Draw rows that have a cos2 greater than:")),
                            min=0,max=1,value=0,step=0.05)}),
         conditionalPanel(
           condition="input.selecrow=='contrib'",
           uiOutput("contribrow"))
-      )
+      ),
+      style = "padding: 3px;"),
+      wellPanel(
+        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving CA app?"),hcpcparaCAshiny)),
+        conditionalPanel(
+          condition="input.hcpcparam==true",
+          uiOutput("NbDimForClustering")
+        ),
+        align="center", style = "padding: 3px;"
       ),
       wellPanel(
-        h5(gettext("Save graphs as"),align="center"),
-        radioButtons("paramdown","",
-                     choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png"),
-      br(),
-      div(align="center",actionButton("CAcode", gettext("Get the CA code")))),
+        div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
+        conditionalPanel(
+          condition="input.reportparam==true",
+          textInput("titleFile",h6(gettext("File name (without extension):")), gettext("Report")),
+          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
+          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+          paste(gettext("The file will be saved in the directory"),pathsaveCAshiny)
+        ),
+        align="center", style = "padding: 3px;"
+      ),
+    div(align="center",actionButton("CAcode", gettext("Get the CA code"))),
     div(align="center",actionButton("Quit", gettext("Quit the app")))
     ,width=3),  
       mainPanel(
@@ -136,15 +150,17 @@ shinyUI(fluidPage(
                              br(),
                              div(align="center",plotOutput("map",width=550,height=550)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData2",gettext("Download as pdf")),align="center"))),
+                             p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
+                             br(),align="center"),
+                             # conditionalPanel(
+                               # condition="input.paramdown=='jpg'",
+                               # p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
+                             # conditionalPanel(
+                               # condition="input.paramdown=='png'",
+                               # p(downloadButton("downloadData",gettext("Download as png")),align="center")),
+                             # conditionalPanel(
+                               # condition="input.paramdown=='pdf'",
+                               # p(downloadButton("downloadData2",gettext("Download as pdf")),align="center"))),
                     tabPanel(gettext("Values"),
                              br(),
                              uiOutput("out22"),
@@ -214,4 +230,4 @@ shinyUI(fluidPage(
         )
       ,width=9)
     )
-))
+)

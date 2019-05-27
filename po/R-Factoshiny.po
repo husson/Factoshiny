@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Factoshiny 1.0.3\n"
 "POT-Creation-Date: 2016-02-03 09:58+0100\n"
-"PO-Revision-Date: 2018-05-04 14:44+0200\n"
+"PO-Revision-Date: 2019-05-15 17:48+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,6 +90,9 @@ msgstr "Choisir 1 ou 2 variables"
 msgid "Show PCA parameters"
 msgstr "Voir les paramètres"
 
+msgid "PCA parameters"
+msgstr "Paramètres de l'ACP"
+
 msgid "Choose the active variables"
 msgstr "Choisir les variables actives"
 
@@ -154,6 +157,9 @@ msgid "Data"
 msgstr "Données"
 
 msgid "Show graphs options"
+msgstr "Options graphiques"
+
+msgid "Graphs options"
 msgstr "Options graphiques"
 
 msgid "x axis"
@@ -274,7 +280,10 @@ msgid "Get the CA code"
 msgstr "Lignes de code de l'AFC"
 
 msgid "Show CA parameters"
-msgstr "Voir les paramètres de l'AFC"
+msgstr "Paramètres de l'AFC"
+
+msgid "CA parameters"
+msgstr "Paramètres de l'AFC"
 
 msgid "Choose the active columns"
 msgstr "Choisir les colonnes actives"
@@ -320,6 +329,9 @@ msgstr "ACM sur le jeu de données"
 
 msgid "Show MCA parameters"
 msgstr "Voir les paramètres de l'ACM"
+
+msgid "MCA parameters"
+msgstr "Paramètres de l'ACM"
 
 msgid "Graph of individuals and categories"
 msgstr "Graphe des individus et des modalités"
@@ -413,6 +425,9 @@ msgstr "Classification hiérarchique"
 
 msgid "Show HCPC parameters"
 msgstr "Voir les paramètres d'HCPC"
+
+msgid "HCPC parameters"
+msgstr "Paramètres d'HCPC"
 
 msgid "HCPC on the dataset "
 msgstr "Classification hiérarchique sur le jeu de données "
@@ -606,6 +621,9 @@ msgstr "Aucun"
 msgid "Show FAMD parameters"
 msgstr "Voir les paramètres de l'AFMD"
 
+msgid "FAMD parameters"
+msgstr "Paramètres de l'AFMD"
+
 msgid "Get the FAMD code"
 msgstr "Lignes de code de l'AFMD"
 
@@ -755,3 +773,6 @@ msgstr "La contribution cumulée de ces individus à la construction du plan est
 
 msgid "Automatic report in"
 msgstr "Rapport automatique en"
+
+msgid "Perform clustering after leaving PCA app?"
+msgstr "Classification après avoir quitté l'appli d'ACP"

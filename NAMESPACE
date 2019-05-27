@@ -1,5 +1,6 @@
 ### Modify 01.05.2016
 import(FactoMineR)
+import(FactoInvestigate)
 importFrom(tcltk, tkfont.create, tkbutton, tkcanvas)
 importFrom(shiny,runApp)
 importFrom(colourpicker,colourInput)

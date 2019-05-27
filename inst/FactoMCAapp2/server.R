@@ -1,32 +1,31 @@
 # server script for MCA2
 
-shinyServer(
   function(input, output,session) {
     
     #Realisation de l'ACM    
     values=reactive({
       
       if (input$selecactive==gettext("All")){
-        data.selec=newdata[,VariableChoices]
+        data.selec=newdataMCAshiny[,VariableChoicesMCAshiny]
       }
       else{
         validate(
           need(getactive()!= "", gettext("Please select active variables"))
         )
-        data.selec=newdata[,c(getactive())]
+        data.selec=newdataMCAshiny[,c(getactive())]
       }
       
       
-      if(length(QuantiChoice)==0){
+      if(length(QuantiChoiceMCAshiny)==0){
         choixquanti=NULL
       }
-      else if (length(QuantiChoice)==1){
+      else if (length(QuantiChoiceMCAshiny)==1){
         if(input$supquanti==FALSE){
           choixquanti=NULL
         }
         else{
-          data.selec=cbind(data.selec,newdata[,QuantiChoice])
-          colnames(data.selec)[dim(data.selec)[2]]=QuantiChoice
+          data.selec=cbind(data.selec,newdataMCAshiny[,QuantiChoiceMCAshiny])
+          colnames(data.selec)[dim(data.selec)[2]]=QuantiChoiceMCAshiny
           #Renomme les colonnes
           choixquanti=length(data.selec)
         }
@@ -37,7 +36,7 @@ shinyServer(
           choixquanti=NULL
         }
         else{
-          data.selec=cbind(data.selec,newdata[,input$supquanti])
+          data.selec=cbind(data.selec,newdataMCAshiny[,input$supquanti])
           if(length(input$supquanti)==1){
             choixquanti=length(data.selec)
             colnames(data.selec)[choixquanti]=input$supquanti
@@ -52,7 +51,7 @@ shinyServer(
         choixquali=NULL
       }
       else {
-        data.selec=cbind(data.selec,newdata[,input$supvar])
+        data.selec=cbind(data.selec,newdataMCAshiny[,input$supvar])
         if(length(input$supvar)==1){
           choixquali=length(data.selec)
           #modif
@@ -63,7 +62,7 @@ shinyServer(
         }
       }
       if (length(input$habiller)==2){
-        data.selec <- data.frame(data.selec,newCol=paste(newdata[,input$habiller[1]],newdata[,input$habiller[2]],sep="/"))
+        data.selec <- data.frame(data.selec,newCol=paste(newdataMCAshiny[,input$habiller[1]],newdataMCAshiny[,input$habiller[2]],sep="/"))
         choixquali=c(choixquali,dim(data.selec)[2])
       }
       
@@ -71,12 +70,7 @@ shinyServer(
         indsuplem<-NULL
       }
       else {
-        # vec<-NULL
-        # for(i in 1:length(input$indsup)){
-          # vec<-c(vec,which(rownames(newdata)==input$indsup[i]))
-        # }
-        # indsuplem<-vec
-	    indsuplem=which(rownames(newdata)%in%input$indsup)
+	    indsuplem=which(rownames(newdataMCAshiny)%in%input$indsup)
       }
       list(res.MCA=(MCA(data.selec,quanti.sup=choixquanti,quali.sup=choixquali,ind.sup=indsuplem,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2)))),DATA=(data.selec),choixquant=(choixquanti),choixqual=(choixquali),indsup=(indsuplem))     
     })
@@ -84,10 +78,10 @@ shinyServer(
     output$col1=renderUI({
       sup=values()$indsup
       if(!is.null(sup)){
-        if(is.null(color2)){
+        if(is.null(color2MCAshiny)){
           return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),"darkblue"))
         }else{
-          return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),color2))
+          return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),color2MCAshiny))
         }
       }
     })
@@ -95,10 +89,10 @@ shinyServer(
     output$col2=renderUI({
       sup=values()$choixqual
       if(!is.null(sup)){
-        if(is.null(color4)){
+        if(is.null(color4MCAshiny)){
           return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),"darkgreen"))
         }else{
-          return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),color4))
+          return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),color4MCAshiny))
         }
       }
     })
@@ -109,7 +103,7 @@ shinyServer(
       else {
         isolate({
           if (length(input$habiller)==2 & input$habi==TRUE){
-            cat(paste("newCol=paste(",nomData,"['",input$habiller[1],"'],x[,'",input$habiller[2],"'],sep='/'))",sep=""),sep="\n")
+            cat(paste("newCol=paste(",nomDataMCAshiny,"['",input$habiller[1],"'],x[,'",input$habiller[2],"'],sep='/'))",sep=""),sep="\n")
           }
           cat(code(),sep="\n")
           cat(codeGraphVar(),sep="\n")
@@ -181,11 +175,11 @@ shinyServer(
         indsuplem<-indsup1
       }
       
-      if(length(QuantiChoice)==0){
+      if(length(QuantiChoiceMCAshiny)==0){
         vecquant<-"NULL"
       }
       
-      else if(length(QuantiChoice)==1){
+      else if(length(QuantiChoiceMCAshiny)==1){
         if(input$supquanti==TRUE){
           vecquant<-vecquant2 
         }
@@ -194,7 +188,7 @@ shinyServer(
         }
       }
       
-      else if(length(QuantiChoice)>1){
+      else if(length(QuantiChoiceMCAshiny)>1){
         if(length(input$supquanti)==1){
           vecquant<-vecquant2  
         }
@@ -205,13 +199,13 @@ shinyServer(
           vecquant<-"NULL"
         }  
       }
-      Call1=as.name(paste("res.MCA<-MCA(",nomData,"[,",vec,"],quali.sup=",vecqual,",","quanti.sup=",vecquant,",ind.sup=",indsuplem,",graph=FALSE, ncp=",max(5,as.numeric(input$nb1),as.numeric(input$nb2)),")",sep=""))  
+      Call1=as.name(paste("res.MCA<-MCA(",nomDataMCAshiny,"[,",vec,"],quali.sup=",vecqual,",","quanti.sup=",vecquant,",ind.sup=",indsuplem,",graph=FALSE, ncp=",max(5,as.numeric(input$nb1),as.numeric(input$nb2)),")",sep=""))  
       return(Call1)
     }
     
     
     codeGraphVar<-function(){
-      Call2=paste('plot.MCA(res.MCA,choix="var",invisible=',Plot4()$invisible,',title="',input$title2,'",axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'))',sep='')  
+      Call2=paste('plot.MCA(res.MCA,choix="var",invisible=',Plot4()$invisible,',title="',input$title2MCAshiny,'",axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'))',sep='')  
       return(Call2)
     }
     
@@ -224,16 +218,16 @@ shinyServer(
         colouract2=paste("'",Plot1()$colouract2,"'",sep="")
       }
       if(hab!="none"){
-        Call3=cat(paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1,'",col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep=''),'\n',paste('plotellipses(res.MCA,keepvar="',hab,'")',sep=''),'\n')
+        Call3=cat(paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1MCAshiny,'",col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep=''),'\n',paste('plotellipses(res.MCA,keepvar="',hab,'")',sep=''),'\n')
         
       }else{
-      Call3=paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1,'",col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep='')
+      Call3=paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1MCAshiny,'",col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep='')
       }
       return(Call3)
     }
     
     codeGraphQuanti<-function(){
-      Call4=paste("plot.MCA(res.MCA,axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"),choix='quanti.sup',title='",input$title3,"')",sep="")
+      Call4=paste("plot.MCA(res.MCA,axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"),choix='quanti.sup',title='",input$title3MCAshiny,"')",sep="")
       return(Call4)
     }
     
@@ -250,29 +244,29 @@ shinyServer(
     
     valeuretour=function(){
       res=list()
-      res$nomData=nomData
-      res$data=newdata
+      res$nomDataMCAshiny=nomDataMCAshiny
+      res$data=newdataMCAshiny
       res$a=values()$DATA#data of the factorial analysis
       class(res)<-"MCAshiny"#Class of the result
       
       #Supplementary quantitative variables selected
-      if (length(QuantiChoice)==1){
+      if (length(QuantiChoiceMCAshiny)==1){
         if(input$supquanti==FALSE){
-          quanti=NULL
+          quantiMCAshiny=NULL
         }
         else{
-          quanti=QuantiChoice
+          quantiMCAshiny=QuantiChoiceMCAshiny
         }
       }
       else{
         if(length(input$supquanti)==0){
-          quanti=NULL
+          quantiMCAshiny=NULL
         }
         else{
-          quanti=input$supquanti
+          quantiMCAshiny=input$supquanti
         }
       }
-      res$b=quanti
+      res$b=quantiMCAshiny
       
       res$c=input$supvar#suplementary qualitative variables
       res$z=input$var_sup#1st graph multiple choice selected
@@ -349,18 +343,20 @@ shinyServer(
     else{
       res$code4=NULL
     }
-    res$title1=input$title1
-    res$title2=input$title2
-    res$title3=input$title3
+    res$title1MCAshiny=input$title1MCAshiny
+    res$title2MCAshiny=input$title2MCAshiny
+    res$title3MCAshiny=input$title3MCAshiny
     res$anafact=values()$res.MCA
-    res$color1=input$colindact
-    res$color2=input$colindsup
-    res$color3=input$colvaract
-    res$color4=input$colvarsup
-    res$color5=input$colvaract1
-    res$color6=input$colvarsup1
-    res$color7=input$colquanti
-    res$color8=input$colli
+    res$color1MCAshiny=input$colindact
+    res$color2MCAshiny=input$colindsup
+    res$color3MCAshiny=input$colvaract
+    res$color4MCAshiny=input$colvarsup
+    res$color5MCAshiny=input$colvaract1
+    res$color6MCAshiny=input$colvarsup1
+    res$color7MCAshiny=input$colquanti
+    res$color8MCAshiny=input$colli
+    res$hcpcparam <- input$hcpcparam
+    res$nbdimclustPCAshiny <- input$nbDimClustering
     return(res)
     }
     
@@ -369,16 +365,11 @@ shinyServer(
       if(input$selecactive==gettext("Choose")){
         sup=NULL
         if(length(input$supvar)==0){
-          activevar=VariableChoices
+          activevar=VariableChoicesMCAshiny
         }
         else{
-         # for (i in 1:length(VariableChoices)){
-          # if(VariableChoices[i]%in%input$supvar){
-            # sup=c(sup,i)
-          # }
-        # }
-	      sup=which(VariableChoices%in%input$supvar)
-          activevar=VariableChoices[-sup]
+	      sup=which(VariableChoicesMCAshiny%in%input$supvar)
+          activevar=VariableChoicesMCAshiny[-sup]
         }
         return(activevar)
       }
@@ -386,61 +377,45 @@ shinyServer(
     
     output$choixindvar=renderUI({
       choix=list(gettext("Individuals"),gettext("Categories"))
-#      selec=list(gettext("Individuals"),gettext("Categories"))
       if(!(is.null(input$indsup))){
         choix=c(choix,gettext("Supplementary individuals"))
-#        selec=c(selec,gettext("Supplementary individuals"))
       }
       if(!(is.null(input$supvar))){
         choix=c(choix,gettext("Supplementary categories"))
-#        selec=c(selec,gettext("Supplementary categories"))
       }
       div(align="center",checkboxGroupInput("ind_var","", choices=choix,
-                                                   selected = indvar))
+                                                   selected = indvarMCAshiny))
     })
     
     output$pointlabel=renderUI({
       validate(
         need(!is.null(input$ind_var),""))
       choix=list()
-#      selec=c()
       reponse=input$ind_var
-#      if(gettext("Individuals")%in% reponse){ 
       if(sum(gettext("Individuals")==reponse)==0){
         choix=c(choix,gettext("Individuals"))
-#        selec=c(selec,gettext("Individuals"))
       }
-#      if(gettext("Categories") %in% reponse){
       if(sum(gettext("Categories")==reponse)==0){
         choix=c(choix,gettext("Categories"))
-#        selec=c(selec,gettext("Categories"))
       }
-#      if(gettext("Supplementary individuals") %in% reponse){
       if(sum(gettext("Supplementary individuals")==reponse)==0){
         choix=c(choix,gettext("Supplementary individuals"))
-#        selec=c(selec,gettext("Supplementary individuals"))
       }
-#      if(gettext("Supplementary categories")%in% reponse){
       if(sum(gettext("Supplementary categories")==reponse)==0){
         choix=c(choix,gettext("Supplementary categories"))
-#        selec=c(selec,gettext("Supplementary categories"))
       }
-      div(align="center",checkboxGroupInput("indvarpoint","",choices=choix,selected=labvar))
+      div(align="center",checkboxGroupInput("indvarpoint","",choices=choix,selected=labvarMCAshiny))
     })
     
     output$out22=renderUI({
-#      choix=list("Summary of MCA"="MCA","Eigenvalues"="eig","Results of the variables"="resvar","Results of the individuals"="resind")
       choix=list(gettext("Summary of outputs"),gettext("Eigenvalues"),gettext("Results of the variables"),gettext("Results of the individuals"))
       if(!is.null(values()$indsup)){
-#        choix=c(choix,"Results of the supplementary individuals"="Isup")
         choix=c(choix,gettext("Results of the supplementary individuals"))
       }
       if(!is.null(values()$choixquant)){
-#        choix=c(choix,"Results of the supplementary quantitative variables"="quantico")
         choix=c(choix,gettext("Results of the supplementary quantitative variables"))
       }
       if(!is.null(values()$choixqual)){
-#        choix=c(choix,"Results of the supplementary categorical variables"="varsup")
         choix=c(choix,gettext("Results of the supplementary categorical variables"))
       }
       radioButtons("out",gettext("Which outputs do you want?"),
@@ -448,20 +423,20 @@ shinyServer(
     })
     
     output$colquanti12=renderUI({
-      if(is.null(color7)){
+      if(is.null(color7MCAshiny)){
         return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),"blue"))
       }else{
-        return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),color7))
+        return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),color7MCAshiny))
       }
     })
     
     output$colquantib=renderUI({
       sup=values()$choixquant
       if(!is.null(sup)){
-        if(is.null(color8)){
+        if(is.null(color8MCAshiny)){
           return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),"blue"))
         }else{
-          return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),color8))
+          return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),color8MCAshiny))
         }
       }
       
@@ -579,7 +554,7 @@ shinyServer(
       }else{
         coll3=input$colli
       }
-      list(PLOT4=(plot.MCA(values()$res.MCA,choix="var",invisible=inv,title=input$title2,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,col.quanti.sup=coll3,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2)),invisible=(invtext))    
+      list(PLOT4=(plot.MCA(values()$res.MCA,choix="var",invisible=inv,title=input$title2MCAshiny,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,col.quanti.sup=coll3,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2)),invisible=(invtext))    
     })
     
     output$map4 <- renderPlot({
@@ -589,10 +564,10 @@ shinyServer(
     output$col3=renderUI({
       sup=values()$choixqual
       if(!is.null(sup)){
-        if(is.null(color6)){
+        if(is.null(color6MCAshiny)){
           return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),"darkgreen"))
         }else{
-          return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),color6))
+          return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),color6MCAshiny))
         }
       }
     })
@@ -666,7 +641,7 @@ shinyServer(
         colquali="magenta"
       }
       
-      if(length(quali)>1){
+      if(length(qualiMCAshiny)>1){
         if(length(input$habiller)==0){
           hab="none"
           habText<-"'none'"
@@ -736,7 +711,7 @@ shinyServer(
       if(input$eachvar==TRUE){
         colouract2=rep(1:length(c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)),unlist(lapply(values()$res.MCA$call$X[,c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)],nlevels)))
       }
-      list(PLOT1=(plot.MCA(values()$res.MCA,choix="ind",invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,title=input$title1,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex)),choix=(choixText),inv=(invText),selm=(selecModText),sel=(selecindivText),hab=(habText),colquali=(colquali),colindsup=(colindsup),habill=(hab),colouract2=(colouract2),colouract=(colouract))  
+      list(PLOT1=(plot.MCA(values()$res.MCA,choix="ind",invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,title=input$title1MCAshiny,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex)),choix=(choixText),inv=(invText),selm=(selecModText),sel=(selecindivText),hab=(habText),colquali=(colquali),colindsup=(colindsup),habill=(hab),colouract2=(colouract2),colouract=(colouract))  
     })
     
     output$map <- renderPlot({
@@ -782,7 +757,7 @@ shinyServer(
       }else{
         colquanti=input$colquanti
       }
-      plot.MCA(values()$res.MCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="quanti.sup",title=input$title3,col.quanti.sup=colquanti,cex=input$cex3,cex.main=input$cex3,cex.axis=input$cex3) 
+      plot.MCA(values()$res.MCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="quanti.sup",title=input$title3MCAshiny,col.quanti.sup=colquanti,cex=input$cex3,cex.main=input$cex3,cex.axis=input$cex3) 
     }
     
     output$map2 <- renderPlot({
@@ -821,38 +796,15 @@ shinyServer(
     })
     
     
-    
-#     output$habillage2=renderUI({
-#       #if(length(input$supvar)==0){
-#       # return(p("No supplementary categorical variable"))
-#       #}
-#       #if(length(input$supvar)>1){
-#       nal=colnames(values()$DATA)[values()$choixqual]
-#       if(length(nal)>0){
-#       if(is.null(habillageind)){
-#         num=c(1:length(nal))
-#         return(selectInput("habiller","Select 1 or 2 variables", choices=nal,multiple=TRUE))
-#       }
-#       else{
-#         num=c(1:length(nal))
-#         return(selectInput("habiller","Select 1 or 2 variables", choices=nal,multiple=TRUE,selected=habillageind))
-#       }
-#       }
-#       #}
-#     }) 
-    
+       
     output$habillage2=renderUI({
-      #if(length(input$supvar)==0){
-      # return(p("No supplementary categorical variable"))
-      #}
-      #if(length(input$supvar)>1){
-      if(is.null(habillageind)){
-        num=c(1:length(quali))
-        return(selectInput("habiller","Select 1 or 2 variables", choices=list(num=quali),multiple=TRUE))
+      if(is.null(habillageindMCAshiny)){
+        num=c(1:length(qualiMCAshiny))
+        return(selectInput("habiller","Select 1 or 2 variables", choices=list(num=qualiMCAshiny),multiple=TRUE))
       }
       else{
-        num=c(1:length(quali))
-        return(selectInput("habiller","Select 1 or 2 variables", choices=list(num=quali),multiple=TRUE,selected=habillageind))
+        num=c(1:length(qualiMCAshiny))
+        return(selectInput("habiller","Select 1 or 2 variables", choices=list(num=qualiMCAshiny),multiple=TRUE,selected=habillageindMCAshiny))
       }
       #}
     }) 
@@ -865,8 +817,8 @@ shinyServer(
       )
       maxvar=dim(values()$res.MCA$var$coord)[1]
 
-      if(selection3=="Contrib"){return(sliderInput("slider4",label="Contribution",
-                                                   min=1,max=maxvar,value=as.numeric(selection4),step=1)) }
+      if(selection3MCAshiny=="Contrib"){return(sliderInput("slider4",label="Contribution",
+                                                   min=1,max=maxvar,value=as.numeric(selection4MCAshiny),step=1)) }
       else{
         return(sliderInput("slider4",label="Contribution",
                            min=1,max=maxvar,value=maxvar,step=1))
@@ -880,7 +832,7 @@ shinyServer(
     #SUMMARY
     
     output$summary=renderPrint({
-      summary(newdata)
+      summary(newdataMCAshiny)
     })
     
     
@@ -891,7 +843,7 @@ shinyServer(
     
     #Histogramme du summary
     output$histo=renderPlot({
-      barplot(prop.table(table(newdata[,input$bam]))*100)
+      barplot(prop.table(table(newdataMCAshiny[,input$bam]))*100)
     })
     
     #Summary de l'ACM
@@ -915,6 +867,18 @@ shinyServer(
     },
     contentType='text/csv')
     
+  output$NbDimForClustering <- renderUI({
+    if(input$hcpcparam==TRUE){
+      fluidRow(
+        tags$head(
+          tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
+                     #inline .form-group { display: table-row;}")
+          ),
+        return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclustMCAshiny,min=1)))
+      )
+    }
+  })
+
     #autre
     
     output$sorties=renderTable({
@@ -1118,12 +1082,48 @@ shinyServer(
     
     #Le JDDONNEES
     output$JDD=renderDataTable({
-      cbind(Names=rownames(newdata),newdata)},
+      cbind(Names=rownames(newdataMCAshiny),newdataMCAshiny)},
       
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,
                          "pageLength" = 10))
     ####
+  observe({
+    if(input$Investigatehtml!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveMCAshiny)
+        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.MCA, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
+        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.MCA, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+        setwd(path.aux)
+      })
+    }
+  })
+  
+  observe({
+    if(input$Investigatedoc!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveMCAshiny)
+        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.MCA,document="word_document",openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
+        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.MCA,document="word_document",openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+        setwd(path.aux)
+      })
+    }
+  })
+  
+
+  observe({
+    if(input$InvestigateRmd!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveMCAshiny)
+	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.MCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
+	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.MCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+        setwd(path.aux)
+      })
+    }
+  })
     
     output$downloadData0 = downloadHandler(
       filename = function() { 
@@ -1269,13 +1269,11 @@ shinyServer(
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variables"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        # return(selectInput("nb1", label = h6(gettext("x axis")), 
-                           # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected =axe1,width='80%'))
-        return(textInput("nb1", label = h6(gettext("x axis")), axe1,width='50%'))
+        return(textInput("nb1", label = h6(gettext("x axis")), axe1MCAshiny,width='50%'))
       }
       else{
         baba=c(1:length(getactive()))
-        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1,width='80%'))
+        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1MCAshiny,width='80%'))
       }
     })
     
@@ -1286,13 +1284,11 @@ shinyServer(
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variables"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        # return(selectInput("nb2", label = h6(gettext("y axis")), 
-                           # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = axe2,width='80%'))
-        return(textInput("nb2", label = h6(gettext("y axis")), axe2,width='50%'))
+        return(textInput("nb2", label = h6(gettext("y axis")), axe2MCAshiny,width='50%'))
       }
       else{
         baba=c(1:length(getactive()))
-        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2,width='80%'))
+        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2MCAshiny,width='80%'))
       }
     })
     
@@ -1398,7 +1394,7 @@ shinyServer(
     if(input$eachvar==TRUE){
       colouract2=rep(1:length(c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)),unlist(lapply(values()$res.MCA$call$X[,c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)],nlevels)))
     }
-    plot.MCA(values()$res.MCA,choix="ind",title=as.character(input$title1),invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex)}
+    plot.MCA(values()$res.MCA,choix="ind",title=as.character(input$title1MCAshiny),invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex)}
     
     Plot44=function(){
       inv=getinv2()$inv
@@ -1412,8 +1408,7 @@ shinyServer(
     }else{
       coll2=input$colvarsup1
     }
-    plot.MCA(values()$res.MCA,choix="var",title=input$title2,invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2)
+    plot.MCA(values()$res.MCA,choix="var",title=input$title2MCAshiny,invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2)
     }
     
   }
-)

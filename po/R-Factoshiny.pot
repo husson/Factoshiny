@@ -9,39 +9,797 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
 msgid "df is not a dataframe, the results of the CAshiny function or a CA result"
-msgstr ""
+msgstr "df n'est ni un dataframe ni le résultat de la fonction CAshiny ou CA"
 
-msgid "not enought row/column"
-msgstr ""
+msgid "not enough row/column"
+msgstr "pas assez de lignes/colonnes"
 
 msgid "df is not a dataframe, the results of the FAMDshiny function or a FAMD result"
-msgstr ""
+msgstr "df n'est ni un dataframe ni le résultat de la fonction FAMDshiny ou FAMD"
 
-msgid "you data is not mixed"
-msgstr ""
+msgid "Your dataset is not mixed"
+msgstr "Votre jeu de données n'est pas mixte"
 
 msgid "df is not the result of a factorial analysis or a dataframe"
-msgstr ""
+msgstr "df n'est ni le résultat d'une analyse factorielle ni un dataframe"
 
 msgid "X is not a dataframe or a result from a MCA analysis"
-msgstr ""
+msgstr "X n'est ni un dataframe ni le résultat de la fonction MCA"
 
-msgid "not enought qualitative variables in your dataset"
-msgstr ""
+msgid "not enough qualitative variables in your dataset"
+msgstr "pas assez de variables qualitatives dans le jeu de données"
 
 msgid "df is not a dataframe or the result of the MFA function"
-msgstr ""
+msgstr "df n'est ni un dataframe ni le résultat de la fonction MFA"
 
 msgid "not enough variables in your dataset"
-msgstr ""
+msgstr "pas assez de variables dans le jeu de données"
 
 msgid "df is not a dataframe, the results of the PCAshiny function or a PCA result"
-msgstr ""
+msgstr "df n'est ni un dataframe ni le résultat de la fonction PCAshiny ou PCA"
 
 msgid "not enough quantitative variables in your dataset"
-msgstr ""
+msgstr "pas assez de variables quantitatives dans le jeu de données"
 
 msgid "non convenient data"
-msgstr ""
+msgstr "jeu de données incompatible"
+
+msgid "Individuals factor map (PCA)"
+msgstr "Graphe des individus (ACP)"
+
+msgid "Variables factor map (PCA)"
+msgstr "Graphe des variables (ACP)"
+
+msgid "Please select at least one supplementary variable"
+msgstr "Choisir au moins une variable supplémentaire"
+
+msgid "Please select two different dimensions"
+msgstr "Choisir 2 dimensions différentes"
+
+msgid "Please select maximum 2 variables as habillage"
+msgstr "Choisir au plus 2 variables pour colorier"
+
+msgid "No categorical variables selected"
+msgstr "Aucune variable qualitative sélectionnée"
+
+msgid "No supplementary quantitative variables"
+msgstr "Aucune variable quantitative supplémentaire"
+
+msgid "No supplementary individuals"
+msgstr "Aucun individu supplémentaire"
+
+msgid "Please select more variables"
+msgstr "Choisir plus de variables"
+
+msgid "Please select at least one element"
+msgstr "Choisir au moins un élément"
+
+msgid "Number of the most contributive variables"
+msgstr "Nombre de variables les plus contributives"
+
+msgid "No categorical variable"
+msgstr "Aucune variable qualitative"
+
+msgid "Select 1 or 2 variables"
+msgstr "Choisir 1 ou 2 variables"
+
+msgid "Show PCA parameters"
+msgstr "Voir les paramètres"
+
+msgid "PCA parameters"
+msgstr "Paramètres de l'ACP"
+
+msgid "Choose the active variables"
+msgstr "Choisir les variables actives"
+
+msgid "Select the supplementary quantitative variables"
+msgstr "Choisir les variables quantitatives supplémentaires"
+
+msgid "Select the supplementary categorical variables"
+msgstr "Choisir les variables qualitatives supplémentaires"
+
+msgid "No categorical variable in your dataset"
+msgstr "Aucune variable qualitative dans le jeu de données"
+
+msgid "Select the supplementary individuals"
+msgstr "Choisir les individus supplémentaires"
+
+msgid "Title of the graph:"
+msgstr "Titre du graphe :"
+
+msgid "Draw individuals according to:"
+msgstr "Représenter les individus en fonction de:"
+
+msgid "Draw variables according to:"
+msgstr "Représenter les variables en fonction de:"
+
+msgid "Graph of individuals"
+msgstr "Graphe des individus"
+
+msgid "Graph of variables"
+msgstr "Graphe des variables"
+
+msgid "No selection"
+msgstr "Pas de selection"
+
+msgid "Manual"
+msgstr "Manuelle"
+
+msgid "Number of the most contributive individuals"
+msgstr "Nombre individus les plus contributifs"
+
+msgid "Points colour depend on categorical variable"
+msgstr "Points coloriés par variable qualitative"
+
+msgid "Size of labels"
+msgstr "Taille des libellés"
+
+msgid "Save graphs as"
+msgstr "Sauvegarder les graphes au format"
+
+msgid "Graphs"
+msgstr "Graphes"
+
+msgid "Values"
+msgstr "Valeurs"
+
+msgid "Automatic description of axes"
+msgstr "Description automatique des axes"
+
+msgid "Summary of dataset"
+msgstr "Résumé du jeu de données"
+
+msgid "Data"
+msgstr "Données"
+
+msgid "Show graphs options"
+msgstr "Options graphiques"
+
+msgid "Graphs options"
+msgstr "Options graphiques"
+
+msgid "x axis"
+msgstr "Axe des x"
+
+msgid "y axis"
+msgstr "Axe des y"
+
+msgid "Get the PCA code"
+msgstr "Lignes de code de l'ACP"
+
+msgid "Quit the app"
+msgstr "Quitter l'application"
+
+msgid "Download as pdf"
+msgstr "Télécharger en pdf"
+
+msgid "Download as jpg"
+msgstr "Télécharger en jpg"
+
+msgid "Download as png"
+msgstr "Télécharger en png"
+
+msgid "Number of elements to print"
+msgstr "Nombre d'éléments à écrire"
+
+msgid "Download the summary"
+msgstr "Télécharger le résumé"
+
+msgid "Choose the dimensions"
+msgstr "Choisir les dimensions"
+
+msgid "PCA on the dataset"
+msgstr "ACP sur le jeu de données"
+
+msgid "All"
+msgstr "Toutes"
+
+msgid "Choose"
+msgstr "Choisir"
+
+msgid "Graphs for"
+msgstr "Graphes sur"
+
+msgid "Coordinates"
+msgstr "Coordonnées"
+
+msgid "Results of the variables"
+msgstr "Résultats des variables"
+
+msgid "Results of the supplementary variables"
+msgstr "Résultats sur les variables supplémentaires"
+
+msgid "Summary of outputs"
+msgstr "Résumé des résultats"
+
+msgid "Results of the individuals"
+msgstr "Résultats sur les individus"
+
+msgid "Results of the categorical variables"
+msgstr "Résultats des variables qualitatives"
+
+msgid "Eigenvalues"
+msgstr "Valeurs propres"
+
+msgid "CA factor map"
+msgstr "Graphe de l'AFC"
+
+msgid "Please select at least one supplementary column"
+msgstr "Choisir au moins une colonne supplémentaire"
+
+msgid "Please select more columns"
+msgstr "Choisir plus de colonnes"
+
+msgid "Number of the most contributive active columns"
+msgstr "Nombre de colonnes actives les plus contributives"
+
+msgid "Number of the most contributive active rows"
+msgstr "Nombre de lignes actives les plus contributives"
+
+msgid "Warning: "
+msgstr "Attention : "
+
+msgid " have NA : they are considered as supplementary columns"
+msgstr " ont des données manquantes: elles sont considérées commes des colonnes supplémentaires"
+
+msgid " have NA : they are considered as supplementary rows"
+msgstr " ont des données manquantes: elles sont considérées commes des lignes supplémentaires"
+
+msgid "Not enough active columns"
+msgstr "Pas assez de colonnes actives"
+
+msgid "No supplementary rows selected"
+msgstr "Aucune ligne supplémentaire sélectionnée"
+
+msgid "Select the supplementary columns"
+msgstr "Choisir les colonnes supplémentaires"
+
+msgid "Select the supplementary rows"
+msgstr "Choisir les lignes supplémentaires"
+
+msgid "Invisible elements"
+msgstr "Eléments invisibles"
+
+msgid "Draw columns according to:"
+msgstr "Représenter les colonnes en fonction de :"
+
+msgid "Draw rows according to:"
+msgstr "Représenter les lignes en fonction de :"
+
+msgid "Draw columns that have a cos2 greater than:"
+msgstr "Représenter les colonnes ayant un cos2 plus grand que :"
+
+msgid "Draw rows that have a cos2 greater than:"
+msgstr "Représenter les lignes ayant un cos2 plus grand que :"
+
+msgid "Get the CA code"
+msgstr "Lignes de code de l'AFC"
+
+msgid "Show CA parameters"
+msgstr "Paramètres de l'AFC"
+
+msgid "CA parameters"
+msgstr "Paramètres de l'AFC"
+
+msgid "Choose the active columns"
+msgstr "Choisir les colonnes actives"
+
+msgid "CA on the dataset"
+msgstr "AFC sur le jeu de données"
+
+msgid "Rows"
+msgstr "Lignes"
+
+msgid "Columns"
+msgstr "Colonnes"
+
+msgid "Supplementary rows"
+msgstr "Lignes supplémentaires"
+
+msgid "Supplementary columns"
+msgstr "Colonnes supplémentaires"
+
+msgid "Supplementary qualitative variables"
+msgstr "Variables qualitatives supplémentaires"
+
+msgid "Choose colour for active individuals"
+msgstr "Choisir la couleur des individus actifs"
+
+msgid "No quantitative variable describes axis 1"
+msgstr "Aucune variable quantitative ne décrit l'axe 1"
+
+msgid "No quantitative variable describes axis 2"
+msgstr "Aucune variable quantitative ne décrit l'axe 2"
+
+msgid "No quantitative variable describes axis 3"
+msgstr "Aucune variable quantitative ne décrit l'axe 3"
+
+msgid "Choose colour for supplementary individuals"
+msgstr "Choisir la couleur des individus supplémentaires"
+
+msgid "Choose colour for the categories"
+msgstr "Choisir la couleur des modalités"
+
+msgid "MCA on the dataset"
+msgstr "ACM sur le jeu de données"
+
+msgid "Show MCA parameters"
+msgstr "Voir les paramètres de l'ACM"
+
+msgid "MCA parameters"
+msgstr "Paramètres de l'ACM"
+
+msgid "Graph of individuals and categories"
+msgstr "Graphe des individus et des modalités"
+
+msgid "Select elements to modify"
+msgstr "Choisir les éléments à modifier"
+
+msgid "Draw categories according to"
+msgstr "Dessiner les catégories en fonction de"
+
+msgid "categorical"
+msgstr "qualitative"
+
+msgid "Get the MCA code"
+msgstr "Lignes de code de l'ACM"
+
+msgid "Choose the active qualitative variables"
+msgstr "Choisir les variables qualitatives actives"
+
+msgid "Supplementary individuals"
+msgstr "Individus supplémentaires"
+
+msgid "Which graph do you want to modify?"
+msgstr "Quel graphe voulez-vous modifier ?"
+
+msgid "Individuals"
+msgstr "Individus"
+
+msgid "Categories"
+msgstr "Modalités"
+
+msgid "Supplementary categories"
+msgstr "Modalités supplémentaires"
+
+msgid "Colour each variable with different colour"
+msgstr "Colorier chaque variable par une couleur différente"
+
+msgid "Graph of the supplementary quantitative variables"
+msgstr "Graphe des variables quantitatives supplémentaires"
+
+msgid "Graph of the variables on the MCA map"
+msgstr "Graphe des variables de l'ACM"
+
+msgid "Select the supplementary qualitative variables"
+msgstr "Sélectionner des variables qualitatives supplémentaires"
+
+msgid "MCA factor map"
+msgstr "Graphe de l'ACM"
+
+msgid "Select individuals from:"
+msgstr "Sélectionner les individus en fonction de :"
+
+msgid "Individuals and categories"
+msgstr "Individus et modalités"
+
+msgid "Quantitative variables"
+msgstr "Variables quantitatives"
+
+msgid "Supplementary quantitative variables"
+msgstr "Variables quantitatives supplémentaires"
+
+msgid "Active qualitative variables"
+msgstr "Variables qualitatives actives"
+
+msgid "Which metric would you like to use?"
+msgstr "Quelle métrique voulez-vous utiliser ?"
+
+msgid "Angle (in degrees)"
+msgstr "Angle (en degrés)"
+
+msgid "Names on 3D plot"
+msgstr "Noms sur le graphe 3D"
+
+msgid "Draw centers of clusters"
+msgstr "Dessiner le centre des classes"
+
+msgid "Draw tree"
+msgstr "Tracer l'arbre"
+
+msgid "Which outputs do you want?"
+msgstr "Quelles sorties voulez-vous ?"
+
+msgid "Hierarchical clustering on the factor map"
+msgstr "Classification hiérarchique sur le plan factoriel"
+
+msgid "Factor map"
+msgstr "Plan factoriel"
+
+msgid "Hierarchical clustering"
+msgstr "Classification hiérarchique"
+
+msgid "Show HCPC parameters"
+msgstr "Voir les paramètres d'HCPC"
+
+msgid "HCPC parameters"
+msgstr "Paramètres d'HCPC"
+
+msgid "HCPC on the dataset "
+msgstr "Classification hiérarchique sur le jeu de données "
+
+msgid "Number of clusters"
+msgstr "Nombre de classes"
+
+msgid "Get the HCPC code"
+msgstr "Lignes de code de la classification"
+
+msgid "Euclidean"
+msgstr "Euclidienne"
+
+msgid "Hierarchical tree"
+msgstr "Arbre hiérarchique"
+
+msgid "Factorial map"
+msgstr "Plan factoriel"
+
+msgid "3D plot"
+msgstr "Graphe 3D"
+
+msgid "Hierarchical tree on the factor map"
+msgstr "Arbre hiérarchique sur le plan factoriel"
+
+msgid "Description of classes by variables"
+msgstr "Description des classes par les variables"
+
+msgid "Description of classes by axes"
+msgstr "Description des classes par les axes"
+
+msgid "MFA on the dataset"
+msgstr "AFM sur le jeu de données"
+
+msgid "Plot points for the mean individuals"
+msgstr "Tracer les points des individus moyens"
+
+msgid "Draw labels for the mean individuals"
+msgstr "Libellés des individus moyens"
+
+msgid "Plot points for the categories"
+msgstr "Tracer les points des catégories"
+
+msgid "Draw labels for the categories"
+msgstr "Libellés des catégories"
+
+msgid "Partial points are drawn"
+msgstr "Les points partiels sont tracés"
+
+msgid "Partial points to draw"
+msgstr "Points partiels à tracer"
+
+msgid "Select individuals"
+msgstr "Sélectionner les individus"
+
+msgid "Draw labels for the partial individuals"
+msgstr "Libellés des individus partiels"
+
+msgid "Color the variables by group"
+msgstr "Colorier les variables par groupe"
+
+msgid "Color the partial axe by group"
+msgstr "Colorier les axes partiels par groupe"
+
+msgid "Draw labels for the colonnes"
+msgstr "Libellés des colonnes"
+
+msgid "Get the MFA code"
+msgstr "Lignes de code de l'AFM"
+
+msgid "Creation of groups"
+msgstr "Création des groupes"
+
+msgid "Create the groups"
+msgstr "Créer les groupes"
+
+msgid "Create Group"
+msgstr "Création du groupe"
+
+msgid "Which graph would you like to modify?"
+msgstr "Quel graphe voulez-vous modifier ?"
+
+msgid "Frequencies"
+msgstr "Fréquences"
+
+msgid "Groups"
+msgstr "Groupes"
+
+msgid "Partial axes"
+msgstr "Axes partiels"
+
+msgid "Please select at least 2 groups"
+msgstr "Choisir au moins 2 groupes"
+
+msgid "No quantitative groups"
+msgstr "Pas de groupes quantitatifs"
+
+msgid "No groups of frequencies"
+msgstr "Pas de groupes de fréquences"
+
+msgid "Drawing by"
+msgstr "Habillage par"
+
+msgid "No groups of categorical variables"
+msgstr "Pas de groupes qualitatifs"
+
+msgid "Number of variables with highest cos2"
+msgstr "Nombre de variables avec les cos2 les plus élevés"
+
+msgid "Choose variables"
+msgstr "Choisir les variables"
+
+msgid "Groups representation"
+msgstr "Graphe des groupes"
+
+msgid "Correlation circle"
+msgstr "Cercle des corrélations"
+
+msgid "Individual factor map"
+msgstr "Graphe des individus"
+
+msgid "Draw labels for the columns"
+msgstr "Libellés des colonnes"
+
+msgid "Graph of the partial axes"
+msgstr "Graphe des axes partiels"
+
+msgid "Graph of the frequencies"
+msgstr "Graphe des fréquences"
+
+msgid "Quantitative"
+msgstr "Quantitatif"
+
+msgid "Qualitative"
+msgstr "Qualitatif"
+
+msgid "Scaled"
+msgstr "Réduit"
+
+msgid "Unscaled"
+msgstr "Non réduit"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "Supplementary"
+msgstr "Supplémentaire"
+
+msgid "Results for the groups"
+msgstr "Résultats pour les groupes"
+
+msgid "Results for the partial axes"
+msgstr "Résultats pour les axes partiels"
+
+msgid "Results for the individuals"
+msgstr "Résultats pour les individus"
+
+msgid "Results for the rows"
+msgstr "Résultats pour les lignes"
+
+msgid "Results for the columns"
+msgstr "Résultats pour les colonnes"
+
+msgid "Results for the supplementary rows"
+msgstr "Résultats pour les lignes supplémentaires"
+
+msgid "Results for the supplementary columns"
+msgstr "Résultats pour les colonnes supplémentaires"
+
+msgid "Results for the quantitative variables"
+msgstr "Résultats pour les variables quantitatives"
+
+msgid "What type of results?"
+msgstr "Quel type de résultats ?"
+
+msgid "individual"
+msgstr "individu"
+
+msgid "categorical variable"
+msgstr "variable qualitative"
+
+msgid "Categorical variables"
+msgstr "Variables qualitative"
+
+msgid "group"
+msgstr "groupe"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Show FAMD parameters"
+msgstr "Voir les paramètres de l'AFMD"
+
+msgid "FAMD parameters"
+msgstr "Paramètres de l'AFMD"
+
+msgid "Get the FAMD code"
+msgstr "Lignes de code de l'AFMD"
+
+msgid "Graph of the variables"
+msgstr "Graphe des variables"
+
+msgid "Draw labels of individuals"
+msgstr "Libellés des individus"
+
+msgid "Draw labels of categories"
+msgstr "Libellés des modalités"
+
+msgid "Active variables"
+msgstr "Variables actives"
+
+msgid "Supplementary variables"
+msgstr "Variables supplémentaires"
+
+msgid "Nothing"
+msgstr "Rien"
+
+msgid "Hide:"
+msgstr "Cacher:"
+
+msgid "Choose colour for active variables"
+msgstr "Choisir les couleurs des variables actives"
+
+msgid "Choose colour for supplementary variables"
+msgstr "Choisir les couleurs des variables supplémentaires"
+
+msgid "Draw the confidence ellipses around the categories"
+msgstr "Trace les ellipses de confiance autour des modalités"
+
+msgid "Colour of active categories"
+msgstr "Couleur des modalités actives"
+
+msgid "Colour of active variables"
+msgstr "Couleur des variables actives"
+
+msgid "Colour of supplementary categories"
+msgstr "Couleurs des modalités supplémentaires"
+
+msgid "Colour of active individuals"
+msgstr "Couleur des individus actifs"
+
+msgid "Colour of supplementary individuals"
+msgstr "Couleur des individus supplémentaires"
+
+msgid "Results of the supplementary individuals"
+msgstr "Résultats des individus supplémentaires"
+
+msgid "Results of the supplementary categories"
+msgstr "Résultats des modalités supplémentaires"
+
+msgid "Results of the active categories"
+msgstr "Résultats des modalités actives"
+
+msgid "Results of the supplementary quantitative variables"
+msgstr "Résultats des variables quantitatives supplémentaires"
+
+msgid "Colour of supplementary quantitative variables"
+msgstr "Couleur des variables quantitatives supplémentaires"
+
+msgid "Colour of supplementary categorical variables"
+msgstr "Couleur des variables qualitatives supplémentaires"
+
+msgid "Draw confidence ellipses"
+msgstr "Trace les ellipses de confiance"
+
+msgid "Scale data to unit value"
+msgstr "Réduire les variables"
+
+msgid "Colour of supplementary row points"
+msgstr "Couleur des lignes supplémentaires"
+
+msgid "Colour of row points"
+msgstr "Couleur des lignes"
+
+msgid "Colour of column points"
+msgstr "Couleur des colonnes"
+
+msgid "Colour of supplementary column points"
+msgstr "Couleur des colonnes supplémentaires"
+
+msgid "FAMD on the dataset"
+msgstr "AFDM sur le jeu de données"
+
+msgid "Principal Component Analysis"
+msgstr "Analyse en Composantes Principales"
+
+msgid "This dataset contains"
+msgstr "Ce jeu de données contient"
+
+msgid "individuals and"
+msgstr "individus et"
+
+msgid "Dataset"
+msgstr "Jeu de données"
+
+msgid "variable is quantitative and considered as illustrative"
+msgstr "variable est quantitative supplémentaire"
+
+msgid "variables are quantitative and considered as illustrative"
+msgstr "variables sont quantitatives supplémentaires"
+
+msgid "variable is qualitative and considered as illustrative"
+msgstr "variable est qualitative supplémentaire"
+
+msgid "variables are qualitative and considered as illustrative"
+msgstr "variables sont qualitatives supplémentaires"
+
+msgid "individual is considered as illustrative"
+msgstr "individu est supplémentaire"
+
+msgid "individuals are considered as illustrative"
+msgstr "individus sont supplémentaires"
+
+msgid "Study of the outliers"
+msgstr "Observation d'individus extrêmes"
+
+msgid "The analysis of the PCA graphs leads to detect an outlier that strongly influences the PCA results. "
+msgstr "L'analyse des graphes de l'ACP conduit à détecter un individu singulier qui influence très fortement les résultats de l'ACP. "
+
+msgid "First we will describe this outlier and then we will suppress it from the analysis. "
+msgstr "On soulignera dans un premier temps le caractère extrême de cet individu avant de le retirer pour procéder à la suite de l'analyse. "
+
+msgid "Looking at the graph, we can note that a particular individual strongly contributes to the construction of the plane. "
+msgstr "En observant le graphe, on peut noter qu'un individu est très particulier et contribue fortement à la construction du plan. "
+
+msgid "Its contribution to the construction of the plane equals"
+msgstr "Sa contribution à la construction du plan est de"
+
+msgid "The analysis of the PCA graphs leads to detect outliers that strongly influence the PCA results. "
+msgstr "L'analyse des graphes de l'ACP conduit à détecter des individus singuliers qui influencent très fortement les résultats de l'ACP. "
+
+msgid "First we will describe these outliers and then we will suppress them from the analysis. "
+msgstr "On soulignera dans un premier temps le caractère extrême de ces individus avant de les retirer pour procéder à la suite de l'analyse. "
+
+msgid "Looking at the graph, we can note that "
+msgstr "En observant le graphe, on peut noter que "
+
+msgid "particular individuals strongly contribute to the construction of the plane. "
+msgstr "individus sont particuliers et contribuent fortement à la construction du plan. "
+
+msgid "The cumulative contribution of these individuals to the construction of the plane equals"
+msgstr "La contribution cumulée de ces individus à la construction du plan est de"
+
+msgid "Automatic report in"
+msgstr "Rapport automatique en"
+
+msgid "Perform clustering after leaving PCA app?"
+msgstr "Classification après avoir quitté l'appli d'ACP"
+
+msgid "The file will be saved in the directory"
+msgstr "Le fichier sera sauvegardé dans le répertoire"
+
+msgid "File name (without extension):"
+msgstr "Nom du fichier (sans extension) :"
+
+msgid "Report"
+msgstr "Rapport"
+
+msgid "Automatic report"
+msgstr "Rapport automatique"
+
+msgid "No quantitative variable in your dataset"
+msgstr "Pas de variable quantitative dans vos données"
+
+msgid "Download as"
+msgstr "Télécharger en"
+
+msgid "Download"
+msgstr "Télécharger"
+
+msgid "Language"
+msgstr "Langue"
+
+msgid "English"
+msgstr "Anglais"
+
+msgid "French"
+msgstr "Français"

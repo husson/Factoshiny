@@ -1,7 +1,7 @@
 # ui script for MCA2
 
-shinyUI(fluidPage(
-  titlePanel(div(paste(gettext("MCA on the dataset"),nomData),style="color:#6E6E6E",align="center"),windowTitle="MCAshiny"),
+fluidPage(
+  titlePanel(div(paste(gettext("MCA on the dataset"),nomDataMCAshiny),style="color:#6E6E6E",align="center"),windowTitle="MCAshiny"),
   
   sidebarLayout(
     sidebarPanel(
@@ -15,7 +15,7 @@ shinyUI(fluidPage(
         div(align="center",checkboxInput("mcaparam",gettext("Show MCA parameters"),FALSE)),
         conditionalPanel(
           condition="input.mcaparam==true",
-          if(is.null(supquali)){
+          if(is.null(supqualiMCAshiny)){
             radioButtons("selecactive",label=h6(gettext("Choose the active qualitative variables")),
                          choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))
           }
@@ -27,43 +27,43 @@ shinyUI(fluidPage(
 #            condition="input.selecactive=='choix'",
             condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
             selectInput("supvar",label=h6(gettext("Select the supplementary qualitative variables")),
-                        choices=list(IdChoices=VariableChoices),
-                        selected=supquali,multiple=TRUE)
+                        choices=list(IdChoices=VariableChoicesMCAshiny),
+                        selected=supqualiMCAshiny,multiple=TRUE)
           ),
           
           #Selection des variables quantitatives supplementaires
           h6(gettext("Select the supplementary quantitative variables")),
-          if(length(QuantiChoice)>1){
-            if(is.null(quantiS)){
-            selectInput("supquanti",label="",choices=list(Idquantisup=as.vector(QuantiChoice)),multiple=TRUE)
+          if(length(QuantiChoiceMCAshiny)>1){
+            if(is.null(quantiSMCAshiny)){
+            selectInput("supquanti",label="",choices=list(Idquantisup=as.vector(QuantiChoiceMCAshiny)),multiple=TRUE)
           }
           else {
-            selectInput("supquanti",label="",choices=list(Idquantisup=as.vector(QuantiChoice)),multiple=TRUE,selected=quantiS)
+            selectInput("supquanti",label="",choices=list(Idquantisup=as.vector(QuantiChoiceMCAshiny)),multiple=TRUE,selected=quantiSMCAshiny)
             
           }
           }
-          else if (length(QuantiChoice)==1){
-            if(is.null(quantiS)){
-            checkboxInput("supquanti",QuantiChoice,FALSE)
+          else if (length(QuantiChoiceMCAshiny)==1){
+            if(is.null(quantiSMCAshiny)){
+            checkboxInput("supquanti",QuantiChoiceMCAshiny,FALSE)
           }
             else{
-            checkboxInput("supquanti",QuantiChoice,TRUE)  
+            checkboxInput("supquanti",QuantiChoiceMCAshiny,TRUE)  
             }
           }
-          else if(length(QuantiChoice)==0){
+          else if(length(QuantiChoiceMCAshiny)==0){
             p(gettext("No quantitative variable in your dataset"))
           },
           
           
           h6(gettext("Supplementary individuals")),
-          if(is.null(indsupl)){
-            selectInput("indsup","",choices=list(num=nom), multiple=TRUE)
+          if(is.null(indsuplMCAshiny)){
+            selectInput("indsup","",choices=list(num=nomMCAshiny), multiple=TRUE)
           }
           else{
-            selectInput("indsup","",choices=list(num=nom), multiple=TRUE,selected=indsupl)
+            selectInput("indsup","",choices=list(num=nomMCAshiny), multiple=TRUE,selected=indsuplMCAshiny)
           }
-        )
-      ),
+        ),
+      style = "padding: 3px;"),
       
       #Prametres graphiques
       wellPanel(
@@ -80,32 +80,28 @@ shinyUI(fluidPage(
           hr(),
           conditionalPanel(
             condition=paste("input.MCAgraph=='",gettext("Individuals and categories"),"'",sep=''),
-#            condition="input.MCAgraph=='ind'",
             p(gettext("Graph of individuals and categories"),align="center"),
             uiOutput("choixindvar"),
             br(),
-           # p("Draw labels for :",align="center"),
-          #  uiOutput("pointlabel"),
-            textInput("title1",h6(gettext("Title of the graph: ")), title1),
+            textInput("title1MCAshiny",h6(gettext("Title of the graph: ")), title1MCAshiny),
             sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
             div(align="center",radioButtons("modind",h6(gettext("Select elements to modify"),align="center"),choices=list(gettext("Individuals"),gettext("Categories")),selected=gettext("Categories"),inline=TRUE)),
             br(),
             conditionalPanel(
              condition=paste("input.modind=='",gettext("Individuals"),"'",sep=''),
-#            condition="input.modind=='Ind'",
-            if(selection==gettext("No selection")){
+            if(selectionMCAshiny==gettext("No selection")){
               selectInput("select",label=h6(gettext("Select individuals from:")),
                           choices=list(gettext("No selection"),"cos2"="cos2",gettext("Manual"),"Contribution"="Contrib"),selected=gettext("No selection"))
             }
             else{
               selectInput("select",label=h6(gettext("Select individuals from:")),
-                          choices=list(gettext("No selection"),"cos2"="cos2",gettext("Manual"),"Contribution"="Contrib"),selected=selection)
+                          choices=list(gettext("No selection"),"cos2"="cos2",gettext("Manual"),"Contribution"="Contrib"),selected=selectionMCAshiny)
               },
              conditionalPanel(
               condition="input.select=='cos2'",
-              if(selection=="cos2"){
+              if(selectionMCAshiny=="cos2"){
                 div(align="center",sliderInput("slider1", label = "cos2",
-                                               min = 0, max = 1, value =selection2,step=0.05))
+                                               min = 0, max = 1, value =selection2MCAshiny,step=0.05))
               }
               else{
                 div(align="center",sliderInput("slider1", label = "cos2",
@@ -113,30 +109,29 @@ shinyUI(fluidPage(
               }),
               
             conditionalPanel(
-#              condition="input.select=='Manuel'",
               condition=paste("input.select=='",gettext("Manual"),"'",sep=''),
-              if(selection==gettext("Manual")){
+              if(selectionMCAshiny==gettext("Manual")){
                 selectInput("indiv",label=gettext("Select individuals:"),
-                            choices=list(num=nom),multiple=TRUE,selected=selection2) 
+                            choices=list(num=nomMCAshiny),multiple=TRUE,selected=selection2MCAshiny) 
               }
               else{
                 selectInput("indiv",label=gettext("Select individuals:"),
-                            choices=list(num=nom),multiple=TRUE)  
+                            choices=list(num=nomMCAshiny),multiple=TRUE)  
               }),
             conditionalPanel(
               condition="input.select=='Contrib'",
-              if(selection=="Contrib"){
+              if(selectionMCAshiny=="Contrib"){
                 sliderInput("sliderContrib",label=gettext("Number of the most contributive individuals"),
-                            min=1,max=length(nom),value=selection2,step=1)  
+                            min=1,max=length(nomMCAshiny),value=selection2MCAshiny,step=1)  
               }
               else{
                 sliderInput("sliderContrib",label=gettext("Number of the most contributive individuals"),
-                            min=1,max=length(nom),value=length(nom),step=1)
+                            min=1,max=length(nomMCAshiny),value=length(nomMCAshiny),step=1)
               }),
-            colourpicker::colourInput("colindact",gettext("Colour of active individuals"),color1),
+            colourpicker::colourInput("colindact",gettext("Colour of active individuals"),color1MCAshiny),
             uiOutput("col1"),
 
-if(is.null(habillageind)){
+if(is.null(habillageindMCAshiny)){
   checkboxInput("habi",gettext("Points colour depend on categorical variable"),FALSE)
 }
 else{
@@ -146,26 +141,24 @@ else{
             conditionalPanel(
               condition="input.habi==true",
               uiOutput("habillage2")
-              #uiOutput("ellips")
             )
           ),
           
           conditionalPanel(
              condition=paste("input.modind=='",gettext("Categories"),"'",sep=''),
-#            condition="input.modind=='Mod'",
-            if(selection3==gettext("No selection")){
+            if(selection3MCAshiny==gettext("No selection")){
               selectInput("selectMod",label=h6(gettext("Draw categories according to")),
                           choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="Contrib"),selected=gettext("No selection")) 
             }
             else{
               selectInput("selectMod",label=h6(gettext("Draw categories according to")),
-                          choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="Contrib"),selected=selection3)
+                          choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="Contrib"),selected=selection3MCAshiny)
               },
             conditionalPanel(
               condition="input.selectMod=='cos2'",
-              if(selection3=="cos2"){
+              if(selection3MCAshiny=="cos2"){
                 div(align="center",sliderInput("sliderCosMod", label = "cos2",
-                                               min = 0, max = 1, value =as.numeric(selection4),step=0.05))}  
+                                               min = 0, max = 1, value =as.numeric(selection4MCAshiny),step=0.05))}  
               else{
                 div(align="center",sliderInput("sliderCosMod", label = "cos2",
                                                min = 0, max = 1, value=0,step=0.05))  
@@ -174,39 +167,48 @@ else{
               condition="input.selectMod=='Contrib'",
               uiOutput("slider3")
             ),
-        checkboxInput("eachvar",gettext("Colour each variable with different colour"),valdef),
-        colourpicker::colourInput("colvaract",gettext("Colour of active categories"),color3),
+        checkboxInput("eachvar",gettext("Colour each variable with different colour"),valdefMCAshiny),
+        colourpicker::colourInput("colvaract",gettext("Colour of active categories"),color3MCAshiny),
         uiOutput("col2")
           )),
           conditionalPanel(
             condition="input.MCAgraph=='var'",
             p(gettext("Graph of variables"),align="center"),
-            textInput("title2",h6(gettext("Title of the graph: ")), title2),
+            textInput("title2MCAshiny",h6(gettext("Title of the graph: ")), title2MCAshiny),
             sliderInput("cex2",h6(gettext("Size of labels")),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
-#          div(align="center",checkboxGroupInput("var_sup",h6(""),choices=list("Supplementary qualitative variables"="suplquali","Supplementary quantitative variables"="suplquanti","Active qualitative variables"="act"),selected=varsup))
-          div(align="center",checkboxGroupInput("var_sup",h6(""),choices=list(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables")),selected=varsup)),
-          colourpicker::colourInput("colvaract1",gettext("Colour of active categories"),color5),
+          div(align="center",checkboxGroupInput("var_sup",h6(""),choices=list(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables")),selected=varsupMCAshiny)),
+          colourpicker::colourInput("colvaract1",gettext("Colour of active categories"),color5MCAshiny),
           uiOutput("col3"),
           uiOutput("colquantib")
         ),
         conditionalPanel(
-#          condition="input.MCAgraph=='quant'",
           condition=paste("input.MCAgraph=='",gettext("Quantitative variables"),"'",sep=''),
           p(gettext("Graph of the supplementary quantitative variables"),align="center"),
-          textInput("title3",h6(gettext("Title of the graph: ")), title3),
+          textInput("title3MCAshiny",h6(gettext("Title of the graph: ")), title3MCAshiny),
           sliderInput("cex3",h6(gettext("Size of labels")),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
-          uiOutput("colquanti12")))
+          uiOutput("colquanti12"))),
+      style = "padding: 3px;"),
+      wellPanel(
+        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving MCA app?"),hcpcparaMCAshiny)),
+        conditionalPanel(
+          condition="input.hcpcparam==true",
+          uiOutput("NbDimForClustering")
+        ),
+        align="center", style = "padding: 3px;"
+      ),
+      wellPanel(
+        div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
+        conditionalPanel(
+          condition="input.reportparam==true",
+          textInput("titleFile",h6(gettext("File name (without extension):")), gettext("Report")),
+          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
+          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+          paste(gettext("The file will be saved in the directory"),pathsaveMCAshiny)
+        ),
+        align="center", style = "padding: 3px;"
       ),
       
-      
-      wellPanel(
-        h5(gettext("Save graphs as"),align="center"),
-        radioButtons("paramdown","",
-                     choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png"),
-      br(),
-      div(align="center",actionButton("MCAcode", gettext("Get the MCA code")))),
-
-    br(),
+    div(align="center",actionButton("MCAcode", gettext("Get the MCA code"))),
     div(align="center",actionButton("Quit", gettext("Quit the app")))
     ,width=3),
     mainPanel(
@@ -216,30 +218,30 @@ else{
  fluidRow(
                            br(),
                  column(width = 6,plotOutput("map", width = "500", height="500"),
-#                           div(align = "center",plotOutput("map", width = 500, height=500)),
                            br(),
-                           conditionalPanel(
-                             condition="input.paramdown=='jpg'",
-                             p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                           conditionalPanel(
-                             condition="input.paramdown=='png'",
-                             p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                           conditionalPanel(
-                             condition="input.paramdown=='pdf'",
-                             p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='jpg'",
+                             # p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='png'",
+                             # p(downloadButton("downloadData",gettext("Download as png")),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='pdf'",
+                             # p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                            br(),align="center"),
  column(width = 6,plotOutput("map4", width = "500",height="500"),
-#                           div(align="center",plotOutput("map4", width = 500, height=500)),
                            br(),
-                           conditionalPanel(
-                             condition="input.paramdown=='jpg'",
-                             p(downloadButton("downloadData10",gettext("Download as jpg")),align="center")),
-                           conditionalPanel(
-                             condition="input.paramdown=='png'",
-                             p(downloadButton("downloadData0",gettext("Download as png")),align="center")),
-                           conditionalPanel(
-                             condition="input.paramdown=='pdf'",
-                             p(downloadButton("downloadData20",gettext("Download as pdf")),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='jpg'",
+                             # p(downloadButton("downloadData10",gettext("Download as jpg")),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='png'",
+                             # p(downloadButton("downloadData0",gettext("Download as png")),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='pdf'",
+                             # p(downloadButton("downloadData20",gettext("Download as pdf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData10",gettext("jpg")),downloadButton("downloadData0",gettext("png")),downloadButton("downloadData20",gettext("pdf"))),
                            align="center")),
                            br(),
                            div(align = "center",uiOutput("map22")),
@@ -301,7 +303,6 @@ else{
                              p(downloadButton("summary2",gettext("Download the summary")),align="center")
                            ),
                            conditionalPanel(
-#                             condition="input.out=='varsup'",
                              condition=paste("input.out=='",gettext("Results of the supplementary categorical variables"),"'",sep=''),
                              h6(gettext("Coordinates")),
                              div(align="center",tableOutput("sorties23")),
@@ -313,7 +314,6 @@ else{
                              div(align="center",tableOutput("sorties233"))),
                            
                            conditionalPanel(
-#                             condition="input.out=='quantico'",
                              condition=paste("input.out=='",gettext("Results of the supplementary quantitative variables"),"'",sep=''),
                              h6(gettext("Coordinates")),
                              div(align="center",tableOutput("sorties43"))),
@@ -369,7 +369,7 @@ else{
                   tabPanel(gettext("Summary of dataset"),
                            br(),
                            verbatimTextOutput("summary"),
-                           selectInput("bam",gettext("Graphs for "),choices=list(IdChoices=VariableChoices),multiple=FALSE),
+                           selectInput("bam",gettext("Graphs for "),choices=list(IdChoices=VariableChoicesMCAshiny),multiple=FALSE),
                            
                            div(align = "center",plotOutput("histo", width = 500, height=500))),
                   tabPanel(gettext("Data"),
@@ -379,4 +379,4 @@ else{
       )
     ,width=9)
   )
-))
+)

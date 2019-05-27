@@ -1,97 +1,97 @@
 #global script for HCPC for dataframe2
 if(is.data.frame(x)==TRUE){
-  quanti=c()
-  quali=c()
+  quantiHCPCshiny=c()
+  qualiHCPCshiny=c()
   posi=c()
   for ( i in 1:dim(x)[2]){
     if (is.numeric(x[,i])==TRUE){
-      quanti=c(quanti,colnames(x)[i])
+      quantiHCPCshiny=c(quantiHCPCshiny,colnames(x)[i])
     }
     else{
-      quali=c(quali,colnames(x)[i])
+      qualiHCPCshiny=c(qualiHCPCshiny,colnames(x)[i])
     }
   }
-  VariableChoices=quanti
+  VariableChoices=quantiHCPCshiny
   nom=rownames(x)
-  nbindiv=length(nom)
+  nbindivHCPCshiny=length(nom)
   num=c(1:length(nom))
-  QualiChoice=quali
+  QualiChoice=qualiHCPCshiny
   IdChoices=c(1:length(VariableChoices))
   Idqualisup=c(1:length(QualiChoice))
   
-  nomData=nomData
-  consolidf=FALSE
-  metricdf=gettext("Euclidean")
-  drawdf=FALSE
-  df=FALSE
-  centerdf=FALSE
-  numdf=60
-  nb1df=1
-  nb2df=2
-  title1=gettext("Hierarchical tree on the factor map")
-  title2=gettext("Factor map")
-  title3=gettext("Hierarchical tree")
+  nomDataHCPCshiny=nomDataHCPCshiny
+  consolidfHCPCshiny=FALSE
+  metricdfHCPCshiny=gettext("Euclidean")
+  drawdfHCPCshiny=FALSE
+  dfHCPCshiny=FALSE
+  centerdfHCPCshiny=FALSE
+  numdfHCPCshiny=60
+  nb1dfHCPCshiny=1
+  nb2dfHCPCshiny=2
+  title1HCPCshiny=gettext("Hierarchical tree on the factor map")
+  title2HCPCshiny=gettext("Factor map")
+  title3HCPCshiny=gettext("Hierarchical tree")
 }
 
 if(is.data.frame(x)==FALSE){
 
 if(inherits(x, "HCPCshiny")){
-  nomData=x$nomData
-  clustdf=x$clust
-  consolidf=x$consoli
-  metricdf=x$metric
-  drawdf=x$drawtree
-  df=x$nom3D
-  centerdf=x$center
-  numdf=x$num
-  nb1df=x$nb1
-  nb2df=x$nb2
+  nomDataHCPCshiny=x$nomDataHCPCshiny
+  clustdfHCPCshiny=x$clust
+  consolidfHCPCshiny=x$consoli
+  metricdfHCPCshiny=x$metric
+  drawdfHCPCshiny=x$drawtree
+  dfHCPCshiny=x$nom3D
+  centerdfHCPCshiny=x$center
+  numdfHCPCshiny=x$num
+  nb1dfHCPCshiny=x$nb1
+  nb2dfHCPCshiny=x$nb2
   x=x$data
-  title1=x$title1
-  title2=x$title2
-  title3=x$title3
+  title1HCPCshiny=x$title1HCPCshiny
+  title2HCPCshiny=x$title2HCPCshiny
+  title3HCPCshiny=x$title3HCPCshiny
 }
 
 if(inherits(x, "HCPC")){
-  nomData=x$call$call[2]
-  clustdf=x$call$t$nb.clust
-  consolidf=FALSE
+  nomDataHCPCshiny=x$call$call[2]
+  clustdfHCPCshiny=x$call$t$nb.clust
+  consolidfHCPCshiny=FALSE
   if(x$call$t$tree["dist.method"]=="euclidean"){
-    metricdf=gettext("Euclidean")
+    metricdfHCPCshiny=gettext("Euclidean")
   }
   if(x$call$t$tree["dist.method"]=="manhattan"){
-    metricdf="Manhattan"
+    metricdfHCPCshiny="Manhattan"
   }
-  drawdf=FALSE
-  df=FALSE
-  centerdf=FALSE
-  numdf=60
-  nb1df=1
-  nb2df=2
-  title1=gettext("Hierarchical tree on the factor map")
-  title2=gettext("Factor map")
-  title3=gettext("Hierarchical tree")
+  drawdfHCPCshiny=FALSE
+  dfHCPCshiny=FALSE
+  centerdfHCPCshiny=FALSE
+  numdfHCPCshiny=60
+  nb1dfHCPCshiny=1
+  nb2dfHCPCshiny=2
+  title1HCPCshiny=gettext("Hierarchical tree on the factor map")
+  title2HCPCshiny=gettext("Factor map")
+  title3HCPCshiny=gettext("Hierarchical tree")
 }
 
 
-quanti=c()
-quali=c()
+quantiHCPCshiny=c()
+qualiHCPCshiny=c()
 posi=c()
 for ( i in 1:dim(x)[2]){
   if (is.numeric(x[,i])==TRUE){
-    quanti=c(quanti,colnames(x)[i])
+    quantiHCPCshiny=c(quantiHCPCshiny,colnames(x)[i])
   }
   else{
-    quali=c(quali,colnames(x)[i])
+    qualiHCPCshiny=c(qualiHCPCshiny,colnames(x)[i])
   }
 }
 
-VariableChoices=quanti
+VariableChoices=quantiHCPCshiny
 nom=rownames(x)
-nbindiv=length(nom)
+nbindivHCPCshiny=length(nom)
 num=c(1:length(nom))
-QualiChoice=quali
+QualiChoice=qualiHCPCshiny
 IdChoices=c(1:length(VariableChoices))
 Idqualisup=c(1:length(QualiChoice))
 }
-nomData=unlist(strsplit(as.character(nomData),"\\["))[1]
+nomDataHCPCshiny=unlist(strsplit(as.character(nomDataHCPCshiny),"\\["))[1]

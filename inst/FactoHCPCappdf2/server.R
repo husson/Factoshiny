@@ -1,13 +1,12 @@
 # server script for HCPC for dataframe
-shinyServer(
   function(input, output) {
     
     values=reactive({
         data.selec=x[,VariableChoices]
         choixquali=NULL
-        if(length(quali)!=0){
+        if(length(qualiHCPCshiny)!=0){
           data.selec=cbind(data.selec,x[,QualiChoice])
-          choixquali=seq((length(data.selec)-length(quali)),length(data.selec))
+          choixquali=seq((length(data.selec)-length(qualiHCPCshiny)),length(data.selec))
         }
         
       list(res.PCA=(PCA(data.selec,quali.sup=choixquali,scale.unit=FALSE,graph=FALSE,ncp=Inf)),DATA=(data.selec))
@@ -38,7 +37,7 @@ shinyServer(
     
     valeuretour=function(){
       res=list()
-      res$nomData=nomData
+      res$nomDataHCPCshiny=nomDataHCPCshiny
       res$data=x
       res$classx<-"data.frame"
       class(res) <- c("HCPCshiny")
@@ -55,9 +54,9 @@ shinyServer(
       res$code2=Plot1Code()
       res$code3=Plot2Code()
       res$code4=Plot3Code()
-      res$title1=input$title1
-      res$title2=input$title2
-      res$title3=input$title3
+      res$title1HCPCshiny=input$title1HCPCshiny
+      res$title2HCPCshiny=input$title2HCPCshiny
+      res$title3HCPCshiny=input$title3HCPCshiny
       return(res)
     }
     
@@ -75,14 +74,14 @@ shinyServer(
     })
     
     Code <- function(){
-#      Call1=as.name(paste("res.HCPC<-HCPC(",nomData,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='",input$metric,"')",sep="")) 
-	  if (input$metric==gettext("Euclidean")) Call1<-as.name(paste("res.HCPC<-HCPC(",nomData,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='euclidean')",sep="")) 
-      if (input$metric=="Manhattan") Call1<-as.name(paste("res.HCPC<-HCPC(",nomData,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='manhattan')",sep=""))
+#      Call1=as.name(paste("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='",input$metric,"')",sep="")) 
+	  if (input$metric==gettext("Euclidean")) Call1<-as.name(paste("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='euclidean')",sep="")) 
+      if (input$metric=="Manhattan") Call1<-as.name(paste("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='manhattan')",sep=""))
       return(Call1)
     }
     
     Plot1Code <- function(){
-      Call2=paste("plot.HCPC(res.HCPC,choice='map',draw.tree=",input$drawtree,",title='",input$title2,"',axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"))",sep="") 
+      Call2=paste("plot.HCPC(res.HCPC,choice='map',draw.tree=",input$drawtree,",title='",input$title2HCPCshiny,"',axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"))",sep="") 
       return(Call2)
     }
     
@@ -92,7 +91,7 @@ shinyServer(
     }
     
     Plot3Code <- function(){
-      Call4=paste("plot.HCPC(res.HCPC,choice='tree',title='",input$title3,"')",sep="")
+      Call4=paste("plot.HCPC(res.HCPC,choice='tree',title='",input$title3HCPCshiny,"')",sep="")
       return(Call4)
     }
     
@@ -120,7 +119,7 @@ shinyServer(
         return()
       }
       else{
-      return(plot.HCPC(res.HCPC(),choice="map",draw.tree=input$drawtree,title=input$title2,axes=c(as.numeric(input$nb1),as.numeric(input$nb2))))
+      return(plot.HCPC(res.HCPC(),choice="map",draw.tree=input$drawtree,title=input$title2HCPCshiny,axes=c(as.numeric(input$nb1),as.numeric(input$nb2))))
       }
     }
     output$map <- renderPlot({
@@ -133,7 +132,7 @@ shinyServer(
         return()
       }
       else{
-      return(plot.HCPC(res.HCPC(),choice="3D.map",ind.names=input$nom3D,title=input$title1,centers.plot=input$center,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),angle=input$num))
+      return(plot.HCPC(res.HCPC(),choice="3D.map",ind.names=input$nom3D,title=input$title1HCPCshiny,centers.plot=input$center,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),angle=input$num))
       }
     }
     
@@ -146,7 +145,7 @@ shinyServer(
         return()
       }
       else{
-        return(plot.HCPC(res.HCPC(),choice="tree",title=input$title3))
+        return(plot.HCPC(res.HCPC(),choice="tree",title=input$title3HCPCshiny))
       }
     }
     
@@ -167,19 +166,19 @@ shinyServer(
     output$clusters=renderUI({
       choix=res.HCPCdef()
       if(is.data.frame(x)==TRUE){
-        if(nbindiv<=11){
-          sliderInput("clust","Number of clusters",min=2,max=(nbindiv-1),value=choix,step=1)
+        if(nbindivHCPCshiny<=11){
+          sliderInput("clust","Number of clusters",min=2,max=(nbindivHCPCshiny-1),value=choix,step=1)
         }
         else{
           sliderInput("clust","Number of clusters",min=2,max=10,value=choix,step=1)
         }
       }
       else{
-      if(nbindiv<=11){
-        sliderInput("clust","Number of clusters",min=2,max=(nbindiv-1),value=clustdf,step=1)
+      if(nbindivHCPCshiny<=11){
+        sliderInput("clust","Number of clusters",min=2,max=(nbindivHCPCshiny-1),value=clustdfHCPCshiny,step=1)
       }
       else{
-        sliderInput("clust","Number of clusters",min=2,max=10,value=clustdf,step=1)
+        sliderInput("clust","Number of clusters",min=2,max=10,value=clustdfHCPCshiny,step=1)
       }
       }
     })
@@ -191,6 +190,43 @@ shinyServer(
                          "pageLength" = 10))
 
     
+  observe({
+    if(input$Investigatehtml!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveHCPCshiny)
+        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language="en")
+        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language="fr")
+        setwd(path.aux)
+      })
+    }
+  })
+  
+  observe({
+    if(input$Investigatedoc!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveHCPCshiny)
+        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language="en")
+        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language="fr")
+        setwd(path.aux)
+      })
+    }
+  })
+  
+
+  observe({
+    if(input$InvestigateRmd!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveHCPCshiny)
+	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="en")
+	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="fr")
+        setwd(path.aux)
+      })
+    }
+  })    
+
     output$downloadData = downloadHandler(
       filename = function() { 
         paste('graph1','.png', sep='') 
@@ -331,6 +367,4 @@ shinyServer(
     
     
   }
-)
       
-

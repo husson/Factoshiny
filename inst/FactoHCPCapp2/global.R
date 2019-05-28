@@ -1,5 +1,5 @@
 #global script for HCPC2
-if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "MFA"))){
+if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FAMD")| inherits(x, "MFA"))){
   resultsHCPCshiny <- x
   anafact <- lignecodeHCPCshiny
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
@@ -20,7 +20,7 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "MF
   title3HCPCshiny <- gettext("Hierarchical tree")
 }
 
-if(!((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "MFA")))){
+if(!((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FAMD")| inherits(x, "MFA")))){
 if(inherits(x, "HCPCshiny")){
 anafact <- x$anafact
 nomDataHCPCshiny <- x$nomDataHCPCshiny
@@ -39,7 +39,7 @@ title2HCPCshiny <- x$title2HCPCshiny
 title3HCPCshiny <- x$title3HCPCshiny
 }
 
-if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny")){
+if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | inherits(x, "FAMDshiny")){
   resultsHCPCshiny=x$anafact
   anafact=x$code1
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust

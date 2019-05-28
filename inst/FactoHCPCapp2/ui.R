@@ -21,9 +21,9 @@ fluidPage(
       hr(),
       radioButtons("metric",gettext("Which metric would you like to use?"),choices=list(gettext("Euclidean"),"Manhattan"),inline=TRUE,select=metricdfHCPCshiny)
       ),
-      style = "padding: 3px;"),
+      style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
-      div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
+      div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
       conditionalPanel(
         condition="input.graph==true",
       fluidRow(
@@ -52,7 +52,7 @@ fluidPage(
          condition=paste("input.HCPCgraph=='",gettext("Hierarchical tree"),"'",sep=''),
        textInput("title3HCPCshiny",h6(gettext("Title of the graph:")), title3HCPCshiny))
       ),
-      style = "padding: 3px;"),
+      style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
         conditionalPanel(
@@ -62,11 +62,11 @@ fluidPage(
           div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
           paste(gettext("The file will be saved in the directory"),pathsaveHCPCshiny)
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-      div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code"))),
-      div(align="center",actionButton("Quit", gettext("Quit the app")))
-      ,width=3),
+      div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
       mainPanel(
         tags$style(type = "text/css", "a{color: #0B6121;}"),

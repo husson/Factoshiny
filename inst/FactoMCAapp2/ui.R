@@ -63,11 +63,11 @@ fluidPage(
             selectInput("indsup","",choices=list(num=nomMCAshiny), multiple=TRUE,selected=indsuplMCAshiny)
           }
         ),
-      style = "padding: 3px;"),
+      style = "padding: 3px;background-color: #ffdbdb;"),
       
       #Prametres graphiques
       wellPanel(
-        div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
+        div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
           
@@ -187,14 +187,14 @@ else{
           textInput("title3MCAshiny",h6(gettext("Title of the graph: ")), title3MCAshiny),
           sliderInput("cex3",h6(gettext("Size of labels")),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
           uiOutput("colquanti12"))),
-      style = "padding: 3px;"),
+      style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
         div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving MCA app?"),hcpcparaMCAshiny)),
         conditionalPanel(
           condition="input.hcpcparam==true",
           uiOutput("NbDimForClustering")
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #ecffdb"
       ),
       wellPanel(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
@@ -205,12 +205,12 @@ else{
           div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
           paste(gettext("The file will be saved in the directory"),pathsaveMCAshiny)
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
       
-    div(align="center",actionButton("MCAcode", gettext("Get the MCA code"))),
-    div(align="center",actionButton("Quit", gettext("Quit the app")))
-    ,width=3),
+      div(align="center",actionButton("MCAcode", gettext("Get the MCA code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      ,width=3,style="background-color: #9b9b9b;padding: 4px"),
     mainPanel(
       tags$style(type = "text/css", "a{color: #B53977;}"),
       tabsetPanel(id = "graph_sort",

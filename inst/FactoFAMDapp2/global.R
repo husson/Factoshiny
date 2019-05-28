@@ -7,6 +7,8 @@ if(inherits(x, "data.frame")){
   indsupl=NULL
   axe1=1
   axe2=2
+  nbdimclustFAMDshiny <- 5
+  hcpcparaFAMDshiny <- FALSE
   labind=TRUE
   labvar=TRUE
   habillageind=NULL
@@ -47,6 +49,8 @@ if(inherits(x, "FAMDshiny")){
   title3=x$title3
   labind=x$labind
   labvar=x$labvar
+  hcpcparaFAMDshiny <- x$hcpcparam
+  nbdimclustFAMDshiny <- x$nbdimclustFAMDshiny
 }
 if(inherits(x, "FAMD")){
   nomData=as.character(x$call$call[2])
@@ -64,6 +68,8 @@ if(inherits(x, "FAMD")){
   selection4=NULL
   selection5="NONE"
   selection6=NULL
+  nbdimclustFAMDshiny <- 5
+  hcpcparaFAMDshiny <- FALSE
   size=1
   size2=1
   size3=1

@@ -174,6 +174,7 @@ shinyServer(
       res=list()
       res$nomData=nomData
       res$data=values()$DATA
+      res$anafact <- values()$res.FAMD
       res$b=input$supvar
       res$c=input$supvar1
       res$d=input$indsup
@@ -224,6 +225,8 @@ shinyServer(
       res$code3=codeGraphInd()
       res$labind=input$labels2
       res$labvar=input$labels
+    res$hcpcparam <- input$hcpcparam
+    res$nbdimclustFAMDshiny <- input$nbDimClustering
       class(res) <- "FAMDshiny"
       return(res)
     }
@@ -357,13 +360,11 @@ shinyServer(
         need(length(getactive()$activevar)>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variables"))
       )
       if(input$selecactive==gettext("All") || length(getactive()$activevar)>5){
-        # return(selectInput("nb1", label = h6(gettext("x axis")), 
-                    # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = axe1,width='80%'))
-        return(textInput("nb1", label = h6(gettext("x axis")), axe1,width='50%'))
+        return(textInput("nb1", label = h6(gettext("x axis")), axe1,width='44px'))
       }
       else{
         baba=c(1:length(getactive()$activevar))
-        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1,width='80%'))
+        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1,width='44px'))
       }
     })
     
@@ -372,16 +373,27 @@ shinyServer(
         need(length(getactive()$activevar)>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variables"))
       )
       if(input$selecactive==gettext("All") || length(getactive()$activevar)>5){
-        # return(selectInput("nb2", label = h6(gettext("y axis")), 
-                           # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = axe2,width='80%'))
-        return(textInput("nb2", label = h6(gettext("y axis")), axe2,width='50%'))
+        return(textInput("nb2", label = h6(gettext("y axis")), axe2,width='44px'))
       }
       else{
         baba=c(1:length(getactive()$activevar))
-        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2,width='80%'))
+        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2,width='44px'))
       }
     })
     
+  output$NbDimForClustering <- renderUI({
+    if(input$hcpcparam==TRUE){
+      fluidRow(
+        tags$head(
+          tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
+                     #inline .form-group { display: table-row;}")
+          ),
+        return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclustFAMDshiny,min=1)))
+      )
+    }
+  })
+
+
     output$sorties=renderTable({
         return(as.data.frame(values()$res.FAMD$eig))
     },rownames=TRUE)

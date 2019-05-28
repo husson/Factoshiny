@@ -672,10 +672,10 @@ function(input, output,session) {
       need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variable"))
     )
     if(input$selecactive==gettext("All") || length(getactive())>5){
-      return(textInput("nb1", label = h6(gettext("x axis")), axe1PCAshiny,width='50%'))
+      return(textInput("nb1", label = h6(gettext("x axis")), axe1PCAshiny,width='44px'))
     } else{
       baba <- c(1:length(getactive()))
-      return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1PCAshiny,width='80%'))
+      return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1PCAshiny,width='44px'))
     }
   })
   
@@ -684,10 +684,10 @@ function(input, output,session) {
       need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variable"))
     )
     if(input$selecactive==gettext("All") || length(getactive())>5){
-      return(textInput("nb2", label = h6(gettext("y axis")), axe2PCAshiny,width='50%'))
+      return(textInput("nb2", label = h6(gettext("y axis")), axe2PCAshiny,width='44px'))
     } else{
       baba <- c(1:length(getactive()))
-      return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2PCAshiny,width='80%'))
+      return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2PCAshiny,width='44px'))
     }
   })
   

@@ -493,13 +493,11 @@
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary column"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        # return(selectInput("nb1", label = h6("x axis"), 
-                           # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = axe1CAshiny,width='80%'))
-        return(textInput("nb1", label = h6(gettext("x axis")), axe1CAshiny,width='50%'))
+        return(textInput("nb1", label = h6(gettext("x axis")), axe1CAshiny,width='44px'))
       }
       else{
         baba=c(1:length(getactive()))
-        return(selectInput("nb1",label=h6("x axis"), choices=baba,selected=axe1CAshiny,width='80%'))
+        return(selectInput("nb1",label=h6("x axis"), choices=baba,selected=axe1CAshiny,width='44px'))
       }
     })
     
@@ -508,13 +506,11 @@
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary column"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        # return(selectInput("nb2", label = h6("y axis"), 
-                           # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = axe2CAshiny,width='80%'))
-        return(textInput("nb2", label = h6(gettext("y axis")), axe2CAshiny,width='50%'))
+        return(textInput("nb2", label = h6(gettext("y axis")), axe2CAshiny,width='44px'))
       }
       else{
         baba=c(1:length(getactive()))
-        return(selectInput("nb2",label=h6("y axis"), choices=baba,selected=axe2CAshiny,width='80%'))
+        return(selectInput("nb2",label=h6("y axis"), choices=baba,selected=axe2CAshiny,width='44px'))
       }
     })
     

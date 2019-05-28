@@ -19,7 +19,7 @@ CAshiny <- function(X){
 #  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoCAapp2')
   assign("myListOfThingsCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objCAshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingsCAshiny, envir=G)
-  rm(list=c("myListOfThingsCAshiny","objCAshiny"),envir=G)
+  rm(list=c("myListOfThingsCAshiny"),envir=G)
    if (outShiny$hcpcparam==TRUE) {
     resHCPC <- HCPCshiny(outShiny)
     print(list(invisible(outShiny),resHCPC))

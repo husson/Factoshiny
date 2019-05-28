@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Factoshiny 1.0.3\n"
 "POT-Creation-Date: 2016-02-03 10:58\n"
-"PO-Revision-Date: 2019-05-24 17:11+0200\n"
+"PO-Revision-Date: 2019-05-28 14:46+0200\n"
 "Last-Translator: husson <husson@agrocampus-ouest.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -840,6 +840,9 @@ msgstr "Anglais"
 
 msgid "French"
 msgstr "Français"
+
+msgid "Graphical options"
+msgstr "Options graphiques"
 
 #~ msgid "The 1st cluster is made of individuals such as"
 #~ msgstr "La classe 1 contient des individus tels que"

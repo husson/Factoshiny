@@ -803,3 +803,8 @@ msgstr "Anglais"
 
 msgid "French"
 msgstr "Français"
+
+msgid "Graphical options"
+msgstr "Options graphiques"
+
+

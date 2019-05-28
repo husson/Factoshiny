@@ -58,9 +58,9 @@ fluidPage(
             selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(numCAshiny=nomCAshiny),multiple=TRUE,selected=lignesupCAshiny)
           }
         ),
-      style = "padding: 3px;"),
+      style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
-        div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
+        div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
           fluidRow(
@@ -118,14 +118,14 @@ fluidPage(
           condition="input.selecrow=='contrib'",
           uiOutput("contribrow"))
       ),
-      style = "padding: 3px;"),
+      style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
         div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving CA app?"),hcpcparaCAshiny)),
         conditionalPanel(
           condition="input.hcpcparam==true",
           uiOutput("NbDimForClustering")
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #ecffdb"
       ),
       wellPanel(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
@@ -136,11 +136,11 @@ fluidPage(
           div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
           paste(gettext("The file will be saved in the directory"),pathsaveCAshiny)
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-    div(align="center",actionButton("CAcode", gettext("Get the CA code"))),
-    div(align="center",actionButton("Quit", gettext("Quit the app")))
-    ,width=3),  
+      div(align="center",actionButton("CAcode", gettext("Get the CA code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       mainPanel(
         tags$style(type = "text/css", "a{color: #2F0B3A;}"),
         tabsetPanel(id = "graph_sort",
@@ -152,15 +152,6 @@ fluidPage(
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                              br(),align="center"),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData2",gettext("Download as pdf")),align="center"))),
                     tabPanel(gettext("Values"),
                              br(),
                              uiOutput("out22"),

@@ -25,7 +25,7 @@ fluidPage(
                         choices=list(IdChoicesPCAshiny=VariableChoicesPCAshiny),
                         selected=quantisupPCAshiny,multiple=TRUE)
           ),
-          br(),      
+          # br(),      
           h6(gettext("Select the supplementary categorical variables")),
           
           if(length(QualiChoicePCAshiny)>1){
@@ -48,7 +48,7 @@ fluidPage(
             p(gettext("No categorical variable in your dataset"))
           },
           
-          br(),
+          # br(),
           h6(gettext("Select the supplementary individuals")),
           if(is.null(indsuplPCAshiny)){
             selectInput("indsup","",choices=list(numPCAshiny=nomPCAshiny), multiple=TRUE)
@@ -58,15 +58,15 @@ fluidPage(
           },
           checkboxInput("nor",gettext("Scale data to unit value"),normePCAshiny)
         ),
-        style = "padding: 3px;"),
+        style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
-        div(align="center",checkboxInput("graph",gettext("Graphs options"),FALSE)),
+        div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
           fluidRow(
             column(5,uiOutput("NB1")),
             column(5,uiOutput("NB2"))),
-          hr(),
+          # hr(),
           div(align="center",radioButtons("ind_var","",
                                           choices=list(gettext("Graph of individuals"),gettext("Graph of variables")),selected=gettext("Graph of individuals"),inline=TRUE)),
           conditionalPanel(
@@ -143,15 +143,14 @@ fluidPage(
             uiOutput("varsu")
           )
         ),
-        style = "padding: 3px;"
-      ),
+        style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
         div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving PCA app?"),hcpcparaPCAshiny)),
         conditionalPanel(
           condition="input.hcpcparam==true",
           uiOutput("NbDimForClustering")
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #ecffdb"
       ),
       wellPanel(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
@@ -163,29 +162,17 @@ fluidPage(
           div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
           paste(gettext("The file will be saved in the directory"),pathsavePCAshiny)
         ),
-        align="center", style = "padding: 3px;"
+        align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-      div(align="center",actionButton("PCAcode", gettext("Get the PCA code"))),
-      div(align="center",actionButton("Quit", gettext("Quit the app")))
-      ,width=3),
+      div(align="center",actionButton("PCAcode", gettext("Get the PCA code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      ,width=3,style="background-color: #9b9b9b;padding: 4px"),
     
     mainPanel(
       tabsetPanel(id = "graph_sort",
                   tabPanel(gettext("Graphs"),
                            fluidRow(
                              br(),
-                             # column(width = 6,plotOutput("map2", width = "500", height="500"),
-                             #                            br(),
-                             #                            conditionalPanel(
-                             #                              condition="input.paramdown=='jpg'",
-                             #                              p(downloadButton("downloadData4",gettext("Download as jpg")),align="center")),
-                             #                            conditionalPanel(
-                             #                              condition="input.paramdown=='png'",
-                             #                              p(downloadButton("downloadData3",gettext("Download as png")),align="center")),
-                             #                            conditionalPanel(
-                             #                              condition="input.paramdown=='pdf'",
-                             #                              p(downloadButton("downloadData5",gettext("Download as pdf")),align="center")),
-                             #                            br(),align="center"),
                              column(width = 6,plotOutput("map2", width = "500", height="500"),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
@@ -194,19 +181,6 @@ fluidPage(
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                                     br(),align="center"))),
-                  # column(width = 6,plotOutput("map", width = "500",height="500"),
-                  #                             br(),
-                  #                             conditionalPanel(
-                  #                               condition="input.paramdown=='jpg'",
-                  #                               p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                  #                             conditionalPanel(
-                  #                               condition="input.paramdown=='png'",
-                  #                               p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                  #                             conditionalPanel(
-                  #                               condition="input.paramdown=='pdf'",
-                  #                               p(downloadButton("downloadData2",gettext("Download as pdf")),align="center"))
-                  #                             ,align="center"))),
-                  
                   tabPanel(gettext("Values"),
                            br(),
                            uiOutput("out22"),

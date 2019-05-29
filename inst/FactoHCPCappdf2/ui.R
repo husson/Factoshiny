@@ -67,7 +67,7 @@ fluidPage(
         ),
                 align="center", style = "padding: 3px;background-color: #dbe6ff"
 		),
-      div(align="center",actionButton("HCPCode", gettext("Get the HCPC code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
       div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       

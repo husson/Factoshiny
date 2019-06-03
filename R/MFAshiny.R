@@ -9,23 +9,22 @@ function(X){
     }
     if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
     if(is.data.frame(X)==TRUE){
-      nom=sys.calls()[[1]]
-      nameJDD=nom[2]
-#      gassign("nomData",nameJDD)
-      assign("nomData",nameJDD, envir=G)
+      assign("nomData",sys.calls()[[1]][2], envir=G)
       if(dim(X)[2]<=2)
         stop(gettext('not enough variables in your dataset'))
-    a=shiny::runApp(system.file("FactoMFAapp", package="Factoshiny"),launch.browser = TRUE)
-    #a=shiny::runApp('C:/Users/Ordinateur/Dropbox/Factoshiny/Factoshiny/inst/FactoMFAapp')
-    return(invisible(a))
-    }
-    else{
+#    outShiny=shiny::runApp(system.file("FactoMFAapp", package="Factoshiny"),launch.browser = TRUE)
+    outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp')
+    }   else{
       nom=as.character(X$call$call)[2] 
 #      gassign("nomData",nom)
       assign("nomData",nom, envir=G)
-a=shiny::runApp(system.file("FactoMFAapp2", package="Factoshiny"),launch.browser = TRUE)
-#a=shiny::runApp('C:/Users/Ordinateur/Dropbox/Factoshiny/Factoshiny/inst/FactoMFAapp2')
-
-      return(invisible(a))
+# outShiny=shiny::runApp(system.file("FactoMFAapp2", package="Factoshiny"),launch.browser = TRUE)
+    outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp2')
     }
+  if (outShiny$hcpcparam==TRUE) {
+    resHCPC <- HCPCshiny(outShiny)
+    print(list(invisible(outShiny),resHCPC))
+  }
+  return(invisible(outShiny))
+
   }

@@ -219,28 +219,10 @@ else{
                            br(),
                  column(width = 6,plotOutput("map", width = "500", height="500"),
                            br(),
-                           # conditionalPanel(
-                             # condition="input.paramdown=='jpg'",
-                             # p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                           # conditionalPanel(
-                             # condition="input.paramdown=='png'",
-                             # p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                           # conditionalPanel(
-                             # condition="input.paramdown=='pdf'",
-                             # p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
                              p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                            br(),align="center"),
  column(width = 6,plotOutput("map4", width = "500",height="500"),
                            br(),
-                           # conditionalPanel(
-                             # condition="input.paramdown=='jpg'",
-                             # p(downloadButton("downloadData10",gettext("Download as jpg")),align="center")),
-                           # conditionalPanel(
-                             # condition="input.paramdown=='png'",
-                             # p(downloadButton("downloadData0",gettext("Download as png")),align="center")),
-                           # conditionalPanel(
-                             # condition="input.paramdown=='pdf'",
-                             # p(downloadButton("downloadData20",gettext("Download as pdf")),align="center")),
                              p(gettext("Download as"),downloadButton("downloadData10",gettext("jpg")),downloadButton("downloadData0",gettext("png")),downloadButton("downloadData20",gettext("pdf"))),
                            align="center")),
                            br(),

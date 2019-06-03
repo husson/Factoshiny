@@ -1,7 +1,8 @@
 #global AFM2
 if(inherits(x,"MFAshiny")){
   ligne=x$ligne
-  code=x$code
+  anafact=x$anafact
+  newdataMFAshiny=x$data
   nomData=x$nom
   axe1=x$axe1#
   axe2=x$axe2#
@@ -26,10 +27,13 @@ if(inherits(x,"MFAshiny")){
   title3=x$title3
   title4=x$title4
   title5=x$title5
+  hcpcparaMFAshiny <- x$hcpcparam
+  nbdimclustMFAshiny <- x$nbdimclustMFAshiny
 }
 if(inherits(x,"MFA")){
   ligne=x$call$call
-  code=x
+  anafact=x
+  newdataMFAshiny=x$call$X
   axe1=1
   axe2=2
   ind1=TRUE
@@ -48,6 +52,8 @@ if(inherits(x,"MFA")){
   freq1=TRUE
   freq2=TRUE
   partaxe=TRUE
+  nbdimclustMFAshiny <- 5
+  hcpcparaMFAshiny <- FALSE
 title1=gettext("Groups representation")
 title2=gettext("Individual factor map")
 title3=gettext("Correlation circle")
@@ -55,9 +61,9 @@ title4=gettext("Graph of the partial axes")
 title5=gettext("Graph of the frequencies")
 }
 nameJDD=nomData
-nom=rownames(code$ind$coord)
-num=c(1:dim(code$ind$coord)[1])
-data=code$global.pca$call$X
+nom=rownames(anafact$ind$coord)
+num=c(1:dim(anafact$ind$coord)[1])
+data=anafact$global.pca$call$X
 ### Recherche des variables quali
 quanti=names(which(sapply(data,is.numeric)))
 quali=names(which(!(sapply(data,is.numeric))))

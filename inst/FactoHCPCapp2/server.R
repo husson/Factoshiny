@@ -18,7 +18,6 @@
     
     valeuretour=function(){
       res=list()
-      res$data=resultsHCPCshiny
       res$nomDataHCPCshiny=nomDataHCPCshiny
       res$anafact=anafact
       res$classx<-c("PCA", "list")

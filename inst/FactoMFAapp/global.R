@@ -12,3 +12,5 @@ title2=gettext("Individual factor map")
 title3=gettext("Correlation circle")
 title4=gettext("Graph of the partial axes")
 title5=gettext("Graph of the frequencies")
+nbdimclustMFAshinyAshiny <- 5
+hcpcparaMFAshiny <- FALSE

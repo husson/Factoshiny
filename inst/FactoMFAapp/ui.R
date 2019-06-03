@@ -36,7 +36,7 @@ shinyUI(fluidPage(
           tags$style(type='text/css', "#title5 { height: 25px; }")
         ),
         wellPanel(
-        div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
+        div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
         div(align="center",selectInput("choixgraph",h6(gettext("Which graph would you like to modify?")), choices=list(gettext("Groups"),gettext("Individuals"),gettext("Quantitative variables"),gettext("Frequencies"),gettext("Partial axes")),selected=gettext("Groups"))),
@@ -107,16 +107,18 @@ shinyUI(fluidPage(
           # column(5,selectInput("nb2", label =h6(gettext("y axis")), 
                                # choices = list("1" = 1, "2" = 2,"3" = 3,"4"= 4,"5" =5), selected = 2,width='80%')))
         column(5,textInput("nb2", label = h6(gettext("y axis")), 2,width='50%')))
-        )),
-        wellPanel(
-          h5(gettext("Save graphs as"),align="center"),
-          radioButtons("paramdown","",
-                      choices=list("PNG"="png","JPG"="jpg","PDF"="pdf"),selected="png")
         ),
-        div(align="center",actionButton("HCPCcode", gettext("Get the MFA code"))),
-        br(),
-        div(align="center",actionButton("Quit", gettext("Quit the app")))
-        ,width=3),
+      style = "padding: 3px;background-color: #fcefba"),
+      wellPanel(
+        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving MFA app?"),hcpcparaMFAshiny)),
+        conditionalPanel(
+          condition="input.hcpcparam==true",
+          uiOutput("NbDimForClustering")
+        ),
+        align="center", style = "padding: 3px;background-color: #ecffdb"),
+      div(align="center",actionButton("MFAcode", gettext("Get the MFA code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
       mainPanel(
         tabsetPanel(id = "graph_sort",
@@ -323,77 +325,29 @@ shinyUI(fluidPage(
      fluidRow(
                  br(),
                  column(width = 6,plotOutput("map5", width = "500", height="500"),
-#                             div(align = "center",plotOutput("map5", width = 500, height=500)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData11",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData12",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData13",gettext("Download as pdf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData11",gettext("jpg")),downloadButton("downloadData12",gettext("png")),downloadButton("downloadData13",gettext("pdf")),align="center"),
 							 align="center"),
                  column(width = 6,plotOutput("map", width = "500", height="500"),
-#                             div(align = "center",plotOutput("map", width = 500, height=500)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='emf'",
-                               p(downloadButton("downloadData7",gettext("Download as emf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
 							 align="center")),
  fluidRow(
                              br(),
                  column(width = 6,uiOutput("map22", width = "500", height="500"),
-#                             div(align = "center",uiOutput("map22")),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("download4",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("download3",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("download5",gettext("Download as pdf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
 							 align="center"),
                  column(width = 6,plotOutput("map4", width = "500", height="500"),
-#                             div(align = "center",plotOutput("map4", width = 500, height=500)),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               p(downloadButton("downloadData15",gettext("Download as png")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               p(downloadButton("downloadData16",gettext("Download as jpg")),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               p(downloadButton("downloadData17",gettext("Download as pdf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData15",gettext("jpg")),downloadButton("downloadData16",gettext("png")),downloadButton("downloadData17",gettext("pdf")),align="center"),
 							 align="center")),
  fluidRow(
                              br(),
                  column(width = 6,plotOutput("map66", width = "500", height="500"),
-#                             div(align = "center",uiOutput("map66")),
                              br(),
-                             conditionalPanel(
-                               condition="input.paramdown=='png'",
-                               div(uiOutput("download19"),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='jpg'",
-                               div(uiOutput("download20"),align="center")),
-                             conditionalPanel(
-                               condition="input.paramdown=='pdf'",
-                               div(uiOutput("download21"),align="center"))
-                             ,align="center"))),
+                             p(gettext("Download as"),downloadButton("downloadData19",gettext("jpg")),downloadButton("downloadData20",gettext("png")),downloadButton("downloadData21",gettext("pdf")),align="center"),
+                             align="center"))),
 
                     tabPanel(gettext("Values"),
                              br(),
@@ -401,18 +355,15 @@ shinyUI(fluidPage(
                                           choices=list(gettext("Summary of outputs"),gettext("Eigenvalues"),gettext("Results for the individuals"),
                                                        gettext("Results for the quantitative variables"),gettext("Results for the groups"),gettext("Results for the partial axes")),inline=TRUE),
                              conditionalPanel(
-#                               condition="input.out=='MFA'",
                                condition=paste("input.out=='",gettext("Summary of outputs"),"'",sep=''),
                                verbatimTextOutput("summaryMFA")
                                ),
                              conditionalPanel(
-#                               condition="input.out=='eig'",
                                condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
                                tableOutput("sorties"),
                                plotOutput("map3", width = "500", height="500")),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results for the individuals"),"'",sep=''),
-#                               condition="input.out=='ind'",
                                radioButtons("out2",gettext("What type of results?"),choices=list(gettext("Coordinates"),gettext("Contributions"),gettext("Cos2"),gettext("Within inertia"),
                                                                                          gettext("Partial coordinates"),gettext("Within partial inertia")),selected=gettext("Coordinates"),inline=TRUE),
                                conditionalPanel(

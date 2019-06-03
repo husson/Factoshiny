@@ -577,7 +577,7 @@ shinyServer(
     })
     ###Recup codes
     observe({
-      if(input$HCPCcode==0){
+      if(input$MFAcode==0){
       }
       else {
         isolate({
@@ -723,7 +723,8 @@ shinyServer(
     
     valeuretour=function(){
       res=list()
-      res$code=values()$res.MFA
+      res$anafact=values()$res.MFA
+      res$data=values()$res.MFA$call$X
       res$axe1=input$nb1
       res$axe2=input$nb2
       res$ind1=input$meanind1
@@ -760,6 +761,8 @@ shinyServer(
       res$title3=input$title3
       res$title4=input$title4
       res$title5=input$title5
+      res$hcpcparam <- input$hcpcparam
+      res$nbdimclustPCAshiny <- input$nbDimClustering
       class(res)="MFAshiny"
       return(res)
     }
@@ -787,6 +790,18 @@ shinyServer(
         return(radioButtons("hides",gettext("Hide:"),choices=list(gettext("Nothing"),gettext("Active variables"),gettext("Supplementary variables")),selected=gettext("Nothing")))
       }
     })
+
+  output$NbDimForClustering <- renderUI({
+    if(input$hcpcparam==TRUE){
+      fluidRow(
+        tags$head(
+          tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
+                     #inline .form-group { display: table-row;}")
+          ),
+        return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclustMFAshiny,min=1)))
+      )
+    }
+  })
     
     output$sorties=renderTable({
       etat2=error()

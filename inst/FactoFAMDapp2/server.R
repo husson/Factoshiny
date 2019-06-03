@@ -360,11 +360,11 @@ shinyServer(
         need(length(getactive()$activevar)>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variables"))
       )
       if(input$selecactive==gettext("All") || length(getactive()$activevar)>5){
-        return(textInput("nb1", label = h6(gettext("x axis")), axe1,width='44px'))
+        return(textInput("nb1", label = h6(gettext("x axis")), axe1,width='51px'))
       }
       else{
         baba=c(1:length(getactive()$activevar))
-        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1,width='44px'))
+        return(selectInput("nb1",label=h6(gettext("x axis")), choices=baba,selected=axe1,width='51px'))
       }
     })
     
@@ -373,11 +373,11 @@ shinyServer(
         need(length(getactive()$activevar)>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary variables"))
       )
       if(input$selecactive==gettext("All") || length(getactive()$activevar)>5){
-        return(textInput("nb2", label = h6(gettext("y axis")), axe2,width='44px'))
+        return(textInput("nb2", label = h6(gettext("y axis")), axe2,width='51px'))
       }
       else{
         baba=c(1:length(getactive()$activevar))
-        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2,width='44px'))
+        return(selectInput("nb2",label=h6(gettext("y axis")), choices=baba,selected=axe2,width='51px'))
       }
     })
     

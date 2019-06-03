@@ -50,7 +50,7 @@ shinyServer(
         invi=c("ind","quali")
       }
       if(!(is.null(habi))){
-      plot.MFA(code,choix="ind",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),title=input$title2,partial=part,lab.ind=input$meanind, lab.par=lapbar,lab.var=input$qualind, habillage=habi,invisible=invi)
+      plot.MFA(anafact,choix="ind",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),title=input$title2,partial=part,lab.ind=input$meanind, lab.par=lapbar,lab.var=input$qualind, habillage=habi,invisible=invi)
       }
     }
     
@@ -87,7 +87,7 @@ shinyServer(
 	  if (input$hides==gettext("Active variables")) invi="quanti"
 	  if (input$hides==gettext("Supplementary variables")) invi="quanti.sup"
         }
-      plot.MFA(code,choix="var",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),habillage=habi,title=input$title3,select=selec,invisible=invi)
+      plot.MFA(anafact,choix="var",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),habillage=habi,title=input$title3,select=selec,invisible=invi)
     }
     
     output$map2 <- renderPlot({
@@ -96,7 +96,7 @@ shinyServer(
     
     output$map22=renderUI({
       validate(
-        need(!(is.null(code$quanti.var)),gettext("No quantitative group"))
+        need(!(is.null(anafact$quanti.var)),gettext("No quantitative group"))
       )
       plotOutput("map2", width = 500, height=500)
     })
@@ -105,7 +105,7 @@ shinyServer(
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
-      plot.MFA(code,choix="group",title=input$title1,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)))
+      plot.MFA(anafact,choix="group",title=input$title1,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)))
     }
     
     output$map5 <- renderPlot({
@@ -122,7 +122,7 @@ shinyServer(
       else{
         habi="none"
       }
-      plot.MFA(code,choix="axes",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),habillage=habi,title=input$title4)
+      plot.MFA(anafact,choix="axes",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),habillage=habi,title=input$title4)
     }
     
     output$map4 <- renderPlot({
@@ -136,14 +136,14 @@ shinyServer(
       if(input$affichcol==FALSE){
         col=FALSE
       }
-      plot.MFA(code,choix="freq",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),lab.col=col,title=input$title5)
+      plot.MFA(anafact,choix="freq",axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),lab.col=col,title=input$title5)
     })
     
     output$map66=renderUI({
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
-      if(is.null(code$freq)){
+      if(is.null(anafact$freq)){
         return(p(gettext("No groups of frequencies")))
       }
       else{
@@ -162,7 +162,7 @@ shinyServer(
     })
     
     output$habillagequali=renderUI({
-        if(!(is.null(code$quali.var))){
+        if(!(is.null(anafact$quali.var))){
           choix=quali
           if(length(choix)==1){
           return(selectInput("habiquali"," ",choices=choix))
@@ -191,7 +191,8 @@ shinyServer(
     valeuretour=function(){
       res=list()
       res$ligne=ligne
-      res$code=code
+      res$anafact=anafact
+      res$data=newdataMFAshiny
       res$axe1=input$nb1
       res$axe2=input$nb2
       res$ind1=input$meanind1
@@ -228,6 +229,8 @@ shinyServer(
       res$title3=input$title3
       res$title4=input$title4
       res$title5=input$title5
+      res$hcpcparam <- input$hcpcparam
+      res$nbdimclustPCAshiny <- input$nbDimClustering
       class(res)="MFAshiny"
       return(res)
     }
@@ -245,7 +248,7 @@ shinyServer(
     
     output$slider1=renderUI({
       if(inherits(x,"MFA")){
-      maxlength=dim(code$quanti.var$coord)[1]
+      maxlength=dim(anafact$quanti.var$coord)[1]
       if(input$selection=="contrib"){
         return(sliderInput("slider2",h6(gettext("Number of the most contributive variables")),min=1, max=maxlength, value=maxlength, step=1))
       }
@@ -254,7 +257,7 @@ shinyServer(
       }
       }
       if(inherits(x,"MFAshiny")){
-        maxlength=dim(code$quanti.var$coord)[1]
+        maxlength=dim(anafact$quanti.var$coord)[1]
         if(input$selection=="contrib"){
           if(selectvar=="contrib"){
           return(sliderInput("slider2",h6(gettext("Number of the most contributive variables")),min=1, max=maxlength, value=selectvar2, step=1))
@@ -275,7 +278,7 @@ shinyServer(
     })
     
     output$hide2=renderUI({
-      if(!(is.null(code$quanti.var.sup))){
+      if(!(is.null(anafact$quanti.var.sup))){
         if(!is.null(hide)){
         return(radioButtons("hides",h6(gettext("Hide:")),choices=list(gettext("Nothing"),gettext("Active variables"),gettext("Supplementary variables")),selected=hide))
         }else{
@@ -284,15 +287,27 @@ shinyServer(
       }
     })
     
-    output$sorties=renderTable({
-      return(as.data.frame(code$eig))
+  output$NbDimForClustering <- renderUI({
+    if(input$hcpcparam==TRUE){
+      fluidRow(
+        tags$head(
+          tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
+                     #inline .form-group { display: table-row;}")
+          ),
+        return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclustMFAshiny,min=1)))
+      )
+    }
+  })
+
+  output$sorties=renderTable({
+      return(as.data.frame(anafact$eig))
     },rownames=TRUE)
     
     output$map3=renderPlot({
-      return(barplot(code$eig[,1],names.arg=rownames(code$eig),las=2))
+      return(barplot(anafact$eig[,1],names.arg=rownames(anafact$eig),las=2))
     })
     output$JDD=renderDataTable({
-      tab=cbind(Names=rownames(code$global.pca$call$X),code$global.pca$call$X)
+      tab=cbind(Names=rownames(anafact$global.pca$call$X),anafact$global.pca$call$X)
       quanti=names(which(sapply(tab,is.numeric)))
       tab[quanti]=round(tab[quanti],5)
       tab
@@ -302,11 +317,11 @@ shinyServer(
                          "pageLength" = 10))
     
     output$summary=renderPrint({
-      summary(code$global.pca$call$X)
+      summary(anafact$global.pca$call$X)
     })
     
     output$summaryMFA=renderPrint({
-      summary.MFA(code)
+      summary.MFA(anafact)
     })  
     
       
@@ -340,7 +355,7 @@ shinyServer(
       contentType='image/png')
     
     output$download3=renderUI({
-      if(is.null(code$quanti.var)){
+      if(is.null(anafact$quanti.var)){
         return()
       }
       else{
@@ -428,7 +443,7 @@ shinyServer(
       contentType='image/png')
     
     output$download19=renderUI({
-      if(is.null(code$freq)){
+      if(is.null(anafact$freq)){
         return()
       }
       else{
@@ -448,7 +463,7 @@ shinyServer(
       contentType='image/jpg')
     
     output$download20=renderUI({
-      if(is.null(code$freq)){
+      if(is.null(anafact$freq)){
         return()
       }
       else{
@@ -468,7 +483,7 @@ shinyServer(
       contentType=NA)
     
     output$download21=renderUI({
-      if(is.null(code$freq)){
+      if(is.null(anafact$freq)){
         return()
       }
       else{
@@ -521,7 +536,7 @@ shinyServer(
       contentType='image/jpg')
     
     output$download4=renderUI({
-      if(is.null(code$quanti.var)){
+      if(is.null(anafact$quanti.var)){
         return()
       }
       else{
@@ -541,7 +556,7 @@ shinyServer(
       contentType=NA)
     
     output$download5=renderUI({
-      if(is.null(code$quanti.var)){
+      if(is.null(anafact$quanti.var)){
         return()
       }
       else{
@@ -574,63 +589,63 @@ shinyServer(
     ### Sorties
     
     output$sorties1=renderTable({
-      return(as.data.frame(code$ind$coord))
+      return(as.data.frame(anafact$ind$coord))
     },rownames=TRUE)
     
     output$sorties2=renderTable({
-      return(as.data.frame(code$ind$contrib))
+      return(as.data.frame(anafact$ind$contrib))
     },rownames=TRUE)
     
     output$sorties3=renderTable({
-      return(as.data.frame(code$ind$cos2))
+      return(as.data.frame(anafact$ind$cos2))
     },rownames=TRUE)
     
     output$sorties4=renderTable({
-      return(as.data.frame(code$ind$within.inertia))
+      return(as.data.frame(anafact$ind$within.inertia))
     },rownames=TRUE)
     
     output$sorties5=renderTable({
-      return(as.data.frame(code$ind$coord.partiel))
+      return(as.data.frame(anafact$ind$coord.partiel))
     },rownames=TRUE)
     
     output$sorties6=renderTable({
-      return(as.data.frame(code$ind$within.partial.inertia))
+      return(as.data.frame(anafact$ind$within.partial.inertia))
     },rownames=TRUE)
     
     output$sorties11=renderTable({
-      return(as.data.frame(code$quanti.var$coord))
+      return(as.data.frame(anafact$quanti.var$coord))
     },rownames=TRUE)
     
     output$sorties22=renderTable({
-      return(as.data.frame(code$quanti.var$contrib))
+      return(as.data.frame(anafact$quanti.var$contrib))
     },rownames=TRUE)
     
     output$sorties33=renderTable({
-      return(as.data.frame(code$quanti.var$cos2))
+      return(as.data.frame(anafact$quanti.var$cos2))
     },rownames=TRUE)
     
     output$sorties44=renderTable({
-      return(as.data.frame(code$quanti.var$cor))
+      return(as.data.frame(anafact$quanti.var$cor))
     },rownames=TRUE)
     
     output$sorties12=renderTable({
-      return(as.data.frame(code$partial.axes$coord))
+      return(as.data.frame(anafact$partial.axes$coord))
     },rownames=TRUE)
     
     output$sorties23=renderTable({
-      return(as.data.frame(code$partial.axes$cor))
+      return(as.data.frame(anafact$partial.axes$cor))
     },rownames=TRUE)
     
     output$sorties34=renderTable({
-      return(as.data.frame(code$partial.axes$contrib))
+      return(as.data.frame(anafact$partial.axes$contrib))
     },rownames=TRUE)
     
     output$sorties45=renderTable({
-      return(as.data.frame(code$partial.axes$cor.between))
+      return(as.data.frame(anafact$partial.axes$cor.between))
     },rownames=TRUE)    
     
     output$sortiegroup=renderTable({
-      write.infile(X=code$group,file=paste(getwd(),"fichgroup.csv"),sep=";",nb.dec=5)
+      write.infile(X=anafact$group,file=paste(getwd(),"fichgroup.csv"),sep=";",nb.dec=5)
       baba=read.csv(paste(getwd(),"fichgroup.csv"),sep=";",header=FALSE)
       colnames(baba)=NULL
       file.remove(paste(getwd(),"fichgroup.csv"))
@@ -642,7 +657,7 @@ shinyServer(
     
     ###Recup codes
     observe({
-      if(input$HCPCcode==0){
+      if(input$MFAcode==0){
       }
       else {
         isolate({
@@ -651,7 +666,7 @@ shinyServer(
           cat(codeGraph2(),sep="\n")
           cat(codeGraph3(),sep="\n")
           cat(codeGraph4(),sep="\n")
-          if(!is.null(code$freq)){
+          if(!is.null(anafact$freq)){
             cat(codeGraph5(),sep="\n")
           }
         })

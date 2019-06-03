@@ -493,11 +493,11 @@
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary column"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        return(textInput("nb1", label = h6(gettext("x axis")), axe1CAshiny,width='44px'))
+        return(textInput("nb1", label = h6(gettext("x axis")), axe1CAshiny,width='51px'))
       }
       else{
         baba=c(1:length(getactive()))
-        return(selectInput("nb1",label=h6("x axis"), choices=baba,selected=axe1CAshiny,width='44px'))
+        return(selectInput("nb1",label=h6("x axis"), choices=baba,selected=axe1CAshiny,width='51px'))
       }
     })
     
@@ -506,11 +506,11 @@
         need(length(getactive())>1 || input$selecactive==gettext("All"),gettext("Please select at least one supplementary column"))
       )
       if(input$selecactive==gettext("All") || length(getactive())>5){
-        return(textInput("nb2", label = h6(gettext("y axis")), axe2CAshiny,width='44px'))
+        return(textInput("nb2", label = h6(gettext("y axis")), axe2CAshiny,width='51px'))
       }
       else{
         baba=c(1:length(getactive()))
-        return(selectInput("nb2",label=h6("y axis"), choices=baba,selected=axe2CAshiny,width='44px'))
+        return(selectInput("nb2",label=h6("y axis"), choices=baba,selected=axe2CAshiny,width='51px'))
       }
     })
     

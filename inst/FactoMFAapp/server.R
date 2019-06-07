@@ -1,6 +1,4 @@
 # server2. AFM
-
-shinyServer(
   function(input, output) {
     values=reactive({
     nbfreq=0
@@ -1463,6 +1461,3 @@ shinyServer(
     })
 
   }
-)
-      
-

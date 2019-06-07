@@ -1,6 +1,6 @@
 # ui2.R AFM
 
-shinyUI(fluidPage(
+fluidPage(
   titlePanel(div(paste(gettext("MFA on the dataset "),nomData),style="color:#6E6E6E",align="center"),windowTitle="MFAshiny"),
   
   sidebarLayout(
@@ -447,4 +447,4 @@ shinyUI(fluidPage(
         )
       ,width=9)
     )
-))
+)

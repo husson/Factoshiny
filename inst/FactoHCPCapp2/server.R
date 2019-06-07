@@ -1,6 +1,6 @@
 # server script for HCPC
   function(input, output) {
-	res.HCPC=reactive({
+	res.HCPC <- reactive({
     (if (input$metric=="Manhattan") HCPC(resultsHCPCshiny,nb.clust=input$clust,consol=input$consoli,graph=FALSE,metric="manhattan")
     else HCPC(resultsHCPCshiny,nb.clust=input$clust,consol=input$consoli,graph=FALSE,metric="euclidean"))
     })
@@ -16,28 +16,29 @@
       }
     })
     
-    valeuretour=function(){
-      res=list()
-      res$nomDataHCPCshiny=nomDataHCPCshiny
-      res$anafact=anafact
-      res$classx<-c("PCA", "list")
+    valeuretour <- function(){
+      res <- list()
+      res$nomDataHCPCshiny <- nomDataHCPCshiny
+      res$anafact <- anafact
+      res$resultsHCPCshiny <- res.HCPC()
+      res$classx <- c("PCA", "list")
       class(res) <- c("HCPCshiny")
-      res$clust=input$clust
-      res$consoli=input$consoli
-      res$metric=input$metric
-      res$drawtree=input$drawtree 
-      res$nom3D=input$nom3D
-      res$center=input$center
-      res$num=input$num
-      res$code1=Code()
-      res$code2=Plot1Code()
-      res$code3=Plot2Code()
-      res$code4=Plot3Code()
-      res$nb1=input$nb1
-      res$nb2=input$nb2
-      res$title1HCPCshiny=input$title1HCPCshiny
-      res$title2HCPCshiny=input$title2HCPCshiny
-      res$title3HCPCshiny=input$title3HCPCshiny
+      res$clust <- input$clust
+      res$consoli <- input$consoli
+      res$metric <- input$metric
+      res$drawtree <- input$drawtree 
+      res$nom3D <- input$nom3D
+      res$center <- input$center
+      res$num <- input$num
+      res$code1 <- Code()
+      res$code2 <- Plot1Code()
+      res$code3 <- Plot2Code()
+      res$code4 <- Plot3Code()
+      res$nb1 <- input$nb1
+      res$nb2 <- input$nb2
+      res$title1HCPCshiny <- input$title1HCPCshiny
+      res$title2HCPCshiny <- input$title2HCPCshiny
+      res$title3HCPCshiny <- input$title3HCPCshiny
       return(res)
     }
     

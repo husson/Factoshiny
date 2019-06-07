@@ -1,6 +1,5 @@
 # server2. AFM2
 
-shinyServer(
   function(input, output) {
     
     ### fonctions graphiques
@@ -792,4 +791,3 @@ shinyServer(
 }
 
   }
-)

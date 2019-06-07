@@ -2,8 +2,8 @@
 if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FAMD")| inherits(x, "MFA"))){
   resultsHCPCshiny <- x
   anafact <- lignecodeHCPCshiny
-  resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-  if (inherits(x, "CA")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
+  resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
+  if (inherits(x, "CA")) nbindivHCPCshiny <- nrow(resultsHCPCshiny$row$coord)
   else nbindivHCPCshiny <- nrow(resultsHCPCshiny$ind$coord)
   nomDataHCPCshiny <- nomDataHCPCshiny
   clustdfHCPCshiny <- resClusHCPCshiny
@@ -22,6 +22,7 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FA
 
 if(!((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FAMD")| inherits(x, "MFA")))){
 if(inherits(x, "HCPCshiny")){
+resultsHCPCshiny <- x$resultsHCPCshiny$call$t$res
 anafact <- x$anafact
 nomDataHCPCshiny <- x$nomDataHCPCshiny
 clustdfHCPCshiny <- x$clust
@@ -33,7 +34,6 @@ centerdfHCPCshiny <- x$center
 numdfHCPCshiny <- x$num
 nb1dfHCPCshiny <- x$nb1
 nb2dfHCPCshiny <- x$nb2
-resultsHCPCshiny <- x$data
 title1HCPCshiny <- x$title1HCPCshiny
 title2HCPCshiny <- x$title2HCPCshiny
 title3HCPCshiny <- x$title3HCPCshiny

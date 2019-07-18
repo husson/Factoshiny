@@ -89,24 +89,16 @@ fluidPage(
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Partial axes"),"'",sep=''),
-#          condition="input.choixgraph=='axes'",
           textInput("title4",h6(gettext("Title of the graph: ")), title4),
-          checkboxInput("coloraxe",gettext("Color the partial axe by group"),TRUE)
+          checkboxInput("coloraxe",gettext("Color the partial axes by group"),TRUE)
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Groups"),"'",sep=''),
-#          condition="input.choixgraph=='group'",
           textInput("title1",h6(gettext("Title of the graph: ")), title1)
         ),
         fluidRow(
-          # column(5,selectInput("nb1", label = h6(gettext("x axis")), 
-                               # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = 1,width='80%')),
-        column(5,textInput("nb1", label = h6(gettext("x axis")), 1,width='50%')),
-
-		
-          # column(5,selectInput("nb2", label =h6(gettext("y axis")), 
-                               # choices = list("1" = 1, "2" = 2,"3" = 3,"4"= 4,"5" =5), selected = 2,width='80%')))
-        column(5,textInput("nb2", label = h6(gettext("y axis")), 2,width='50%')))
+        column(5,textInput("nb1", label = h6(gettext("x axis")), 1,width='51px')),
+        column(5,textInput("nb2", label = h6(gettext("y axis")), 2,width='51px')))
         ),
       style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
@@ -198,7 +190,7 @@ fluidPage(
                                     column(3,
                                            radioButtons("typeG42","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
                                     br(),
-                                    checkboxInput("activeG5",h6(paste(gettext("Create Group"),4)),FALSE),
+                                    checkboxInput("activeG5",h6(paste(gettext("Create Group"),5)),FALSE),
                                     conditionalPanel(
                                       condition="input.activeG5==true",
                                       fluidRow(

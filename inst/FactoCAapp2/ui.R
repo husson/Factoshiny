@@ -7,7 +7,8 @@ fluidPage(
     sidebarPanel(
       tags$head(
         tags$style("body {background-color: #F0E6E6; }"),
-        tags$style(type='text/css', "#title1 { height: 25px; }")
+        tags$style(type='text/css', "#title1 { height: 25px; }"),
+		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
         div(align="center",checkboxInput("caparam",gettext("Show CA parameters"),FALSE)),
@@ -66,13 +67,10 @@ fluidPage(
           fluidRow(
             column(5,uiOutput("NB1")),
             column(5,uiOutput("NB2"))),
-          hr(),
           textInput("title1CAshiny",h6(gettext("Title of the graph: ")),title1CAshiny),
           if(is.null(InvisibleCAshiny)){
-            #          selectInput("invis",h6(gettext("Invisible elements")),choices=list("Rows"="row","Columns"="col","Supplementary rows"="row.sup","Supplementary columns"="col.sup","Supplementary qualitative variable"="quali.sup"),multiple=TRUE)}
             selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE)}
           else{
-            #          selectInput("invis",h6(gettext("Invisible elements")),choices=list("Rows"="row","Columns"="col","Supplementary rows"="row.sup","Supplementary columns"="col.sup","Supplementary qualitative variable"="quali.sup"),multiple=TRUE,selected=InvisibleCAshiny)
             selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE,selected=InvisibleCAshiny)
           },
           br(),
@@ -130,11 +128,13 @@ fluidPage(
       wellPanel(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
         conditionalPanel(
-          condition="input.reportparam==true",
-          textInput("titleFile",h6(gettext("File name (without extension):")), gettext("Report")),
-          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
-          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
-          paste(gettext("The file will be saved in the directory"),pathsaveCAshiny)
+           condition="input.reportparam==true",
+		  div(gettext("File name (without extension):")),
+          textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
+          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
+          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
@@ -157,19 +157,16 @@ fluidPage(
                              uiOutput("out22"),
                              br(),
                              conditionalPanel(
-#                               condition="input.out=='eig'",
                                condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
                                div(align="center",tableOutput("sorties")),
                                div(align="center",plotOutput("map3", width = "700", height="500"))),
                              conditionalPanel(
-#                               condition="input.out=='CA'",
                                condition=paste("input.out=='",gettext("Summary of outputs"),"'",sep=''),
                                numericInput("nbele",h6(gettext("Number of elements to print")),value=10),
                                verbatimTextOutput("summaryCA"),
                                p(downloadButton("summary2",gettext("Download the summary")),align="center")
                                ),
                              conditionalPanel(
-#                               condition="input.out=='var'",
                                condition=paste("input.out=='",gettext("Results for the columns"),"'",sep=''),
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties1")),
@@ -179,7 +176,6 @@ fluidPage(
                                div(align="center",tableOutput("sorties3"))
                                ),
                              conditionalPanel(
-#                               condition="input.out=='ind'",
                                condition=paste("input.out=='",gettext("Results for the rows"),"'",sep=''),
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties4")),
@@ -190,14 +186,12 @@ fluidPage(
                              ),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results for the supplementary rows"),"'",sep=''),
-#                               condition="input.out=='suprow'",
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties7")),
                                h6("cos2"),
                                div(align="center",tableOutput("sorties8"))
                              ),
                              conditionalPanel(
-#                               condition="input.out=='supcol'",
                                condition=paste("input.out=='",gettext("Results for the supplementary columns"),"'",sep=''),
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties9")),
@@ -205,7 +199,6 @@ fluidPage(
                                div(align="center",tableOutput("sorties10"))
                              ),
                              conditionalPanel(
-#                               condition="input.out=='qualico'",
                                condition=paste("input.out=='",gettext("Results for the categorical variables"),"'",sep=''),
                                div(align="center",tableOutput("sorties11"))
                              )

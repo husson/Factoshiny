@@ -195,8 +195,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language="en")
-        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language="fr")
+        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=TRUE, file = input$titleFile, language="en")
+        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=TRUE, file = input$titleFile, language="fr")
         setwd(path.aux)
       })
     }
@@ -207,25 +207,68 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language="en")
-        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language="fr")
+        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=TRUE, file = input$titleFile, language="en")
+        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=TRUE, file = input$titleFile, language="fr")
         setwd(path.aux)
       })
     }
   })
   
 
-  observe({
-    if(input$InvestigateRmd!=0){
-      isolate({
+  # observe({
+    # if(input$InvestigateRmd!=0){
+      # isolate({
+        # path.aux <- getwd()
+        # setwd(pathsaveHCPCshiny)
+	    # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="en")
+	    # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="fr")
+        # setwd(path.aux)
+      # })
+    # }
+  # })    
+
+    output$downloadInvestigateRmd <- downloadHandler(
+     filename = function() {
+      paste(input$titleFile, ".Rmd", sep="")
+    },
+    content = function(file) {
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="en")
-	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="fr")
+	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language="en")
+	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language="fr")
+        file.rename(paste0(pathsaveHCPCshiny,"/Investigate.Rmd"), file)
         setwd(path.aux)
-      })
     }
-  })    
+  )
+
+    # output$downloadInvestigatedoc <- downloadHandler(
+     # filename = function() {
+      # paste("Report", Sys.Date(), ".docx", sep="")
+    # },
+    # content = function(file) {
+        # path.aux <- getwd()
+        # setwd(pathsaveHCPCshiny)
+        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=FALSE, file = "Investigate", language="en")
+        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=FALSE, file = "Investigate", language="fr")
+		# file.rename(paste0(pathsaveHCPCshiny,"/Investigate.docx"), file)
+        # setwd(path.aux)
+    # }
+  # )
+
+    # output$downloadInvestigatehtml <- downloadHandler(
+     # filename = function() {
+      # paste("Report", Sys.Date(), ".html", sep="")
+    # },
+    # content = function(file) {
+        # path.aux <- getwd()
+        # setwd(pathsaveHCPCshiny)
+        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE, file = "Investigate", language="en")
+        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE, file = "Investigate", language="fr")
+        # file.rename(paste0(pathsaveHCPCshiny,"/Investigate.html"), file)
+        # setwd(path.aux)
+    # }
+  # )
+
 
     output$downloadData = downloadHandler(
       filename = function() { 

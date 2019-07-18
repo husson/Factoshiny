@@ -73,11 +73,9 @@ fluidPage(
           textInput("title1",h6(gettext("Title of the graph: ")), title1)
         ),
         fluidRow(
-          column(5,selectInput("nb1", label = h6(gettext("x axis")), 
-                               choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = axe1,width='80%')),
-          column(5,selectInput("nb2", label =h6(gettext("y axis")), 
-                               choices = list("1" = 1, "2" = 2,"3" = 3,"4"= 4,"5" =5), selected = axe2,width='80%')))
-        ),
+        column(5,textInput("nb1", label = h6(gettext("x axis")), axe1,width='51px')),
+        column(5,textInput("nb2", label = h6(gettext("y axis")), axe2,width='51px')))
+         ),
 		style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
         div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving MFA app?"),hcpcparaMFAshiny)),

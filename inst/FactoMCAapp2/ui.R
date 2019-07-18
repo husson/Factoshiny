@@ -9,7 +9,8 @@ fluidPage(
         tags$style("body {background-color: #FBEFEF; }"),
         tags$style(type='text/css', "#title1 { height: 25px; }"),
         tags$style(type='text/css', "#title2 { height: 25px; }"),
-        tags$style(type='text/css', "#title3 { height: 25px; }")
+        tags$style(type='text/css', "#title3 { height: 25px; }"),
+		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
         div(align="center",checkboxInput("mcaparam",gettext("Show MCA parameters"),FALSE)),
@@ -200,10 +201,12 @@ else{
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
         conditionalPanel(
           condition="input.reportparam==true",
-          textInput("titleFile",h6(gettext("File name (without extension):")), gettext("Report")),
-          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
-          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
-          paste(gettext("The file will be saved in the directory"),pathsaveMCAshiny)
+		  div(gettext("File name (without extension):")),
+          textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
+          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
+          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
@@ -221,22 +224,24 @@ else{
                            br(),
                              p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                            br(),align="center"),
- column(width = 6,plotOutput("map4", width = "500",height="500"),
+ column(width = 6,plotOutput("map4", width = "500", height="500"),
                            br(),
                              p(gettext("Download as"),downloadButton("downloadData10",gettext("jpg")),downloadButton("downloadData0",gettext("png")),downloadButton("downloadData20",gettext("pdf"))),
                            align="center")),
                            br(),
-                           div(align = "center",uiOutput("map22")),
+                           div(align = "center",uiOutput("map22", width = "500", height="500")),
                            br(),
-                           conditionalPanel(
-                             condition="input.paramdown=='jpg'",
-                             div(uiOutput("download4"),align="center")),
-                           conditionalPanel(
-                             condition="input.paramdown=='png'",
-                             div(uiOutput("download3"),align="center")),
-                           conditionalPanel(
-                             condition="input.paramdown=='pdf'",
-                             div(uiOutput("download5"),align="center"))
+                           div(align = "center",uiOutput("map22bis"))
+#                           p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center")
+                           # conditionalPanel(
+                             # condition="input.paramdown=='jpg'",
+                             # div(uiOutput("download4"),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='png'",
+                             # div(uiOutput("download3"),align="center")),
+                           # conditionalPanel(
+                             # condition="input.paramdown=='pdf'",
+                             # div(uiOutput("download5"),align="center"))
                   ),
                   
                   ####

@@ -1,6 +1,6 @@
 # ui script for FAMD2
-shinyUI(fluidPage(
-  titlePanel(div(paste(gettext("FAMD on the dataset ",nomData)),style="color:#6E6E6E",align="center"),windowTitle="FAMDshiny"),
+fluidPage(
+  titlePanel(div(paste(gettext("FAMD on the dataset "),nomData),style="color:#6E6E6E",align="center"),windowTitle="FAMDshiny"),
   
   sidebarLayout(
     sidebarPanel(
@@ -23,7 +23,6 @@ shinyUI(fluidPage(
                        choices=list(gettext("All"),gettext("Choose")),selected=gettext("Choose"))
         },
         conditionalPanel(
-#          condition="input.selecactive=='choix'",
           condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
           h6(gettext("Select the supplementary quantitative variables")),
           if(length(VariableChoices)>1){
@@ -68,7 +67,6 @@ shinyUI(fluidPage(
         div(align="center",selectInput("choixgraph",h6(gettext("Which graph would you like to modify?")), choices=list(gettext("Individuals and categories"),"Variables"="var",gettext("Quantitative variables")),selected=gettext("Individuals and categories"))),
         br(),
         conditionalPanel(
-#          condition="input.choixgraph=='ind'",
           condition=paste("input.choixgraph=='",gettext("Individuals and categories"),"'",sep=''),
           textInput("title1",h6(gettext("Title of the graph: ")), title1),
           sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size,step=0.05,ticks=FALSE),
@@ -133,7 +131,6 @@ shinyUI(fluidPage(
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Quantitative variables"),"'",sep=''),
-#          condition="input.choixgraph=='quant'",
           textInput("title3",h6(gettext("Title of the graph: ")), title3),
           sliderInput("cex3",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size3,step=0.05,ticks=FALSE),
           br(),
@@ -174,50 +171,20 @@ shinyUI(fluidPage(
  fluidRow(
                            br(),
                  column(width = 6,plotOutput("map2", width = "500", height="500"),
-###                             div(align = "center",plotOutput("map2", width = 500, height=500)),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData4",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData3",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData5",gettext("Download as pdf")),align="center")),
                              br(),
 							 align="center"),
                  column(width = 6,plotOutput("map", width = "500", height="500"),
-###                             div(align="center",plotOutput("map", width = 500, height=500)),
                              br(),
-                                    p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
+                             p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                              br(),
 							 align="center")),
  fluidRow(
                            br(),
                  column(width = 6,plotOutput("map4", width = "500", height="500"),
-#                             div(align="center",plotOutput("map4", width = 500, height=500)),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData6",gettext("jpg")),downloadButton("downloadData7",gettext("png")),downloadButton("downloadData8",gettext("pdf")),align="center"),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData6",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData7",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData8",gettext("Download as pdf")),align="center")),
                              align="center"))),
 
                     tabPanel(gettext("Values"),
@@ -226,12 +193,10 @@ shinyUI(fluidPage(
                              br(),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
-#                               condition="input.out=='eig'",
                                div(align="center",tableOutput("sorties")),
                                plotOutput("map3", width = "700", height="500")),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the variables"),"'",sep=''),
-#                               condition="input.out=='resvar'",
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties2")),
                                br(),
@@ -242,7 +207,6 @@ shinyUI(fluidPage(
                                div(align="center",tableOutput("sorties4"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the individuals"),"'",sep=''),
-#                               condition="input.out=='resind'",
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties22")),
                                br(),
@@ -253,20 +217,17 @@ shinyUI(fluidPage(
                                div(align="center",tableOutput("sorties44"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Summary of outputs"),"'",sep=''),
-#                               condition="input.out=='ACP'",
                                numericInput("nbele",gettext("Number of elements to print"),value=10),
                                verbatimTextOutput("summaryFAMD"),
                                p(downloadButton("summary2",gettext("Download the summary")),align="center")),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the supplementary variables"),"'",sep=''),
-#                               condition="input.out=='varsup'",
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties23")),
                                h6("Cos2"),
                                div(align="center",tableOutput("sorties32"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the supplementary individuals"),"'",sep=''),
-#                               condition="input.out=='supind'",
                                h6(gettext("Coordinates")),
                                div(align="center",tableOutput("sorties36")),
                                h6("Cos2"),
@@ -286,4 +247,4 @@ shinyUI(fluidPage(
         )
       ,width=9)
     )
-))
+)

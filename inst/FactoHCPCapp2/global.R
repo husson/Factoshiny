@@ -30,6 +30,7 @@ consolidfHCPCshiny <- x$consoli
 metricdfHCPCshiny <- x$metric
 drawdfHCPCshiny <- x$drawtree
 dfHCPCshiny <- x$nom3D
+resClusHCPCshiny <- x$resClusHCPCshiny
 centerdfHCPCshiny <- x$center
 numdfHCPCshiny <- x$num
 nb1dfHCPCshiny <- x$nb1
@@ -61,7 +62,7 @@ if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | 
 }
 
 if(inherits(x, "HCPC")){
-  resClusHCPCshiny <- x
+  resClusHCPCshiny <- x$call$t$nb.clust
   anafact <- x$call$t$res
   resultsHCPCshiny <- anafact
   nomDataHCPCshiny <- x$call$call[2]

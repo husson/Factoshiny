@@ -1,10 +1,16 @@
 ### Modify 01.05.2016
 import(FactoMineR)
 import(FactoInvestigate)
+import(ggplot2)
 importFrom(tcltk, tkfont.create, tkbutton, tkcanvas)
 importFrom(shiny,runApp)
 importFrom(colourpicker,colourInput)
-export(CAshiny,FAMDshiny,PCAshiny,MFAshiny,HCPCshiny,MCAshiny,print.CAshiny,print.FAMDshiny,print.PCAshiny,print.MCAshiny,print.HCPCshiny)
+importFrom(shinydashboard,tabItem)
+importFrom(DT,formatStyle,datatable,styleInterval)
+importFrom(grDevices,colorRampPalette)
+importFrom(ggrepel,geom_text_repel)
+
+export(catdesshiny,condesshiny,CAshiny,FAMDshiny,Factoshiny,PCAshiny,MFAshiny,HCPCshiny,MCAshiny,print.CAshiny,print.FAMDshiny,print.PCAshiny,print.MCAshiny,print.HCPCshiny)
 
 S3method(print, CAshiny)
 S3method(print, FAMDshiny)

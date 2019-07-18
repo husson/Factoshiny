@@ -1,5 +1,4 @@
 # server script for FAMD2
-shinyServer(
   function(input, output) {
     values=reactive({
     if (input$selecactive==gettext("All")){
@@ -17,12 +16,6 @@ shinyServer(
     }
     else{
 	  suple=which(nom%in%input$indsup)
-      # suple=c()
-      # for (i in 1:length(nom)){
-        # if(nom[i]%in%input$indsup){
-          # suple=c(suple,i)
-        # }
-      # }
     }
     list(res.FAMD=(FAMD(data.selec,sup.var=choixsup,ind.sup=suple,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2)))),DATA=(data.selec),choixsuple=(suple),varsup=(choixsup))
     })
@@ -914,6 +907,5 @@ shinyServer(
     plot.FAMD(values()$res.FAMD,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="quanti",cex=input$cex3,cex.main=input$cex3,cex.axis=input$cex3,title=input$title3,select=selecindiv)
     }
   }
-)
-      
+
 

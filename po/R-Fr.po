@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Factoshiny 1.0.3\n"
 "POT-Creation-Date: 2016-02-03 10:58\n"
-"PO-Revision-Date: 2019-05-28 14:46+0200\n"
+"PO-Revision-Date: 2019-06-24 15:30+0200\n"
 "Last-Translator: husson <husson@agrocampus-ouest.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -12,17 +12,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Language: fr_FR\n"
 
-msgid ""
-"df is not a dataframe, the results of the CAshiny function or a CA result"
+msgid "df is not a dataframe, the results of the CAshiny function or a CA result"
 msgstr "df n'est ni un dataframe ni le résultat de la fonction CAshiny ou CA"
 
 msgid "not enough row/column"
 msgstr "pas assez de lignes/colonnes"
 
-msgid ""
-"df is not a dataframe, the results of the FAMDshiny function or a FAMD result"
-msgstr ""
-"df n'est ni un dataframe ni le résultat de la fonction FAMDshiny ou FAMD"
+msgid "df is not a dataframe, the results of the FAMDshiny function or a FAMD result"
+msgstr "df n'est ni un dataframe ni le résultat de la fonction FAMDshiny ou FAMD"
 
 msgid "Your dataset is not mixed"
 msgstr "Votre jeu de données n'est pas mixte"
@@ -42,8 +39,7 @@ msgstr "df n'est ni un dataframe ni le résultat de la fonction MFA"
 msgid "not enough variables in your dataset"
 msgstr "pas assez de variables dans le jeu de données"
 
-msgid ""
-"df is not a dataframe, the results of the PCAshiny function or a PCA result"
+msgid "df is not a dataframe, the results of the PCAshiny function or a PCA result"
 msgstr "df n'est ni un dataframe ni le résultat de la fonction PCAshiny ou PCA"
 
 msgid "not enough quantitative variables in your dataset"
@@ -248,14 +244,10 @@ msgid "Warning: "
 msgstr "Attention : "
 
 msgid " have NA : they are considered as supplementary columns"
-msgstr ""
-" ont des données manquantes: elles sont considérées commes des colonnes "
-"supplémentaires"
+msgstr " ont des données manquantes: elles sont considérées commes des colonnes supplémentaires"
 
 msgid " have NA : they are considered as supplementary rows"
-msgstr ""
-" ont des données manquantes: elles sont considérées commes des lignes "
-"supplémentaires"
+msgstr " ont des données manquantes: elles sont considérées commes des lignes supplémentaires"
 
 msgid "Not enough active columns"
 msgstr "Pas assez de colonnes actives"
@@ -497,7 +489,7 @@ msgstr "Libellés des individus partiels"
 msgid "Color the variables by group"
 msgstr "Colorier les variables par groupe"
 
-msgid "Color the partial axe by group"
+msgid "Color the partial axes by group"
 msgstr "Colorier les axes partiels par groupe"
 
 msgid "Draw labels for the colonnes"
@@ -753,63 +745,65 @@ msgid "Study of the outliers"
 msgstr "Observation d'individus extrêmes"
 
 msgid ""
-"The analysis of the PCA graphs leads to detect an outlier that strongly "
-"influences the PCA results. "
+"The analysis of the PCA graphs leads to detect an outlier that strongly influences the PCA "
+"results. "
 msgstr ""
-"L'analyse des graphes de l'ACP conduit à détecter un individu singulier qui "
-"influence très fortement les résultats de l'ACP. "
+"L'analyse des graphes de l'ACP conduit à détecter un individu singulier qui influence très "
+"fortement les résultats de l'ACP. "
+
+msgid "First we will describe this outlier and then we will suppress it from the analysis. "
+msgstr ""
+"On soulignera dans un premier temps le caractère extrême de cet individu avant de le retirer "
+"pour procéder à la suite de l'analyse. "
 
 msgid ""
-"First we will describe this outlier and then we will suppress it from the "
-"analysis. "
+"Looking at the graph, we can note that a particular individual strongly contributes to the "
+"construction of the plane. "
 msgstr ""
-"On soulignera dans un premier temps le caractère extrême de cet individu "
-"avant de le retirer pour procéder à la suite de l'analyse. "
-
-msgid ""
-"Looking at the graph, we can note that a particular individual strongly "
-"contributes to the construction of the plane. "
-msgstr ""
-"En observant le graphe, on peut noter qu'un individu est très particulier et "
-"contribue fortement à la construction du plan. "
+"En observant le graphe, on peut noter qu'un individu est très particulier et contribue "
+"fortement à la construction du plan. "
 
 msgid "Its contribution to the construction of the plane equals"
 msgstr "Sa contribution à la construction du plan est de"
 
 msgid ""
-"The analysis of the PCA graphs leads to detect outliers that strongly "
-"influence the PCA results. "
+"The analysis of the PCA graphs leads to detect outliers that strongly influence the PCA "
+"results. "
 msgstr ""
-"L'analyse des graphes de l'ACP conduit à détecter des individus singuliers "
-"qui influencent très fortement les résultats de l'ACP. "
+"L'analyse des graphes de l'ACP conduit à détecter des individus singuliers qui influencent très "
+"fortement les résultats de l'ACP. "
 
-msgid ""
-"First we will describe these outliers and then we will suppress them from "
-"the analysis. "
+msgid "First we will describe these outliers and then we will suppress them from the analysis. "
 msgstr ""
-"On soulignera dans un premier temps le caractère extrême de ces individus "
-"avant de les retirer pour procéder à la suite de l'analyse. "
+"On soulignera dans un premier temps le caractère extrême de ces individus avant de les retirer "
+"pour procéder à la suite de l'analyse. "
 
 msgid "Looking at the graph, we can note that "
 msgstr "En observant le graphe, on peut noter que "
 
-msgid ""
-"particular individuals strongly contribute to the construction of the plane. "
-msgstr ""
-"individus sont particuliers et contribuent fortement à la construction du "
-"plan. "
+msgid "particular individuals strongly contribute to the construction of the plane. "
+msgstr "individus sont particuliers et contribuent fortement à la construction du plan. "
 
-msgid ""
-"The cumulative contribution of these individuals to the construction of the "
-"plane equals"
-msgstr ""
-"La contribution cumulée de ces individus à la construction du plan est de"
+msgid "The cumulative contribution of these individuals to the construction of the plane equals"
+msgstr "La contribution cumulée de ces individus à la construction du plan est de"
 
 msgid "Automatic report in"
 msgstr "Rapport automatique en"
 
 msgid "Perform clustering after leaving PCA app?"
 msgstr "Classification après avoir quitté l'appli d'ACP"
+
+msgid "Perform clustering after leaving FAMD app?"
+msgstr "Classification après avoir quitté l'appli d'AFDM"
+
+msgid "Perform clustering after leaving CA app?"
+msgstr "Classification après avoir quitté l'appli d'AFC"
+
+msgid "Perform clustering after leaving MCA app?"
+msgstr "Classification après avoir quitté l'appli d'ACM"
+
+msgid "Perform clustering after leaving MFA app?"
+msgstr "Classification après avoir quitté l'appli d'AFM"
 
 msgid "The file will be saved in the directory"
 msgstr "Le fichier sera sauvegardé dans le répertoire"
@@ -844,1095 +838,1129 @@ msgstr "Français"
 msgid "Graphical options"
 msgstr "Options graphiques"
 
-#~ msgid "The 1st cluster is made of individuals such as"
-#~ msgstr "La classe 1 contient des individus tels que"
+msgid "The 1st cluster is made of individuals such as"
+msgstr "La classe 1 contient des individus tels que"
 
-#~ msgid "PCA"
-#~ msgstr "ACP"
+msgid "PCA"
+msgstr "ACP"
 
-#~ msgid "CA"
-#~ msgstr "AFC"
+msgid "CA"
+msgstr "AFC"
 
-#~ msgid "CaGalt"
-#~ msgstr "AFCGtla"
+msgid "CaGalt"
+msgstr "AFCGtla"
 
-#~ msgid "MCA"
-#~ msgstr "ACM"
+msgid "MCA"
+msgstr "ACM"
 
-#~ msgid "MFA"
-#~ msgstr "AFM"
+msgid "MFA"
+msgstr "AFM"
 
-#~ msgid "HMFA"
-#~ msgstr "AFMH"
+msgid "HMFA"
+msgstr "AFMH"
 
-#~ msgid "DMFA"
-#~ msgstr "AFMD"
+msgid "DMFA"
+msgstr "AFMD"
 
-#~ msgid "FAMD"
-#~ msgstr "AFDM"
+msgid "FAMD"
+msgstr "AFDM"
 
-#~ msgid "GPA"
-#~ msgstr "APG"
+msgid "GPA"
+msgstr "APG"
 
-#~ msgid "HCPC"
-#~ msgstr "CAH"
+msgid "HCPC"
+msgstr "CAH"
 
-#~ msgid ", 1 quantitative variable is considered as illustrative"
-#~ msgstr ", 1 variable quantitative est illustrative"
+msgid ", 1 quantitative variable is considered as illustrative"
+msgstr ", 1 variable quantitative est illustrative"
 
-#~ msgid "quantitative variables are considered as illustrative"
-#~ msgstr "variables quantitatives sont illustratives"
+msgid "quantitative variables are considered as illustrative"
+msgstr "variables quantitatives sont illustratives"
 
-#~ msgid ", 1 qualitative variable is considered as illustrative"
-#~ msgstr ", 1 variable qualitative est illustrative"
+msgid ", 1 qualitative variable is considered as illustrative"
+msgstr ", 1 variable qualitative est illustrative"
 
-#~ msgid "qualitative variables are considered as illustrative"
-#~ msgstr "variables qualitatives sont illustratives"
+msgid "qualitative variables are considered as illustrative"
+msgstr "variables qualitatives sont illustratives"
 
-#~ msgid ", 1 individual is considered as illustrative"
-#~ msgstr ", 1 individu est illustratif"
+msgid ", 1 individual is considered as illustrative"
+msgstr ", 1 individu est illustratif"
 
-#~ msgid "Correspondence Analysis"
-#~ msgstr "Analyse Factorielle des Correspondances"
+msgid "Correspondence Analysis"
+msgstr "Analyse des Correspondances"
 
-#~ msgid "rows and"
-#~ msgstr "lignes et"
+msgid "rows and"
+msgstr "lignes et"
 
-#~ msgid "columns"
-#~ msgstr "colonnes"
+msgid "columns"
+msgstr "colonnes"
 
-#~ msgid ", 1 row is considered as illustrative"
-#~ msgstr ", 1 ligne est illustrative"
+msgid ", 1 row is considered as illustrative"
+msgstr ", 1 ligne est illustrative"
 
-#~ msgid "rows are considered as illustrative"
-#~ msgstr "lignes sont illustratives"
+msgid "rows are considered as illustrative"
+msgstr "lignes sont illustratives"
 
-#~ msgid ", 1 column is considered as illustrative"
-#~ msgstr "colonne est illustrative"
+msgid ", 1 column is considered as illustrative"
+msgstr "colonne est illustrative"
 
-#~ msgid "columns are considered as illustrative"
-#~ msgstr "colonnes sont illustratives"
+msgid "columns are considered as illustrative"
+msgstr "colonnes sont illustratives"
 
-#~ msgid ""
-#~ ", 1 additional variable is quantitative and considered as illustrative"
-#~ msgstr ", 1 variable quantitative additionnelle est illustrative"
+msgid ", 1 additional variable is quantitative and considered as illustrative"
+msgstr ", 1 variable quantitative additionnelle est illustrative"
 
-#~ msgid "additional variables are quantitative and considered as illustrative"
-#~ msgstr "variables quantitatives additionnelles sont illustratives"
+msgid "additional variables are quantitative and considered as illustrative"
+msgstr "variables quantitatives additionnelles sont illustratives"
 
-#~ msgid ""
-#~ ", 1 additional variable is qualitative and considered as illustrative"
-#~ msgstr ", 1 variable qualitative additionnelle est illustrative"
+msgid ", 1 additional variable is qualitative and considered as illustrative"
+msgstr ", 1 variable qualitative additionnelle est illustrative"
 
-#~ msgid "additional variables are qualitative and considered as illustrative"
-#~ msgstr "variables qualitatives additionnelles sont illustratives"
+msgid "additional variables are qualitative and considered as illustrative"
+msgstr "variables qualitatives additionnelles sont illustratives"
 
-#~ msgid "Multiple Correspondence Analysis"
-#~ msgstr "Analyse des Correspondances Multiples"
+msgid "Multiple Correspondence Analysis"
+msgstr "Analyse des Correspondances Multiples"
 
-#~ msgid ""
-#~ "The analysis of the graphs leads to detect an outlier that strongly "
-#~ "influences the results"
-#~ msgstr ""
-#~ "L'analyse des graphes détecte un individu singulier qui influence très "
-#~ "fortement les résultats observés"
+msgid "Multiple Factor Analysis"
+msgstr "Analyse Factorielle Multiple"
 
-#~ msgid ""
-#~ "First we will describe this outlier and then we will suppress it from the "
-#~ "analysis"
-#~ msgstr ""
-#~ "On soulignera dans un premier temps le caractère extrême de cet individu "
-#~ "avant de le retirer pour procéder à la suite de l'analyse"
+msgid "Factor Analysis on Mixed Data"
+msgstr "Analyse Factorielle de Données Mixtes"
 
-#~ msgid ""
-#~ "Looking at the graph, we can note that a particular individual strongly "
-#~ "contributes to the construction of the plane"
-#~ msgstr ""
-#~ "En observant le graphe, on peut noter qu'un individu est très particulier "
-#~ "et contribue énormément à la construction du plan"
-
-#~ msgid ""
-#~ "The analysis of the graphs leads to detect outliers that strongly "
-#~ "influence the results"
-#~ msgstr ""
-#~ "L'analyse des graphes détecte des individus singuliers qui influencent "
-#~ "très fortement les résultats observés"
-
-#~ msgid ""
-#~ "First we will describe these outliers and then we will suppress them from "
-#~ "the analysis"
-#~ msgstr ""
-#~ "On soulignera dans un premier temps le caractère extrême de ces individus "
-#~ "avant de les retirer pour procéder à la suite de l'analyse"
-
-#~ msgid "Looking at the graph, we can note that"
-#~ msgstr "En observant le graphe, on peut noter que"
-
-#~ msgid ""
-#~ "particular individuals strongly contribute to the construction of the "
-#~ "plane"
-#~ msgstr ""
-#~ "individus sont très particuliers et contribuent énormément à la "
-#~ "construction du plan"
-
-#~ msgid "Individuals factor map (PCA) before correction"
-#~ msgstr "Graphe des individus (ACP) avant correction"
-
-#~ msgid "Highlighting of an outlier"
-#~ msgstr "Mise en évidence d'un individu singulier"
-
-#~ msgid "Highlighting of"
-#~ msgstr "Mise en évidence de"
-
-#~ msgid "outliers"
-#~ msgstr "individus singuliers"
-
-#~ msgid "Individuals factor map (PCA) after correction"
-#~ msgstr "Graphe des individus (ACP) après correction"
-
-#~ msgid "Variables factor map (PCA) before correction"
-#~ msgstr "Graphe des variables (ACP) avant correction"
-
-#~ msgid "Variables factor map (PCA) after correction"
-#~ msgstr "Graphe des variables (ACP) après correction"
-
-#~ msgid ""
-#~ "The variables in black are considered as active whereas those in blue are "
-#~ "illustrative"
-#~ msgstr ""
-#~ "Les variables en noir sont les variables actives, celles en bleu sont les "
-#~ "variables quantitatives supplémentaires (illustratives)"
-
-#~ msgid "The individual"
-#~ msgstr "L'individu"
-
-#~ msgid "takes very high values for the variable(s)"
-#~ msgstr "prend de très fortes valeurs pour le(s) variable(s)"
-
-#~ msgid "variables are sorted from the strongest"
-#~ msgstr "de la plus extrême à la moins extrême"
-
-#~ msgid "variables are sorted from the weakest"
-#~ msgstr "de la plus extrême à la moins extrême"
-
-#~ msgid "takes very low values for the variable(s)"
-#~ msgstr "prend de très faibles valeurs pour les variables"
-
-#~ msgid ""
-#~ "This outlier is suppressed from the analysis and a second one is "
-#~ "performed on the rest of the individuals"
-#~ msgstr ""
-#~ "Après avoir éliminé cet individu singulier, on peut explorer le reste des "
-#~ "individus par une seconde analyse"
-
-#~ msgid ""
-#~ "These outliers are suppressed from the analysis and a second one is "
-#~ "performed on the rest of the individuals"
-#~ msgstr ""
-#~ "Après avoir éliminé ces individus singuliers, on peut explorer le reste "
-#~ "des individus par une seconde analyse"
-
-#~ msgid "Individuals factor map (MCA) before correction"
-#~ msgstr "Graphe des individus (ACM) avant correction"
-
-#~ msgid "Individuals factor map (MCA) after correction"
-#~ msgstr "Graphe des individus (ACM) après correction"
-
-#~ msgid "Variables factor map (MCA) before correction"
-#~ msgstr "Graphe des variables (ACM) avant correction"
-
-#~ msgid "Variables factor map (MCA) after correction"
-#~ msgstr "Graphe des variables (ACM) après correction"
-
-#~ msgid ""
-#~ "The factors in red are considered as active whereas those in green are "
-#~ "illustrative"
-#~ msgstr ""
-#~ "Les facteurs en rouges sont les modalités actives, tandis que ceux en "
-#~ "vert sont les modalités illustratives"
-
-#~ msgid "is characterized by the factor(s)"
-#~ msgstr "est caractérisé par le(s) facteur(s)"
-
-#~ msgid "factors are sorted from the most common"
-#~ msgstr "du plus commun au plus rare"
-
-#~ msgid "factors are sorted from the rarest"
-#~ msgstr "du plus rare au plus commun"
-
-#~ msgid "The analysis of the graphs does not detect any outlier"
-#~ msgstr "L'analyse des graphes ne révèle aucun individu singulier"
-
-#~ msgid ""
-#~ "The inertia of the first dimensions shows if there are strong "
-#~ "relationships between variables and suggests the number of dimensions "
-#~ "that should be studied"
-#~ msgstr ""
-#~ "L'inertie des axes factoriels indique d'une part si les variables sont "
-#~ "structurées et suggère d'autre part le nombre judicieux de composantes "
-#~ "principales à étudier"
-
-#~ msgid "The first two dimensions of"
-#~ msgstr "Les 2 premiers axes de l'"
-
-#~ msgid "express"
-#~ msgstr "expriment"
-
-#~ msgid "of the total dataset inertia"
-#~ msgstr "de l'inertie totale du jeu de données"
-
-#~ msgid "that means that"
-#~ msgstr "cela signifie que"
-
-#~ msgid ""
-#~ "of the individuals (or variables) cloud total variability is explained by "
-#~ "the plane"
-#~ msgstr ""
-#~ "de la variabilité totale du nuage des individus (ou des variables) est "
-#~ "représentée dans ce plan"
-
-#~ msgid ""
-#~ "of the rows (or columns) cloud total variability is explained by the plane"
-#~ msgstr ""
-#~ "de la variabilité totale du nuage des lignes (ou des colonnes) est "
-#~ "représentée dans ce plan"
-
-#~ msgid "the reference value is the"
-#~ msgstr "cette intertie de référence est le quantile"
-
-#~ msgid ""
-#~ "-quantile of the inertia percentages distribution obtained by simulating"
-#~ msgstr " de la distribution des pourcentages d'inertie obtenus en simulant"
-
-#~ msgid "data tables of equivalent size on the basis of a normal distribution"
-#~ msgstr ""
-#~ "jeux de données aléatoires de dimensions comparables sur la base d'une "
-#~ "distribution normale"
-
-#~ msgid ""
-#~ "data tables of equivalent size on the basis of a uniform distribution"
-#~ msgstr ""
-#~ "jeux de données aléatoires de dimensions comparables sur la base d'une "
-#~ "distribution uniforme"
-
-#~ msgid "This value is strongly greater than the reference value that equals"
-#~ msgstr "Cette valeur est nettement supérieure à la valeur référence de"
-
-#~ msgid "the variability explained by this plane is thus highly significant"
-#~ msgstr ""
-#~ "la variabilité expliquée par ce plan est donc hautement significative"
-
-#~ msgid "This value is greater than the reference value that equals"
-#~ msgstr "Cette valeur est supérieure à la valeur référence de"
-
-#~ msgid "the variability explained by this plane is thus significant"
-#~ msgstr "la variabilité expliquée par ce plan est donc significative"
-
-#~ msgid ""
-#~ "This percentage is particularly high and thus the first plane perfectly "
-#~ "represents the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage extrêmement élevé, et le premier plan représente "
-#~ "donc parfaitement bien la variabilité contenue dans l'ensemble du jeu de "
-#~ "données actif"
-
-#~ msgid ""
-#~ "From these observations, it is absolutely not necessary to interpret the "
-#~ "next dimensions"
-#~ msgstr ""
-#~ "Du fait de ces observations, il n'est absolument pas nécessaire pour "
-#~ "l'analyse d'interpréter les dimensions suivantes"
-
-#~ msgid ""
-#~ "This percentage is very high and thus the first plane represents very "
-#~ "well the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage très élevé, et le premier plan représente donc "
-#~ "extrêmement bien la variabilité contenue dans l'ensemble du jeu de "
-#~ "données actif"
-
-#~ msgid ""
-#~ "From these observations, it is not necessary to interpret the next "
-#~ "dimensions"
-#~ msgstr ""
-#~ "Du fait de ces observations, il n'est pas nécessaire pour l'analyse "
-#~ "d'interpréter les dimensions suivantes"
-
-#~ msgid ""
-#~ "This percentage is high and thus the first plane represents an important "
-#~ "part of the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage élevé, et le premier plan représente donc bien la "
-#~ "variabilité contenue dans une très large part du jeu de données actif"
-
-#~ msgid ""
-#~ "From these observations, it is probably not useful to interpret the next "
-#~ "dimensions"
-#~ msgstr ""
-#~ "Du fait de ces observations, il n'est probablement pas nécessaire pour "
-#~ "l'analyse d'interpréter les dimensions suivantes"
-
-#~ msgid ""
-#~ "This percentage is relatively high and thus the first plane well "
-#~ "represents the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage assez important, et le premier plan représente donc "
-#~ "convenablement la variabilité contenue dans une grande part du jeu de "
-#~ "données actif"
-
-#~ msgid ""
-#~ "From these observations, it should be better to also interpret the "
-#~ "dimensions greater or equal to the third one"
-#~ msgstr ""
-#~ "Du fait de ces observations, il serait tout de même probablement "
-#~ "préférable de considérer également dans l'analyse les dimensions "
-#~ "supérieures ou égales à la troisième"
-
-#~ msgid ""
-#~ "This is an intermediate percentage and the first plane represents a part "
-#~ "of the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage relativement moyen, et le premier plan représente "
-#~ "donc seulement une part de la variabilité contenue dans l'ensemble du jeu "
-#~ "de données actif"
-
-#~ msgid ""
-#~ "From these observations, it may be interesting to consider the next "
-#~ "dimensions which also express a high percentage of the total inertia"
-#~ msgstr ""
-#~ "Du fait de ces observations, il serait alors probablement nécessaire de "
-#~ "considérer également les dimensions supérieures ou égales à la troisième  "
-#~ "dans l'analyse"
-
-#~ msgid ""
-#~ "This is a small percentage and the first plane just represents a part of "
-#~ "the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage relativement faible, et le premier plan ne "
-#~ "représente donc seulement qu'une part de la variabilité contenue dans "
-#~ "l'ensemble du jeu de données actif"
-
-#~ msgid ""
-#~ "From these observations, it is interesting to consider the next "
-#~ "dimensions which also express a high percentage of the total inertia"
-#~ msgstr ""
-#~ "Du fait de ces observations, il serait alors très probablement nécessaire "
-#~ "de considérer également les dimensions supérieures ou égales à la "
-#~ "troisième  dans l'analyse"
-
-#~ msgid ""
-#~ "This is a very small percentage and the first plane represents a small "
-#~ "part of the data variability"
-#~ msgstr ""
-#~ "C'est un pourcentage très faible, et le premier plan ne représente donc "
-#~ "seulement qu'une part de la variabilité contenue dans l'ensemble du jeu "
-#~ "de données actif"
-
-#~ msgid ""
-#~ "From these observations, it is important to also interpret the dimensions "
-#~ "greater or equal to the third one"
-#~ msgstr ""
-#~ "Du fait de ces observations, il serait alors certainement nécessaire de "
-#~ "considérer également les dimensions supérieures ou égales à la troisième  "
-#~ "dans l'analyse"
-
-#~ msgid ""
-#~ "The inertia observed on the first plane is smaller than the reference "
-#~ "value that equals"
-#~ msgstr ""
-#~ "L'inertie observée sur le premier plan factoriel est inférieure à la "
-#~ "valeur référence de"
-
-#~ msgid "therefore low in comparison"
-#~ msgstr "et donc faible en comparaison"
-
-#~ msgid ""
-#~ "However, the inertia related to the first dimension is greater than the "
-#~ "reference value"
-#~ msgstr ""
-#~ "Toutefois, l'inertie observée sur la première composante principale est "
-#~ "supérieure à la référence de"
-
-#~ msgid ""
-#~ "Even if the inertia projected on the first plane is not significant, "
-#~ "these explained by the first dimension is significant"
-#~ msgstr ""
-#~ "Bien que la significativité de l'inertie projetée sur le plan soit "
-#~ "insuffisante, celle expliquée par le premier axe est malgré tout "
-#~ "significative"
-
-#~ msgid ""
-#~ "Moreover, the inertia projected on the first dimension is smaller than "
-#~ "the reference value"
-#~ msgstr ""
-#~ "De plus, l'inertie observée sur la première composante principale est "
-#~ "inférieure à la valeur de référence"
-
-#~ msgid "The variability expressed by the"
-#~ msgstr "La variabilité exprimée par l'"
-
-#~ msgid "is thus **not** significant"
-#~ msgstr "**n'est donc pas** significative"
-
-#~ msgid "The variability expressed by the HCPC is thus **not** significant"
-#~ msgstr "La variabilité exprimée par la CAH **n'est donc pas** significative"
-
-#~ msgid "Decomposition of the total inertia on the components of the "
-#~ msgstr "Distribution de l'inertie sur les composantes de l'"
-
-#~ msgid "Decomposition of the total inertia on the components of the HCPC"
-#~ msgstr "Distribution de l'inertie sur les composantes de la CAH"
-
-#~ msgid "The first factor is largely dominant: it expresses itself"
-#~ msgstr ""
-#~ "Le premier facteur est largement prépondérant : il explique a lui seul"
-
-#~ msgid "of the data variability"
-#~ msgstr "de la variabilité totale des données"
-
-#~ msgid ""
-#~ "Note that in such a case, the variability related to the other components "
-#~ "might be meaningless, despite of a high percentage"
-#~ msgstr ""
-#~ "Il convient de noter que dans un tel cas, la variabilité liée aux autres "
-#~ "composantes peut être dénuée de sens, en dépit d'un pourcentage élevé"
-
-#~ msgid "The first factor is major: it expresses itself"
-#~ msgstr "Le premier facteur est prépondérant : il explique a lui seul"
-
-#~ msgid "Comparison between the observed inertia and the"
-#~ msgstr "Comparaison entre l'inertie observée et le quantile"
-
-#~ msgid "-quantile of inertia obtained from"
-#~ msgstr "de l'inertie issue de"
-
-#~ msgid "random distributions"
-#~ msgstr "distributions aléatoires des données"
-
-#~ msgid ""
-#~ "An estimation of the right number of axis to interpret suggests to not "
-#~ "interpret the analysis at all"
-#~ msgstr ""
-#~ "Une estimation du nombre pertinent d'axes à interpréter suggère de "
-#~ "n'interpréter aucun"
-
-#~ msgid ""
-#~ "Indeed, the amount of inertia of the first axis is not higher than that "
-#~ "obtained by the"
-#~ msgstr ""
-#~ "En effet, le taux d'inertie de la première composante n'est pas supérieur "
-#~ "à celui du quantile"
-
-#~ msgid ""
-#~ "This observation suggests that no axis is carrying a real information"
-#~ msgstr ""
-#~ "Cette observation suggère qu'aucun axe n'est porteur d'une véritable "
-#~ "information"
-
-#~ msgid ""
-#~ "An estimation of the right number of axis to interpret suggests to "
-#~ "restrict the analysis to the description of the first"
-#~ msgstr ""
-#~ "Une estimation du nombre pertinent d'axes à interpréter suggère de "
-#~ "restreindre l'analyse à la description des"
-
-#~ msgid "axis"
-#~ msgstr "premiers axes"
-
-#~ msgid ""
-#~ "These axis present an amount of inertia greater than those obtained by the"
-#~ msgstr ""
-#~ "Ces composantes révèlent un taux d'inertie supérieur à celle du quantile"
-
-#~ msgid "-quantile of random distributions"
-#~ msgstr " de distributions aléatoires"
-
-#~ msgid "against"
-#~ msgstr "contre"
-
-#~ msgid ""
-#~ "This observation suggests that only these axis are carrying a real "
-#~ "information"
-#~ msgstr ""
-#~ "Cette observation suggère que seuls ces axes sont porteurs d'une "
-#~ "véritable information"
-
-#~ msgid ""
-#~ "This observation suggests that only this axis is carrying a real "
-#~ "information"
-#~ msgstr ""
-#~ "Cette observation suggère que seul cet axe est porteur d'une véritable "
-#~ "information"
-
-#~ msgid "As a consequence, the description will stand to these axis"
-#~ msgstr ""
-#~ "En conséquence, la description de l'analyse sera restreinte à ces seuls "
-#~ "axes"
-
-#~ msgid "We can observe that the first"
-#~ msgstr "On observe que les"
-
-#~ msgid "axis present an amount of inertia greater than those obtained by the"
-#~ msgstr ""
-#~ "premières composantes révèlent un taux d'inertie supérieur à celle du "
-#~ "quantile"
-
-#~ msgid ""
-#~ "Thus, a wise decision would be to restrict the description to these only "
-#~ "axis"
-#~ msgstr ""
-#~ "De fait, il serait raisonnable de restreindre l'analyse à ces seules "
-#~ "composantes"
-
-#~ msgid "However, we choosed to describe the first"
-#~ msgstr "Cependant, nous avons choisi de décrire les"
-
-#~ msgid "The labeled individuals are those numbered"
-#~ msgstr "Les individus libellés sont ceux numérotés"
-
-#~ msgid "The labeled variables are those numbered"
-#~ msgstr "Les variables libellées sont celles numérotées"
-
-#~ msgid "The labeled factors are those numbered"
-#~ msgstr "Les facteurs libellés sont ceux numérotés"
-
-#~ msgid ""
-#~ "The labeled individuals are those with the higher contribution to the "
-#~ "plane construction"
-#~ msgstr ""
-#~ "Les individus libellés sont ceux ayant la plus grande contribution à la "
-#~ "construction du plan"
-
-#~ msgid ""
-#~ "The labeled variables are those with the higher contribution to the plane "
-#~ "construction"
-#~ msgstr ""
-#~ "Les variables libellées sont celles ayant la plus grande contribution à "
-#~ "la construction du plan"
-
-#~ msgid "The labeled individuals are those the best shown on the plane"
-#~ msgstr "Les individus libellés sont ceux les mieux représentés sur le plan"
-
-#~ msgid "The labeled variables are those the best shown on the plane"
-#~ msgstr ""
-#~ "Les variables libellées sont celles les mieux représentées sur le plan"
-
-#~ msgid "The labeled factors are those the best shown on the plane"
-#~ msgstr "Les facteurs libellés sont ceux les mieux représentés sur le plan"
-
-#~ msgid "The labeled individuals are those named"
-#~ msgstr "Les individus libellés sont ceux nommés"
-
-#~ msgid "The labeled variables are those named"
-#~ msgstr "Les variables libellées sont celles nommées"
-
-#~ msgid "The labeled factors are those named"
-#~ msgstr "Les facteurs libellés sont ceux nommés"
-
-#~ msgid "The labeled columns are those numbered"
-#~ msgstr "Les colonnes libellées sont celles numérotées"
-
-#~ msgid ""
-#~ "The labeled rows are those with the higher contribution to the plane "
-#~ "construction"
-#~ msgstr ""
-#~ "Les lignes libellées sont celles ayant la plus grande contribution à la "
-#~ "construction du plan"
-
-#~ msgid ""
-#~ "The labeled columns are those with the higher contribution to the plane "
-#~ "construction"
-#~ msgstr ""
-#~ "Les colonnes libellées sont celles ayant la plus grande contribution à la "
-#~ "construction du plan"
-
-#~ msgid "The labeled rows are those the best shown on the plane"
-#~ msgstr "Les lignes libellées sont celles les mieux représentées sur le plan"
-
-#~ msgid "The labeled columns are those the best shown on the plane"
-#~ msgstr ""
-#~ "Les colonnes libellées sont celles les mieux représentées sur le plan"
-
-#~ msgid "The labeled rows are those named"
-#~ msgstr "Les lignes libellées sont celles nommées"
-
-#~ msgid "The labeled columns are those named"
-#~ msgstr "Les colonnes libellées sont celles nommées"
-
-#~ msgid "Individuals factor map (MCA)"
-#~ msgstr "Graphe des individus (ACM)"
-
-#~ msgid ""
-#~ "The individuals in light blue are considered as active whereas the "
-#~ "individuals in dark blue are illustrative"
-#~ msgstr ""
-#~ "Les individus en bleu clair sont les individus actifs, ceux en bleu foncé "
-#~ "sont les individus supplémentaires (illustratifs)"
-
-#~ msgid ""
-#~ "The Wilks test p-value indicates which variable factors are the best "
-#~ "separated on the plane"
-#~ msgstr ""
-#~ "La probabilité critique du test de Wilks indique la variable dont les "
-#~ "modalités sépare au mieux les individus sur le plan"
-
-#~ msgid "i.e. which one explain the best the distance between individuals"
-#~ msgstr "i.e. qui explique au mieux les distances entre individus"
-
-#~ msgid ""
-#~ "There only is one possible qualitative variable to illustrate the "
-#~ "distance between individuals"
-#~ msgstr ""
-#~ "Il n'y a qu'une unique variable qualitative possible pour illustrer les "
-#~ "distances entre individus"
-
-#~ msgid ""
-#~ "The best qualitative variable to illustrate the distance between "
-#~ "individuals on this plane is"
-#~ msgstr ""
-#~ "La meilleure variable qualitative pour illustrer les distances entre "
-#~ "individus sur le plan est la variable"
-
-#~ msgid "Many qualitative variables have a Wilks p-value equal to zero"
-#~ msgstr ""
-#~ "Plusieurs variables qualitatives présentent une probabilité critique du "
-#~ "test de Wilks égale à zéro"
-
-#~ msgid ""
-#~ "To arbitrate which one to select, we need to compare their statistic value"
-#~ msgstr ""
-#~ "Pour choisir laquelle retenir, on compare donc les valeurs de leur "
-#~ "statistique de test"
-
-#~ msgid "The qualitative variables"
-#~ msgstr "Les variables qualitatives"
-
-#~ msgid ""
-#~ "cannot separate the individuals on the plane, cause they are unimodal"
-#~ msgstr ""
-#~ "ne peuvent séparer les individus sur le plan, car elles sont unimodales"
-
-#~ msgid "Here, the qualitative variable selected is"
-#~ msgstr "La variable qualitative retenue ici est la variable"
-
-#~ msgid "The variable"
-#~ msgstr "La variable"
-
-#~ msgid "cannot be selected to illustrate the plane"
-#~ msgstr "ne peut être utilisée pour illustrer le plan"
-
-#~ msgid ""
-#~ "The italic individuals represented by an empty circle are the "
-#~ "illustrative ones, those represented by a point are the active ones"
-#~ msgstr ""
-#~ "Les individus en italique représentés par un cercle vide sont les "
-#~ "individus supplémentaires (illustratifs), ceux représentés par un point "
-#~ "sont les individus actifs"
-
-#~ msgid "The individuals are coloured after their category for the variable"
-#~ msgstr ""
-#~ "Les individus sont colorés selon leur appartenance aux modalités de la "
-#~ "variable"
-
-#~ msgid "Overlayed factor map (CA)"
-#~ msgstr "Graphe superposé (AFC)"
-
-#~ msgid "Variables factor map (MCA)"
-#~ msgstr "Graphe des variables (ACM)"
-
-#~ msgid ""
-#~ "The rows in light blue are considered as active whereas those in dark "
-#~ "blue are illustrative"
-#~ msgstr ""
-#~ "Les lignes en bleu clair sont les lignes en actif, celles en bleu foncé "
-#~ "sont les lignes supplémentaires (illustratives)"
-
-#~ msgid ""
-#~ "The columns in light red are considered as active whereas those in dark "
-#~ "red are illustrative"
-#~ msgstr ""
-#~ "Les colonnes en rouge clair sont les colonnes en actif, celles en rouge "
-#~ "foncé sont les colonnes supplémentaires (illustratives)"
-
-#~ msgid "Qualitative factor map (PCA)"
-#~ msgstr "Graphe des modalités (ACP)"
-
-#~ msgid "Quantitative factor map (CA)"
-#~ msgstr "Graphe des variables quantitatives (AFC)"
-
-#~ msgid "Quantitative factor map (MCA)"
-#~ msgstr "Graphe des variables quantitatives (ACM)"
-
-#~ msgid "The **dimension"
-#~ msgstr "La **dimension"
-
-#~ msgid "opposes individuals such as"
-#~ msgstr "oppose des individus tels que"
-
-#~ msgid "* and *"
-#~ msgstr "* et *"
-
-#~ msgid ""
-#~ "to the right of the graph, characterized by a strongly positive "
-#~ "coordinate on the axis"
-#~ msgstr ""
-#~ "à droite du graphe, caractérisés par une coordonnée fortement positive "
-#~ "sur l'axe"
-
-#~ msgid "to individuals such as"
-#~ msgstr "à des individus comme"
-
-#~ msgid ""
-#~ "to the left of the graph, characterized by a strongly negative coordinate "
-#~ "on the axis"
-#~ msgstr ""
-#~ "à gauche du graphe, caractérisés par une coordonnée fortement négative "
-#~ "sur l'axe"
-
-#~ msgid ""
-#~ "to individuals characterized by a strongly negative coordinate on the axis"
-#~ msgstr ""
-#~ "à des individus caractérisés par une coordonnée fortement négative sur "
-#~ "l'axe"
-
-#~ msgid "to the left of the graph"
-#~ msgstr "à gauche du graphe"
-
-#~ msgid "particularly distinguishes individuals such as"
-#~ msgstr "distingue particulièrement des individus tels que"
-
-#~ msgid ""
-#~ "opposes individuals characterized by a strongly positive coordinate on "
-#~ "the axis"
-#~ msgstr ""
-#~ "oppose des individus caractérisés par une coordonnée fortement positive "
-#~ "sur l'axe"
-
-#~ msgid "to the right of the graph"
-#~ msgstr "à droite du graphe"
-
-#~ msgid ""
-#~ "particularly distinguishes individuals characterized by a strongly "
-#~ "positive coordinate on the axis"
-#~ msgstr ""
-#~ "distingue particulièrement des individus caractérisés par une coordonnée "
-#~ "fortement positive sur l'axe"
-
-#~ msgid ""
-#~ "particularly distinguishes individuals characterized by a strongly "
-#~ "negative coordinate on the axis"
-#~ msgstr ""
-#~ "distingue particulièrement des individus caractérisés par une coordonnée "
-#~ "fortement négative sur l'axe"
-
-#~ msgid "does not sufficiently discriminate individuals"
-#~ msgstr "ne permet pas de discriminer suffisemment les individus"
-
-#~ msgid ""
-#~ "to the top of the graph, characterized by a strongly positive coordinate "
-#~ "on the axis"
-#~ msgstr ""
-#~ "en haut du graphe, caractérisés par une coordonnées fortement positive "
-#~ "sur l'axe"
-
-#~ msgid ""
-#~ "to the bottom of the graph, characterized by a strongly negative "
-#~ "coordinate on the axis"
-#~ msgstr ""
-#~ "en bas du graphe, caractérisés par une coordonnées fortement négative sur "
-#~ "l'axe"
-
-#~ msgid "to the bottom of the graph"
-#~ msgstr "en bas du graphe"
-
-#~ msgid "to the top of the graph"
-#~ msgstr "en haut du graphe"
-
-#~ msgid "These individuals form a group sharing"
-#~ msgstr "Ces individus forment un groupe partageant"
-
-#~ msgid "The individuals"
-#~ msgstr "Les individus"
-
-#~ msgid "The group"
-#~ msgstr "Le groupe"
-
-#~ msgid "The group in which the individual"
-#~ msgstr "Le groupe auquel l'individu"
-
-#~ msgid "The group in which the individuals"
-#~ msgstr "Le groupe auquel les individus"
-
-#~ msgid "The group in which the factor"
-#~ msgstr "Le groupe auquel le facteur"
-
-#~ msgid "The group in which the factors"
-#~ msgstr "Le groupe auquel les facteurs"
-
-#~ msgid "stands"
-#~ msgstr "appartient"
-
-#~ msgid "stand"
-#~ msgstr "appartiennent"
-
-#~ msgid "characterized by a positive coordinate on the axis"
-#~ msgstr "caractérisés par une coordonnée positive sur l'axe"
-
-#~ msgid "characterized by a negative coordinate on the axis"
-#~ msgstr "caractérisés par une coordonnées négative sur l'axe"
-
-#~ msgid "form a group sharing"
-#~ msgstr "forment un groupe partageant"
-
-#~ msgid "high values for the variable"
-#~ msgstr "de fortes valeurs pour la variable"
-
-#~ msgid "high values for the variables"
-#~ msgstr "de fortes valeurs pour les variables"
-
-#~ msgid "high values for variables like"
-#~ msgstr "de fortes valeurs pour des variables telles que"
-
-#~ msgid "low values for the variable"
-#~ msgstr "de faibles valeurs pour la variable"
-
-#~ msgid "low values for the variables"
-#~ msgstr "de faibles valeurs pour les variables"
-
-#~ msgid "low values for variables like"
-#~ msgstr "de faibles valeurs pour des variables telles que"
-
-#~ msgid "variables whose values do not differ significantly from the mean"
-#~ msgstr ""
-#~ "des variables dont les valeurs ne diffèrent pas significativement de la "
-#~ "moyenne"
-
-#~ msgid "Note that the variable"
-#~ msgstr "Notons que la variable"
-
-#~ msgid "Note that the factor"
-#~ msgstr "Notons que le facteur"
-
-#~ msgid "is highly correlated with this dimension (correlation of"
-#~ msgstr "est extrêmement corrélée à cette dimension (corrélation de"
-
-#~ msgid "is highly correlated with the dimension (correlation of"
-#~ msgstr "est extrêmement corrélé à cette dimension (corrélation de"
-
-#~ msgid "This variable could therefore summarize itself the dimension"
-#~ msgstr "Cette variable pourrait donc résumer à elle seule la dimension"
-
-#~ msgid "This factor could therefore summarize itself the dimension"
-#~ msgstr "Ce facteur pourrait donc résumer à lui seul la dimension"
-
-#~ msgid "Note that the variables"
-#~ msgstr "Notons que les variables"
-
-#~ msgid "Note that the factors"
-#~ msgstr "Notons que les facteurs"
-
-#~ msgid "are highly correlated with this dimension (respective correlation of"
-#~ msgstr ""
-#~ "sont extrêmement corrélées à cette dimension (corrélations respectives de"
-
-#~ msgid "are highly correlated with the dimension (respective correlation of"
-#~ msgstr ""
-#~ "sont extrêmement corrélés à cette dimension (corrélations respectives de"
-
-#~ msgid "These variables could therefore summarize themselve the dimension"
-#~ msgstr "Ces variables pourraient donc résumer à elles seules la dimension"
-
-#~ msgid "These factors could therefore summarize themselve the dimension"
-#~ msgstr "Ces facteurs pourraient donc résumer à eux seuls la dimension"
-
-#~ msgid "opposes factors such as"
-#~ msgstr "oppose des facteurs tels que"
-
-#~ msgid "to factors such as"
-#~ msgstr "à des facteurs comme"
-
-#~ msgid ""
-#~ "to factors characterized by a strongly negative coordinate on the axis"
-#~ msgstr ""
-#~ "à des facteurs caractérisés par une coordonnée fortement positive sur "
-#~ "l'axe"
-
-#~ msgid "particularly distinguishes factors such as"
-#~ msgstr "distingue particulièrement des facteurs tels que"
-
-#~ msgid ""
-#~ "opposes factors characterized by a strongly positive coordinate on the "
-#~ "axis"
-#~ msgstr ""
-#~ "oppose des facteurs caractérisés par une coordonnée fortement positive "
-#~ "sur l'axe"
-
-#~ msgid ""
-#~ "particularly distinguishes factors characterized by a strongly positive "
-#~ "coordinate on the axis"
-#~ msgstr ""
-#~ "distingue particulièrement des facteurs caractérisés par une coordonnée "
-#~ "fortement positive sur l'axe"
-
-#~ msgid ""
-#~ "particularly distinguishes factors characterized by a strongly negative "
-#~ "coordinate on the axis"
-#~ msgstr ""
-#~ "distingue particulièrement des facteurs caractérisés par une coordonnée "
-#~ "fortement négative sur l'axe"
-
-#~ msgid "does not sufficiently discriminate factors"
-#~ msgstr "ne permet pas de discriminer suffisemment les facteurs"
-
-#~ msgid "These factors form a group sharing"
-#~ msgstr "Ces facteurs forment un groupe partageant"
-
-#~ msgid "The factors"
-#~ msgstr "Les facteurs"
-
-#~ msgid "high frequency for the factor"
-#~ msgstr "une forte fréquence de la modalité"
-
-#~ msgid "high frequency for the factors"
-#~ msgstr "une forte fréquence des modalités"
-
-#~ msgid "high frequency for factors like"
-#~ msgstr "une forte fréquence des modalités telles que"
-
-#~ msgid "low frequency for the factor"
-#~ msgstr "une faible fréquence de la modalité"
-
-#~ msgid "low frequency for the factors"
-#~ msgstr "une faible fréquence des modalités"
-
-#~ msgid "low frequency for factors like"
-#~ msgstr "une faible fréquence des modalités telles que"
-
-#~ msgid "Ascending Hierarchical Classification of the individuals"
-#~ msgstr "Classification Ascendante Hiérachique des individus"
-
-#~ msgid "The classification made on individuals reveals"
-#~ msgstr "La classification réalisée sur les individus fait apparaître"
-
-#~ msgid "The **cluster"
-#~ msgstr "La **classe"
-
-#~ msgid "is made of individuals such as"
-#~ msgstr "est composée d'individus tels que"
-
-#~ msgid "is made of individuals sharing"
-#~ msgstr "est composé d'individus partageant"
-
-#~ msgid "Ascending Hierachical Classification of the rows"
-#~ msgstr "Classification Ascendante Hiérachique des lignes"
-
-#~ msgid "The classification made on rows reveals"
-#~ msgstr "La classification réalisée sur les lignes fait apparaître"
-
-#~ msgid "The 1st cluster is made of rows such as"
-#~ msgstr "La classe 1 est composée de lignes telles que"
-
-#~ msgid "is made of rows such as"
-#~ msgstr "est composée de lignes telles que"
-
-#~ msgid "is made of rows sharing"
-#~ msgstr "est composée de lignes partageant"
-
-#~ msgid "This group is characterized by"
-#~ msgstr "Ce groupe est caractérisé par"
-
-#~ msgid "factors whose frequency does not differ significantly from the mean"
-#~ msgstr ""
-#~ "des modalité dont la fréquence ne diffèrent pas significativement de la "
-#~ "moyenne"
-
-#~ msgid "Inertia distribution"
-#~ msgstr "Distribution de l'inertie"
-
-#~ msgid "Description of the plane"
-#~ msgstr "Description du plan"
-
-#~ msgid "Description of the dimension"
-#~ msgstr "Description de la dimension"
-
-#~ msgid "List of variables characterizing the dimensions of the analysis"
-#~ msgstr "Liste des variables caractéristiques des dimensions de l'analyse"
-
-#~ msgid "List of variables characterizing the clusters of the classification"
-#~ msgstr ""
-#~ "Liste des variables caractéristiques des clusters de la classification"
-
-#~ msgid "Script used to produce this document"
-#~ msgstr "Script utilisé pour la réalisation de ce document"
-
-#~ msgid "The cluster"
-#~ msgstr "La classe"
-
-#~ msgid "clusters"
-#~ msgstr "classes"
-
-#~ msgid "This interpretation of the results was carried out automatically"
-#~ msgstr ""
-#~ "Cette interprétation des résultats a été réalisée de façon automatique"
-
-#~ msgid "it cannot match the quality of a personal interpretation"
-#~ msgstr ""
-#~ "elle ne peut en aucun cas égaler la qualité d'une interprétation "
-#~ "personnalisée"
-
-#~ msgid "The dataset is too large to perform the classification"
-#~ msgstr ""
-#~ "Le jeu de données est trop volumineux pour réaliser la classification"
-
-#~ msgid "creation of the .Rmd file"
-#~ msgstr "création du fichier .Rmd"
-
-#~ msgid "time spent"
-#~ msgstr "temps écoulé"
-
-#~ msgid "detection of outliers"
-#~ msgstr "détection d'individus singuliers"
-
-#~ msgid "outlier(s) terminated"
-#~ msgstr "anomalie(s) éliminée(s)"
-
-#~ msgid "analysis of the inertia"
-#~ msgstr "analyse de l'inertie"
-
-#~ msgid "component(s) carrying information"
-#~ msgstr "composante(s) porteuse(s) d'information"
-
-#~ msgid "total inertia of"
-#~ msgstr "inertie totale de"
-
-#~ msgid "components description"
-#~ msgstr "description des composantes"
-
-#~ msgid "plane"
-#~ msgstr "plan"
-
-#~ msgid "classification"
-#~ msgstr "classification"
-
-#~ msgid "annexes writing"
-#~ msgstr "rédaction des annexes"
-
-#~ msgid "saving data"
-#~ msgstr "sauvegarde des données"
-
-#~ msgid "outputs compilation"
-#~ msgstr "compilation des documents"
-
-#~ msgid "task completed"
-#~ msgstr "tâche terminée"
-
-#~ msgid "The detection of outliers does not apply to CA results"
-#~ msgstr "La détection des individus extrêmes ne s'applique pas à l'AFC"
-
-#~ msgid "The detection of outliers does not apply to CaGalt results"
-#~ msgstr ""
-#~ "La détection des individus extrêmes ne s'applique pas à l'AFC de données "
-#~ "textuelles"
-
-#~ msgid "is sharing"
-#~ msgstr "partage"
+msgid "Clustering"
+msgstr "Classification"
+
+msgid "Help on PCA"
+msgstr "Aide sur l'ACP"
+
+msgid "Help on CA"
+msgstr "Aide sur l'AFC"
+
+msgid "Help on MCA"
+msgstr "Aide sur l'ACM"
+
+msgid "Help on MFA"
+msgstr "Aide sur l'AFM"
+
+msgid "Help on FAMD"
+msgstr "Aide sur l'AFDM"
+
+msgid "Help on clustering"
+msgstr "Aide sur la classification"
+
+msgid "Help on this method"
+msgstr "Aide sur cette méthode"
+
+msgid "Run"
+msgstr "Lancer"
+
+msgid "Help"
+msgstr "Aide"
+
+msgid "Dataset description"
+msgstr "Description du jeu de données"
+
+msgid "Choice of the method"
+msgstr "Choix de la méthode"
+
+msgid "FactoMineR website"
+msgstr "Site de FactoMineR"
+
+msgid "Factoshiny website"
+msgstr "Site de Factoshiny"
+
+msgid "Factoshiny interface"
+msgstr "Interface Factoshiny"
+
+msgid "Choose your method"
+msgstr "Choix de votre méthode"
+
+msgid "Useful links"
+msgstr "Liens utiles"
+
+msgid "Select an analysis"
+msgstr "Choisir une analyse"
+
+msgid "Choose an analysis"
+msgstr "Choisir une analyse"
+
+msgid "Characterizing a qualitative variable"
+msgstr "Caractériser une variable qualitative"
+
+msgid "Describe a qualitative variable"
+msgstr "Décrire une variable qualitative"
+
+msgid "Characterizing a quantitative variable"
+msgstr "Caractériser une variable quantitative"
+
+msgid "Describe a quantitative variable"
+msgstr "Décrire une variable quantitative"
+
+msgid "No qualitative variable in your dataset"
+msgstr "Aucune variable qualitative dans votre jeu de données"
+
+msgid "X is not a dataframe, a matrix, the results of the catdesshiny function or a catdes result"
+msgstr "X n'est pas un data-frame, une matrice ou un résultat de la fonction catdesshiny"
+
+msgid "The dataset"
+msgstr "Le jeu de données"
+
+msgid "has"
+msgstr "contient"
+
+msgid "individuals, and"
+msgstr "individus, et"
+
+msgid "You can use one of the following methods:"
+msgstr "Vous pouvez utiliser une des méthodes suivantes :"
+
+msgid "All the variables are quantitative."
+msgstr "Toutes les variables sont quantitatives."
+
+msgid "All the variables are qualitative."
+msgstr "Toutes les variables sont qualitatives."
+
+msgid "variable is quantitative and"
+msgstr "variable est quantitative et"
+
+msgid "variables are quantitative and"
+msgstr "variables sont quantitatives et"
+
+msgid "are qualitative."
+msgstr "sont qualitatives."
+
+msgid "is qualitative."
+msgstr "est qualitative."
+
+msgid "The analysis of the graphs leads to detect an outlier that strongly influences the results"
+msgstr ""
+"L'analyse des graphes détecte un individu singulier qui influence très fortement les résultats "
+"observés"
+
+msgid "First we will describe this outlier and then we will suppress it from the analysis"
+msgstr ""
+"On soulignera dans un premier temps le caractère extrême de cet individu avant de le retirer "
+"pour procéder à la suite de l'analyse"
+
+msgid ""
+"Looking at the graph, we can note that a particular individual strongly contributes to the "
+"construction of the plane"
+msgstr ""
+"En observant le graphe, on peut noter qu'un individu est très particulier et contribue "
+"énormément à la construction du plan"
+
+msgid "The analysis of the graphs leads to detect outliers that strongly influence the results"
+msgstr ""
+"L'analyse des graphes détecte des individus singuliers qui influencent très fortement les "
+"résultats observés"
+
+msgid "First we will describe these outliers and then we will suppress them from the analysis"
+msgstr ""
+"On soulignera dans un premier temps le caractère extrême de ces individus avant de les retirer "
+"pour procéder à la suite de l'analyse"
+
+msgid "Looking at the graph, we can note that"
+msgstr "En observant le graphe, on peut noter que"
+
+msgid "particular individuals strongly contribute to the construction of the plane"
+msgstr "individus sont très particuliers et contribuent énormément à la construction du plan"
+
+msgid "Individuals factor map (PCA) before correction"
+msgstr "Graphe des individus (ACP) avant correction"
+
+msgid "Highlighting of an outlier"
+msgstr "Mise en évidence d'un individu singulier"
+
+msgid "Highlighting of"
+msgstr "Mise en évidence de"
+
+msgid "outliers"
+msgstr "individus singuliers"
+
+msgid "Individuals factor map (PCA) after correction"
+msgstr "Graphe des individus (ACP) après correction"
+
+msgid "Variables factor map (PCA) before correction"
+msgstr "Graphe des variables (ACP) avant correction"
+
+msgid "Variables factor map (PCA) after correction"
+msgstr "Graphe des variables (ACP) après correction"
+
+msgid "The variables in black are considered as active whereas those in blue are illustrative"
+msgstr ""
+"Les variables en noir sont les variables actives, celles en bleu sont les variables "
+"quantitatives supplémentaires (illustratives)"
+
+msgid "The individual"
+msgstr "L'individu"
+
+msgid "takes very high values for the variable(s)"
+msgstr "prend de très fortes valeurs pour le(s) variable(s)"
+
+msgid "variables are sorted from the strongest"
+msgstr "de la plus extrême à la moins extrême"
+
+msgid "variables are sorted from the weakest"
+msgstr "de la plus extrême à la moins extrême"
+
+msgid "takes very low values for the variable(s)"
+msgstr "prend de très faibles valeurs pour les variables"
+
+msgid ""
+"This outlier is suppressed from the analysis and a second one is performed on the rest of the "
+"individuals"
+msgstr ""
+"Après avoir éliminé cet individu singulier, on peut explorer le reste des individus par une "
+"seconde analyse"
+
+msgid ""
+"These outliers are suppressed from the analysis and a second one is performed on the rest of "
+"the individuals"
+msgstr ""
+"Après avoir éliminé ces individus singuliers, on peut explorer le reste des individus par une "
+"seconde analyse"
+
+msgid "Individuals factor map (MCA) before correction"
+msgstr "Graphe des individus (ACM) avant correction"
+
+msgid "Individuals factor map (MCA) after correction"
+msgstr "Graphe des individus (ACM) après correction"
+
+msgid "Variables factor map (MCA) before correction"
+msgstr "Graphe des variables (ACM) avant correction"
+
+msgid "Variables factor map (MCA) after correction"
+msgstr "Graphe des variables (ACM) après correction"
+
+msgid "The factors in red are considered as active whereas those in green are illustrative"
+msgstr ""
+"Les facteurs en rouges sont les modalités actives, tandis que ceux en vert sont les modalités "
+"illustratives"
+
+msgid "is characterized by the factor(s)"
+msgstr "est caractérisé par le(s) facteur(s)"
+
+msgid "factors are sorted from the most common"
+msgstr "du plus commun au plus rare"
+
+msgid "factors are sorted from the rarest"
+msgstr "du plus rare au plus commun"
+
+msgid "The analysis of the graphs does not detect any outlier"
+msgstr "L'analyse des graphes ne révèle aucun individu singulier"
+
+msgid ""
+"The inertia of the first dimensions shows if there are strong relationships between variables "
+"and suggests the number of dimensions that should be studied"
+msgstr ""
+"L'inertie des axes factoriels indique d'une part si les variables sont structurées et suggère "
+"d'autre part le nombre judicieux de composantes principales à étudier"
+
+msgid "The first two dimensions of"
+msgstr "Les 2 premiers axes de l'"
+
+msgid "express"
+msgstr "expriment"
+
+msgid "of the total dataset inertia"
+msgstr "de l'inertie totale du jeu de données"
+
+msgid "that means that"
+msgstr "cela signifie que"
+
+msgid "of the individuals (or variables) cloud total variability is explained by the plane"
+msgstr ""
+"de la variabilité totale du nuage des individus (ou des variables) est représentée dans ce plan"
+
+msgid "of the rows (or columns) cloud total variability is explained by the plane"
+msgstr ""
+"de la variabilité totale du nuage des lignes (ou des colonnes) est représentée dans ce plan"
+
+msgid "the reference value is the"
+msgstr "cette intertie de référence est le quantile"
+
+msgid "-quantile of the inertia percentages distribution obtained by simulating"
+msgstr " de la distribution des pourcentages d'inertie obtenus en simulant"
+
+msgid "data tables of equivalent size on the basis of a normal distribution"
+msgstr ""
+"jeux de données aléatoires de dimensions comparables sur la base d'une distribution normale"
+
+msgid "data tables of equivalent size on the basis of a uniform distribution"
+msgstr ""
+"jeux de données aléatoires de dimensions comparables sur la base d'une distribution uniforme"
+
+msgid "This value is strongly greater than the reference value that equals"
+msgstr "Cette valeur est nettement supérieure à la valeur référence de"
+
+msgid "the variability explained by this plane is thus highly significant"
+msgstr "la variabilité expliquée par ce plan est donc hautement significative"
+
+msgid "This value is greater than the reference value that equals"
+msgstr "Cette valeur est supérieure à la valeur référence de"
+
+msgid "the variability explained by this plane is thus significant"
+msgstr "la variabilité expliquée par ce plan est donc significative"
+
+msgid ""
+"This percentage is particularly high and thus the first plane perfectly represents the data "
+"variability"
+msgstr ""
+"C'est un pourcentage extrêmement élevé, et le premier plan représente donc parfaitement bien la "
+"variabilité contenue dans l'ensemble du jeu de données actif"
+
+msgid "From these observations, it is absolutely not necessary to interpret the next dimensions"
+msgstr ""
+"Du fait de ces observations, il n'est absolument pas nécessaire pour l'analyse d'interpréter "
+"les dimensions suivantes"
+
+msgid ""
+"This percentage is very high and thus the first plane represents very well the data variability"
+msgstr ""
+"C'est un pourcentage très élevé, et le premier plan représente donc extrêmement bien la "
+"variabilité contenue dans l'ensemble du jeu de données actif"
+
+msgid "From these observations, it is not necessary to interpret the next dimensions"
+msgstr ""
+"Du fait de ces observations, il n'est pas nécessaire pour l'analyse d'interpréter les "
+"dimensions suivantes"
+
+msgid ""
+"This percentage is high and thus the first plane represents an important part of the data "
+"variability"
+msgstr ""
+"C'est un pourcentage élevé, et le premier plan représente donc bien la variabilité contenue "
+"dans une très large part du jeu de données actif"
+
+msgid "From these observations, it is probably not useful to interpret the next dimensions"
+msgstr ""
+"Du fait de ces observations, il n'est probablement pas nécessaire pour l'analyse d'interpréter "
+"les dimensions suivantes"
+
+msgid ""
+"This percentage is relatively high and thus the first plane well represents the data variability"
+msgstr ""
+"C'est un pourcentage assez important, et le premier plan représente donc convenablement la "
+"variabilité contenue dans une grande part du jeu de données actif"
+
+msgid ""
+"From these observations, it should be better to also interpret the dimensions greater or equal "
+"to the third one"
+msgstr ""
+"Du fait de ces observations, il serait tout de même probablement préférable de considérer "
+"également dans l'analyse les dimensions supérieures ou égales à la troisième"
+
+msgid ""
+"This is an intermediate percentage and the first plane represents a part of the data variability"
+msgstr ""
+"C'est un pourcentage relativement moyen, et le premier plan représente donc seulement une part "
+"de la variabilité contenue dans l'ensemble du jeu de données actif"
+
+msgid ""
+"From these observations, it may be interesting to consider the next dimensions which also "
+"express a high percentage of the total inertia"
+msgstr ""
+"Du fait de ces observations, il serait alors probablement nécessaire de considérer également "
+"les dimensions supérieures ou égales à la troisième  dans l'analyse"
+
+msgid ""
+"This is a small percentage and the first plane just represents a part of the data variability"
+msgstr ""
+"C'est un pourcentage relativement faible, et le premier plan ne représente donc seulement "
+"qu'une part de la variabilité contenue dans l'ensemble du jeu de données actif"
+
+msgid ""
+"From these observations, it is interesting to consider the next dimensions which also express a "
+"high percentage of the total inertia"
+msgstr ""
+"Du fait de ces observations, il serait alors très probablement nécessaire de considérer "
+"également les dimensions supérieures ou égales à la troisième  dans l'analyse"
+
+msgid ""
+"This is a very small percentage and the first plane represents a small part of the data "
+"variability"
+msgstr ""
+"C'est un pourcentage très faible, et le premier plan ne représente donc seulement qu'une part "
+"de la variabilité contenue dans l'ensemble du jeu de données actif"
+
+msgid ""
+"From these observations, it is important to also interpret the dimensions greater or equal to "
+"the third one"
+msgstr ""
+"Du fait de ces observations, il serait alors certainement nécessaire de considérer également "
+"les dimensions supérieures ou égales à la troisième  dans l'analyse"
+
+msgid "The inertia observed on the first plane is smaller than the reference value that equals"
+msgstr "L'inertie observée sur le premier plan factoriel est inférieure à la valeur référence de"
+
+msgid "therefore low in comparison"
+msgstr "et donc faible en comparaison"
+
+msgid "However, the inertia related to the first dimension is greater than the reference value"
+msgstr ""
+"Toutefois, l'inertie observée sur la première composante principale est supérieure à la "
+"référence de"
+
+msgid ""
+"Even if the inertia projected on the first plane is not significant, these explained by the "
+"first dimension is significant"
+msgstr ""
+"Bien que la significativité de l'inertie projetée sur le plan soit insuffisante, celle "
+"expliquée par le premier axe est malgré tout significative"
+
+msgid "Moreover, the inertia projected on the first dimension is smaller than the reference value"
+msgstr ""
+"De plus, l'inertie observée sur la première composante principale est inférieure à la valeur de "
+"référence"
+
+msgid "The variability expressed by the"
+msgstr "La variabilité exprimée par l'"
+
+msgid "is thus **not** significant"
+msgstr "**n'est donc pas** significative"
+
+msgid "The variability expressed by the HCPC is thus **not** significant"
+msgstr "La variabilité exprimée par la CAH **n'est donc pas** significative"
+
+msgid "Decomposition of the total inertia on the components of the "
+msgstr "Distribution de l'inertie sur les composantes de l'"
+
+msgid "Decomposition of the total inertia on the components of the HCPC"
+msgstr "Distribution de l'inertie sur les composantes de la CAH"
+
+msgid "The first factor is largely dominant: it expresses itself"
+msgstr "Le premier facteur est largement prépondérant : il explique a lui seul"
+
+msgid "of the data variability"
+msgstr "de la variabilité totale des données"
+
+msgid ""
+"Note that in such a case, the variability related to the other components might be meaningless, "
+"despite of a high percentage"
+msgstr ""
+"Il convient de noter que dans un tel cas, la variabilité liée aux autres composantes peut être "
+"dénuée de sens, en dépit d'un pourcentage élevé"
+
+msgid "The first factor is major: it expresses itself"
+msgstr "Le premier facteur est prépondérant : il explique a lui seul"
+
+msgid "Comparison between the observed inertia and the"
+msgstr "Comparaison entre l'inertie observée et le quantile"
+
+msgid "-quantile of inertia obtained from"
+msgstr "de l'inertie issue de"
+
+msgid "random distributions"
+msgstr "distributions aléatoires des données"
+
+msgid ""
+"An estimation of the right number of axis to interpret suggests to not interpret the analysis "
+"at all"
+msgstr "Une estimation du nombre pertinent d'axes à interpréter suggère de n'interpréter aucun"
+
+msgid "Indeed, the amount of inertia of the first axis is not higher than that obtained by the"
+msgstr ""
+"En effet, le taux d'inertie de la première composante n'est pas supérieur à celui du quantile"
+
+msgid "This observation suggests that no axis is carrying a real information"
+msgstr "Cette observation suggère qu'aucun axe n'est porteur d'une véritable information"
+
+msgid ""
+"An estimation of the right number of axis to interpret suggests to restrict the analysis to the "
+"description of the first"
+msgstr ""
+"Une estimation du nombre pertinent d'axes à interpréter suggère de restreindre l'analyse à la "
+"description des"
+
+msgid "axis"
+msgstr "premiers axes"
+
+msgid "These axis present an amount of inertia greater than those obtained by the"
+msgstr "Ces composantes révèlent un taux d'inertie supérieur à celle du quantile"
+
+msgid "-quantile of random distributions"
+msgstr " de distributions aléatoires"
+
+msgid "against"
+msgstr "contre"
+
+msgid "This observation suggests that only these axis are carrying a real information"
+msgstr "Cette observation suggère que seuls ces axes sont porteurs d'une véritable information"
+
+msgid "This observation suggests that only this axis is carrying a real information"
+msgstr "Cette observation suggère que seul cet axe est porteur d'une véritable information"
+
+msgid "As a consequence, the description will stand to these axis"
+msgstr "En conséquence, la description de l'analyse sera restreinte à ces seuls axes"
+
+msgid "We can observe that the first"
+msgstr "On observe que les"
+
+msgid "axis present an amount of inertia greater than those obtained by the"
+msgstr "premières composantes révèlent un taux d'inertie supérieur à celle du quantile"
+
+msgid "Thus, a wise decision would be to restrict the description to these only axis"
+msgstr "De fait, il serait raisonnable de restreindre l'analyse à ces seules composantes"
+
+msgid "However, we choosed to describe the first"
+msgstr "Cependant, nous avons choisi de décrire les"
+
+msgid "The labeled individuals are those numbered"
+msgstr "Les individus libellés sont ceux numérotés"
+
+msgid "The labeled variables are those numbered"
+msgstr "Les variables libellées sont celles numérotées"
+
+msgid "The labeled factors are those numbered"
+msgstr "Les facteurs libellés sont ceux numérotés"
+
+msgid "The labeled individuals are those with the higher contribution to the plane construction"
+msgstr ""
+"Les individus libellés sont ceux ayant la plus grande contribution à la construction du plan"
+
+msgid "The labeled variables are those with the higher contribution to the plane construction"
+msgstr ""
+"Les variables libellées sont celles ayant la plus grande contribution à la construction du plan"
+
+msgid "The labeled individuals are those the best shown on the plane"
+msgstr "Les individus libellés sont ceux les mieux représentés sur le plan"
+
+msgid "The labeled variables are those the best shown on the plane"
+msgstr "Les variables libellées sont celles les mieux représentées sur le plan"
+
+msgid "The labeled factors are those the best shown on the plane"
+msgstr "Les facteurs libellés sont ceux les mieux représentés sur le plan"
+
+msgid "The labeled individuals are those named"
+msgstr "Les individus libellés sont ceux nommés"
+
+msgid "The labeled variables are those named"
+msgstr "Les variables libellées sont celles nommées"
+
+msgid "The labeled factors are those named"
+msgstr "Les facteurs libellés sont ceux nommés"
+
+msgid "The labeled columns are those numbered"
+msgstr "Les colonnes libellées sont celles numérotées"
+
+msgid "The labeled rows are those with the higher contribution to the plane construction"
+msgstr ""
+"Les lignes libellées sont celles ayant la plus grande contribution à la construction du plan"
+
+msgid "The labeled columns are those with the higher contribution to the plane construction"
+msgstr ""
+"Les colonnes libellées sont celles ayant la plus grande contribution à la construction du plan"
+
+msgid "The labeled rows are those the best shown on the plane"
+msgstr "Les lignes libellées sont celles les mieux représentées sur le plan"
+
+msgid "The labeled columns are those the best shown on the plane"
+msgstr "Les colonnes libellées sont celles les mieux représentées sur le plan"
+
+msgid "The labeled rows are those named"
+msgstr "Les lignes libellées sont celles nommées"
+
+msgid "The labeled columns are those named"
+msgstr "Les colonnes libellées sont celles nommées"
+
+msgid "Individuals factor map (MCA)"
+msgstr "Graphe des individus (ACM)"
+
+msgid ""
+"The individuals in light blue are considered as active whereas the individuals in dark blue are "
+"illustrative"
+msgstr ""
+"Les individus en bleu clair sont les individus actifs, ceux en bleu foncé sont les individus "
+"supplémentaires (illustratifs)"
+
+msgid ""
+"The Wilks test p-value indicates which variable factors are the best separated on the plane"
+msgstr ""
+"La probabilité critique du test de Wilks indique la variable dont les modalités sépare au mieux "
+"les individus sur le plan"
+
+msgid "i.e. which one explain the best the distance between individuals"
+msgstr "i.e. qui explique au mieux les distances entre individus"
+
+msgid ""
+"There only is one possible qualitative variable to illustrate the distance between individuals"
+msgstr ""
+"Il n'y a qu'une unique variable qualitative possible pour illustrer les distances entre "
+"individus"
+
+msgid ""
+"The best qualitative variable to illustrate the distance between individuals on this plane is"
+msgstr ""
+"La meilleure variable qualitative pour illustrer les distances entre individus sur le plan est "
+"la variable"
+
+msgid "Many qualitative variables have a Wilks p-value equal to zero"
+msgstr ""
+"Plusieurs variables qualitatives présentent une probabilité critique du test de Wilks égale à "
+"zéro"
+
+msgid "To arbitrate which one to select, we need to compare their statistic value"
+msgstr "Pour choisir laquelle retenir, on compare donc les valeurs de leur statistique de test"
+
+msgid "The qualitative variables"
+msgstr "Les variables qualitatives"
+
+msgid "cannot separate the individuals on the plane, cause they are unimodal"
+msgstr "ne peuvent séparer les individus sur le plan, car elles sont unimodales"
+
+msgid "Here, the qualitative variable selected is"
+msgstr "La variable qualitative retenue ici est la variable"
+
+msgid "The variable"
+msgstr "La variable"
+
+msgid "cannot be selected to illustrate the plane"
+msgstr "ne peut être utilisée pour illustrer le plan"
+
+msgid ""
+"The italic individuals represented by an empty circle are the illustrative ones, those "
+"represented by a point are the active ones"
+msgstr ""
+"Les individus en italique représentés par un cercle vide sont les individus supplémentaires "
+"(illustratifs), ceux représentés par un point sont les individus actifs"
+
+msgid "The individuals are coloured after their category for the variable"
+msgstr "Les individus sont colorés selon leur appartenance aux modalités de la variable"
+
+msgid "Overlayed factor map (CA)"
+msgstr "Graphe superposé (AFC)"
+
+msgid "Variables factor map (MCA)"
+msgstr "Graphe des variables (ACM)"
+
+msgid ""
+"The rows in light blue are considered as active whereas those in dark blue are illustrative"
+msgstr ""
+"Les lignes en bleu clair sont les lignes en actif, celles en bleu foncé sont les lignes "
+"supplémentaires (illustratives)"
+
+msgid ""
+"The columns in light red are considered as active whereas those in dark red are illustrative"
+msgstr ""
+"Les colonnes en rouge clair sont les colonnes en actif, celles en rouge foncé sont les colonnes "
+"supplémentaires (illustratives)"
+
+msgid "Qualitative factor map (PCA)"
+msgstr "Graphe des modalités (ACP)"
+
+msgid "Quantitative factor map (CA)"
+msgstr "Graphe des variables quantitatives (AFC)"
+
+msgid "Quantitative factor map (MCA)"
+msgstr "Graphe des variables quantitatives (ACM)"
+
+msgid "The **dimension"
+msgstr "La **dimension"
+
+msgid "opposes individuals such as"
+msgstr "oppose des individus tels que"
+
+msgid "* and *"
+msgstr "* et *"
+
+msgid "to the right of the graph, characterized by a strongly positive coordinate on the axis"
+msgstr "à droite du graphe, caractérisés par une coordonnée fortement positive sur l'axe"
+
+msgid "to individuals such as"
+msgstr "à des individus comme"
+
+msgid "to the left of the graph, characterized by a strongly negative coordinate on the axis"
+msgstr "à gauche du graphe, caractérisés par une coordonnée fortement négative sur l'axe"
+
+msgid "to individuals characterized by a strongly negative coordinate on the axis"
+msgstr "à des individus caractérisés par une coordonnée fortement négative sur l'axe"
+
+msgid "to the left of the graph"
+msgstr "à gauche du graphe"
+
+msgid "particularly distinguishes individuals such as"
+msgstr "distingue particulièrement des individus tels que"
+
+msgid "opposes individuals characterized by a strongly positive coordinate on the axis"
+msgstr "oppose des individus caractérisés par une coordonnée fortement positive sur l'axe"
+
+msgid "to the right of the graph"
+msgstr "à droite du graphe"
+
+msgid ""
+"particularly distinguishes individuals characterized by a strongly positive coordinate on the "
+"axis"
+msgstr ""
+"distingue particulièrement des individus caractérisés par une coordonnée fortement positive sur "
+"l'axe"
+
+msgid ""
+"particularly distinguishes individuals characterized by a strongly negative coordinate on the "
+"axis"
+msgstr ""
+"distingue particulièrement des individus caractérisés par une coordonnée fortement négative sur "
+"l'axe"
+
+msgid "does not sufficiently discriminate individuals"
+msgstr "ne permet pas de discriminer suffisemment les individus"
+
+msgid "to the top of the graph, characterized by a strongly positive coordinate on the axis"
+msgstr "en haut du graphe, caractérisés par une coordonnées fortement positive sur l'axe"
+
+msgid "to the bottom of the graph, characterized by a strongly negative coordinate on the axis"
+msgstr "en bas du graphe, caractérisés par une coordonnées fortement négative sur l'axe"
+
+msgid "to the bottom of the graph"
+msgstr "en bas du graphe"
+
+msgid "to the top of the graph"
+msgstr "en haut du graphe"
+
+msgid "These individuals form a group sharing"
+msgstr "Ces individus forment un groupe partageant"
+
+msgid "The individuals"
+msgstr "Les individus"
+
+msgid "The group"
+msgstr "Le groupe"
+
+msgid "The group in which the individual"
+msgstr "Le groupe auquel l'individu"
+
+msgid "The group in which the individuals"
+msgstr "Le groupe auquel les individus"
+
+msgid "The group in which the factor"
+msgstr "Le groupe auquel le facteur"
+
+msgid "The group in which the factors"
+msgstr "Le groupe auquel les facteurs"
+
+msgid "stands"
+msgstr "appartient"
+
+msgid "stand"
+msgstr "appartiennent"
+
+msgid "characterized by a positive coordinate on the axis"
+msgstr "caractérisés par une coordonnée positive sur l'axe"
+
+msgid "characterized by a negative coordinate on the axis"
+msgstr "caractérisés par une coordonnées négative sur l'axe"
+
+msgid "form a group sharing"
+msgstr "forment un groupe partageant"
+
+msgid "high values for the variable"
+msgstr "de fortes valeurs pour la variable"
+
+msgid "high values for the variables"
+msgstr "de fortes valeurs pour les variables"
+
+msgid "high values for variables like"
+msgstr "de fortes valeurs pour des variables telles que"
+
+msgid "low values for the variable"
+msgstr "de faibles valeurs pour la variable"
+
+msgid "low values for the variables"
+msgstr "de faibles valeurs pour les variables"
+
+msgid "low values for variables like"
+msgstr "de faibles valeurs pour des variables telles que"
+
+msgid "variables whose values do not differ significantly from the mean"
+msgstr "des variables dont les valeurs ne diffèrent pas significativement de la moyenne"
+
+msgid "Note that the variable"
+msgstr "Notons que la variable"
+
+msgid "Note that the factor"
+msgstr "Notons que le facteur"
+
+msgid "is highly correlated with this dimension (correlation of"
+msgstr "est extrêmement corrélée à cette dimension (corrélation de"
+
+msgid "is highly correlated with the dimension (correlation of"
+msgstr "est extrêmement corrélé à cette dimension (corrélation de"
+
+msgid "This variable could therefore summarize itself the dimension"
+msgstr "Cette variable pourrait donc résumer à elle seule la dimension"
+
+msgid "This factor could therefore summarize itself the dimension"
+msgstr "Ce facteur pourrait donc résumer à lui seul la dimension"
+
+msgid "Note that the variables"
+msgstr "Notons que les variables"
+
+msgid "Note that the factors"
+msgstr "Notons que les facteurs"
+
+msgid "are highly correlated with this dimension (respective correlation of"
+msgstr "sont extrêmement corrélées à cette dimension (corrélations respectives de"
+
+msgid "are highly correlated with the dimension (respective correlation of"
+msgstr "sont extrêmement corrélés à cette dimension (corrélations respectives de"
+
+msgid "These variables could therefore summarize themselve the dimension"
+msgstr "Ces variables pourraient donc résumer à elles seules la dimension"
+
+msgid "These factors could therefore summarize themselve the dimension"
+msgstr "Ces facteurs pourraient donc résumer à eux seuls la dimension"
+
+msgid "opposes factors such as"
+msgstr "oppose des facteurs tels que"
+
+msgid "to factors such as"
+msgstr "à des facteurs comme"
+
+msgid "to factors characterized by a strongly negative coordinate on the axis"
+msgstr "à des facteurs caractérisés par une coordonnée fortement positive sur l'axe"
+
+msgid "particularly distinguishes factors such as"
+msgstr "distingue particulièrement des facteurs tels que"
+
+msgid "opposes factors characterized by a strongly positive coordinate on the axis"
+msgstr "oppose des facteurs caractérisés par une coordonnée fortement positive sur l'axe"
+
+msgid ""
+"particularly distinguishes factors characterized by a strongly positive coordinate on the axis"
+msgstr ""
+"distingue particulièrement des facteurs caractérisés par une coordonnée fortement positive sur "
+"l'axe"
+
+msgid ""
+"particularly distinguishes factors characterized by a strongly negative coordinate on the axis"
+msgstr ""
+"distingue particulièrement des facteurs caractérisés par une coordonnée fortement négative sur "
+"l'axe"
+
+msgid "does not sufficiently discriminate factors"
+msgstr "ne permet pas de discriminer suffisemment les facteurs"
+
+msgid "These factors form a group sharing"
+msgstr "Ces facteurs forment un groupe partageant"
+
+msgid "The factors"
+msgstr "Les facteurs"
+
+msgid "high frequency for the factor"
+msgstr "une forte fréquence de la modalité"
+
+msgid "high frequency for the factors"
+msgstr "une forte fréquence des modalités"
+
+msgid "high frequency for factors like"
+msgstr "une forte fréquence des modalités telles que"
+
+msgid "low frequency for the factor"
+msgstr "une faible fréquence de la modalité"
+
+msgid "low frequency for the factors"
+msgstr "une faible fréquence des modalités"
+
+msgid "low frequency for factors like"
+msgstr "une faible fréquence des modalités telles que"
+
+msgid "Ascending Hierarchical Classification of the individuals"
+msgstr "Classification Ascendante Hiérachique des individus"
+
+msgid "The classification made on individuals reveals"
+msgstr "La classification réalisée sur les individus fait apparaître"
+
+msgid "The **cluster"
+msgstr "La **classe"
+
+msgid "is made of individuals such as"
+msgstr "est composée d'individus tels que"
+
+msgid "is made of individuals sharing"
+msgstr "est composé d'individus partageant"
+
+msgid "Ascending Hierachical Classification of the rows"
+msgstr "Classification Ascendante Hiérachique des lignes"
+
+msgid "The classification made on rows reveals"
+msgstr "La classification réalisée sur les lignes fait apparaître"
+
+msgid "The 1st cluster is made of rows such as"
+msgstr "La classe 1 est composée de lignes telles que"
+
+msgid "is made of rows such as"
+msgstr "est composée de lignes telles que"
+
+msgid "is made of rows sharing"
+msgstr "est composée de lignes partageant"
+
+msgid "This group is characterized by"
+msgstr "Ce groupe est caractérisé par"
+
+msgid "factors whose frequency does not differ significantly from the mean"
+msgstr "des modalité dont la fréquence ne diffèrent pas significativement de la moyenne"
+
+msgid "Inertia distribution"
+msgstr "Distribution de l'inertie"
+
+msgid "Description of the plane"
+msgstr "Description du plan"
+
+msgid "Description of the dimension"
+msgstr "Description de la dimension"
+
+msgid "List of variables characterizing the dimensions of the analysis"
+msgstr "Liste des variables caractéristiques des dimensions de l'analyse"
+
+msgid "List of variables characterizing the clusters of the classification"
+msgstr "Liste des variables caractéristiques des clusters de la classification"
+
+msgid "Script used to produce this document"
+msgstr "Script utilisé pour la réalisation de ce document"
+
+msgid "The cluster"
+msgstr "La classe"
+
+msgid "clusters"
+msgstr "classes"
+
+msgid "This interpretation of the results was carried out automatically"
+msgstr "Cette interprétation des résultats a été réalisée de façon automatique"
+
+msgid "it cannot match the quality of a personal interpretation"
+msgstr "elle ne peut en aucun cas égaler la qualité d'une interprétation personnalisée"
+
+msgid "The dataset is too large to perform the classification"
+msgstr "Le jeu de données est trop volumineux pour réaliser la classification"
+
+msgid "creation of the .Rmd file"
+msgstr "création du fichier .Rmd"
+
+msgid "time spent"
+msgstr "temps écoulé"
+
+msgid "detection of outliers"
+msgstr "détection d'individus singuliers"
+
+msgid "outlier(s) terminated"
+msgstr "anomalie(s) éliminée(s)"
+
+msgid "analysis of the inertia"
+msgstr "analyse de l'inertie"
+
+msgid "component(s) carrying information"
+msgstr "composante(s) porteuse(s) d'information"
+
+msgid "total inertia of"
+msgstr "inertie totale de"
+
+msgid "components description"
+msgstr "description des composantes"
+
+msgid "plane"
+msgstr "plan"
+
+msgid "classification"
+msgstr "classification"
+
+msgid "annexes writing"
+msgstr "rédaction des annexes"
+
+msgid "saving data"
+msgstr "sauvegarde des données"
+
+msgid "outputs compilation"
+msgstr "compilation des documents"
+
+msgid "task completed"
+msgstr "tâche terminée"
+
+msgid "The detection of outliers does not apply to CA results"
+msgstr "La détection des individus extrêmes ne s'applique pas à l'AFC"
+
+msgid "The detection of outliers does not apply to CaGalt results"
+msgstr "La détection des individus extrêmes ne s'applique pas à l'AFC de données textuelles"
+
+msgid "is sharing"
+msgstr "partage"
+
+msgid "Variable to explain"
+msgstr "Variable à expliquer"
+
+msgid "P-value"
+msgstr "Probabilité critique"
+
+msgid "Describe by ... variables"
+msgstr "Description par les variables ..."
+
+msgid "High color"
+msgstr "Couleur haute"
+
+msgid "Low color"
+msgstr "Couleur basse"
+
+msgid "Both"
+msgstr "Les deux"
+
+msgid "Qualitative variables"
+msgstr "Variables qualitatives"
+
+msgid "Links with the variable"
+msgstr "Liens avec la variable"
+
+msgid "Summary"
+msgstr "Résumé"
+
+msgid "Description of a variable and its categories"
+msgstr "Description d'une variable et de ses modalités"
+
+msgid "Categories description"
+msgstr "Description des modalités"
+
+msgid "Description of each category by the categories of the other variables"
+msgstr "Description de chaque modalité par les modalités des autres variables"
+
+msgid "Description of each category by quantitative variables"
+msgstr "Description de chaque modalité par les variables quantitatives"
+
+msgid "Description of each category by quantitative variables and categories"
+msgstr "Description de chaque modalité par les variables quantitatives et les mdoalités"
+
+msgid "Link with the quantitative variables"
+msgstr "Lien avec les variables quantitatives"
+
+msgid "Link with the qualitative variables"
+msgstr "Lien avec les variables qualitatives"
+
+msgid "The p-value should be greater than"
+msgstr "La probabilité critique doit être supérieure à"
+
+msgid "No significant variables, choose a higher treshold"
+msgstr "Aucune variable significative, choisir un seuil plus élevé"
+
+msgid "Update the output"
+msgstr "Mettre à jour la sortie"
+
+msgid "Catdes output"
+msgstr "Sortie de catdes"
+
+msgid "Condes output"
+msgstr "Sortie de condes"
+
+msgid "Barplot"
+msgstr "Diagramme en barres"
+
+msgid "Description of a quantitative variable by quantitative variables"
+msgstr "Description d'une variable quantitative par des variables quantitatives"
+
+msgid "Description of a quantitative variable by qualitative variables"
+msgstr "Description d'une variable quantitative par des variables qualitatives"
+
+msgid "Description of a quantitative variable by categories"
+msgstr "Description d'une variable quantitative par des modalités"
+
+msgid "Description by the ..."
+msgstr "Description par les ..."
+
+msgid "Ongoing reporting process..."
+msgstr "Rédaction du rapport en cours..."

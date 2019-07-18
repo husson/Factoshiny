@@ -117,7 +117,7 @@ function(input, output,session) {
     }else{
       colo <- input$colorsupvarPCAshiny
     }
-    list(PLOT=(plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",select=selecindiv,unselect=0,col.quanti.sup=colo,col.var=input$coloractvarPCAshiny,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2)),SELECTION=(selecindiv),selecindivText=(selecindivText))
+    list(PLOT=(plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",graph.type=input$graph_type,select=selecindiv,unselect=0,col.quanti.sup=colo,col.var=input$coloractvarPCAshiny,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2, ggoptions=list(size = input$cex2*4))),SELECTION=(selecindiv),selecindivText=(selecindivText))
   })
   
   output$map <- renderPlot({
@@ -132,7 +132,7 @@ function(input, output,session) {
       bool1 <- TRUE
     }
     if (length(input$supquali)>0){
-      if(length(QualiChoicePCAshiny)>0 & (input$supquali!=FALSE)){
+      if(length(QualiChoicePCAshiny)>0 & sum(input$supquali!=FALSE)>0){
         choix <- c(choix,gettext("Supplementary categories"))
         bool1 <- TRUE
       }}
@@ -261,9 +261,9 @@ function(input, output,session) {
         aa <- cbind.data.frame(values()$DATA[,hab],values()$res.PCA$ind$coord)
       }
       bb <- coord.ellipse(aa,bar=TRUE)
-      formula <- plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",invisible=inv,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,title=input$title1,ellipse=bb,col.ind=input$coloract,col.ind.sup=colors,col.quali=colorss)
+      formula <- plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",graph.type=input$graph_type,invisible=inv,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,title=input$title1,ellipse=bb,col.ind=input$coloract,col.ind.sup=colors,col.quali=colorss, ggoptions=list(size = input$cex*4))
     }else{
-      formula <- plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",invisible=inv,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,title=input$title1,col.ind=input$coloract,col.ind.sup=colors,col.quali=colorss)
+      formula <- plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",graph.type=input$graph_type,invisible=inv,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,title=input$title1,col.ind=input$coloract,col.ind.sup=colors,col.quali=colorss, ggoptions=list(size = input$cex*4))
     }
     colquali <- colorss
     list(PLOT=(formula),INV=(inv),SELECTION2=(selecindiv),SELECTION3=(selecindivtext),HABILLAGE=(hab),colquali=(colorss),colindsup=(colors), text="")      
@@ -271,7 +271,6 @@ function(input, output,session) {
   
   output$map2 <- renderPlot({
     p <- Plot2()$PLOT
-    
   })
   
   output$colourn2 <- renderUI({
@@ -556,7 +555,7 @@ function(input, output,session) {
     }else{
       colo <- input$colorsupvarPCAshiny
     }
-    Call1 <- paste("plot.PCA(res.PCA,axes=c(",input$nb1,",",input$nb2,"),choix='var'",if(selectionPCAshiny!="NULL") paste0(",select=",selectionPCAshiny,",unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="Variables factor map (PCA)") paste0(",title='",input$title2),if (colo!="blue"&colo!="#0000FF") paste0(",col.quanti.sup='",colo,"'"),if(input$coloractvarPCAshiny!="#000000") paste0(",col.var='",input$coloractvarPCAshiny,"'"),")",sep="")
+    Call1 <- paste("plot.PCA(res.PCA,axes=c(",input$nb1,",",input$nb2,"),choix='var',graph.type='",input$graph_type,"'",if(selectionPCAshiny!="NULL") paste0(",select=",selectionPCAshiny,",unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="Variables factor map (PCA)") paste0(",title='",input$title2),if (colo!="blue"&colo!="#0000FF") paste0(",col.quanti.sup='",colo,"'"),if(input$coloractvarPCAshiny!="#000000") paste0(",col.var='",input$coloractvarPCAshiny,"'"),")",sep="")
     return(Call1)
   }
   
@@ -630,7 +629,7 @@ function(input, output,session) {
     else if (length(input$habiller)==2 & input$habi==TRUE){
       hab <- Plot2()$HABILLAGE
     }
-    Call2 <- paste0("plot.PCA(res.PCA,","axes=c(",input$nb1,",",input$nb2,")",if(!is.null(Plot2()$INV)){if (Plot2()$INV[1]!="none") paste0(",invisible=c(",paste0("'",paste(Plot2()$INV,collapse="','"),"'"),")")}, if(Plot2()$SELECTION3!="NULL"){paste0(",select=",Plot2()$SELECTION3)},if (hab!="'none'"){paste0(",habillage=",hab)},if(input$title1!="Individuals factor map (PCA)")paste0(",title='",input$title1,"'"),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract),if(Plot2()$colindsup!="blue"&Plot2()$colindsup!="#0000FF")paste0(",col.ind.sup='",Plot2()$colindsup,"'"),if(Plot2()$colquali!="magenta"&Plot2()$colquali!="#FF00FF")paste0(",col.quali='",Plot2()$colquali,"'"),if(!is.null(input$elip)&&input$elip==TRUE)",ellipse=bb",")")
+    Call2 <- paste0("plot.PCA(res.PCA,","axes=c(",input$nb1,",",input$nb2,"),graph.type='",input$graph_type,"'",if(!is.null(Plot2()$INV)){if (Plot2()$INV[1]!="none") paste0(",invisible=c(",paste0("'",paste(Plot2()$INV,collapse="','"),"'"),")")}, if(Plot2()$SELECTION3!="NULL"){paste0(",select=",Plot2()$SELECTION3)},if (hab!="'none'"){paste0(",habillage=",hab)},if(input$title1!="Individuals factor map (PCA)")paste0(",title='",input$title1,"'"),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract),if(Plot2()$colindsup!="blue"&Plot2()$colindsup!="#0000FF")paste0(",col.ind.sup='",Plot2()$colindsup,"'"),if(Plot2()$colquali!="magenta"&Plot2()$colquali!="#FF00FF")paste0(",col.quali='",Plot2()$colquali,"'"),if(!is.null(input$elip)&&input$elip==TRUE)",ellipse=bb",")")
     return(Call2)
   }
   
@@ -982,17 +981,58 @@ function(input, output,session) {
   })
   
 
-  observe({
-    if(input$InvestigateRmd!=0){
-      isolate({
+  # observe({
+    # if(input$InvestigateRmd!=0){
+      # isolate({
+        # path.aux <- getwd()
+        # setwd(pathsavePCAshiny)
+	    # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
+	    # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+        # setwd(path.aux)
+      # })
+    # }
+  # })
+  
+
+    output$downloadInvestigateRmd <- downloadHandler(
+     filename = function() {
+      paste(input$titleFile, ".Rmd", sep="")
+    },
+    content = function(file) {
         path.aux <- getwd()
         setwd(pathsavePCAshiny)
-	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
-	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="en")
+	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="fr")
+        file.copy(paste0(pathsavePCAshiny,"/Investigate.Rmd"), file)
         setwd(path.aux)
-      })
     }
-  })
+  )
+
+    # output$downloadInvestigatedoc <- downloadHandler(
+     # filename = function() {
+      # paste("Report", Sys.Date(), ".docx", sep="")
+    # },
+    # content = function(file) {
+        # path.aux <- getwd()
+        # setwd(pathsavePCAshiny)
+        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="en")
+        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA,document="word_document",openFile=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="fr")
+        # setwd(path.aux)
+    # }
+  # )
+
+    # output$downloadInvestigatehtml <- downloadHandler(
+     # filename = function() {
+      # paste("Report", Sys.Date(), ".html", sep="")
+    # },
+    # content = function(file) {
+        # path.aux <- getwd()
+        # setwd(pathsavePCAshiny)
+        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.PCA, openFile=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="en")
+        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA, openFile=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="fr")
+        # setwd(path.aux)
+    # }
+  # )
     
   output$downloadData  <-  downloadHandler(
     filename = function() { 
@@ -1080,7 +1120,7 @@ function(input, output,session) {
     }else{
       colo <- input$colorsupvarPCAshiny
     }
-    plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",select=selecindiv,unselect=0,col.quanti.sup=colo,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2,col.var=input$coloractvarPCAshiny)
+    plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="var",graph.type=input$graph_type,select=selecindiv,unselect=0,col.quanti.sup=colo,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,title=input$title2,col.var=input$coloractvarPCAshiny)
   }
   Plot22 <- function(){
     if(input$select=="cos2"){
@@ -1151,9 +1191,9 @@ function(input, output,session) {
     if(!is.null(input$elip)&&input$elip==TRUE){
       aa <- cbind.data.frame(values()$DATA[,hab],values()$res.PCA$ind$coord)
       bb <- coord.ellipse(aa,bar=TRUE)
-      plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,col.quali=colorss,col.ind.sup=colors,title=input$title1,ellipse=bb,col.ind = input$coloract)
+      plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",graph.type=input$graph_type,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,col.quali=colorss,col.ind.sup=colors,title=input$title1,ellipse=bb,col.ind = input$coloract)
     }else{
-      plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,col.quali=colorss,col.ind.sup=colors,title=input$title1,col.ind = input$coloract)
+      plot.PCA(values()$res.PCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="ind",graph.type=input$graph_type,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,select=selecindiv,habillage=hab,col.quali=colorss,col.ind.sup=colors,title=input$title1,col.ind = input$coloract)
     }
   }
 }

@@ -5,7 +5,8 @@ fluidPage(
       tags$head(
         tags$style("body {background-color: #EFFBFB; }"),
         tags$style(type='text/css', "#title1 { height: 25px; }"),
-        tags$style(type='text/css', "#title2 { height: 25px; }")
+        tags$style(type='text/css', "#title2 { height: 25px; }"),
+		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
         div(align="center",checkboxInput("pcaparam",gettext("PCA parameters"),FALSE)),
@@ -63,11 +64,13 @@ fluidPage(
         div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
+          div(align="center",radioButtons("graph_type",label=NULL,
+                                          choices=list(gettext("classic"),gettext("ggplot")),selected=gettext("ggplot"),inline=TRUE)),
           fluidRow(
             column(5,uiOutput("NB1")),
             column(5,uiOutput("NB2"))),
           # hr(),
-          div(align="center",radioButtons("ind_var","",
+          div(align="center",radioButtons("ind_var",label=NULL,
                                           choices=list(gettext("Graph of individuals"),gettext("Graph of variables")),selected=gettext("Graph of individuals"),inline=TRUE)),
           conditionalPanel(
             condition=paste0("input.ind_var=='",gettext("Graph of individuals"),"'"),
@@ -157,10 +160,12 @@ fluidPage(
         conditionalPanel(
           condition="input.reportparam==true",
 		  div(gettext("File name (without extension):")),
-          textInput("titleFile",NULL, gettext("Report"),width=200),
-          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
-          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
-          paste(gettext("The file will be saved in the directory"),pathsavePCAshiny)
+          textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
+          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
+          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
+          # paste(gettext("The file will be saved in the directory"),pathsavePCAshiny)
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
@@ -173,14 +178,14 @@ fluidPage(
                   tabPanel(gettext("Graphs"),
                            fluidRow(
                              br(),
-                             column(width = 6,plotOutput("map2", width = "500", height="500"),
+                             column(width = 6,plotOutput("map2", width = "500"),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
-                                    br(),align="center"),
-                             column(width = 6,plotOutput("map", width = "500",height="500"),
+                                    align="center"),
+                             column(width = 6,plotOutput("map", width = "500"),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
-                                    br(),align="center"))),
+                                    align="center"))),
                   tabPanel(gettext("Values"),
                            br(),
                            uiOutput("out22"),

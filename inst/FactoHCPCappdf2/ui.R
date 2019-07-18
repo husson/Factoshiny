@@ -9,7 +9,8 @@ fluidPage(
         tags$style("body {background-color: #D2FAE5; }"),
         tags$style(type='text/css', "#title1 { height: 25px; }"),
         tags$style(type='text/css', "#title2 { height: 25px; }"),
-        tags$style(type='text/css', "#title3 { height: 25px; }")
+        tags$style(type='text/css', "#title3 { height: 25px; }"),
+		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
       div(align="center",checkboxInput("hcpcparam",gettext("Show HCPC parameters"),FALSE)),
@@ -60,10 +61,12 @@ fluidPage(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
         conditionalPanel(
           condition="input.reportparam==true",
-          textInput("titleFile",h6(gettext("File name (without extension):")), gettext("Report")),
-          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
-          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
-          paste(gettext("The file will be saved in the directory"),pathsaveHCPCshiny)
+		  div(gettext("File name (without extension):")),
+          textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
+          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
+          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
                 align="center", style = "padding: 3px;background-color: #dbe6ff"
 		),
@@ -78,47 +81,18 @@ fluidPage(
  fluidRow(
                            br(),
                  column(width = 6,plotOutput("map4", width = "500", height="500"),
-#                             div(align="center",plotOutput("map4",width = 650, height=500)),
                              br(),
                         p(gettext("Download as"),downloadButton("downloadData6","jpg"),downloadButton("downloadData7","png"),downloadButton("downloadData8","pdf"),align="center"),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData6",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData7",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData8",gettext("Download as pdf")),align="center")),
                              br(),
 							 align="center"),
                  column(width = 6,plotOutput("map", width = "500", height="500"),
-#                             div(align="center",plotOutput("map",width = 500, height=500)),
                              br(),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData1",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData2",gettext("Download as pdf")),align="center")),
                         p(gettext("Download as"),downloadButton("downloadData1","jpg"),downloadButton("downloadData","png"),downloadButton("downloadData2","pdf"),align="center"),
                              br(),
 							 align="center")),
                              div(align="center",plotOutput("map2",width=750,height=500)),
                              br(),
                 p(gettext("Download as"),downloadButton("downloadData4","jpg"),downloadButton("downloadData3","png"),downloadButton("downloadData5","pdf"),align="center"),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='jpg'",
-                               # p(downloadButton("downloadData4",gettext("Download as jpg")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='png'",
-                               # p(downloadButton("downloadData3",gettext("Download as png")),align="center")),
-                             # conditionalPanel(
-                               # condition="input.paramdown=='pdf'",
-                               # p(downloadButton("downloadData5",gettext("Download as pdf")),align="center")),
                              br()
                              ),
 
@@ -127,16 +101,13 @@ fluidPage(
                              radioButtons("out",gettext("Which outputs do you want?"),
                                   choices=list(gettext("Description of classes by variables"),gettext("Description of classes by axes"),gettext("Parangons")),selected=gettext("Description of classes by variables"),inline=TRUE),
                              conditionalPanel(
-#                               condition="input.out=='var'",
                                condition=paste("input.out=='",gettext("Description of classes by variables"),"'",sep=''),
                                div(align="center",tableOutput("descript"))
                                ),
                              conditionalPanel(
-#                               condition="input.out=='para'",
                                condition=paste("input.out=='",gettext("Parangons"),"'",sep=''),
                                div(align="center",tableOutput("parangons"))),
                              conditionalPanel(
-#                               condition="input.out=='axe'",
                                condition=paste("input.out=='",gettext("Description of classes by axes"),"'",sep=''),
                                div(align="center",tableOutput("axes")))
                              ),

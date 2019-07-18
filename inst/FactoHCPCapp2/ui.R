@@ -9,7 +9,8 @@ fluidPage(
         tags$style("body {background-color: #D2FAE5; }"),
         tags$style(type='text/css', "#title1 { height: 25px; }"),
         tags$style(type='text/css', "#title2 { height: 25px; }"),
-        tags$style(type='text/css', "#title3 { height: 25px; }")
+        tags$style(type='text/css', "#title3 { height: 25px; }"),
+		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
         div(align="center",checkboxInput("hcpcparam",gettext("Show HCPC parameters"),FALSE)),
@@ -57,10 +58,12 @@ fluidPage(
         div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
         conditionalPanel(
           condition="input.reportparam==true",
-          textInput("titleFile",h6(gettext("File name (without extension):")), gettext("Report")),
-          radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE),
-          div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
-          paste(gettext("The file will be saved in the directory"),pathsaveHCPCshiny)
+		  div(gettext("File name (without extension):")),
+          textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
+          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
+          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),

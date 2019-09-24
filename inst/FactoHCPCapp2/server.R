@@ -86,10 +86,10 @@
       else{
       return(plot.HCPC(res.HCPC(),choice="map",draw.tree=input$drawtree,title=input$title2HCPCshiny,axes=c(as.numeric(input$nb1),as.numeric(input$nb2))))
       }
-      }
+    }
     
     output$map <- renderPlot({
-    p <- Plot1()
+       p <- Plot1()
     })
     
     Plot2 <- function(){
@@ -97,9 +97,9 @@
         return()
       }
       else{
-      plot.HCPC(res.HCPC(),choice="3D.map",ind.names=input$nom3D,title=input$title1HCPCshiny,centers.plot=input$center,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),angle=input$num)
+        plot.HCPC(res.HCPC(),choice="3D.map",ind.names=input$nom3D,title=input$title1HCPCshiny,centers.plot=input$center,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),angle=input$num)
       }
-      }
+    }
     output$map2 <- renderPlot({
       p <- Plot2()
     })
@@ -127,22 +127,19 @@
     },rownames=TRUE)
 
     output$clusters=renderUI({
-      choix=resClusHCPCshiny
-      if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA"))){
-        if(nbindivHCPCshiny<=11){
+      if (!is.null(clustdfHCPCshiny)){
+	  if(nbindivHCPCshiny<=11){
           return(sliderInput("clust",gettext("Number of clusters"),min=2,max=(nbindivHCPCshiny-1),value=resClusHCPCshiny,step=1))
-        }
-        else{
+        }  else{
           return(sliderInput("clust",gettext("Number of clusters"),min=2,max=10,value=resClusHCPCshiny,step=1))
         }
-      }
-      else{
-      if(nbindivHCPCshiny<=11){
-        return(sliderInput("clust",gettext("Number of clusters"),min=2,max=(nbindivHCPCshiny-1),value=clustdfHCPCshiny,step=1))
-      }
-      else{
-        return(sliderInput("clust",gettext("Number of clusters"),min=2,max=10,value=clustdfHCPCshiny,step=1))
-      }
+      } else {
+        if(nbindivHCPCshiny<=11){
+          return(sliderInput("clust",gettext("Number of clusters"),min=2,max=(nbindivHCPCshiny-1),value=clustdfHCPCshiny,step=1))
+        }
+        else{
+          return(sliderInput("clust",gettext("Number of clusters"),min=2,max=10,value=clustdfHCPCshiny,step=1))
+        }
       }
     })
     

@@ -14,9 +14,9 @@ CAshiny <- function(X){
       stop(gettext('not enough row/column'))
   }
   assign("pathsaveCAshiny",getwd(),envir=G)
-  outShiny=shiny::runApp(system.file("FactoCAapp2", package="Factoshiny"),launch.browser = TRUE)
+#  outShiny=shiny::runApp(system.file("FactoCAapp2", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny=shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoCAapp2')
-#  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoCAapp2')
+  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoCAapp2')
   assign("myListOfThingsCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objCAshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingsCAshiny, envir=G)
   rm(list=c("myListOfThingsCAshiny"),envir=G)

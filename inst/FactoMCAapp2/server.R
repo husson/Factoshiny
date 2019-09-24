@@ -79,9 +79,9 @@
       sup=values()$indsup
       if(!is.null(sup)){
         if(is.null(color2MCAshiny)){
-          return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),"darkblue"))
+          return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),"darkblue",allowTransparent=TRUE))
         }else{
-          return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),color2MCAshiny))
+          return(colourpicker::colourInput("colindsup",h6(gettext("Colour of supplementary individuals")),color2MCAshiny,allowTransparent=TRUE))
         }
       }
     })
@@ -90,9 +90,9 @@
       sup=values()$choixqual
       if(!is.null(sup)){
         if(is.null(color4MCAshiny)){
-          return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),"darkgreen"))
+          return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),"darkgreen",allowTransparent=TRUE))
         }else{
-          return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),color4MCAshiny))
+          return(colourpicker::colourInput("colvarsup",h6(gettext("Colour of supplementary categories")),color4MCAshiny,allowTransparent=TRUE))
         }
       }
     })
@@ -205,29 +205,29 @@
     
     
     codeGraphVar<-function(){
-      Call2=paste('plot.MCA(res.MCA,choix="var",invisible=',Plot4()$invisible,',title="',input$title2MCAshiny,'",axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'))',sep='')  
+      Call2=paste('plot.MCA(res.MCA,choix="var",invisible=',Plot4()$invisible,',title="',input$title2MCAshiny,'",axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),graph.type="',input$graph_type,'"',',ggoptions=list(size = ',input$cex*4,')',')',sep='')  
       return(Call2)
     }
     
     codeGraphInd<-function(){
       hab=Plot1()$habill
       if(input$eachvar==TRUE){
-      colouract2=paste("c(",paste(Plot1()$colouract2,collapse = ","),")",sep="")
-      colouract2=as.character(colouract2)
+        colouract2 <- paste("c(",paste(Plot1()$colouract2,collapse = ","),")",sep="")
+        colouract2 <- as.character(colouract2)
       }else{
-        colouract2=paste("'",Plot1()$colouract2,"'",sep="")
+        colouract2 <- paste("'",Plot1()$colouract2,"'",sep="")
       }
       if(hab!="none"){
-        Call3=cat(paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1MCAshiny,'",col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep=''),'\n',paste('plotellipses(res.MCA,keepvar="',hab,'")',sep=''),'\n')
+        Call3=cat(paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1MCAshiny,'",graph.type="',input$graph_type,'",ggoptions=list(size = ',input$cex*4,')',',col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep=''),'\n',paste('plotellipses(res.MCA,keepvar="',hab,'")',sep=''),'\n')
         
       }else{
-      Call3=paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1MCAshiny,'",col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep='')
+      Call3=paste('plot.MCA(res.MCA,choix="ind",invisible=',Plot1()$inv,',axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),selectMod=',Plot1()$selm,',selec=',Plot1()$sel,',habillage=',Plot1()$hab,',title="',input$title1MCAshiny,'",graph.type="',input$graph_type,'"',',ggoptions=list(size = ',input$cex*4,')',',col.quali="',Plot1()$colquali,'",col.var=',colouract2,',col.ind="',Plot1()$colouract,'",col.ind.sup="',Plot1()$colindsup,'")',sep='')
       }
       return(Call3)
     }
     
     codeGraphQuanti<-function(){
-      Call4=paste("plot.MCA(res.MCA,axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"),choix='quanti.sup',title='",input$title3MCAshiny,"')",sep="")
+      Call4=paste('plot.MCA(res.MCA,axes=c(',as.numeric(input$nb1),',',as.numeric(input$nb2),'),graph.type="',input$graph_type,'"', ',ggoptions=list(size = ',input$cex*4,')',     ',choix="quanti.sup",title="',input$title3MCAshiny,'")',sep='')
       return(Call4)
     }
     
@@ -424,9 +424,9 @@
     
     output$colquanti12=renderUI({
       if(is.null(color7MCAshiny)){
-        return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),"blue"))
+        return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),"blue",allowTransparent=TRUE))
       }else{
-        return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),color7MCAshiny))
+        return(colourpicker::colourInput("colquanti",h6(gettext("Colour of supplementary quantitative variables")),color7MCAshiny,allowTransparent=TRUE))
       }
     })
     
@@ -434,9 +434,9 @@
       sup=values()$choixquant
       if(!is.null(sup)){
         if(is.null(color8MCAshiny)){
-          return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),"blue"))
+          return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),"blue",allowTransparent=TRUE))
         }else{
-          return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),color8MCAshiny))
+          return(colourpicker::colourInput("colli",h6(gettext("Colour of supplementary quantitative variables")),color8MCAshiny,allowTransparent=TRUE))
         }
       }
       
@@ -554,20 +554,22 @@
       }else{
         coll3=input$colli
       }
-      list(PLOT4=(plot.MCA(values()$res.MCA,choix="var",invisible=inv,title=input$title2MCAshiny,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,col.quanti.sup=coll3,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2)),invisible=(invtext))    
+      list(PLOT4=(plot.MCA(values()$res.MCA,choix="var",graph.type=input$graph_type,invisible=inv,title=input$title2MCAshiny,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,col.quanti.sup=coll3,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,ggoptions=list(size = input$cex*4))),invisible=(invtext))    
     })
     
     output$map4 <- renderPlot({
-      p <- Plot4()$PLOT4
+        if (is.ggplot(Plot4()$PLOT4)) p <- print(Plot4()$PLOT4)
+	    else p <- Plot4()$PLOT4
+#      p <- Plot4()$PLOT4
     })
     
     output$col3=renderUI({
       sup=values()$choixqual
       if(!is.null(sup)){
         if(is.null(color6MCAshiny)){
-          return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),"darkgreen"))
+          return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),"darkgreen",allowTransparent=TRUE))
         }else{
-          return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),color6MCAshiny))
+          return(colourpicker::colourInput("colvarsup1",h6(gettext("Colour of supplementary categorical variables")),color6MCAshiny,allowTransparent=TRUE))
         }
       }
     })
@@ -709,20 +711,25 @@
         coloursup2=input$colvarsup
       }
       if(input$eachvar==TRUE){
-        colouract2=rep(1:length(c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)),unlist(lapply(values()$res.MCA$call$X[,c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)],nlevels)))
-      }
-      list(PLOT1=(plot.MCA(values()$res.MCA,choix="ind",invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,title=input$title1MCAshiny,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex)),choix=(choixText),inv=(invText),selm=(selecModText),sel=(selecindivText),hab=(habText),colquali=(colquali),colindsup=(colindsup),habill=(hab),colouract2=(colouract2),colouract=(colouract))  
+        colouract2=rep(1:length(values()$res.MCA$call$quali),sapply(values()$res.MCA$call$X[,values()$res.MCA$call$quali],nlevels))
+        if (!is.null(values()$res.MCA$call$quali.sup)) coloursup2=rep((1+length(values()$res.MCA$call$quali)) : (length(values()$res.MCA$call$quali)+length(values()$res.MCA$call$quali.sup)),sapply(values()$res.MCA$call$X[,values()$res.MCA$call$quali.sup],nlevels))
+	  }
+      list(PLOT1=(plot.MCA(values()$res.MCA,choix="ind",graph.type=input$graph_type,invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,title=input$title1MCAshiny,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,ggoptions=list(size = input$cex*4))),choix=(choixText),inv=(invText),selm=(selecModText),sel=(selecindivText),hab=(habText),colquali=(colquali),colindsup=(colindsup),habill=(hab),colouract2=(colouract2),colouract=(colouract))  
     })
     
     output$map <- renderPlot({
       hab=Plot1()$habill
       if(is.null(input$habi)||input$habi==FALSE){
-        p=Plot1()$PLOT1
+#        p=Plot1()$PLOT1
+        if (is.ggplot(Plot1()$PLOT1)) p <- print(Plot1()$PLOT1)
+	    else p <- Plot1()$PLOT1
       }else{
       if(!is.null(input$drawconf)&&input$drawconf==TRUE){
-        plotellipses(values()$res.MCA,keepvar=hab)
+        plotellipses(values()$res.MCA,keepvar=hab,graph.type=input$graph_type)
       }else if (!is.null(input$drawconf)&&input$drawconf==FALSE){
-        p=Plot1()$PLOT1
+        if (is.ggplot(Plot1()$PLOT1)) p <- print(Plot1()$PLOT1)
+	    else p <- Plot1()$PLOT1
+#        p=Plot1()$PLOT1
       }
       }
     })
@@ -757,11 +764,13 @@
       }else{
         colquanti=input$colquanti
       }
-      plot.MCA(values()$res.MCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),choix="quanti.sup",title=input$title3MCAshiny,col.quanti.sup=colquanti,cex=input$cex3,cex.main=input$cex3,cex.axis=input$cex3) 
+      plot.MCA(values()$res.MCA,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),graph.type=input$graph_type,choix="quanti.sup",title=input$title3MCAshiny,col.quanti.sup=colquanti,cex=input$cex3,cex.main=input$cex3,cex.axis=input$cex3,ggoptions=list(size = input$cex*4)) 
     }
     
     output$map2 <- renderPlot({
-      p=Plot2()
+        if (is.ggplot(Plot2())) p <- print(Plot2())
+	    else p <- Plot2()
+#      p=Plot2()
     })  
     
     output$map22=renderUI({
@@ -1249,9 +1258,11 @@
         
         hab=Plot1()$habill
         if(!is.null(input$drawconf)&&input$drawconf==TRUE){
-          plotellipses(values()$res.MCA,keepvar=hab)
+          plotellipses(values()$res.MCA,keepvar=hab,graph.type=input$graph_type)
         }else if (!is.null(input$drawconf)&&input$drawconf==FALSE){
-          p <- Plot11()
+        if (is.ggplot(Plot1())) p <- print(Plot1())
+	    else p <- Plot1()
+#          p <- Plot11()
         }
         dev.off()
       },
@@ -1451,7 +1462,7 @@
     if(input$eachvar==TRUE){
       colouract2=rep(1:length(c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)),unlist(lapply(values()$res.MCA$call$X[,c(values()$res.MCA$call$quali,values()$res.MCA$call$quali.sup)],nlevels)))
     }
-    plot.MCA(values()$res.MCA,choix="ind",title=as.character(input$title1MCAshiny),invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex)}
+    plot.MCA(values()$res.MCA,choix="ind",title=as.character(input$title1MCAshiny),graph.type=input$graph_type,invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),selectMod=selm,selec=sel,habillage=hab,col.var=colouract2,col.ind.sup=coloursup,col.ind=colouract,col.quali.sup = coloursup2,cex=input$cex,cex.main=input$cex,cex.axis=input$cex,ggoptions=list(size = input$cex*4))}
     
     Plot44=function(){
       inv=getinv2()$inv
@@ -1465,7 +1476,7 @@
     }else{
       coll2=input$colvarsup1
     }
-    plot.MCA(values()$res.MCA,choix="var",title=input$title2MCAshiny,invisible=inv,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2)
+    plot.MCA(values()$res.MCA,choix="var",title=input$title2MCAshiny,invisible=inv,graph.type=input$graph_type,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),col.var=coll1,col.quali.sup = coll2,cex=input$cex2,cex.main=input$cex2,cex.axis=input$cex2,ggoptions=list(size = input$cex*4))
     }
     
   }

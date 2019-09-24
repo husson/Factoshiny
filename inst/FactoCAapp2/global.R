@@ -14,10 +14,12 @@ if(inherits(x, "data.frame")){
   valueselec2CAshiny <- NULL
   sizeCAshiny <- 1
   title1CAshiny <- gettext("CA factor map")
+  color_pointInit <- gettext("row/column")
   col1CAshiny <- "blue"
   col2CAshiny <- "red"
   col3CAshiny <- "#0C2B94"
   col4CAshiny <- "darkred"
+  col5CAshiny  <- "magenta"
   ellipsesCAshiny <- NULL
   nbdimclustCAshiny <- 5
   hcpcparaCAshiny <- FALSE
@@ -42,6 +44,7 @@ col1CAshiny <- x$col1CAshiny
 col2CAshiny <- x$col2CAshiny
 col3CAshiny <- x$col3CAshiny
 col4CAshiny <- x$col4CAshiny
+col5CAshiny  <- x$col5CAshiny
 ellipsesCAshiny <- x$ellip
 hcpcparaCAshiny <- x$hcpcparam
 nbdimclustCAshiny <- x$nbdimclustCAshiny
@@ -58,6 +61,7 @@ if(inherits(x, "CA")){
   axe2CAshiny <- 2
   nbdimclustCAshiny <- 5
   hcpcparaCAshiny <- FALSE
+  color_pointInit <- gettext("row/column")
   InvisibleCAshiny <- NULL
   selec1CAshiny <- gettext("No selection")
   selec2CAshiny <- gettext("No selection")
@@ -69,6 +73,7 @@ if(inherits(x, "CA")){
   col2CAshiny <- "red"
   col3CAshiny <- "darkblue"
   col4CAshiny <- "darkred"
+  col5CAshiny  <- "magenta"
   ellipsesCAshiny <- NULL
 }
 
@@ -92,10 +97,7 @@ for (i in 1:dim(newdataCAshiny)[1]){
 
 VariableChoiceCAshiny <- names(which(sapply(newdataCAshiny,is.numeric)))
 nomsCAshiny <- rownames(newdataCAshiny)
-#numsCAshiny <- c(1:length(nomsCAshiny))
 QualiChoiceCAshiny <- names(which(!(sapply(newdataCAshiny,is.numeric))))
-#IdChoiceCAshiny <- c(1:length( VariableChoiceCAshiny))
-# IdqualisupCAshiny <- c(1:length(QualiChoiceCAshiny))
 supCAshiny <- which( VariableChoiceCAshiny%in%withnaCAshiny)
 if (length(supCAshiny)==0) supCAshiny <- NULL
  
@@ -105,7 +107,6 @@ if(!(is.null(supCAshiny))){
 if(is.null(supCAshiny)){
   VariableChoicesCAshiny <-  VariableChoiceCAshiny
 }
-# IdChoicesCAshiny <- 1:length(VariableChoicesCAshiny)
 sup2CAshiny <- which(nomsCAshiny%in%nomrowCAshiny)
 if (length(sup2CAshiny)==0) sup2CAshiny <- NULL
 if(!(is.null(sup2CAshiny))){
@@ -114,5 +115,4 @@ if(!(is.null(sup2CAshiny))){
 if(is.null(sup2CAshiny)){
   nomCAshiny <- nomsCAshiny
 }
-# numCAshiny <- c(1:length(nomCAshiny))
 nomDataCAshiny <- unlist(strsplit(as.character(nomDataCAshiny),"\\["))[1]

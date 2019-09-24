@@ -14,9 +14,9 @@ catdesshiny <- function(X){
     if(length(qualicatdesshiny)==0)
       stop(gettext('No qualitative variable in your dataset',domain="R-Factoshiny"))
   }
-# outShiny <- shiny::runApp(system.file("Factocatdesapp", package="Factoshiny"),launch.browser = TRUE)
+ outShiny <- shiny::runApp(system.file("Factocatdesapp", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/Factocatdesapp')
- outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/Factocatdesapp')
+# outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/Factocatdesapp')
   assign("myListOfThingscatdesshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objcatdesshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingscatdesshiny, envir=G)
   rm(list=c("myListOfThingscatdesshiny"),envir=G)

@@ -1,20 +1,22 @@
 function(input, output, session) {
   
+  
+  
+  
   resultat <- reactive({
-    return(catdes(donnee = jdd,
-                  num.var = which(colnames(jdd) == input$select_categorical_var),
+    return(catdes(donnee = my_data,
+                  num.var = which(colnames(my_data) == input$select_categorical_var),
                   proba = 1
     ))
   })
   
   output$select_quali <- renderUI({
-    x <- colnames(jdd)[sapply(jdd,is.factor) & colnames(jdd) != input$select_categorical_var]
     selectInput(
       inputId = "select_quali_var_test",
       label = gettext("Qualitative variables",domain="R-Factoshiny"),
       multiple = TRUE,
-      choices =  x,
-      selected = x
+      choices = colnames(my_data)[sapply(my_data,is.factor) & !(colnames(my_data) %in% input$select_categorical_var)],
+      selected = choix_var_quali
     )
   })
   
@@ -24,15 +26,23 @@ function(input, output, session) {
       lvl <- length(resultat()$quanti)
       x <- resultat()$quanti[[1]][,"v.test", drop = FALSE]
       tabvtest <- x[sort(rownames(x)),,drop=FALSE]
+      
       x <- resultat()$quanti[[1]][,"p.value", drop = FALSE]
       tabpvalue <- x[sort(rownames(x)),,drop=FALSE]
+      
+      x <- resultat()$quanti[[1]][,2, drop = FALSE]
+      tabmean <- x[sort(rownames(x)),,drop=FALSE]
+      
       for(i in 2:lvl){
         x <- resultat()$quanti[[i]][,"v.test", drop = FALSE]
         tabvtest <- cbind(tabvtest,as.data.frame(x[sort(rownames(x)),]))
         x <- resultat()$quanti[[i]][,"p.value", drop = FALSE]
         tabpvalue <- cbind(tabpvalue,as.data.frame(x[sort(rownames(x)),]))
+        x <- resultat()$quanti[[i]][,2, drop = FALSE]
+        tabmean <- cbind(tabmean,as.data.frame(x[sort(rownames(x)),]))
       }
-      colnames(tabpvalue) <- colnames(tabvtest) <- names(resultat()$quanti)
+      colnames(tabpvalue) <- colnames(tabvtest) <- colnames(tabmean) <- names(resultat()$quanti)
+      tabmean$overall <- resultat()$quanti[[1]][sort(rownames(resultat()$quanti[[1]])),3]
       
       validate(
         need(input$select_proba_plot > min(tabpvalue), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),signif(min(tabpvalue),3)))
@@ -43,8 +53,9 @@ function(input, output, session) {
   })
   
   tableau_quali <- reactive({
-    if(!is.null(resultat()$category) & input$select_categorical_var != input$select_quali_var_test){
-      coldonnee <- colnames(jdd[input$select_quali_var_test])
+    
+    if(!is.null(resultat()$category) & !(input$select_categorical_var %in% input$select_quali_var_test)){
+      coldonnee <- colnames(my_data[input$select_quali_var_test])
       
       rows <- NULL
       for (i in 1:nrow(resultat()$category[[1]])) {
@@ -68,6 +79,7 @@ function(input, output, session) {
       sortie <- signif(tabvtest[apply(tabpvalue,1,min) <= input$select_proba_plot,,drop = FALSE],3)
       return(sortie)
     }
+    
   })
   
   output$barplot <-  renderPlot({
@@ -81,20 +93,35 @@ function(input, output, session) {
   
   tab_quanti <- reactive({
     if(!is.null(resultat()$quanti)){
-      quant <- seq(
-        min(tableau_vtest(), na.rm = T), 
-        max(tableau_vtest(), na.rm = T), 
-        length.out = 100
-      )
-      color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
-      
-      a <- DT::formatStyle(
-        DT::datatable(t(as.matrix(tableau_vtest())),
-                      options = list(pageLength = ncol(tableau_vtest()))),
-        rownames(tableau_vtest()),
-        backgroundColor = DT::styleInterval(quant, color)
-      )
-      return(a)
+      if(!is.null(input$select_quanti_var)){
+        
+        lvl <- length(resultat()$category)
+        
+        quant <- seq(
+          min(tableau_vtest(), na.rm = T), 
+          max(tableau_vtest(), na.rm = T), 
+          length.out = 100
+        )
+        color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
+        
+        a <- DT::formatStyle(
+          DT::datatable(t(as.matrix(tableau_vtest())),
+                        # options = list(pageLength = ncol(tableau_vtest())),
+                        extensions = c('Buttons','FixedColumns','FixedHeader'),
+                        options =
+                          list(
+                            pageLength = ncol(tableau_vtest()),
+                            dom = 'Bfrtip',
+                            buttons = c('csv'),
+                            fixedColumns = TRUE,
+                            fixedHeader = TRUE
+                          )
+          ),
+          rownames(tableau_vtest()),
+          backgroundColor = DT::styleInterval(quant, color)
+        )
+        return(a)
+      }
     }
   })
   
@@ -107,19 +134,30 @@ function(input, output, session) {
   tab_quali <- reactive({
     if(!is.null(input$select_quali_var_test)){
       
-      if( input$select_categorical_var != input$select_quali_var_test){
+      if(!(input$select_categorical_var %in% input$select_quali_var_test)){
         
         quant <- seq(min(tableau_quali(),na.rm = TRUE), max(tableau_quali(), na.rm = TRUE), length.out = 100)
         color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
         
         a <- DT::formatStyle(
-          DT::datatable(tableau_quali(), options = list(pageLength = nrow(tableau_quali()))),
+          DT::datatable(
+            tableau_quali(),
+            extensions = c('Buttons','FixedColumns','FixedHeader'),
+            options = list(
+              pageLength = nrow(tableau_quali()),
+              dom = 'Bfrtip',
+              buttons = c('csv'),
+              fixedColumns = TRUE,
+              fixedHeader = TRUE
+            )
+          ),
           colnames(tableau_quali()),
           backgroundColor = DT::styleInterval(quant, color)
         )  
         return(a)
       }
     }
+    
   })
   
   output$tableau_df_quali <- DT::renderDataTable({
@@ -145,7 +183,19 @@ function(input, output, session) {
       color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
       
       a <- DT::formatStyle(
-        DT::datatable(tab, options = list(pageLength = nrow(tab))),
+        DT::datatable(
+          tab,
+          extensions = c('Buttons','FixedColumns','FixedHeader'),
+          options = list(
+            pageLength = nrow(tab),
+            dom = 'Bfrtip',
+            buttons = c('csv'),
+            fixedColumns = TRUE,
+            fixedHeader = TRUE
+            
+            
+          )
+        ),
         colnames(tab),
         backgroundColor = DT::styleInterval(quant, color)
       )
@@ -158,18 +208,12 @@ function(input, output, session) {
   })
   
   observe({ input$catdesMAJ
-      output$resu_catdes <- renderPrint({ isolate(catdes(donnee = jdd[,c(input$select_categorical_var,input$select_quali_var_test,input$select_quanti_var)],
-                  num.var = 1, proba = input$select_proba_plot))
-				  }) 
-	})
-  
-  observe({
-    if(input$Quit!=0){
-      isolate({
-        stopApp(returnValue=resultat())
-      })
-    }
+    output$resu_catdes <- renderPrint({ isolate(catdes(donnee = my_data[,c(input$select_categorical_var,input$select_quali_var_test,input$select_quanti_var)],
+                                                       num.var = 1, proba = input$select_proba_plot))
+    }) 
   })
+  
+  
   
   tableau_link_quanti <- reactive({
     if(!is.null(input$select_quanti_var)){
@@ -191,9 +235,17 @@ function(input, output, session) {
       
       a <- DT::formatStyle(
         DT::datatable(signif(tableau_link_quanti(),3),
-                      options = list(pageLength = nrow(tableau_link_quanti()))),
-        target = 'row',
-        columns = colnames(tableau_link_quanti())[1],
+                      extensions = c('Buttons','FixedColumns','FixedHeader'),
+                      options = list(
+                        pageLength = nrow(tableau_link_quanti()),
+                        dom = 'Bfrtip',
+                        buttons = c('csv'),
+                        fixedColumns = TRUE,
+                        fixedHeader = TRUE
+                      )
+        ),
+        columns = colnames(tableau_link_quanti()),
+        valueColumns = 'P-value',
         backgroundColor = DT::styleInterval(quant, color)
       )
     }
@@ -219,14 +271,33 @@ function(input, output, session) {
     if(!is.null(resultat()$test.chi2)){
       if(nrow(tableau_link_chisquare()) > 0){
         
-        quant <- seq(min(tableau_link_chisquare()), max(tableau_link_chisquare()), length.out = 100)
+        # Je définis les quantiles entre la plus petite valeur du tableau et la plus grande 
+        quant <- seq(min(tableau_link_chisquare()[,"p.value"]), max(tableau_link_chisquare()[,"p.value"]), length.out = 100)
+        
+        # Je crée toutes mes nuances de couleurs
         color <- grDevices::colorRampPalette(c(input$col_up,"white",input$col_low))(length(quant)+1)
         
         a <- DT::formatStyle(
-          DT::datatable(signif(tableau_link_chisquare(),3),
-                        options = list(pageLength = nrow(tableau_link_chisquare()))),
-          target = 'row',
+          DT::datatable(
+            # Je mets mon tableau
+            signif(tableau_link_chisquare(),3),
+            extensions = c('Buttons','FixedColumns','FixedHeader'),
+            # Je choisis le nb d'éléments à afficher
+            options = list(pageLength = nrow(tableau_link_chisquare()),
+                           dom = 'Bfrtip',
+                           buttons = c('csv'),
+                           fixedColumns = TRUE,
+                           fixedHeader = TRUE
+            )
+          ),
+          
+          #Les colonnes sur lesquelles j'applique les couleurs
           columns = colnames(tableau_link_chisquare()),
+          
+          # Les/La colonnes(s) sur lesquelle je définis les couleurs (ici l'échelle de couleur se fera en fonction de la pvalue)
+          valueColumns = "p.value",
+          
+          # J'applique les couleurs
           backgroundColor = DT::styleInterval(quant, color)
         )
         return(a)
@@ -239,25 +310,25 @@ function(input, output, session) {
   })
   
   output$quanti_quali_both1 <- renderUI({
-    
+    xx <- gettext("Quantitative",domain="R-Factoshiny")
     old.x <- gettext("Both",domain="R-Factoshiny")
     if(!is.null(input$quanti_quali_both)) old.x <- input$quanti_quali_both
     if(!is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)){
-      x <- c(gettext("Both",domain="R-Factoshiny"),gettext("Quantitative",domain="R-Factoshiny"),gettext("Qualitative",domain="R-Factoshiny"))
+      xx <- c(gettext("Both",domain="R-Factoshiny"),gettext("Quantitative",domain="R-Factoshiny"),gettext("Qualitative",domain="R-Factoshiny"))
     }
     
     if(is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)){
-      x <- c(gettext("Quantitative",domain="R-Factoshiny"))
+      xx <- c(gettext("Quantitative",domain="R-Factoshiny"))
     }
     
     if(!is.null(input$select_quali_var_test) & is.null(input$select_quanti_var)){      
-      x <- c(gettext("Qualitative",domain="R-Factoshiny"))
+      xx <- c(gettext("Qualitative",domain="R-Factoshiny"))
     }
     
-    if (old.x%in%x){
+    if (old.x%in%xx){
       radioButtons(
         inputId = "quanti_quali_both",
-        choices = x,
+        choices = xx,
         inline = TRUE,
         label = gettext("Describe by ... variables",domain="R-Factoshiny"),
         selected = old.x
@@ -265,52 +336,60 @@ function(input, output, session) {
     } else {
       radioButtons(
         inputId = "quanti_quali_both",
-        choices = x,
+        choices = xx,
         inline = TRUE,
         label = gettext("Describe by ... variables",domain="R-Factoshiny")
       )
     }
   })
-    
-  observe({
-    if(input$download_tabquanti != 0){
+  
+  observeEvent(input$download_tabquanti,{
       NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
-	  if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
-      htmlwidgets::saveWidget(widget = df_link_quanti(), file = NameFile)
-    }
+      if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
+      htmlwidgets::saveWidget(widget =  df_link_quanti(), file = NameFile)
   })
   
-  observe({
-    if(input$download_tabquali != 0){
-	  NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
-	  if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
+  observeEvent(input$download_tabquali,{
+      NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
+      if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
       htmlwidgets::saveWidget(widget =  tab_chisquare(), file = NameFile)
-    }
   })
   
-  observe({
-    if(input$download_cate_quanti != 0){
-	  NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
-	  if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
+  observeEvent(input$download_cate_quanti,{
+      NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
+      if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
       htmlwidgets::saveWidget(widget =  tab_quanti(), file = NameFile)
-    }
   })
   
-  observe({
-    if(input$download_cate_quali != 0){
-	  NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
-	  if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
+  observeEvent(input$download_cate_quali,{
+      NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
+      if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
       htmlwidgets::saveWidget(widget =  tab_quali(), file = NameFile)
-    }
   })
   
-  observe({
-    if(input$download_cate_both != 0){
-	  NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
-	  if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
+  observeEvent(input$download_cate_both,{
+      NameFile <- tcltk::tclvalue(tcltk::tcl("tk_getSaveFile"))
+      if (!(any(strsplit(NameFile,split="[.]")[[1]]=="html")) & !(any(strsplit(NameFile,split="[.]")[[1]]=="htm"))) NameFile <- paste0(NameFile,".html")
       htmlwidgets::saveWidget(widget =  tab_both(), file = NameFile)
-      # htmlwidgets::saveWidget(widget =  tab_both(), file = paste0(getwd(),"cate_both.html"))
-    }
+    
+  })
+  
+  liste_retourner <- reactive({
+    retour <- list()
+    retour$donnees = my_data
+    retour$explain = input$select_categorical_var
+    retour$proba = input$select_proba_plot
+    retour$col_basse = input$col_low
+    retour$col_haute = input$col_up
+    retour$var_quanti = input$select_quanti_var
+    retour$var_quali = input$select_quali_var_test
+    class(retour) <- c("catdesshiny", "list")
+    
+    return(retour)
+  })
+  
+  observeEvent(input$Quit,{
+        stopApp(returnValue=liste_retourner())
   })
   
 }

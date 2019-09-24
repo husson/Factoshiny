@@ -71,9 +71,9 @@ page_Facto <-
   )
 
 
-ui <- dashboardPage(skin = "purple", 
-                    dashboardHeader(title = gettext("Factoshiny interface",domain="R-Factoshiny")),
-                    dashboardSidebar(width=250,
+ui <- shinydashboard::dashboardPage(skin = "purple", 
+                    shinydashboard::dashboardHeader(title = gettext("Factoshiny interface",domain="R-Factoshiny")),
+                    shinydashboard::dashboardSidebar(width=250,
                       tags$head(
                        tags$style(HTML(".content-wrapper {
                         background-color: light-blue !important;
@@ -101,14 +101,14 @@ ui <- dashboardPage(skin = "purple",
                     HTML("<br><h3>"),
                     HTML(gettext("Useful links",domain="R-Factoshiny")),
                     HTML("</h3>"),
-                    sidebarMenu(
-                      menuItem(gettext("Factoshiny website",domain="R-Factoshiny"), icon = icon("info-circle"), href='http://factominer.free.fr/graphs/factoshiny.html',
+                    shinydashboard::sidebarMenu(
+                      shinydashboard::menuItem(gettext("Factoshiny website",domain="R-Factoshiny"), icon = icon("info-circle"), href='http://factominer.free.fr/graphs/factoshiny.html',
                                startExpanded=T
                       ),                       
-                      menuItem(gettext("FactoMineR website",domain="R-Factoshiny"), icon = icon("laptop-code"), href='http://factominer.free.fr/',
+                      shinydashboard::menuItem(gettext("FactoMineR website",domain="R-Factoshiny"), icon = icon("laptop-code"), href='http://factominer.free.fr/',
                                startExpanded=T
                       ), 
-                      menuItem("F. Husson", icon = icon("user"), href='https://husson.github.io/',
+                      shinydashboard::menuItem("F. Husson", icon = icon("user"), href='https://husson.github.io/',
                           startExpanded=T
                       ), 
                       tabName = "Facto"
@@ -116,5 +116,5 @@ ui <- dashboardPage(skin = "purple",
                     div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
                     ),
 
-          dashboardBody(page_Facto)
+          shinydashboard::dashboardBody(page_Facto)
 )

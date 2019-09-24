@@ -14,103 +14,52 @@ fluidPage(
         div(align="center",checkboxInput("caparam",gettext("Show CA parameters"),FALSE)),
         conditionalPanel(
           condition="input.caparam==true",
-          br(),
-          if(is.null(colonnesupCAshiny)){
-            radioButtons("selecactive",label=h6(gettext("Choose the active columns")),
-                         choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))}
-          else{
-            radioButtons("selecactive",label=h6(gettext("Choose the active columns")),
-                         choices=list(gettext("All"),gettext("Choose")),selected=gettext("Choose")) 
-          },
-          conditionalPanel(
-            #        condition="input.selecactive=='choix'",
-            condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
-            if(is.null(colonnesupCAshiny)){
-              selectInput("supvar",label=h6(gettext("Select the supplementary columns")),
-                          choices=list(IdChoicesCAshiny=VariableChoicesCAshiny),
-                          multiple=TRUE)}
-            else{
-              selectInput("supvar",label=h6(gettext("Select the supplementary columns")),
-                          choices=list(IdChoicesCAshiny=VariableChoicesCAshiny),
-                          multiple=TRUE,selected=colonnesupCAshiny)  
-            }
-          ),
-          if(is.null(catsupCAshiny)){
-            if(length(QualiChoiceCAshiny)>1){
-              selectInput("supquali",label=h6(gettext("Select the supplementary categorical variables")),choices=list(IdqualisupCAshiny=as.vector(QualiChoiceCAshiny)),multiple=TRUE)
-            }
-            if (length(QualiChoiceCAshiny)==1){
-              h6(gettext("Select the supplementary categorical variables"))
-              checkboxInput("supquali",QualiChoiceCAshiny,FALSE)
-            }}
-          else{
-            if(length(QualiChoiceCAshiny)>1){
-              selectInput("supquali",label=h6(gettext("Select the supplementary categorical variables")),choices=list(IdqualisupCAshiny=as.vector(QualiChoiceCAshiny)),multiple=TRUE,selected=catsupCAshiny)
-            }
-            if (length(QualiChoiceCAshiny)==1){
-              h6(gettext("Select the supplementary categorical variables"))
-              checkboxInput("supquali",QualiChoiceCAshiny,TRUE)
-            } 
-          },
-          br(),
-          if(is.null(lignesupCAshiny)){
-            selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(numCAshiny=nomCAshiny),multiple=TRUE)}
-          else{
-            selectInput("rowsupl",label=h6(gettext("Select the supplementary rows")),choices=list(numCAshiny=nomCAshiny),multiple=TRUE,selected=lignesupCAshiny)
-          }
+            selectizeInput("supvar",label=gettext("Select supplementary columns"), choices=VariableChoicesCAshiny, selected=colonnesupCAshiny,multiple=TRUE),
+            if(length(QualiChoiceCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoiceCAshiny,multiple=TRUE,selected=catsupCAshiny),
+            selectizeInput("rowsupl",gettext("Select supplementary rows"),choices=nomCAshiny, multiple=TRUE,selected=lignesupCAshiny)
         ),
       style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
         div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
-          fluidRow(
-            column(5,uiOutput("NB1")),
-            column(5,uiOutput("NB2"))),
-          textInput("title1CAshiny",h6(gettext("Title of the graph: ")),title1CAshiny),
-          if(is.null(InvisibleCAshiny)){
-            selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE)}
-          else{
-            selectInput("invis",h6(gettext("Invisible elements")),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE,selected=InvisibleCAshiny)
-          },
-          br(),
-          sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=1.5,value=sizeCAshiny,step=0.05),
-          br(),
-          uiOutput("col1CAshiny"),
-          uiOutput("col2CAshiny"),
-          uiOutput("col3CAshiny"),
-          uiOutput("col4CAshiny"),
-          br(),
-          if(is.null(ellipsesCAshiny)){
-            div(align="left",checkboxInput("el",h6(gettext("Draw confidence ellipses")),FALSE))
-          }else{
-          div(align="left",checkboxInput("el",h6(gettext("Draw confidence ellipses")),TRUE))},
-          conditionalPanel(
-            condition='input.el==true',
-            uiOutput("ellipsesCAshiny")
-          ),
-          hr(),
-          radioButtons("seleccol",h6(gettext("Draw columns according to:")), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec1CAshiny,inline=TRUE),
+          div(gettext("Axes:"), style="display: inline-block;padding: 5px"),
+          div(uiOutput("NB1"), style="display: inline-block;"),
+          div(uiOutput("NB2"), style="display: inline-block;"),
+          textInput("title1CAshiny",gettext("Title of the graph:"),title1CAshiny),
+            selectInput("invis",gettext("Invisible elements"),choices=list(gettext("Rows"),gettext("Columns"),gettext("Supplementary rows"),gettext("Supplementary columns"),gettext("Supplementary qualitative variables")),multiple=TRUE,selected=InvisibleCAshiny),
+          sliderInput("cex",gettext("Size of labels"),min=0.5,max=3.5,value=sizeCAshiny,step=0.05),
+          selectInput("color_point",label=gettext("Colour points according to:"),
+                                          choices=list(gettext("row/column"),"cos2"="cos2","contribution"="contribution",gettext("qualitative variable")),selected=color_pointInit),
+            conditionalPanel(
+              condition=paste0("input.color_point=='",gettext("row/column"),"'"),
+                uiOutput("col1CAshiny"),
+                uiOutput("col2CAshiny"),
+                uiOutput("col3CAshiny"),
+                uiOutput("col4CAshiny"),
+                uiOutput("col5CAshiny")
+		    ),
+            uiOutput("ellipsesCAshiny"),
+          selectInput("seleccol",gettext("Labels for columns selected by:"), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec1CAshiny),
           conditionalPanel(
             condition="input.seleccol=='cos2'",
             if(selec1CAshiny=="cos2"){
-              sliderInput("slider3",label=h6(gettext("Draw columns that have a cos2 greater than:")),
+              sliderInput("slider3",label=gettext("Labels for cos2 greater than:"),
                           min=0,max=1,value=valueselec1CAshiny,step=0.05)
             }
             else{
-              sliderInput("slider3",label=h6(gettext("Draw columns that have a cos2 greater than:")),
+              sliderInput("slider3",label=gettext("Labels for cos2 greater than:"),
                           min=0,max=1,value=0,step=0.05) 
           }),
         conditionalPanel(
           condition="input.seleccol=='contrib'",
           uiOutput("contribcol")),
-        br(),
-        radioButtons("selecrow",h6(gettext("Draw rows according to:")), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec2CAshiny,inline=TRUE),
+        selectInput("selecrow",gettext("Labels for rows selected by:"), choices=list(gettext("No selection"),"Cos2"="cos2","Contribution"="contrib"),selected=selec2CAshiny),
         conditionalPanel(
           condition="input.selecrow=='cos2'",
-          if(selec2CAshiny=="cos2"){sliderInput("slider4",label=h6(gettext("Draw rows that have a cos2 greater than:")),
+          if(selec2CAshiny=="cos2"){sliderInput("slider4",label=gettext("Labels for cos2 greater than:"),
                                          min=0,max=1,value=valueselec2CAshiny,step=0.05)}
-          else{sliderInput("slider4",label=h6(gettext("Draw rows that have a cos2 greater than:")),
+          else{sliderInput("slider4",label=gettext("Labels for cos2 greater than:"),
                            min=0,max=1,value=0,step=0.05)}),
         conditionalPanel(
           condition="input.selecrow=='contrib'",
@@ -132,7 +81,7 @@ fluidPage(
 		  div(gettext("File name (without extension):")),
           textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
           if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
-          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+          radioButtons("choixGRAPH",gettext("Which graphs to use?"), choices=c(gettext("Graph done"),gettext("Suggested graph")), selected = gettext("Graph done"), inline=TRUE),
 		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
 		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
@@ -144,11 +93,11 @@ fluidPage(
       mainPanel(
         tags$style(type = "text/css", "a{color: #2F0B3A;}"),
         tabsetPanel(id = "graph_sort",
-                    tabPanel(gettext("Graphs"),
+                    tabPanel(gettext("Graph"),
                              br(),
                              div(verbatimTextOutput("warn")),
                              br(),
-                             div(align="center",plotOutput("map",width=550,height=550)),
+                             div(align="center",plotOutput("map",height=550)),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                              br(),align="center"),

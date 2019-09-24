@@ -17,9 +17,9 @@ function(res){
   }  else{
     li <- res$call$call
     assign("lignecodeHCPCshiny",li, envir=G)
-    outShiny <- shiny::runApp(system.file("FactoHCPCapp2", package="Factoshiny"),launch.browser = TRUE)
+#     outShiny <- shiny::runApp(system.file("FactoHCPCapp2", package="Factoshiny"),launch.browser = TRUE)
 #    outShiny <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoHCPCapp2')
-#    outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoHCPCapp2')
+   outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoHCPCapp2')
   }
   assign("myListOfThingsHCPCshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objHCPCshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingsHCPCshiny, envir=G)

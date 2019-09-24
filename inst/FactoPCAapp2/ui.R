@@ -6,88 +6,46 @@ fluidPage(
         tags$style("body {background-color: #EFFBFB; }"),
         tags$style(type='text/css', "#title1 { height: 25px; }"),
         tags$style(type='text/css', "#title2 { height: 25px; }"),
-		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
+    	tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
         div(align="center",checkboxInput("pcaparam",gettext("PCA parameters"),FALSE)),
         conditionalPanel(
           condition="input.pcaparam==true",
-          if(is.null(quantisupPCAshiny)){
-            radioButtons("selecactive",label=h6(gettext("Choose the active variables")),
-                         choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))
-          }
-          else{
-            radioButtons("selecactive",label=h6(gettext("Choose the active variables")),
-                         choices=list(gettext("All"),gettext("Choose")),selected=gettext("Choose"))
-          },
-          conditionalPanel(
-            condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
-            selectInput("supvar",label=gettext("Select the supplementary quantitative variables"),
-                        choices=list(IdChoicesPCAshiny=VariableChoicesPCAshiny),
-                        selected=quantisupPCAshiny,multiple=TRUE)
+            selectizeInput("supvar",label=gettext("Select supplementary quantitative variables"), choices=VariableChoicesPCAshiny, selected=quantisupPCAshiny,multiple=TRUE),
+            if(length(QualiChoicePCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoicePCAshiny,multiple=TRUE,selected=qualisupPCAshiny),
+            selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomPCAshiny, multiple=TRUE,selected=indsuplPCAshiny),
+            checkboxInput("nor",gettext("Scale data to unit value"),normePCAshiny)
           ),
-          # br(),      
-          h6(gettext("Select the supplementary categorical variables")),
-          
-          if(length(QualiChoicePCAshiny)>1){
-            if(is.null(qualisupPCAshiny)){
-              selectInput("supquali",label="",choices=list(IdqualisupPCAshiny=as.vector(QualiChoicePCAshiny)),multiple=TRUE)
-            }
-            else{
-              selectInput("supquali",label="",choices=list(IdqualisupPCAshiny=as.vector(QualiChoicePCAshiny)),multiple=TRUE,selected=qualisupPCAshiny)  
-            }
-          }
-          else if (length(QualiChoicePCAshiny)==1){
-            if(is.null(qualisupPCAshiny)){
-              checkboxInput("supquali",QualiChoicePCAshiny,FALSE)
-            }
-            else{
-              checkboxInput("supquali",QualiChoicePCAshiny,TRUE)
-            }
-          }
-          else if(length(QualiChoicePCAshiny)==0){
-            p(gettext("No categorical variable in your dataset"))
-          },
-          
-          # br(),
-          h6(gettext("Select the supplementary individuals")),
-          if(is.null(indsuplPCAshiny)){
-            selectInput("indsup","",choices=list(numPCAshiny=nomPCAshiny), multiple=TRUE)
-          }
-          else{
-            selectInput("indsup","",choices=list(numPCAshiny=nomPCAshiny), multiple=TRUE,selected=indsuplPCAshiny)
-          },
-          checkboxInput("nor",gettext("Scale data to unit value"),normePCAshiny)
-        ),
         style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
         div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
-          div(align="center",radioButtons("graph_type",label=NULL,
-                                          choices=list(gettext("classic"),gettext("ggplot")),selected=gettext("ggplot"),inline=TRUE)),
-          fluidRow(
-            column(5,uiOutput("NB1")),
-            column(5,uiOutput("NB2"))),
-          # hr(),
-          div(align="center",radioButtons("ind_var",label=NULL,
-                                          choices=list(gettext("Graph of individuals"),gettext("Graph of variables")),selected=gettext("Graph of individuals"),inline=TRUE)),
+          # div(align="center",radioButtons("graph_type",label=NULL,
+                                          # choices=list(gettext("ggplot"),gettext("classic")),inline=TRUE)),
+          div(gettext("Axes:"), style="display: inline-block;padding: 5px"),
+          div(uiOutput("NB1"), style="display: inline-block;"),
+          div(uiOutput("NB2"), style="display: inline-block;"),
+		  br(),
+          div(radioButtons("ind_var",label=gettext("Modify graph of"),
+                                          choices=list(gettext("individuals"),gettext("variables")),selected=gettext("individuals"),inline=TRUE), style="display: inline-block;"),
           conditionalPanel(
-            condition=paste0("input.ind_var=='",gettext("Graph of individuals"),"'"),
-            textInput("title1",h6(gettext("Title of the graph: ")), titre1PCAshiny),
+            condition=paste0("input.ind_var=='",gettext("individuals"),"'"),
+            textInput("title1",gettext("Graph title: "), titre1PCAshiny),
             uiOutput("choixindmod"),
-            sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=sizePCAshiny,step=0.05,ticks=FALSE),
-            selectInput("select",label=h6(gettext("Draw individuals according to:")),
-                        choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib",gettext("Manual")),selected=selectionPCAshiny),
+            sliderInput("cex",gettext("Size of labels"),min=0.5,max=2.5,value=sizePCAshiny,step=0.05,ticks=FALSE),
+            selectInput("select",label=gettext("Labels for individuals selected by:"), choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib",gettext("Manual")),selected=selectionPCAshiny),
             conditionalPanel(
               condition="input.select=='cos2'",
               if(selectionPCAshiny=="cos2"){
-                div(align="center",sliderInput("slider1", label = "cos2",
+                div(align="center",sliderInput("slider1", label = gettext("Labels for cos2 greater than"),
                                                min = 0, max = 1, value =as.numeric(selection2PCAshiny),step=0.05))}
               else{
-                div(align="center",sliderInput("slider1", label = "cos2",
+                div(align="center",sliderInput("slider1", label = gettext("Labels for cos2 greater than"),
                                                min = 0, max = 1, value =0,step=0.05))
               }),
+			  
             conditionalPanel(
               condition="input.select=='contrib'",
               if(selectionPCAshiny=="contrib"){
@@ -106,27 +64,27 @@ fluidPage(
                 selectInput("indiv",label=gettext("Select individuals:"),
                             choices=list(numPCAshiny=nomPCAshiny),multiple=TRUE)
               }),
-            #colourInput("colour1","Colour of active points",value="blue"),
-            colourpicker::colourInput("coloract", h6(gettext("Choose colour for active individuals")), activeindPCAshiny),
-            uiOutput("colourn2"),
-            uiOutput("colourn3"),
-            if(is.null(habillageindPCAshiny)){
-              checkboxInput("habi",gettext("Points colour depend on categorical variable"),FALSE)
-            }
-            else{
-              checkboxInput("habi",gettext("Points colour depend on categorical variable"),TRUE)
-            },
+          selectInput("color_point",label=gettext("Colour points according to:"),
+                                          choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution",gettext("quantitative variable"),gettext("qualitative variable")),selected=color_pointInit),
             conditionalPanel(
-              condition="input.habi==true",
+              condition=paste0("input.color_point=='",gettext("active/supplementary"),"'"),
+            div(colourpicker::colourInput("coloract", label=NULL, activeindPCAshiny,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+            div(gettext("active individuals"), style="display: inline-block;padding: 0px 0px 0px 10px"),
+            uiOutput("colourn2"),
+            uiOutput("colourn3")
+            ),
+            conditionalPanel(
+              condition=paste0("input.color_point!='",gettext("active/supplementary"),"'"),
               uiOutput("habillage2"),
               uiOutput("ellipsesPCAshiny")
-            )
+            ), style = "padding: 3px;background-color: #fdf4ce"
           ),
           conditionalPanel(
-            condition=paste("input.ind_var=='",gettext("Graph of variables"),"'",sep=''),
-            textInput("title2",h6(gettext("Title of the graph:")), titre2PCAshiny),
-            sliderInput("cex2",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size2PCAshiny,step=0.05,ticks=FALSE),
-            selectInput("select0",label=h6(gettext("Draw variables according to:")),
+            condition=paste("input.ind_var=='",gettext("variables"),"'",sep=''),
+            div(gettext("Graph title:"), style="display: inline-block;padding: 3px"),
+            div(textInput("title2",label=NULL,titre2PCAshiny), style="display: inline-block;"),
+            sliderInput("cex2",gettext("Size of labels"),min=0.5,max=2.5,value=size2PCAshiny,step=0.05,ticks=FALSE),
+            selectInput("select0",label=gettext("Labels for variables selected by:"),
                         choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib"),selected=selection3PCAshiny),
             conditionalPanel(
               condition="input.select0=='contrib'",
@@ -134,19 +92,23 @@ fluidPage(
             ),
             conditionalPanel(
               condition="input.select0=='cos2'",
-              if(selection3PCAshiny=="cos2"){
-                div(align="center",sliderInput("slider00", label = "cos2",
-                                               min = 0, max = 1, value =as.numeric(selection4PCAshiny),step=0.05))  
-              }
-              else{
-                div(align="center",sliderInput("slider00", label = "cos2",
-                                               min = 0, max = 1, value =0,step=0.05))}
-            ),
-            colourpicker::colourInput("coloractvarPCAshiny", h6(gettext("Choose colour for active variables")), coloractvarPCAshiny),
-            uiOutput("varsu")
-          )
+                div(align="center",sliderInput("slider00", label = gettext("Labels for cos2 greater than"),
+                                               min = 0, max = 1, value =as.numeric(selection4PCAshiny),step=0.05))
+			),
+             # colourpicker::colourInput("coloractvarPCAshiny", h6(gettext("Colour for active variables")), coloractvarPCAshiny,allowTransparent=TRUE),
+
+		  selectInput("color_arrow",label=gettext("Colour variables according to:"),
+                                          choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution"),selected=color_arrowInit),
+            conditionalPanel(
+              condition=paste0("input.color_arrow=='",gettext("active/supplementary"),"'"),
+              div(colourpicker::colourInput("coloractvarPCAshiny", label=NULL, coloractvarPCAshiny,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+              div(gettext("active variables"), style="display: inline-block;padding: 0px 0px 0px 10px"),
+              uiOutput("colourv2")
+            ), style = "padding: 3px;background-color: #fbe89d"
+          )			
         ),
-        style = "padding: 3px;background-color: #fcefba"),
+        style = "padding: 3px;background-color: #fcefba"
+	  ),
       wellPanel(
         div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving PCA app?"),hcpcparaPCAshiny)),
         conditionalPanel(
@@ -162,10 +124,9 @@ fluidPage(
 		  div(gettext("File name (without extension):")),
           textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
           if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
-          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+          radioButtons("choixGRAPH",gettext("Which graphs to use?"), choices=c(gettext("Graphs done"),gettext("Suggested graphs")), selected = gettext("Graphs done"), inline=TRUE),
 		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
 		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
-          # paste(gettext("The file will be saved in the directory"),pathsavePCAshiny)
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
@@ -178,14 +139,25 @@ fluidPage(
                   tabPanel(gettext("Graphs"),
                            fluidRow(
                              br(),
-                             column(width = 6,plotOutput("map2", width = "500"),
+##                             column(width = 6,plotOutput("map2", width = "500", brush = brushOpts(id = "plot_brush_ind")),
+                             column(width = 7,plotOutput("map2", height = "500"),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
                                     align="center"),
-                             column(width = 6,plotOutput("map", width = "500"),
+                             column(width = 5,plotOutput("map", height = "500"),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                                     align="center"))),
+                  # tabPanel(gettext("Graph of individuals"),
+                             # column(width = 12,plotOutput("map2", width = "100%"),
+                                    # br(),
+                                    # p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
+                                    # align="center")),
+                  # tabPanel(gettext("Graph of variables"),
+                             # column(width = 12,plotOutput("map", width = "100%"),
+                                    # br(),
+                                    # p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
+                                    # align="center")),
                   tabPanel(gettext("Values"),
                            br(),
                            uiOutput("out22"),
@@ -252,7 +224,6 @@ fluidPage(
                              div(align="center",tableOutput("sortieDimdesc3")),
                              p("Qualitative"),
                              div(align="center",tableOutput("sortieDimdesc4"))
-                             
                            ),
                            br(),
                            conditionalPanel(
@@ -275,7 +246,7 @@ fluidPage(
                            br(),
                            verbatimTextOutput("summary"),
                            br(),
-                           selectInput("bam",h6(gettext("Graphs for")),choices=list(IdChoicesPCAshiny=VariableChoicesPCAshiny),multiple=FALSE),
+                           selectizeInput("bam",h6(gettext("Graphs for")),choices=c(VariableChoicesPCAshiny),multiple=FALSE),
                            plotOutput("histo")),
                   
                   tabPanel(gettext("Data"),

@@ -1,14 +1,16 @@
 print.PCAshiny<-
 function(x,...){
   res.shinypca=x
-  if(!inherits(res.shinypca,"PCAshiny"))
-    stop("non convenient data")
-  cat("Results for the PCA with Factoshiny\n")
-  cat("You can use it to fine your app the way you left it\n")
+  if(!inherits(res.shinypca,"PCAshiny")) stop(gettext("non convenient data"))
+  cat(gettext("Results for the PCA with Factoshiny"))
   cat("\n")
-  cat("Corresponding script : \n")
-  cat(res.shinypca$code1,"\n")
+  cat(gettext("You can use it to fine your app the way you left it"))
   cat("\n")
-  cat(res.shinypca$code2,"\n")
-  cat(res.shinypca$code3,"\n")
+  cat("\n")
+  cat(gettext("Corresponding script:"))
+  cat("\n")
+  cat(res.shinypca$codePCA,"\n")
+  cat("\n")
+  cat(res.shinypca$codeGraphInd,"\n")
+  cat(res.shinypca$codeGraphVar,"\n")
 }

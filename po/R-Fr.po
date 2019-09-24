@@ -69,8 +69,26 @@ msgstr "Aucune variable qualitative sélectionnée"
 msgid "No supplementary quantitative variables"
 msgstr "Aucune variable quantitative supplémentaire"
 
+msgid "Select categorical variables"
+msgstr "Choix de variables qualitatives"
+
+msgid "Select categorical supplementary variables"
+msgstr "Choix de variables qualitatives supplémentaires"
+
 msgid "No supplementary individuals"
 msgstr "Aucun individu supplémentaire"
+
+msgid "Select supplementary individuals"
+msgstr "Choix d'individus supplémentaires"
+
+msgid "Select supplementary quantitative variables"
+msgstr "Choix de variables quantitatives supplémentaires"
+
+msgid "Select supplementary categorical variables"
+msgstr "Choix de variables qualitatives supplémentaires"
+
+msgid "Points to draw"
+msgstr "Points dessinés"
 
 msgid "Please select more variables"
 msgstr "Choisir plus de variables"
@@ -97,18 +115,21 @@ msgid "Choose the active variables"
 msgstr "Choisir les variables actives"
 
 msgid "Select the supplementary quantitative variables"
-msgstr "Choisir les variables quantitatives supplémentaires"
+msgstr "Choix de variables quantitatives supplémentaires"
 
 msgid "Select the supplementary categorical variables"
-msgstr "Choisir les variables qualitatives supplémentaires"
+msgstr "Choix de variables qualitatives supplémentaires"
 
 msgid "No categorical variable in your dataset"
 msgstr "Aucune variable qualitative dans le jeu de données"
 
 msgid "Select the supplementary individuals"
-msgstr "Choisir les individus supplémentaires"
+msgstr "Choix d'individus supplémentaires"
 
 msgid "Title of the graph:"
+msgstr "Titre du graphe :"
+
+msgid "Graph title:"
 msgstr "Titre du graphe :"
 
 msgid "Draw individuals according to:"
@@ -143,6 +164,9 @@ msgstr "Sauvegarder les graphes au format"
 
 msgid "Graphs"
 msgstr "Graphes"
+
+msgid "Graph"
+msgstr "Graphe"
 
 msgid "Values"
 msgstr "Valeurs"
@@ -255,11 +279,11 @@ msgstr "Pas assez de colonnes actives"
 msgid "No supplementary rows selected"
 msgstr "Aucune ligne supplémentaire sélectionnée"
 
-msgid "Select the supplementary columns"
-msgstr "Choisir les colonnes supplémentaires"
+msgid "Select supplementary columns"
+msgstr "Choix de colonnes supplémentaires"
 
-msgid "Select the supplementary rows"
-msgstr "Choisir les lignes supplémentaires"
+msgid "Select supplementary rows"
+msgstr "Choix de lignes supplémentaires"
 
 msgid "Invisible elements"
 msgstr "Eléments invisibles"
@@ -309,6 +333,9 @@ msgstr "Variables qualitatives supplémentaires"
 msgid "Choose colour for active individuals"
 msgstr "Choisir la couleur des individus actifs"
 
+msgid "Colour for active individuals"
+msgstr "Couleur des individus actifs"
+
 msgid "No quantitative variable describes axis 1"
 msgstr "Aucune variable quantitative ne décrit l'axe 1"
 
@@ -320,6 +347,12 @@ msgstr "Aucune variable quantitative ne décrit l'axe 3"
 
 msgid "Choose colour for supplementary individuals"
 msgstr "Choisir la couleur des individus supplémentaires"
+
+msgid "Colour for supplementary individuals"
+msgstr "Couleur des individus supplémentaires"
+
+msgid "Colour for the categories"
+msgstr "Couleur des modalités"
 
 msgid "Choose colour for the categories"
 msgstr "Choisir la couleur des modalités"
@@ -376,13 +409,13 @@ msgid "Graph of the variables on the MCA map"
 msgstr "Graphe des variables de l'ACM"
 
 msgid "Select the supplementary qualitative variables"
-msgstr "Sélectionner des variables qualitatives supplémentaires"
+msgstr "Choix de variables qualitatives supplémentaires"
 
 msgid "MCA factor map"
 msgstr "Graphe de l'ACM"
 
 msgid "Select individuals from:"
-msgstr "Sélectionner les individus en fonction de :"
+msgstr "Choix d'individus en fonction de :"
 
 msgid "Individuals and categories"
 msgstr "Individus et modalités"
@@ -481,7 +514,7 @@ msgid "Partial points to draw"
 msgstr "Points partiels à tracer"
 
 msgid "Select individuals"
-msgstr "Sélectionner les individus"
+msgstr "Choix d'individus"
 
 msgid "Draw labels for the partial individuals"
 msgstr "Libellés des individus partiels"
@@ -651,6 +684,12 @@ msgstr "Cacher:"
 msgid "Choose colour for active variables"
 msgstr "Choisir les couleurs des variables actives"
 
+msgid "Colour for active variables"
+msgstr "Couleurs des variables actives"
+
+msgid "Colour for supplementary variables"
+msgstr "Couleurs des variables supplémentaires"
+
 msgid "Choose colour for supplementary variables"
 msgstr "Choisir les couleurs des variables supplémentaires"
 
@@ -692,6 +731,9 @@ msgstr "Couleur des variables qualitatives supplémentaires"
 
 msgid "Draw confidence ellipses"
 msgstr "Trace les ellipses de confiance"
+
+msgid "Draw confidence ellipses around"
+msgstr "Trace les ellipses de confiance autour des"
 
 msgid "Scale data to unit value"
 msgstr "Réduire les variables"
@@ -1941,6 +1983,9 @@ msgstr "Aucune variable significative, choisir un seuil plus élevé"
 msgid "Update the output"
 msgstr "Mettre à jour la sortie"
 
+msgid "Select individuals with"
+msgstr "Choix d'individus par"
+
 msgid "Catdes output"
 msgstr "Sortie de catdes"
 
@@ -1949,6 +1994,9 @@ msgstr "Sortie de condes"
 
 msgid "Barplot"
 msgstr "Diagramme en barres"
+
+msgid "Description of a quantitative variable"
+msgstr "Description d'une variable quantitative"
 
 msgid "Description of a quantitative variable by quantitative variables"
 msgstr "Description d'une variable quantitative par des variables quantitatives"
@@ -1964,3 +2012,75 @@ msgstr "Description par les ..."
 
 msgid "Ongoing reporting process..."
 msgstr "Rédaction du rapport en cours..."
+
+msgid "Modify graph of"
+msgstr "Modifier le graphe des"
+
+msgid "individuals"
+msgstr "individus"
+
+msgid "Graph title"
+msgstr "Titre du graphe"
+
+msgid "PCA graph of individuals"
+msgstr "Graphe des individus de l'ACP"
+
+msgid "PCA graph of variables"
+msgstr "Graphe des variables de l'ACP"
+
+msgid "Labels for individuals selected by:"
+msgstr "Libellés des points pour"
+
+msgid "Colour points according to:"
+msgstr "Colorier les points par :"
+
+msgid "active/supplementary"
+msgstr "actifs/supplémentaires"
+
+msgid "quantitative variable"
+msgstr "variable quantitative"
+
+msgid "qualitative variable"
+msgstr "variable qualitative"
+
+msgid "active individuals"
+msgstr "individus actifs"
+
+msgid "supplementary individuals"
+msgstr "individus supplémentaires"
+
+msgid "categories"
+msgstr "modalités"
+
+msgid "Which graphs to use?"
+msgstr "Quels graphes utiliser ?"
+
+msgid "Graphs done"
+msgstr "Graphes faits"
+
+msgid "Suggested graphs"
+msgstr "Graphes suggérés"
+
+msgid "Results for the PCA with Factoshiny"
+msgstr "Réslutats de l'ACP avec Factoshiny"
+
+msgid "Results for the MCA with Factoshiny"
+msgstr "Réslutats de l'ACM avec Factoshiny"
+
+msgid "Results for the CA with Factoshiny"
+msgstr "Réslutats de l'AFC avec Factoshiny"
+
+msgid "Results for the MFA with Factoshiny"
+msgstr "Réslutats de l'AFM avec Factoshiny"
+
+msgid "Results for the FAMD with Factoshiny"
+msgstr "Réslutats de l'AFDM avec Factoshiny"
+
+msgid "You can use it to fine your app the way you left it"
+msgstr "Vous pouvez l'utiliser pour retrouver l'application comme vous l'avez laissée"
+
+msgid "Corresponding script:"
+msgstr "Code correspondant :"
+
+msgid "Number of dimensions kept for clustering"
+msgstr "Nombre de dimensions utilisées pour la classification"

@@ -71,23 +71,20 @@ fluidPage(
         div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
-          
-          #
+          div(align="center",radioButtons("graph_type",label=NULL,
+                                          choices=list(gettext("ggplot"),gettext("classic")),inline=TRUE)),          
           fluidRow(
             column(5,uiOutput("NB1")),
             column(5,uiOutput("NB2"))),
-          hr(),
           uiOutput("choixchange"),
           hr(),
           conditionalPanel(
             condition=paste("input.MCAgraph=='",gettext("Individuals and categories"),"'",sep=''),
             p(gettext("Graph of individuals and categories"),align="center"),
             uiOutput("choixindvar"),
-            br(),
             textInput("title1MCAshiny",h6(gettext("Title of the graph: ")), title1MCAshiny),
             sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
-            div(align="center",radioButtons("modind",h6(gettext("Select elements to modify"),align="center"),choices=list(gettext("Individuals"),gettext("Categories")),selected=gettext("Categories"),inline=TRUE)),
-            br(),
+            div(align="center",radioButtons("modind",h6(gettext("Select elements to modify"),align="center"),choices=list(gettext("Individuals"),gettext("Categories")),selected=gettext("Individuals"),inline=TRUE)),
             conditionalPanel(
              condition=paste("input.modind=='",gettext("Individuals"),"'",sep=''),
             if(selectionMCAshiny==gettext("No selection")){

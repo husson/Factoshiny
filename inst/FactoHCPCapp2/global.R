@@ -43,9 +43,9 @@ title3HCPCshiny <- x$title3HCPCshiny
 if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | inherits(x, "FAMDshiny")| inherits(x, "MFAshiny")){
   resultsHCPCshiny=x$anafact
   anafact=x$code1
+  if (inherits(x, "CAshiny")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
+  else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-  if (inherits(x, "CAshiny")) nbindivHCPCshiny=dim(resultsHCPCshiny$row$coord)[1]
-  else nbindivHCPCshiny=dim(resultsHCPCshiny$ind$coord)[1]
   nomDataHCPCshiny=nomDataHCPCshiny
   clustdfHCPCshiny=resClusHCPCshiny
   consolidfHCPCshiny=FALSE

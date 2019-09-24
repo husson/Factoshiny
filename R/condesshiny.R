@@ -13,9 +13,9 @@ condesshiny <- function(X){
     if(length(quanticondesshiny)==0)
       stop(gettext('No quantitative variable in your dataset',domain="R-Factoshiny"))
   }
-# outShiny <- shiny::runApp(system.file("Factocondesapp", package="Factoshiny"),launch.browser = TRUE)
+ outShiny <- shiny::runApp(system.file("Factocondesapp", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/Factocondesapp')
- outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/Factocondesapp')
+# outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/Factocondesapp')
   assign("myListOfThingscondesshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objcondesshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingscondesshiny, envir=G)
   rm(list=c("myListOfThingscondesshiny"),envir=G)

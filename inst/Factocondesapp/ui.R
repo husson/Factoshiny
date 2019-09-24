@@ -1,4 +1,5 @@
-fluidPage(
+library(shiny)
+shinyUI(fluidPage(
   
   titlePanel(gettext("Description of a quantitative variable",domain="R-Factoshiny")),
   
@@ -9,8 +10,8 @@ fluidPage(
         inputId = "select_quanti_var",
         label = gettext("Variable to explain",domain="R-Factoshiny"),
         multiple = FALSE,
-        choices = colnames(jdd)[sapply(jdd,is.numeric)],
-        selected = colnames(jdd)[sapply(jdd,is.numeric)][1]
+        choices = colnames(my_data)[sapply(my_data,is.numeric)],
+        selected = choix_var_expliquer
       ),
       
       
@@ -19,7 +20,7 @@ fluidPage(
         label = gettext("P-value",domain="R-Factoshiny"),
         min = 0,
         max = 1,
-        value = 1,
+        value = valeur_proba,
         step = 0.1
       ),
       
@@ -28,14 +29,14 @@ fluidPage(
             colourpicker::colourInput(
               inputId = "col_low",
               label = gettext("Low color",domain="R-Factoshiny"),
-              value = "#03F7FF",
+              value = couleur_basse,
               returnName = TRUE
             )),
         div(style="display: inline-block;vertical-align:top; width: 150px;",
             colourpicker::colourInput(
               inputId = "col_up",
               label = gettext("High color",domain="R-Factoshiny"),
-              value = "#F00000",
+              value = couleur_haute,
               returnName = TRUE
             )),style = "text-align : center; padding : 2px"),
       
@@ -64,7 +65,7 @@ fluidPage(
           conditionalPanel(
             condition = paste("input.quanti_quali_both == '",gettext("Quantitative",domain="R-Factoshiny"),"'", sep = ""),
             h4(gettext("Description of a quantitative variable by quantitative variables",domain="R-Factoshiny")),
-            actionButton("Download_quanti","Download"),
+            actionButton("Download_quanti",gettext("HTML")),
             DT::dataTableOutput("tableau_df_quanti",
                                 width = "80%")
           ),
@@ -72,14 +73,14 @@ fluidPage(
           conditionalPanel(
             condition = paste("input.quanti_quali_both == '",gettext("Qualitative",domain="R-Factoshiny"),"'", sep = ""),
             h4(gettext("Description of a quantitative variable by qualitative variables",domain="R-Factoshiny")),
-            actionButton("Download_quali",gettext("Download",domain="R-Factoshiny")),
+            actionButton("Download_quali",gettext("HTML",domain="R-Factoshiny")),
             DT::dataTableOutput("tableau_df_quali",width = "80%")
           ),
           
           conditionalPanel(
             condition = paste("input.quanti_quali_both == '",gettext("Category",domain="R-Factoshiny"),"'", sep = ""),
             h4(gettext("Description of a quantitative variable by categories",domain="R-Factoshiny")),
-            actionButton("Download_category",gettext("Download",domain="R-Factoshiny")),
+            actionButton("Download_category",gettext("HTML",domain="R-Factoshiny")),
             DT::dataTableOutput("tableau_df_both",width = "80%")
           )
           
@@ -96,4 +97,5 @@ fluidPage(
       
     )
   )
+)
 )

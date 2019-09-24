@@ -18,8 +18,10 @@ if(inherits(x, "data.frame")){
   selection4PCAshiny <- NULL
   sizePCAshiny <- 1
   size2PCAshiny <- 1
-  titre1PCAshiny <- gettext("Individuals factor map (PCA)")
-  titre2PCAshiny <- gettext("Variables factor map (PCA)")
+  color_pointInit <- gettext("active/supplementary")
+  color_arrowInit <- gettext("active/supplementary")
+  titre1PCAshiny <- gettext("PCA graph of individuals")
+  titre2PCAshiny <- gettext("PCA graph of variables")
   ellipsesPCAshiny <- FALSE
   activeindPCAshiny <- "black"
   supindPCAshiny <- "blue"
@@ -33,14 +35,14 @@ if(inherits(x, "data.frame")){
 
 if(inherits(x, "PCAshiny")){
   nomDataPCAshiny <- x$nomDataPCAshiny
-  newdataPCAshiny <- x$data
+  newdataPCAshiny <- x$newdataPCAshiny
   quantisupPCAshiny <- x$c
   qualisupPCAshiny <- x$b
   indsuplPCAshiny <- x$d
   indmodPCAshiny <- x$y
-  axe1PCAshiny <- x$e
-  axe2PCAshiny <- x$f
-  habillageindPCAshiny <- x$g
+  axe1PCAshiny <- x$nb1
+  axe2PCAshiny <- x$nb2
+  habillageindPCAshiny <- x$habiller
   selectionPCAshiny <- x$h
   selection2PCAshiny <- x$i
   selection3PCAshiny <- x$j
@@ -49,12 +51,14 @@ if(inherits(x, "PCAshiny")){
   size2PCAshiny <- x$m
   titre1PCAshiny <- x$title1
   titre2PCAshiny <- x$title2
+  color_pointInit <- x$color_point
+  color_arrowInit <- x$color_arrow
   ellipsesPCAshiny <- x$ellipsesPCAshiny
-  activeindPCAshiny <- x$activeindPCAshiny
-  supindPCAshiny <- x$supin
-  categPCAshiny <- x$categPCAshiny
-  coloractvarPCAshiny <- x$coloractvarPCAshiny
-  colorsupvarPCAshiny <- x$colorsupvarPCAshiny
+  activeindPCAshiny <- if (!is.null(x$activeindPCAshiny)) {x$activeindPCAshiny} else {"black"}
+  supindPCAshiny <- if (!is.null(x$supin)) {x$supin} else {"blue"}
+  categPCAshiny <- if (!is.null(x$categPCAshiny)) {x$categPCAshiny} else {"magenta"}
+  coloractvarPCAshiny <- if (!is.null(x$coloractvarPCAshiny)) {x$coloractvarPCAshiny} else {"black"}
+  colorsupvarPCAshiny <- if (!is.null(x$colorsupvarPCAshiny)) {x$colorsupvarPCAshiny} else {"blue"}
   normePCAshiny <- x$normePCAshiny
   poids1PCAshiny <- x$poids1PCAshiny
   poids2PCAshiny <- x$poids2PCAshiny
@@ -80,8 +84,10 @@ if(inherits(x, "PCA")){
   selection4PCAshiny <- NULL
   sizePCAshiny <- 1
   size2PCAshiny <- 1
-  titre1PCAshiny <- gettext("Individuals factor map (PCA)")
-  titre2PCAshiny <- gettext("Variables factor map (PCA)")
+  color_arrowInit <- gettext("active/supplementary")
+  color_pointInit <- gettext("active/supplementary")
+  titre1PCAshiny <- gettext("PCA graph of individuals")
+  titre2PCAshiny <- gettext("PCA graph of variables")
   ellipsesPCAshiny <- FALSE
   activeindPCAshiny <- "black"
   supindPCAshiny <- "blue"
@@ -107,6 +113,4 @@ quantiPCAshiny <- names(which(sapply(newdataPCAshiny,is.numeric)))
 qualiPCAshiny <- names(which(!(sapply(newdataPCAshiny,is.numeric))))
 VariableChoicesPCAshiny <- quantiPCAshiny
 QualiChoicePCAshiny <- qualiPCAshiny
-IdChoicesPCAshiny <- c(1:length(VariableChoicesPCAshiny))
-IdqualisupPCAshiny <- c(1:length(QualiChoicePCAshiny))
 nomDataPCAshiny <- unlist(strsplit(as.character(nomDataPCAshiny),"\\["))[1]

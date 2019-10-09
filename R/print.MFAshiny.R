@@ -1,7 +1,6 @@
 print.MFAshiny<-
   function(x,...){
-    res.shinymfa=x
-    if(!inherits(res.shinymfa,"MFAshiny"))
+    if(!inherits(x,"MFAshiny"))
       stop(gettext("non convenient data"))
   cat(gettext("Results for the MFA with Factoshiny"))
   cat("\n")
@@ -10,15 +9,11 @@ print.MFAshiny<-
   cat("\n")
   cat(gettext("Corresponding script:"))
   cat("\n")
-    print(res.shinymfa$ligne)
+    print(x$ligne)
     cat("\n")
-    cat(res.shinymfa$code1,"\n")
-    cat(res.shinymfa$code2,"\n")
-    if(!is.null(res.shinymfa$code3)){
-      cat(res.shinymfa$code3,"\n")
-    }
-    cat(res.shinymfa$code4,"\n")
-    if(!is.null(res.shinymfa$code5)){
-      cat(res.shinymfa$code5,"\n")
-    }
+    cat(x$code1,"\n")
+    cat(x$code2,"\n")
+    if(!is.null(x$code3)) cat(x$code3,"\n")
+    cat(x$code4,"\n")
+    if(!is.null(x$code5)) cat(x$code5,"\n")
   }

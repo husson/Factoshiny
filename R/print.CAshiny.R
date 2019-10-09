@@ -1,7 +1,6 @@
 print.CAshiny<-
   function(x,...){
-    res.shinyca=x
-    if(!inherits(res.shinyca,"CAshiny"))
+    if(!inherits(x,"CAshiny"))
       stop(gettext("non convenient data"))
   cat(gettext("Results for the CA with Factoshiny"))
   cat("\n")
@@ -10,7 +9,7 @@ print.CAshiny<-
   cat("\n")
   cat(gettext("Corresponding script:"))
   cat("\n")
-    cat(res.shinyca$code1,"\n")
-    cat("\n")
-    cat(res.shinyca$code2,"\n")
+  cat(x$codeCA,"\n")
+  cat("\n")
+  cat(x$codeGraph,"\n")
   }

@@ -9,6 +9,7 @@ importFrom(shinydashboard,tabItem,dashboardPage,dashboardHeader,dashboardSidebar
 importFrom(DT,formatStyle,datatable,styleInterval)
 importFrom(grDevices,colorRampPalette)
 importFrom(ggrepel,geom_text_repel)
+importFrom(shinyjqui,jqui_resizable)
 
 export(catdesshiny,condesshiny,CAshiny,FAMDshiny,Factoshiny,PCAshiny,MFAshiny,HCPCshiny,MCAshiny,print.CAshiny,print.FAMDshiny,print.PCAshiny,print.MCAshiny,print.HCPCshiny)
 

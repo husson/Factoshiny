@@ -114,3 +114,4 @@ qualiPCAshiny <- names(which(!(sapply(newdataPCAshiny,is.numeric))))
 VariableChoicesPCAshiny <- quantiPCAshiny
 QualiChoicePCAshiny <- qualiPCAshiny
 nomDataPCAshiny <- unlist(strsplit(as.character(nomDataPCAshiny),"\\["))[1]
+if(inherits(x, "data.frame")) qualisupPCAshiny <- QualiChoicePCAshiny

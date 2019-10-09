@@ -1,7 +1,6 @@
 print.FAMDshiny<-
   function(x,...){
-    res.shinyfamd=x
-    if(!inherits(res.shinyfamd,"FAMDshiny"))
+    if(!inherits(x,"FAMDshiny"))
       stop(gettext("non convenient data"))
   cat(gettext("Results for the FAMD with Factoshiny"))
   cat("\n")
@@ -10,9 +9,9 @@ print.FAMDshiny<-
   cat("\n")
   cat(gettext("Corresponding script:"))
   cat("\n")
-    cat(res.shinyfamd$code1,"\n")
+    cat(x$code1,"\n")
     cat("\n")
-    cat(res.shinyfamd$code2,"\n")
-    cat(res.shinyfamd$code3,"\n")
-    cat(res.shinyfamd$code4,"\n")
+    cat(x$code2,"\n")
+    cat(x$code3,"\n")
+    cat(x$code4,"\n")
   }

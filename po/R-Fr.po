@@ -2062,19 +2062,22 @@ msgid "Suggested graphs"
 msgstr "Graphes suggérés"
 
 msgid "Results for the PCA with Factoshiny"
-msgstr "Réslutats de l'ACP avec Factoshiny"
+msgstr "Résultats de l'ACP avec Factoshiny"
 
 msgid "Results for the MCA with Factoshiny"
-msgstr "Réslutats de l'ACM avec Factoshiny"
+msgstr "Résultats de l'ACM avec Factoshiny"
 
 msgid "Results for the CA with Factoshiny"
-msgstr "Réslutats de l'AFC avec Factoshiny"
+msgstr "Résultats de l'AFC avec Factoshiny"
 
 msgid "Results for the MFA with Factoshiny"
-msgstr "Réslutats de l'AFM avec Factoshiny"
+msgstr "Résultats de l'AFM avec Factoshiny"
 
 msgid "Results for the FAMD with Factoshiny"
-msgstr "Réslutats de l'AFDM avec Factoshiny"
+msgstr "Résultats de l'AFDM avec Factoshiny"
+
+msgid "Results for the HCPC with Factoshiny"
+msgstr "Résultats de la classification avec Factoshiny"
 
 msgid "You can use it to fine your app the way you left it"
 msgstr "Vous pouvez l'utiliser pour retrouver l'application comme vous l'avez laissée"
@@ -2084,3 +2087,12 @@ msgstr "Code correspondant :"
 
 msgid "Number of dimensions kept for clustering"
 msgstr "Nombre de dimensions utilisées pour la classification"
+
+msgid " as well as the RData objects are available in the sub-directory: "
+msgstr " ainsi que les objets RData sont disponibles dans le répertoire : "
+
+msgid "The file "
+msgstr "Le fichier "
+
+msgid "Variables representation"
+msgstr "Graphe des variables"

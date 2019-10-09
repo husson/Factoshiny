@@ -1,161 +1,75 @@
 # server script for HCPC
   function(input, output) {
-	res.HCPC <- reactive({
-    (if (input$metric=="Manhattan") HCPC(resultsHCPCshiny,nb.clust=input$clust,consol=input$consoli,graph=FALSE,metric="manhattan")
-    else HCPC(resultsHCPCshiny,nb.clust=input$clust,consol=input$consoli,graph=FALSE,metric="euclidean"))
+	values <- reactive({
+      if (input$metric=="Manhattan") res <- HCPC(resultsHCPCshiny,nb.clust=if (is.null(input$clust)){resClusHCPCshiny } else{input$clust},consol=input$consoli,graph=FALSE,metric="manhattan")
+      else res <- HCPC(resultsHCPCshiny,nb.clust=if (is.null(input$clust)){resClusHCPCshiny} else{input$clust},consol=input$consoli,graph=FALSE)
+	  return(res)
     })
-    
-    ### Recuperation des parametres
-    observe({
-      if(input$Quit==0){
-      }
-      else{
-        isolate({
-          stopApp(returnValue=valeuretour())
-        })
-      }
-    })
-    
-    valeuretour <- function(){
-      res <- list()
-      res$nomDataHCPCshiny <- nomDataHCPCshiny
-      res$anafact <- anafact
-      res$resultsHCPCshiny <- res.HCPC()
-      res$classx <- c("PCA", "list")
-      class(res) <- c("HCPCshiny")
-      res$clust <- input$clust
-      res$consoli <- input$consoli
-      res$metric <- input$metric
-      res$drawtree <- input$drawtree 
-      res$nom3D <- input$nom3D
-      res$center <- input$center
-      res$num <- input$num
-      res$code1 <- Code()
-      res$code2 <- Plot1Code()
-      res$code3 <- Plot2Code()
-      res$code4 <- Plot3Code()
-      res$nb1 <- input$nb1
-      res$nb2 <- input$nb2
-      res$title1HCPCshiny <- input$title1HCPCshiny
-      res$title2HCPCshiny <- input$title2HCPCshiny
-      res$title3HCPCshiny <- input$title3HCPCshiny
-      return(res)
-    }
-    
-    observe({
-      if(input$HCPCcode==0){
-      }
-      else {
-        isolate({
-          if (!is.null(anafact)) print(anafact)
-          cat(Code(),sep="\n")
-          cat(Plot1Code(),sep="\n")
-          cat(Plot2Code(),sep="\n")
-          cat(Plot3Code(),sep="\n")
-        })
-      }
-    })
-    
-    Code <- function(){
-	  if (input$metric==gettext("Euclidean")) Call1=as.name(paste("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='euclidean')",sep="")) 
-      if (input$metric=="Manhattan") Call1=as.name(paste("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE,metric='manhattan')",sep=""))
-	  return(Call1)
-    }
-    
-    Plot1Code <- function(){
-      Call2=paste("plot.HCPC(res.HCPC,choice='map',draw.tree=",input$drawtree,",title='",input$title2HCPCshiny,"',axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"))",sep="") 
-      return(Call2)
-    }
-    
-    Plot2Code <- function(){
-      Call3=paste("plot.HCPC(res.HCPC,choice='3D.map',ind.names=",input$nom3D,",centers.plot=",input$center,",angle=",input$num,",title='",input$title1HCPCshiny,"',axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),"))",sep="") 
-      return(Call3)
-    }
-    
-    Plot3Code <- function(){
-      Call4=paste("plot.HCPC(res.HCPC,choice='tree',title='",input$title3HCPCshiny,"')",sep="")
-      return(Call4)
-    }
-    
-    ###
-    
-    Plot1 <- function(){
-      if(is.null(input$clust)){
-        return()
-      }
-      else{
-      return(plot.HCPC(res.HCPC(),choice="map",draw.tree=input$drawtree,title=input$title2HCPCshiny,axes=c(as.numeric(input$nb1),as.numeric(input$nb2))))
-      }
-    }
-    
-    output$map <- renderPlot({
-       p <- Plot1()
-    })
-    
-    Plot2 <- function(){
-      if(is.null(input$clust)){
-        return()
-      }
-      else{
-        plot.HCPC(res.HCPC(),choice="3D.map",ind.names=input$nom3D,title=input$title1HCPCshiny,centers.plot=input$center,axes=c(as.numeric(input$nb1),as.numeric(input$nb2)),angle=input$num)
-      }
-    }
-    output$map2 <- renderPlot({
-      p <- Plot2()
-    })
-    
-    Plot4=function(){
-      if(is.null(input$clust)){
-        return()
-      }
-      else{
-        plot.HCPC(res.HCPC(),choice="tree",title=input$title3HCPCshiny)
-      }
-    }
-    
-    output$map4 <- renderPlot({
-      p <- Plot4()
-    })
-    
-    output$sorties=renderTable({
-      if(input$out=="axe"){
-        return(as.data.frame(res.HCPC()$desc.axes))
-      }
-      if(input$out=="para"){
-        return(as.data.frame(res.HCPC()$ind.desc))
-      }
-    },rownames=TRUE)
+        
+  output$NB1 <- renderUI({
+     selectInput("nb1",label=NULL, choices=1:nbcolHCPCshiny,selected=nb1dfHCPCshiny,width='51px')
+  })
+
+  output$NB2 <- renderUI({
+    selectInput("nb2",label=NULL, choices=1:nbcolHCPCshiny,selected=nb2dfHCPCshiny,width='51px')
+  })
 
     output$clusters=renderUI({
-      if (!is.null(clustdfHCPCshiny)){
-	  if(nbindivHCPCshiny<=11){
-          return(sliderInput("clust",gettext("Number of clusters"),min=2,max=(nbindivHCPCshiny-1),value=resClusHCPCshiny,step=1))
-        }  else{
-          return(sliderInput("clust",gettext("Number of clusters"),min=2,max=10,value=resClusHCPCshiny,step=1))
-        }
-      } else {
-        if(nbindivHCPCshiny<=11){
-          return(sliderInput("clust",gettext("Number of clusters"),min=2,max=(nbindivHCPCshiny-1),value=clustdfHCPCshiny,step=1))
-        }
-        else{
-          return(sliderInput("clust",gettext("Number of clusters"),min=2,max=10,value=clustdfHCPCshiny,step=1))
-        }
-      }
+      sliderInput("clust",gettext("Number of clusters"),min=2,max=min(10,nbindivHCPCshiny-1),value=if (!is.null(input$clust)) {input$clust} else {resClusHCPCshiny},step=1)
     })
     
+    CodeHCPC <- reactive({
+      paste0("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE",if (input$metric=="Manhattan") {",metric='manhattan'"},")")
+    })
+    
+    PlotTree <- reactive({
+      Code <- paste0("plot.HCPC(res.HCPC,choice='tree',title='",input$title3HCPCshiny,"')")
+	  res.HCPC <- values()
+      Plot <- eval(str2expression(Code))
+	  return(list(Code=Code,Plot=Plot))
+    })
+        
+    Plot2Dmap <- reactive({
+      Code <- paste0("plot.HCPC(res.HCPC,choice='map',draw.tree=",input$drawtree,",title='",input$title2HCPCshiny,"'",if (!is.null(input$nb1)) {if (as.numeric(input$nb1)!=1 | as.numeric(input$nb2)!=2) paste0(",axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),")")},")") 
+	  res.HCPC <- values()
+	  Plot <- eval(str2expression(Code))
+	  return(list(Code=Code,Plot=Plot))
+    })
+    
+    Plot3D <- reactive({
+      Code <- paste0("plot.HCPC(res.HCPC,choice='3D.map',ind.names=",input$nom3D,",centers.plot=",input$center,",angle=",input$num,",title='",input$title1HCPCshiny,"'",if (!is.null(input$nb1)) {if (as.numeric(input$nb1)!=1 | as.numeric(input$nb2)!=2) paste0(",axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),")")},")") 
+	  res.HCPC <- values()
+      Plot <- eval(str2expression(Code))
+	  return(list(Code=Code,Plot=Plot))
+    })
+    
+    output$mapTree <- renderPlot({
+      if (!is.null(PlotTree()$Plot)) p <- print(PlotTree()$Plot)
+    })
+    
+    output$map2D <- renderPlot({
+      if (!is.null(Plot2Dmap()$Plot)) p <- print(Plot2Dmap()$Plot)
+    })
+    
+    output$map3D <- renderPlot({
+      if (!is.null(Plot3D()$Plot)) p <- print(Plot3D()$Plot)
+    })
+        
+    output$sorties=renderTable({
+      if(input$out=="axe") return(as.data.frame(values()$desc.axes))
+      if(input$out=="para") return(as.data.frame(values()$ind.desc))
+    },rownames=TRUE)
+
     output$JDD=renderDataTable({
       cbind(Names=rownames(x),x)},
-      options = list(    "orderClasses" = TRUE,
-                         "responsive" = TRUE,
-                         "pageLength" = 10))
+      options = list( "orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10))
     
   observe({
     if(input$Investigatehtml!=0){
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=TRUE, file = input$titleFile, language="en")
-        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=TRUE, file = input$titleFile, language="fr")
+        FactoInvestigate::Investigate(values(), openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
@@ -166,25 +80,11 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=TRUE, file = input$titleFile, language="en")
-        if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=TRUE, file = input$titleFile, language="fr")
+        FactoInvestigate::Investigate(values(),document="word_document",openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
   })
-  
-
-  # observe({
-    # if(input$InvestigateRmd!=0){
-      # isolate({
-        # path.aux <- getwd()
-        # setwd(pathsaveHCPCshiny)
-	    # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="en")
-	    # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, language="fr")
-        # setwd(path.aux)
-      # })
-    # }
-  # })    
 
     output$downloadInvestigateRmd <- downloadHandler(
      filename = function() {
@@ -193,143 +93,96 @@
     content = function(file) {
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-	    if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language="en")
-	    if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language="fr")
-        file.rename(paste0(pathsaveHCPCshiny,"/Investigate.Rmd"), file)
+	    FactoInvestigate::Investigate(values(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= substr(tolower(input$choixLANG),1,2))
+	    print(paste0(gettext("The file "),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: "),getwd()))
         setwd(path.aux)
     }
   )
 
-    # output$downloadInvestigatedoc <- downloadHandler(
-     # filename = function() {
-      # paste("Report", Sys.Date(), ".docx", sep="")
-    # },
-    # content = function(file) {
-        # path.aux <- getwd()
-        # setwd(pathsaveHCPCshiny)
-        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=FALSE, file = "Investigate", language="en")
-        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(),document="word_document",openFile=FALSE, file = "Investigate", language="fr")
-		# file.rename(paste0(pathsaveHCPCshiny,"/Investigate.docx"), file)
-        # setwd(path.aux)
-    # }
-  # )
-
-    # output$downloadInvestigatehtml <- downloadHandler(
-     # filename = function() {
-      # paste("Report", Sys.Date(), ".html", sep="")
-    # },
-    # content = function(file) {
-        # path.aux <- getwd()
-        # setwd(pathsaveHCPCshiny)
-        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE, file = "Investigate", language="en")
-        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(res.HCPC(), openFile=FALSE, file = "Investigate", language="fr")
-        # file.rename(paste0(pathsaveHCPCshiny,"/Investigate.html"), file)
-        # setwd(path.aux)
-    # }
-  # )
-
   output$downloadData = downloadHandler(
       filename = function() { 
-        paste('graph1','.png', sep='') 
+        paste('Plot2Dmap','.png', sep='') 
       },
       content = function(file) {
-        png(file)
-        Plot1()
-        dev.off()
+        ggplot2::ggsave(file,print(Plot2Dmap()$Plot))
       },
       contentType='image/png')
     
     output$downloadData1 = downloadHandler(
       filename = function() { 
-        paste('graph1','.jpg', sep='') 
+        paste('Plot2Dmap','.jpg', sep='') 
       },
       content = function(file) {
-        jpeg(file)
-        Plot1()
-        dev.off()
+        ggplot2::ggsave(file,print(Plot2Dmap()$Plot))
       },
       contentType='image/jpg')
     
     output$downloadData2 = downloadHandler(
       filename = function() { 
-        paste('graph1','.pdf', sep='') 
+        paste('Plot2Dmap','.pdf', sep='') 
       },
       content = function(file) {
-        pdf(file)
-        Plot1()
-        dev.off()
+        ggplot2::ggsave(file,print(Plot2Dmap()$Plot))
       },
       contentType=NA)
     
     output$downloadData3 = downloadHandler(
       filename = function() { 
-        paste('graph2','.png', sep='') 
+        paste('Plot3D','.png', sep='') 
       },
       content = function(file) {
-        png(file)
-        Plot2()
-        dev.off()
+        ggplot2::ggsave(file,print(Plot3D()$Plot))
       },
       contentType='image/png')
     
     output$downloadData4 = downloadHandler(
       filename = function() { 
-        paste('graph2','.jpg', sep='') 
+        paste('Plot3D','.jpg', sep='') 
       },
       content = function(file) {
-        jpeg(file)
-        Plot2()
-        dev.off()
+        ggplot2::ggsave(file,print(Plot3D()$Plot))
       },
       contentType='image/jpg')
     
     output$downloadData5 = downloadHandler(
       filename = function() { 
-        paste('graph2','.pdf', sep='') 
+        paste('Plot3D','.pdf', sep='') 
       },
       content = function(file) {
-        pdf(file)
-        Plot2()
-        dev.off()
+        ggplot2::ggsave(file,print(Plot3D()$Plot))
       },
       contentType=NA)
     
     output$downloadData6 = downloadHandler(
       filename = function() { 
-        paste('graph3','.png', sep='') 
+        paste('PlotTree','.png', sep='') 
       },
       content = function(file) {
-        png(file)
-        Plot4()
-        dev.off()
+        ggplot2::ggsave(file,print(PlotTree()$Plot))
       },
       contentType='image/png')
     
     output$downloadData7 = downloadHandler(
       filename = function() { 
-        paste('graph3','.jpg', sep='') 
+        paste('PlotTree','.jpg', sep='') 
       },
       content = function(file) {
-        jpeg(file)
-        Plot4()
-        dev.off()
+        ggplot2::ggsave(file,print(PlotTree()$Plot))
       },
       contentType='image/jpg')
     
     output$downloadData8 = downloadHandler(
       filename = function() { 
-        paste('graph3','.pdf', sep='') 
+        paste('PlotTree','.pdf', sep='') 
       },
       content = function(file) {
-        pdf(file)
-        Plot4()
-        dev.off()
+        ggplot2::ggsave(file,print(PlotTree()$Plot))
       },
       contentType=NA)
         
     ### Fonction permettant d'afficher la description des classes par les variables
     output$descript=renderTable({
-      write.infile(X=res.HCPC()$desc.var$quanti,file=paste(getwd(),"essai.csv"),sep=";")
+      write.infile(X=values()$desc.var$quanti,file=paste(getwd(),"essai.csv"),sep=";")
       baba=read.csv(paste(getwd(),"essai.csv"),sep=";",header=FALSE)
       colnames(baba)=NULL
       b=which(baba[,1]=="format non affichable")
@@ -342,7 +195,7 @@
      output$parangons=renderTable({
        bibi=list()
        for (i in 1:input$clust){
-         bibi[[i]]=rbind(colnames(res.HCPC()$desc.ind$para[[i]]),res.HCPC()$desc.ind$para[[i]])
+         bibi[[i]]=rbind(colnames(values()$desc.ind$para[[i]]),values()$desc.ind$para[[i]])
 		 rownames(bibi[[i]])="Distance"
        }
        write.infile(X=bibi,file=paste(getwd(),"essai3.csv"),sep=";",nb.dec=8)
@@ -355,11 +208,54 @@
     
     ### Fonction permettant d'afficher la description des classes par les axes 
     output$axes=renderTable({
-      write.infile(X=res.HCPC()$desc.axes$quanti,file=paste(getwd(),"essai2.csv"),sep=";",nb.dec=8)
+      write.infile(X=values()$desc.axes$quanti,file=paste(getwd(),"essai2.csv"),sep=";",nb.dec=8)
       baba=read.csv(paste(getwd(),"essai2.csv"),sep=";",header=FALSE)
       colnames(baba)=NULL
       file.remove(paste(getwd(),"essai2.csv"))
       baba[,-ncol(baba)]
     },
-    rownames=FALSE)    
+    rownames=FALSE)  
+
+    observe({
+      if(input$HCPCcode!=0){
+        isolate({
+          if (!is.null(lignecodeHCPCshiny)) print(lignecodeHCPCshiny)
+          cat(CodeHCPC(),sep="\n")
+          cat(PlotTree()$Code,sep="\n")
+          cat(Plot2Dmap()$Code,sep="\n")
+          cat(Plot3D()$Code,sep="\n")
+        })
+      }
+    })
+    
+    observe({
+      if(input$Quit!=0){
+        isolate({
+          res <- list()
+          res$nomDataHCPCshiny <- nomDataHCPCshiny
+          res$anafact <- anafact
+          res$resultsHCPCshiny <- values()
+          res$classx <- c("PCA", "list")
+          class(res) <- c("HCPCshiny")
+          res$clust <- input$clust
+          res$consoli <- input$consoli
+          res$metric <- input$metric
+          res$drawtree <- input$drawtree 
+          res$nom3D <- input$nom3D
+          res$center <- input$center
+          res$num <- input$num
+          res$Code <- CodeHCPC()
+          res$CodeTree <- PlotTree()$Code
+          res$Code2Dmap <- Plot2Dmap()$Code
+          res$Code3D <- Plot3D()$Code
+          res$nb1 <- as.numeric(input$nb1)
+          res$nb2 <- as.numeric(input$nb2)
+          res$title1HCPCshiny <- input$title1HCPCshiny
+          res$title2HCPCshiny <- input$title2HCPCshiny
+          res$title3HCPCshiny <- input$title3HCPCshiny
+          stopApp(returnValue=res)
+        })
+      }
+    })
+	
   }

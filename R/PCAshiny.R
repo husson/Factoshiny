@@ -14,9 +14,9 @@ PCAshiny <- function(X){
       stop(gettext('not enough quantitative variables in your dataset'))
   }
   assign("pathsavePCAshiny",getwd(),envir=G)
- outShiny <- shiny::runApp(system.file("FactoPCAapp2", package="Factoshiny"),launch.browser = TRUE)
+# outShiny <- shiny::runApp(system.file("FactoPCAapp2", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoPCAapp2')
-# outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoPCAapp2')
+ outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoPCAapp2')
   assign("myListOfThingsPCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objPCAshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingsPCAshiny, envir=G)
   rm(list=c("myListOfThingsPCAshiny"),envir=G)

@@ -1,10 +1,18 @@
 # global script for CA2
-if(inherits(x, "data.frame")){
-  nomDataCAshiny <- nomDataCAshiny
-  newdataCAshiny <- x
-  colonnesupCAshiny <- NULL
-  lignesupCAshiny <- NULL
-  catsupCAshiny <- NULL
+if(inherits(x, "data.frame") | inherits(x, "CA")){
+  if(inherits(x, "data.frame")){
+    nomDataCAshiny <- nomDataCAshiny
+    newdataCAshiny <- x
+    colonnesupCAshiny <- NULL
+    lignesupCAshiny <- NULL
+    catsupCAshiny <- NULL
+  } else {
+    nomDataCAshiny <- as.character(x$call$call[2])
+    newdataCAshiny <- x$call$Xtot
+    colonnesupCAshiny <- rownames(x$col.sup$coord)
+    lignesupCAshiny <- rownames(x$row.sup$coord)
+    catsupCAshiny <- if (!is.null(x$quali.sup$coord)) {rownames(x$quali.sup$coord)} else{NULL}
+  }
   axe1CAshiny <- 1
   axe2CAshiny <- 2
   InvisibleCAshiny <- NULL
@@ -28,14 +36,16 @@ if(inherits(x, "data.frame")){
 if(inherits(x, "CAshiny")){
 nomDataCAshiny <- x$nomDataCAshiny
 newdataCAshiny <- x$data
-colonnesupCAshiny <- x$a
-lignesupCAshiny <- x$b
-catsupCAshiny <- x$c
-axe1CAshiny <- x$d
-axe2CAshiny <- x$e
-InvisibleCAshiny <- x$f
-selec1CAshiny <- x$type1
-selec2CAshiny <- x$type2
+colonnesupCAshiny <- x$supvar
+lignesupCAshiny <- x$rowsupl
+catsupCAshiny <- x$supquali
+axe1CAshiny <- x$nb1
+axe2CAshiny <- x$nb2
+color_pointInit <- x$color_point
+
+InvisibleCAshiny <- x$invisi
+selec1CAshiny <- x$seleccol
+selec2CAshiny <- x$selecrow
 valueselec1CAshiny <- x$selec1CAshiny
 valueselec2CAshiny <- x$selec2CAshiny
 sizeCAshiny <- x$taille
@@ -48,33 +58,6 @@ col5CAshiny  <- x$col5CAshiny
 ellipsesCAshiny <- x$ellip
 hcpcparaCAshiny <- x$hcpcparam
 nbdimclustCAshiny <- x$nbdimclustCAshiny
-}
-
-if(inherits(x, "CA")){
-  nomDataCAshiny <- as.character(x$call$call[2])
-#  nomDataCAshiny <- unlist(strsplit(nomDataCAshiny, split='[', fixed=TRUE))[1]
-  newdataCAshiny <- x$call$Xtot
-  colonnesupCAshiny <- rownames(x$col.sup$coord)
-  lignesupCAshiny <- rownames(x$row.sup$coord)
-  catsupCAshiny <- NULL
-  axe1CAshiny <- 1
-  axe2CAshiny <- 2
-  nbdimclustCAshiny <- 5
-  hcpcparaCAshiny <- FALSE
-  color_pointInit <- gettext("row/column")
-  InvisibleCAshiny <- NULL
-  selec1CAshiny <- gettext("No selection")
-  selec2CAshiny <- gettext("No selection")
-  valueselec1CAshiny <- NULL
-  valueselec2CAshiny <- NULL
-  sizeCAshiny <- 1
-  title1CAshiny <- gettext("CA factor map")
-  col1CAshiny <- "blue"
-  col2CAshiny <- "red"
-  col3CAshiny <- "darkblue"
-  col4CAshiny <- "darkred"
-  col5CAshiny  <- "magenta"
-  ellipsesCAshiny <- NULL
 }
 
 withnaCAshiny <- c()
@@ -116,3 +99,4 @@ if(is.null(sup2CAshiny)){
   nomCAshiny <- nomsCAshiny
 }
 nomDataCAshiny <- unlist(strsplit(as.character(nomDataCAshiny),"\\["))[1]
+if(inherits(x, "data.frame")) catsupCAshiny <- QualiChoiceCAshiny

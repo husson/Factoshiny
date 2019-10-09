@@ -27,8 +27,7 @@ function(input, output,session) {
     if(length(getactive())>5){
        return(textInput("nb2", label = NULL, axe2PCAshiny,width='41px'))
     } else{
-      baba <- c(1:length(getactive()))
-       return(selectInput("nb2",label=NULL, choices=baba,selected=axe2PCAshiny,width='41px'))
+       return(selectInput("nb2",label=NULL, choices=(1:length(getactive())),selected=axe2PCAshiny,width='41px'))
     }
   })
   
@@ -70,6 +69,7 @@ function(input, output,session) {
       }
     }
     if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")){
+	  codePCAp <- paste0(nomDataPCAshiny," <- data.frame(",nomDataPCAshiny,paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")],newCol=paste(",nomDataPCAshiny,"[,'",input$habiller[1],"'],",nomDataPCAshiny,"[,'",input$habiller[2],"']))\n"))
       data.selec <- data.frame(data.selec,newCol=paste(newdataPCAshiny[,input$habiller[1]],newdataPCAshiny[,input$habiller[2]],sep="/"))
       choixquali <- c(choixquali,ncol(data.selec))
     }
@@ -78,23 +78,22 @@ function(input, output,session) {
     } else{
       suple <- which(nomPCAshiny%in%input$indsup)
     }
-    codePCA <- paste0("res.PCA<-PCA(",nomDataPCAshiny, if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")} )	
+    codePCA <- paste0("res.PCA<-PCA(",nomDataPCAshiny, if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
 	codePCA <- paste0(codePCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti)) paste0(",quanti.sup=c(",paste(choixquanti,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1PCAshiny)) paste0(",row.w=c(",paste(poids1PCAshiny,collapse=","),")"),if (!is.null(poids2PCAshiny)) paste0(",col.w=c(",paste(poids2PCAshiny,collapse=","),")"),if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),",graph=FALSE)")
-      list(res.PCA=eval(str2expression(codePCA)), codePCA=codePCA)
+    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")) list(res.PCA=eval(str2expression(paste0(codePCAp,"\n",codePCA))), codePCA=codePCA, codePCAp=codePCAp)
+	else list(res.PCA=eval(str2expression(codePCA)), codePCA=codePCA)
   })
   
   output$colourn2 <- renderUI({
     if(length(input$indsup)!=0){
-        return(tags$div( 
-            div(colourpicker::colourInput("colorsup", label=NULL, if(!is.null(input$colorsup)){if (input$colorsup!="blue") input$colorsup} else{supindPCAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-		    div(gettext("supplementary individuals"), style="display: inline-block;padding: 0px 0px 0px 10px"))
-		)
+      return(tags$div( 
+        div(colourpicker::colourInput("colorsup", label=NULL, if(!is.null(input$colorsup)){if (input$colorsup!="blue") input$colorsup} else{supindPCAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+		div(gettext("supplementary individuals"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	  )
     }
   })
  
   output$colourn3 <- renderUI({
-    # sup <- values()$choixquali
-    # if(!is.null(sup)){
 	if (length(input$supquali)>0){
         return(tags$div( 
             div(colourpicker::colourInput("colorquali", label=NULL, if(!is.null(input$colorquali)){if (input$colorquali!="magenta") input$colorquali} else{categPCAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
@@ -181,7 +180,7 @@ function(input, output,session) {
         selecindiv <- paste("cos2 ",input$slider1)
       }
       else{
-        selecindiv <- "cos2 0.999"
+        selecindiv <- "cos2 0.999999"
       }
       selecindivtext <- paste0("'",selecindiv,"'")
     }
@@ -226,7 +225,7 @@ function(input, output,session) {
     if(input$color_point==gettext("qualitative variable")){
       if(length(input$supquali)>=1){
         if (length(input$habiller)==1) hab <- which(colnames(values()$res.PCA$call$X)==input$habiller)
-        if (length(input$habiller)==2) hab <- ncol(values()$res.PCA$call$X)+1
+        if (length(input$habiller)==2) hab <- ncol(values()$res.PCA$call$X)
       }
 	}
 	
@@ -249,18 +248,18 @@ function(input, output,session) {
 	}
     bool <- (!is.null(input$elip) && input$elip==TRUE && input$color_point == gettext("qualitative variable"))
 
-    codeGraphInd <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},")")
-    return(codeGraphInd)      
+	res.PCA <- values()$res.PCA
+    Code <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},")")
+    Plot <- eval(str2expression(Code))
+	return(list(Code=Code,Plot=Plot))      
   })
   
   output$map2 <- renderPlot({
-	res.PCA <- values()$res.PCA
-    p <- print(eval(str2expression(codeGraphInd())))
+    p <- print(codeGraphInd()$Plot)
   })
   
   output$colourv2 <- renderUI({
-    sup <- input$supvar
-    if(!is.null(sup)){
+    if(!is.null(input$supvar)){
         return(tags$div( 
             div(colourpicker::colourInput("colorsupvar", label=NULL, if(!is.null(input$colorsupvar)){if (input$colorsupvar!="blue") input$colorsupvar} else{colorsupvarPCAshiny},allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
 		    div(gettext("supplementary variables"), style="display: inline-block;padding: 0px 0px 0px 10px")
@@ -289,13 +288,13 @@ function(input, output,session) {
     if(input$color_arrow == "contribution") hab <- "contrib"
 
 	res.PCA <- values()$res.PCA
-    codeGraphVar <- paste("plot.PCA(res.PCA,axes=c(",input$nb1,",",input$nb2,"),choix='var'",if (hab!="none"){paste0(",habillage = '",hab,"'")},if(!is.null(selecindiv)) paste0(",select='",selecindiv,"',unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="PCA graph of variables") paste0(',title="',input$title2,'"'),if(!is.null(input$colorsupvar)) paste0(",col.quanti.sup='",input$colorsupvar,"'"),if(input$coloractvarPCAshiny!="#000000") paste0(",col.var='",input$coloractvarPCAshiny,"'"),")",sep="")
-    return(codeGraphVar)
+    Code <- paste("plot.PCA(res.PCA",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),",choix='var'",if (hab!="none"){paste0(",habillage = '",hab,"'")},if(!is.null(selecindiv)) paste0(",select='",selecindiv,"',unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="PCA graph of variables") paste0(',title="',input$title2,'"'),if(!is.null(input$colorsupvar)) paste0(",col.quanti.sup='",input$colorsupvar,"'"),if(input$coloractvarPCAshiny!="#000000") paste0(",col.var='",input$coloractvarPCAshiny,"'"),")",sep="")
+    Plot <- eval(str2expression(Code))
+	return(list(Code=Code, Plot=Plot))
   })
   
   output$map <- renderPlot({
-	res.PCA <- values()$res.PCA
-    p <- print(eval(str2expression(codeGraphVar())))
+    p <- print(codeGraphVar()$Plot)
   })
   
   
@@ -487,9 +486,10 @@ function(input, output,session) {
   
   
   output$histo <- renderPlot({
-    par(mfrow=c(1,2))
-    boxplot(newdataPCAshiny[,input$bam])
-    hist(newdataPCAshiny[,input$bam],main="",xlab="")
+    ggplot2::ggplot(newdataPCAshiny) + aes(x= newdataPCAshiny[,input$bam]) + geom_histogram(bins=nrow(newdataPCAshiny)/5)  + labs(x=input$bam,y="Count")
+    # par(mfrow=c(1,2))
+    # boxplot(newdataPCAshiny[,input$bam])
+    # hist(newdataPCAshiny[,input$bam],main="",xlab="")
   })
   
   observe({
@@ -497,7 +497,7 @@ function(input, output,session) {
       isolate({
         path.aux <- getwd()
         setwd(pathsavePCAshiny)
-        FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd())} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+        FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd()$Code)} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()$Code} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
         # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",PlotInd()$codeGraphInd)} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {PlotVar()$codeGraphVar} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
         setwd(path.aux)
       })
@@ -509,31 +509,29 @@ function(input, output,session) {
       isolate({
         path.aux <- getwd()
         setwd(pathsavePCAshiny)
-        FactoInvestigate::Investigate(values()$res.PCA,codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd())} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()} else {NULL}, document="word_document",openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language=substr(tolower(input$choixLANG),1,2))
+        FactoInvestigate::Investigate(values()$res.PCA,codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd()$Code)} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()$Code} else {NULL}, document="word_document",openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language=substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
   })
   
-  output$downloadInvestigateRmd <- downloadHandler(
-     filename = function() {
-      paste(input$titleFile, ".Rmd", sep="")
-    },
-    content = function(file) {
+  observe({
+    if(input$InvestigateRmd!=0){
+      isolate({
         path.aux <- getwd()
         setwd(pathsavePCAshiny)
-	    FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd())} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()} else {NULL},  openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
-        file.copy(paste0(pathsavePCAshiny,"/Investigate.Rmd"), file)
+	    FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd()$Code)} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()$Code} else {NULL},  openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
+      })
     }
-  )
+  })
     
   output$downloadData  <-  downloadHandler(
     filename = function() { 
       paste('graphVar','.png', sep='') 
     },
     content = function(file) {
-        ggplot2::ggsave(file,print(eval(str2expression(codeGraphVar()))))
+        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
     },
     contentType='image/png')
   
@@ -542,7 +540,7 @@ function(input, output,session) {
       paste('graphVar','.jpg', sep='') 
     },
     content = function(file) {
-        ggplot2::ggsave(file,print(eval(str2expression(codeGraphVar()))))
+        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
     },
     contentType='image/jpg')
   
@@ -551,7 +549,7 @@ function(input, output,session) {
       paste('graphVar','.pdf', sep='') 
     },
     content = function(file) {
-        ggplot2::ggsave(file,print(eval(str2expression(codeGraphVar()))))
+        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
     },
     contentType=NA)
   
@@ -560,7 +558,7 @@ function(input, output,session) {
       paste('graphInd','.png', sep='') 
     },
     content = function(file) {
-         ggplot2::ggsave(file,print(eval(str2expression(codeGraphInd()))))
+         ggplot2::ggsave(file,print(codeGraphInd()$Plot))
     },
     contentType='image/png')
   
@@ -569,7 +567,7 @@ function(input, output,session) {
       paste('graphInd','.jpg', sep='') 
     },
     content = function(file) {
-         ggplot2::ggsave(file,print(eval(str2expression(codeGraphInd()))))
+         ggplot2::ggsave(file,print(codeGraphInd()$Plot))
     },
     contentType='image/jpg')
   
@@ -578,19 +576,17 @@ function(input, output,session) {
       paste0('graphInd','.pdf') 
     },
     content = function(file) {
-         ggplot2::ggsave(file,print(eval(str2expression(codeGraphInd()))))
+         ggplot2::ggsave(file,print(codeGraphInd()$Plot))
     },
     contentType=NA)
 	
   observe({
     if(input$PCAcode!=0){
       isolate({
-        if (length(input$habiller)==2 & input$color_point==gettext("qualitative variable")){
-          cat(paste("newCol<-paste(",nomDataPCAshiny,"[,'",input$habiller[1],"'],",nomDataPCAshiny,"[,'",input$habiller[2],"'],","sep='/')",sep=""),sep="\n")
-        }
+        if (length(input$habiller)==2 & input$color_point==gettext("qualitative variable")) cat(values()$codePCAp,sep="\n")
         cat(values()$codePCA,sep="\n")
-        cat(codeGraphVar(),sep="\n")
-        cat(codeGraphInd(),sep="\n")
+        cat(codeGraphVar()$Code,sep="\n")
+        cat(codeGraphInd()$Code,sep="\n")
       })
     }
   })
@@ -626,8 +622,8 @@ function(input, output,session) {
 	    res$color_point <- input$color_point
 	    res$color_arrow <- input$color_arrow
         res$codePCA <- values()$codePCA
-        res$codeGraphVar <- codeGraphVar()
-        res$codeGraphInd <- codeGraphInd()
+        res$codeGraphVar <- codeGraphVar()$Code
+        res$codeGraphInd <- codeGraphInd()$Code
         res$title1 <- input$title1
         res$title2 <- input$title2
         res$anafact <- values()$res.PCA

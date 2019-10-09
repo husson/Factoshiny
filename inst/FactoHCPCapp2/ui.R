@@ -27,18 +27,19 @@ fluidPage(
       div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
       conditionalPanel(
         condition="input.graph==true",
-      fluidRow(
-        column(5,selectInput("nb1", label = h6(gettext("x axis")),
-                             choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = nb1dfHCPCshiny,width='80%')),
-        column(5,selectInput("nb2", label =h6(gettext("y axis")), 
-                             choices = list("1" = 1, "2" = 2,"3" = 3,"4"= 4,"5" =5), selected = nb2dfHCPCshiny,width='80%'))),
-      hr(),
-      radioButtons("HCPCgraph",h6(gettext("Which graph do you want to modify?")),
+          div(gettext("Axes:"), style="display: inline-block;padding: 5px"),
+          div(uiOutput("NB1"), style="display: inline-block;"),
+          div(uiOutput("NB2"), style="display: inline-block;"),
+      # fluidRow(
+        # column(5,selectInput("nb1", label = h6(gettext("x axis")),
+                             # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = nb1dfHCPCshiny,width='80%')),
+        # column(5,selectInput("nb2", label =h6(gettext("y axis")), 
+                             # choices = list("1" = 1, "2" = 2,"3" = 3,"4"= 4,"5" =5), selected = nb2dfHCPCshiny,width='80%'))),
+      radioButtons("HCPCgraph",gettext("Which graph do you want to modify?"),
                    choices=list(gettext("Hierarchical tree"),gettext("Factorial map"),gettext("3D plot")),inline=TRUE),
-      hr(),
       conditionalPanel(
         condition=paste("input.HCPCgraph=='",gettext("3D plot"),"'",sep=''),
-        textInput("title1HCPCshiny",h6(gettext("Title of the graph: ")), title1HCPCshiny),
+        textInput("title1HCPCshiny",gettext("Title of the graph: "), title1HCPCshiny),
         checkboxInput("nom3D",gettext("Names on 3D plot"),dfHCPCshiny),
         checkboxInput("center",gettext("Draw centers of clusters"),centerdfHCPCshiny),
         hr(),
@@ -46,12 +47,12 @@ fluidPage(
         ),
       conditionalPanel(
         condition=paste("input.HCPCgraph=='",gettext("Factorial map"),"'",sep=''),
-        textInput("title2HCPCshiny",h6(gettext("Title of the graph:")), title2HCPCshiny),
+        textInput("title2HCPCshiny",gettext("Title of the graph:"), title2HCPCshiny),
         checkboxInput("drawtree",gettext("Draw tree"),drawdfHCPCshiny)
         ),
       conditionalPanel(
-         condition=paste("input.HCPCgraph=='",gettext("Hierarchical tree"),"'",sep=''),
-       textInput("title3HCPCshiny",h6(gettext("Title of the graph:")), title3HCPCshiny))
+        condition=paste("input.HCPCgraph=='",gettext("Hierarchical tree"),"'",sep=''),
+        textInput("title3HCPCshiny",gettext("Title of the graph:"), title3HCPCshiny))
       ),
       style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
@@ -61,7 +62,6 @@ fluidPage(
 		  div(gettext("File name (without extension):")),
           textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
           if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
-          # div(actionButton("InvestigateRmd", "Rmd"), actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
 		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
 		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
@@ -77,17 +77,17 @@ fluidPage(
                     tabPanel(gettext("Graphs"),
 fluidRow(
                            br(),
-                 column(width = 6,plotOutput("map4", width = "500", height="500"),
+                 column(width = 6,plotOutput("mapTree", height="500"),
                              br(),
                         p(gettext("Download as"),downloadButton("downloadData6","jpg"),downloadButton("downloadData7","png"),downloadButton("downloadData8","pdf"),align="center"),
                              br(),
 							 align="center"),
-                 column(width = 6,plotOutput("map", width = "500", height="500"),
+                 column(width = 6,plotOutput("map2D", height="500"),
                              br(),
                         p(gettext("Download as"),downloadButton("downloadData1","jpg"),downloadButton("downloadData","png"),downloadButton("downloadData2","pdf"),align="center"),
  							 align="center")),
                             br(),
-                             div(align="center",plotOutput("map2",width=750,height=500)),
+                              div(align="center",plotOutput("map3D", height="500")),
                              br(),
                 p(gettext("Download as"),downloadButton("downloadData4","jpg"),downloadButton("downloadData3","png"),downloadButton("downloadData5","pdf"),align="center"),
                              br()

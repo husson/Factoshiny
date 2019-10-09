@@ -1,7 +1,6 @@
 # server scipt for CA2
   function(input, output) {
   
-  
   getactive <- function(){
       if(length(input$supvar)==0){
         activevar <- VariableChoicesCAshiny
@@ -51,7 +50,6 @@
     codeCA <- paste0("res.CA<-CA(",nomDataCAshiny, if (!identical(newdataCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")} )	
 	codeCA <- paste0(codeCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti2)) paste0(",col.sup=c(",paste(choixquanti2,collapse=","),")"),if(!is.null(indexes)) paste0(",row.sup=c(",paste(indexes,collapse=","),")"),",graph=FALSE)")
     list(res.CA=eval(str2expression(codeCA)), codeCA=codeCA)
-      # list(res.CA=(CA(data.selec,quali.sup=choixquali,col.sup=choixquanti2,row.sup=indexes,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2)))),DATA=(data.selec),CHOIXQUALI=(choixquali),CHOIXQUANTI=(choixquanti2),INDEXES=(indexes))
     })
     
   output$NB1 <- renderUI({
@@ -81,12 +79,6 @@
     
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
-      # fluidRow(
-        # tags$head(
-          # tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; }  #inline .form-group { display: table-row;}")
-          # ),
-        # return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclustCAshiny,min=1)))
-      # )
         return(tags$div( 
             div(gettext("Number of dimensions kept for clustering:"), style="display: inline-block; width: 200px; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustCAshiny)){5} else {nbdimclustCAshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
@@ -100,7 +92,6 @@
             div(colourpicker::colourInput("colrow", label=NULL, if(!is.null(input$colrow)){if (input$colrow!="blue") input$colrow} else{col1CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
 		    div(gettext("active rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 		)
-        # return(colourpicker::colourInput("colrow",h5(gettext("Colour of row points")),col1CAshiny,allowTransparent=TRUE))
       }
     })
     output$col2CAshiny=renderUI({
@@ -109,7 +100,6 @@
             div(colourpicker::colourInput("colcol", label=NULL, if(!is.null(input$colcol)){if (input$colcol!="red") input$colcol} else{col2CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
 		    div(gettext("active columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 		)
-        # return(colourpicker::colourInput("colcol",h5(gettext("Colour of column points")),col2CAshiny,allowTransparent=TRUE))
       }
     })
     output$col3CAshiny=renderUI({
@@ -118,7 +108,6 @@
             div(colourpicker::colourInput("colrowsup", label=NULL, if(!is.null(input$colrowsup)){if (input$colrowsup!="darkblue") input$colrowsup} else{col3CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
 		    div(gettext("supplementary rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 		)
-        # return(colourpicker::colourInput("colrowsup",h5(gettext("Colour of supplementary row points")),col3CAshiny,allowTransparent=TRUE))
       }
     })
     output$col4CAshiny=renderUI({
@@ -127,7 +116,6 @@
             div(colourpicker::colourInput("colcolsup", label=NULL, if(!is.null(input$colcolsup)){if (input$colcolsup!="darkred") input$colcolsup} else{col4CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
 		    div(gettext("supplementary columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 		)
-        # return(colourpicker::colourInput("colcolsup",h5(gettext("Colour of supplementary column points")),col4CAshiny,allowTransparent=TRUE))
       }
     })
     
@@ -154,7 +142,7 @@
     })
     
     
-    codeGraph=reactive({
+    codeGraph <- reactive({
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
         need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows")),
@@ -216,13 +204,14 @@
         if(gettext("Rows")%in%input$ellip) vect=c(vect,"row")
         myellip=paste(paste("'",vect,"'",sep=""),collapse=",")
       }
-      codeGraph=paste0(if(is.null(myellip)){"plot.CA"}else{"ellipseCA"},"(res.CA",if(!is.null(myellip)) paste0(",ellipse=c(",myellip,")"),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(sel)) paste0(",selectCol=",sel),if (!is.null(sel2)) paste0(",selectRow=",sel2),if (!is.null(sel2) | !is.null(sel)) paste0(',unselect=0'),if (input$cex!=1) paste0(',cex=',input$cex,',cex.main=',input$cex,',cex.axis=',input$cex),if(input$title1CAshiny!="CA factor map")paste0(',title="',input$title1CAshiny,'"'),if (hab!="none" & hab!="''"){paste0(",habillage=",hab)},if (!is.null(input$colrow)) paste0(",col.row='",input$colrow,"'"),if (!is.null(input$colcol)) paste0(",col.col='",input$colcol,"'"),if (!is.null(input$colrowsup)) paste0(",col.row.sup='",input$colrowsup,"'"),if (!is.null(input$colcolsup)) paste0(",col.col.sup='",input$colcolsup,"'"),if (!is.null(input$colqualisup)) paste0(",col.quali.sup='",input$colqualisup,"'"),if (!is.null(invisiText)) paste0(',invisible=',invisiText),')')
-      return(codeGraph)
+      Code <- paste0(if(is.null(myellip)){"plot.CA"}else{"ellipseCA"},"(res.CA",if(!is.null(myellip)) paste0(",ellipse=c(",myellip,")"),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(sel)) paste0(",selectCol=",sel),if (!is.null(sel2)) paste0(",selectRow=",sel2),if (!is.null(sel2) | !is.null(sel)) paste0(',unselect=0'),if (input$cex!=1) paste0(',cex=',input$cex,',cex.main=',input$cex,',cex.axis=',input$cex),if(input$title1CAshiny!="CA factor map")paste0(',title="',input$title1CAshiny,'"'),if (hab!="none" & hab!="''"){paste0(",habillage=",hab)},if (!is.null(input$colrow)) {if (input$colrow!="#0000FF") paste0(",col.row='",input$colrow,"'")},if (!is.null(input$colcol)){ if (input$colcol!="#FF0000") paste0(",col.col='",input$colcol,"'")},if (!is.null(input$colrowsup)){if (input$colrowsup!="#0C2B94") paste0(",col.row.sup='",input$colrowsup,"'")},if (!is.null(input$colcolsup)){ if (input$colcolsup!="#8B0000") paste0(",col.col.sup='",input$colcolsup,"'")},if (!is.null(input$colqualisup)) paste0(",col.quali.sup='",input$colqualisup,"'"),if (!is.null(invisiText)) paste0(',invisible=',invisiText),')')
+	  res.CA <- values()$res.CA
+	  Plot <- eval(str2expression(Code))
+      return(list(Code=Code, Plot=Plot))
     })
     
     output$map <- renderPlot({
-	    res.CA <- values()$res.CA
-        p <- print(eval(str2expression(codeGraph())))
+        p <- print(codeGraph()$Plot)
     })
     
     
@@ -248,13 +237,13 @@
     
     output$out22=renderUI({
       choix=list(gettext("Summary of outputs"),gettext("Eigenvalues"),gettext("Results for the columns"),gettext("Results for the rows"))
-      if(!is.null(values()$INDEXES)){
+      if(length(input$rowsupl)!=0){
         choix=c(choix,gettext("Results for the supplementary rows"))
       }
-      if(!is.null(values()$CHOIXQUANTI)){
+      if(!is.null(values()$res.CA$col.sup)){
         choix=c(choix,gettext("Results for the supplementary columns"))
       }
-      if(!is.null(values()$CHOIXQUALI)){
+      if(!is.null(values()$res.CA$quali.sup)){
         choix=c(choix,gettext("Results for the categorical variables"))
       }
       radioButtons("out",gettext("Which outputs do you want?"),
@@ -349,19 +338,16 @@
       return(barplot(values()$res.CA$eig[,1],names.arg=rownames(values()$res.CA$eig),las=2))
     })
     
-    ### Fonction permettant l'affichage du JDD sous la forme d'un DataTable, qui permet la recherche de donnes. 
     output$JDD=renderDataTable({
       cbind(Names=rownames(newdataCAshiny),newdataCAshiny)},
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,
                          "pageLength" = 10))
     
-    ### Fonction permettant l'affichage du summary du JDD
     output$summary=renderPrint({
       summary(newdataCAshiny)
     })
     
-    ### Fonction permettant l'affichage du summary de la fonction CA sur le JDD
     output$summaryCA=renderPrint({
       a<-values()$res.CA
       a$call$call<- values()$codeCA
@@ -376,29 +362,12 @@
     },
     contentType='text/csv')
     
-    output$downloadInvestigateRmd <- downloadHandler(
-     filename = function() {
-      paste(input$titleFile, ".Rmd", sep="")
-    },
-    content = function(file) {
-        path.aux <- getwd()
-        setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraph = if (input$choixGRAPH==gettext("Graph done")) {paste0(values()$codeCA,"\n",codeGraph())} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
-	    # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.CA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="en")
-	    # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.CA, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", display.HCPC =input$hcpcparam, language="fr")
-        file.rename(paste0(pathsaveCAshiny,"/Investigate.Rmd"), file)
-        setwd(path.aux)
-    }
-  )
-
   observe({
     if(input$Investigatehtml!=0){
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraph = if (input$choixGRAPH==gettext("Graph done")) {paste0(values()$codeCA,"\n",codeGraph())} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
-        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.CA, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
-        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.CA, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
@@ -409,40 +378,48 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraph = if (input$choixGRAPH==gettext("Graph done")) {paste0(values()$codeCA,"\n",codeGraph())} else {NULL},document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
-        # if (gettext(input$choixLANG)==gettext("English")) FactoInvestigate::Investigate(values()$res.CA,document="word_document",openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="en")
-        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.CA,document="word_document",openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
+        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
   })
   
+  observe({
+    if(input$InvestigateRmd!=0){
+      isolate({
+        path.aux <- getwd()
+        setwd(pathsaveCAshiny)
+        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+	    print(paste0(gettext("The file "),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: "),getwd()))
+        setwd(path.aux)
+      })
+    }
+  })
 
-    ## Creation des fonctions permettant l'enregistrement des graphs sous les formats : png, jpeg, pdf et emf
     output$downloadData = downloadHandler(
       filename = function() { 
-        paste('graph1','.png', sep='') 
+        paste('graphCA','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(eval(str2expression(codeGraphVar()))))
+        ggplot2::ggsave(file,print(codeGraph()$Plot))
       },
       contentType='image/png')
     
     output$downloadData1 = downloadHandler(
       filename = function() { 
-        paste('graph1','.jpg', sep='') 
+        paste('graphCA','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(eval(str2expression(codeGraphVar()))))
+        ggplot2::ggsave(file,print(codeGraph()$Plot))
       },
       contentType='image/jpg')
     
     output$downloadData2 = downloadHandler(
       filename = function() { 
-        paste('graph1','.pdf', sep='') 
+        paste('graphCA','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(eval(str2expression(codeGraphVar()))))
+        ggplot2::ggsave(file,print(codeGraph()$Plot))
       },
       contentType=NA)
     
@@ -450,7 +427,7 @@
       if(input$CAcode!=0){
         isolate({
           cat(values()$codeCA,sep="\n")
-          cat(codeGraph(),sep="\n")
+          cat(codeGraph()$Code,sep="\n")
         })
       }
     })
@@ -458,30 +435,15 @@
     observe({
       if(input$Quit!=0){
         isolate({
-          res=list()
-          res$data=newdataCAshiny
-          res$nomDataCAshiny=nomDataCAshiny
-          # a : colonnes supplementaires
-          res$a=input$supvar
-          # b : lignes supplementaires
-          res$b=input$rowsupl
-          # c : colonnes quali
-          choixquali=NULL
-          if (length(QualiChoiceCAshiny)==1){
-            if(input$supquali==TRUE){
-              choixquali=QualiChoiceCAshiny
-            }
-          }
-          else{
-            if(length(input$supquali)!=0){
-              choixquali=input$supquali
-            }
-          }
-          res$c=choixquali
-          # d et e : axes
-          res$d=input$nb1
-          res$e=input$nb2
-          # f : invisible points 
+          res <- list()
+          res$data <- newdataCAshiny
+          res$nomDataCAshiny <- nomDataCAshiny
+          res$supvar <- input$supvar
+          res$rowsupl <- input$rowsupl
+          res$color_point <- input$color_point
+          res$supquali=input$supquali
+          res$nb1=input$nb1
+          res$nb2=input$nb2
           invisi=NULL
           if(length(input$invis)!=0){
             invisi=NULL
@@ -491,9 +453,9 @@
             if(sum(gettext("Supplementary columns")==input$invis)>0) invisi<-c(invisi,"col.sup")
             if(sum(gettext("Supplementary qualitative variables")==input$invis)>0) invisi<-c(invisi,"quali.sup")
           }
-          res$f=invisi
-          res$type1=input$seleccol
-          res$type2=input$selecrow
+          res$invisi=invisi
+          res$seleccol=input$seleccol
+          res$selecrow=input$selecrow
           res$selec1CAshiny=NULL
           if(input$seleccol=="cos2") res$selec1CAshiny=input$slider3
           if(input$seleccol=="contrib") res$selec1CAshiny=input$contrib1
@@ -501,8 +463,8 @@
           if(input$selecrow=="cos2") res$selec2CAshiny=input$slider4
           if(input$seleccol=="contrib") res$selec2CAshiny=input$contrib2
           res$taille=input$cex
-          res$code1=values()$codeCA
-          res$code2=codeGraph()
+          res$codeCA=values()$codeCA
+          res$codeGraph=codeGraph()$Code
           res$title1CAshiny=input$title1CAshiny
           res$anafact=values()$res.CA
           if(is.null(input$colrow)){
@@ -526,9 +488,9 @@
             col4CAshiny=input$colcolsup
           }
           if(is.null(input$colqualisup)){
-            col4CAshiny="magenta"
+            col5CAshiny="magenta"
           }else{
-            col4CAshiny=input$colqualisup
+            col5CAshiny=input$colqualisup
           }
           res$col1CAshiny=col1CAshiny
           res$col2CAshiny=col2CAshiny

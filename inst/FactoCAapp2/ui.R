@@ -14,9 +14,9 @@ fluidPage(
         div(align="center",checkboxInput("caparam",gettext("Show CA parameters"),FALSE)),
         conditionalPanel(
           condition="input.caparam==true",
+            selectizeInput("rowsupl",gettext("Select supplementary rows"),choices=nomCAshiny, multiple=TRUE,selected=lignesupCAshiny),
             selectizeInput("supvar",label=gettext("Select supplementary columns"), choices=VariableChoicesCAshiny, selected=colonnesupCAshiny,multiple=TRUE),
-            if(length(QualiChoiceCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoiceCAshiny,multiple=TRUE,selected=catsupCAshiny),
-            selectizeInput("rowsupl",gettext("Select supplementary rows"),choices=nomCAshiny, multiple=TRUE,selected=lignesupCAshiny)
+            if(length(QualiChoiceCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoiceCAshiny,multiple=TRUE,selected=catsupCAshiny)
         ),
       style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
@@ -81,8 +81,8 @@ fluidPage(
 		  div(gettext("File name (without extension):")),
           textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
           if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
-          radioButtons("choixGRAPH",gettext("Which graphs to use?"), choices=c(gettext("Graph done"),gettext("Suggested graph")), selected = gettext("Graph done"), inline=TRUE),
-		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+          radioButtons("choixGRAPH",gettext("Which graphs to use?"), choices=c(gettext("Suggested graphs"),gettext("Graphs done")), selected = gettext("Suggested graphs"), inline=TRUE),
+		  div(actionButton("InvestigateRmd", "Rmd"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
 		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
@@ -97,7 +97,7 @@ fluidPage(
                              br(),
                              div(verbatimTextOutput("warn")),
                              br(),
-                             div(align="center",plotOutput("map",height=550)),
+                             div(align="center",shinyjqui::jqui_resizable(plotOutput("map",height=550))),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                              br(),align="center"),
@@ -108,7 +108,7 @@ fluidPage(
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
                                div(align="center",tableOutput("sorties")),
-                               div(align="center",plotOutput("map3", width = "700", height="500"))),
+                               div(align="center",plotOutput("map3", height="500"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Summary of outputs"),"'",sep=''),
                                numericInput("nbele",h6(gettext("Number of elements to print")),value=10),

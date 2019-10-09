@@ -6,13 +6,14 @@ if(is.data.frame(x)==TRUE){
   varsupMCAshiny=c(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables"))
   indvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary categories"),gettext("Supplementary individuals"))
   labvarMCAshiny=c()
-  habillageindMCAshiny=NULL
+  habillageindMCAshiny <- NULL
   selectionMCAshiny=gettext("No selection")
   selection2MCAshiny=NULL
   selection3MCAshiny=gettext("No selection")
   selection4MCAshiny=NULL
   nbdimclustMCAshiny <- 5
   hcpcparaMCAshiny <- FALSE
+  poids1MCAshiny <- NULL
 
   quantiMCAshiny=names(which(sapply(newdataMCAshiny,is.numeric)))
   qualiMCAshiny=names(which(!(sapply(newdataMCAshiny,is.numeric))))
@@ -21,10 +22,10 @@ if(is.data.frame(x)==TRUE){
   labvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   indsuplMCAshiny=NULL
   title1MCAshiny=gettext("MCA factor map")
-  title2MCAshiny=gettext("Graph of the variables on the MCA map")
-  title3MCAshiny=gettext("Graph of the supplementary quantitative variables")
-  color1MCAshiny="blue"
-  color2MCAshiny="darkblue"
+  title2MCAshiny=gettext("Variables representation")
+  title3MCAshiny=gettext("Supplementary variables on the MCA map")
+  color1MCAshiny="black"
+  color2MCAshiny="blue" #   #0C2B94
   color3MCAshiny="red"
   color4MCAshiny="darkgreen"
   color5MCAshiny="red"
@@ -32,8 +33,9 @@ if(is.data.frame(x)==TRUE){
   color7MCAshiny="blue"
   color8MCAshiny="blue"
   valdefMCAshiny=FALSE
+  color_pointInit <- gettext("active/supplementary")
+  color_ModInit <- gettext("active/supplementary")
 }
-if(inherits(x, "MCA")||inherits(x, "MCAshiny")){
 
 if(inherits(x, "MCAshiny")){
   newdataMCAshiny=x$data
@@ -45,11 +47,12 @@ if(inherits(x, "MCAshiny")){
   indsuplMCAshiny=x$d
   axe1MCAshiny=x$e
   axe2MCAshiny=x$f
-  habillageindMCAshiny=x$g
   selectionMCAshiny=x$h
   selection2MCAshiny=x$i
   selection3MCAshiny=x$j
   selection4MCAshiny=x$k
+  habillageindMCAshiny <- x$habillageindMCAshiny
+  poids1MCAshiny <- x$poids1MCAshiny
   title1MCAshiny=x$title1MCAshiny
   title2MCAshiny=x$title2MCAshiny
   title3MCAshiny=x$title3MCAshiny
@@ -64,6 +67,8 @@ if(inherits(x, "MCAshiny")){
   valdefMCAshiny=x$valdefMCAshiny
   hcpcparaMCAshiny <- x$hcpcparam
   nbdimclustMCAshiny <- x$nbdimclustMCAshiny
+  color_pointInit <- x$color_point
+  color_ModInit <- x$color_Mod
 }
 if(inherits(x, "MCA")){
   nomDataMCAshiny=as.character(x$call$call[2])
@@ -77,18 +82,18 @@ if(inherits(x, "MCA")){
   varsupMCAshiny=c(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables"))
   indvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary categories"),gettext("Supplementary individuals"))
   labvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
-  habillageindMCAshiny=NULL
   nbdimclustMCAshiny <- 5
   hcpcparaMCAshiny <- FALSE
+  habillageindMCAshiny <- NULL
   selectionMCAshiny=gettext("No selection")
   selection2MCAshiny=NULL
   selection3MCAshiny=gettext("No selection")
   selection4MCAshiny=NULL
   title1MCAshiny=gettext("MCA factor map")
-  title2MCAshiny=gettext("Graph of the variables on the MCA map")
-  title3MCAshiny=gettext("Graph of the supplementary quantitative variables")
-  color1MCAshiny="blue"
-  color2MCAshiny="darkblue"
+  title2MCAshiny=gettext("Variables representation")
+  title3MCAshiny=gettext("Supplementary variables on the MCA map")
+  color1MCAshiny="black"
+  color2MCAshiny="blue" #   #0C2B94
   color3MCAshiny="red"
   color4MCAshiny="darkgreen"
   color5MCAshiny="red"
@@ -96,7 +101,14 @@ if(inherits(x, "MCA")){
   color7MCAshiny="blue"
   color8MCAshiny="blue"
   valdefMCAshiny=FALSE
-}  }
+  poids1MCAshiny <- x$call$row.w
+  color_pointInit <- gettext("active/supplementary")
+  color_ModInit <- gettext("active/supplementary")
+  if(!is.null(poids1MCAshiny)){
+    if(sum(poids1MCAshiny!=rep(1,length(poids1MCAshiny)))==0){
+      poids1MCAshiny <- NULL
+    }}
+} 
 
 
 ###
@@ -104,8 +116,6 @@ quantiMCAshiny=names(which(sapply(newdataMCAshiny,is.numeric)))
 qualiMCAshiny=names(which(!(sapply(newdataMCAshiny,is.numeric))))
 VariableChoicesMCAshiny=qualiMCAshiny
 nomMCAshiny=rownames(newdataMCAshiny)
-num=c(1:length(nomMCAshiny))
 QuantiChoiceMCAshiny=quantiMCAshiny
-IdChoices=c(1:length(VariableChoicesMCAshiny))
-Idquantisup=c(1:length(QuantiChoiceMCAshiny))
-nomDataMCAshiny=unlist(strsplit(as.character(nomDataMCAshiny),"\\["))[1]
+# nomDataMCAshiny=unlist(strsplit(as.character(nomDataMCAshiny),"\\["))[1]
+nomDataMCAshinycourt=unlist(strsplit(as.character(nomDataMCAshiny),"\\["))[1]

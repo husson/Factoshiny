@@ -1,11 +1,13 @@
 #global script for HCPC2
+
 if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FAMD")| inherits(x, "MFA"))){
   resultsHCPCshiny <- x
   anafact <- lignecodeHCPCshiny
   resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   if (inherits(x, "CA")) nbindivHCPCshiny <- nrow(resultsHCPCshiny$row$coord)
   else nbindivHCPCshiny <- nrow(resultsHCPCshiny$ind$coord)
-  nomDataHCPCshiny <- nomDataHCPCshiny
+  if (inherits(x, "CA")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+  else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
   clustdfHCPCshiny <- resClusHCPCshiny
   consolidfHCPCshiny <- FALSE
   metricdfHCPCshiny <- gettext("Euclidean")
@@ -45,8 +47,9 @@ if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | 
   anafact=x$code1
   if (inherits(x, "CAshiny")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
   else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
+  if (inherits(x, "CAshiny")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+  else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-  nomDataHCPCshiny=nomDataHCPCshiny
   clustdfHCPCshiny=resClusHCPCshiny
   consolidfHCPCshiny=FALSE
   metricdfHCPCshiny=gettext("Euclidean")
@@ -88,4 +91,6 @@ if(inherits(x, "HCPC")){
 if(!(inherits(x, "HCPC") | inherits(x, "HCPCshiny"))) resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
 if (inherits(x, "CA")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
 else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
+if (inherits(x, "CA")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
 }

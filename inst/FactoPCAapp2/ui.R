@@ -95,8 +95,6 @@ fluidPage(
                 div(align="center",sliderInput("slider00", label = gettext("Labels for cos2 greater than"),
                                                min = 0, max = 1, value =as.numeric(selection4PCAshiny),step=0.05))
 			),
-             # colourpicker::colourInput("coloractvarPCAshiny", h6(gettext("Colour for active variables")), coloractvarPCAshiny,allowTransparent=TRUE),
-
 		  selectInput("color_arrow",label=gettext("Colour variables according to:"),
                                           choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution"),selected=color_arrowInit),
             conditionalPanel(
@@ -124,8 +122,8 @@ fluidPage(
 		  div(gettext("File name (without extension):")),
           textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
           if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
-          radioButtons("choixGRAPH",gettext("Which graphs to use?"), choices=c(gettext("Graphs done"),gettext("Suggested graphs")), selected = gettext("Graphs done"), inline=TRUE),
-		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
+          radioButtons("choixGRAPH",gettext("Which graphs to use?"), choices=c(gettext("Suggested graphs"),gettext("Graphs done")), selected = gettext("Suggested graphs"), inline=TRUE),
+		  div(actionButton("InvestigateRmd", "Rmd"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
 		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
@@ -140,24 +138,15 @@ fluidPage(
                            fluidRow(
                              br(),
 ##                             column(width = 6,plotOutput("map2", width = "500", brush = brushOpts(id = "plot_brush_ind")),
-                             column(width = 7,plotOutput("map2", height = "500"),
+                             # column(width = 7,plotOutput("map2", height = "500"),
+                             column(width = 7,shinyjqui::jqui_resizable(plotOutput("map2", height = "500")),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
                                     align="center"),
-                             column(width = 5,plotOutput("map", height = "500"),
+                             column(width = 5,shinyjqui::jqui_resizable(plotOutput("map", height = "500")),
                                     br(),
                                     p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                                     align="center"))),
-                  # tabPanel(gettext("Graph of individuals"),
-                             # column(width = 12,plotOutput("map2", width = "100%"),
-                                    # br(),
-                                    # p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
-                                    # align="center")),
-                  # tabPanel(gettext("Graph of variables"),
-                             # column(width = 12,plotOutput("map", width = "100%"),
-                                    # br(),
-                                    # p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
-                                    # align="center")),
                   tabPanel(gettext("Values"),
                            br(),
                            uiOutput("out22"),
@@ -246,7 +235,7 @@ fluidPage(
                            br(),
                            verbatimTextOutput("summary"),
                            br(),
-                           selectizeInput("bam",h6(gettext("Graphs for")),choices=c(VariableChoicesPCAshiny),multiple=FALSE),
+                           selectizeInput("bam",gettext("Graphs for"),choices=c(VariableChoicesPCAshiny),multiple=FALSE),
                            plotOutput("histo")),
                   
                   tabPanel(gettext("Data"),

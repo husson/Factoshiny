@@ -3,7 +3,6 @@
 	values <- reactive({
       if (input$metric=="Manhattan") res <- HCPC(resultsHCPCshiny,nb.clust=if (is.null(input$clust)){resClusHCPCshiny } else{input$clust},consol=input$consoli,graph=FALSE,metric="manhattan")
       else res <- HCPC(resultsHCPCshiny,nb.clust=if (is.null(input$clust)){resClusHCPCshiny} else{input$clust},consol=input$consoli,graph=FALSE)
-	  return(res)
     })
         
   output$NB1 <- renderUI({
@@ -25,21 +24,21 @@
     PlotTree <- reactive({
       Code <- paste0("plot.HCPC(res.HCPC,choice='tree',title='",input$title3HCPCshiny,"')")
 	  res.HCPC <- values()
-      Plot <- eval(str2expression(Code))
+      Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
         
     Plot2Dmap <- reactive({
       Code <- paste0("plot.HCPC(res.HCPC,choice='map',draw.tree=",input$drawtree,",title='",input$title2HCPCshiny,"'",if (!is.null(input$nb1)) {if (as.numeric(input$nb1)!=1 | as.numeric(input$nb2)!=2) paste0(",axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),")")},")") 
 	  res.HCPC <- values()
-	  Plot <- eval(str2expression(Code))
+	  Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
     
     Plot3D <- reactive({
       Code <- paste0("plot.HCPC(res.HCPC,choice='3D.map',ind.names=",input$nom3D,",centers.plot=",input$center,",angle=",input$num,",title='",input$title1HCPCshiny,"'",if (!is.null(input$nb1)) {if (as.numeric(input$nb1)!=1 | as.numeric(input$nb2)!=2) paste0(",axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),")")},")") 
 	  res.HCPC <- values()
-      Plot <- eval(str2expression(Code))
+      Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
     
@@ -104,7 +103,7 @@
         paste('Plot2Dmap','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(Plot2Dmap()$Plot))
+        ggplot2::ggsave(file,Plot2Dmap()$Plot)
       },
       contentType='image/png')
     
@@ -113,7 +112,7 @@
         paste('Plot2Dmap','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(Plot2Dmap()$Plot))
+        ggplot2::ggsave(file,Plot2Dmap()$Plot)
       },
       contentType='image/jpg')
     
@@ -122,16 +121,16 @@
         paste('Plot2Dmap','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(Plot2Dmap()$Plot))
+        ggplot2::ggsave(file,Plot2Dmap()$Plot)
       },
       contentType=NA)
     
     output$downloadData3 = downloadHandler(
       filename = function() { 
-        paste('Plot3D','.png', sep='') 
+        paste('Plot3D','.png', sep='')
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(Plot3D()$Plot))
+        ggplot2::ggsave(file,Plot3D()$Plot)
       },
       contentType='image/png')
     
@@ -140,7 +139,7 @@
         paste('Plot3D','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(Plot3D()$Plot))
+        ggplot2::ggsave(file,Plot3D()$Plot)
       },
       contentType='image/jpg')
     
@@ -149,7 +148,7 @@
         paste('Plot3D','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(Plot3D()$Plot))
+        ggplot2::ggsave(file,Plot3D()$Plot)
       },
       contentType=NA)
     
@@ -158,7 +157,7 @@
         paste('PlotTree','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(PlotTree()$Plot))
+        ggplot2::ggsave(file,PlotTree()$Plot)
       },
       contentType='image/png')
     
@@ -167,7 +166,7 @@
         paste('PlotTree','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(PlotTree()$Plot))
+        ggplot2::ggsave(file,PlotTree()$Plot)
       },
       contentType='image/jpg')
     
@@ -176,7 +175,7 @@
         paste('PlotTree','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(PlotTree()$Plot))
+        ggplot2::ggsave(file,PlotTree()$Plot)
       },
       contentType=NA)
         
@@ -233,7 +232,8 @@
         isolate({
           res <- list()
           res$nomDataHCPCshiny <- nomDataHCPCshiny
-          res$anafact <- anafact
+          # res$anafact <- anafact
+          res$anafact <- lignecodeHCPCshiny
           res$resultsHCPCshiny <- values()
           res$classx <- c("PCA", "list")
           class(res) <- c("HCPCshiny")

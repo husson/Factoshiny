@@ -2,20 +2,16 @@
   function(input, output) {
   
   getactive <- function(){
-      if(length(input$supvar)==0){
+      if (length(input$supvar)==0 & length(input$quantisupvar)==0){
         activevar <- VariableChoicesCAshiny
       } else{
-        activevar <- VariableChoicesCAshiny[-which(VariableChoicesCAshiny%in%input$supvar)]
+        activevar <- VariableChoicesCAshiny[-which(VariableChoicesCAshiny%in%c(input$supvar,input$quantisupvar))]
       }
       return(activevar)
   }	
 
-    values=reactive({
-      if (length(input$supvar)==0){
-        data.selec=newdataCAshiny[,VariableChoicesCAshiny]
-      } else{
-        data.selec=newdataCAshiny[,c(getactive())]
-      }
+    values <- reactive({
+      data.selec=newdataCAshiny[,c(getactive())]
       validate(
         need(length(getactive()>2), gettext("Please select at least three active columns"))
       )
@@ -35,7 +31,14 @@
         choixquanti=seq((ncol(data.selec)-length(input$supvar)+1),ncol(data.selec))
       }
 	  
-      if(length(input$rowsupl)!=0){
+      if(length(input$quantisupvar)==0){
+        choixquantisup=NULL
+      } else {
+        data.selec=cbind(data.selec,newdataCAshiny[,input$quantisupvar,drop=FALSE])
+        choixquantisup=seq((ncol(data.selec)-length(input$quantisupvar)+1),ncol(data.selec))
+      }
+
+      if(length(input$rowsupl)!=0 | !is.null(rownaCAshiny)){
 	    indexes=which(nomCAshiny%in%input$rowsupl)
 	    if (length(indexes)==0) indexes=NULL
       } else{
@@ -48,8 +51,8 @@
         choixquanti2=c(choixquanti2,seq((ncol(data.selec)-length(withnaCAshiny)+1),ncol(data.selec)))
       }
     codeCA <- paste0("res.CA<-CA(",nomDataCAshiny, if (!identical(newdataCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")} )	
-	codeCA <- paste0(codeCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti2)) paste0(",col.sup=c(",paste(choixquanti2,collapse=","),")"),if(!is.null(indexes)) paste0(",row.sup=c(",paste(indexes,collapse=","),")"),",graph=FALSE)")
-    list(res.CA=eval(str2expression(codeCA)), codeCA=codeCA)
+	codeCA <- paste0(codeCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti2)) paste0(",col.sup=c(",paste(choixquanti2,collapse=","),")"),if(!is.null(choixquantisup)) paste0(",quanti.sup=c(",paste(choixquantisup,collapse=","),")"),if(!is.null(indexes)) paste0(",row.sup=c(",paste(indexes,collapse=","),")"),",graph=FALSE)")
+    list(res.CA=eval(parse(text=codeCA)), codeCA=codeCA)
     })
     
   output$NB1 <- renderUI({
@@ -76,119 +79,139 @@
     }
   })
 
-    
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
         return(tags$div( 
-            div(gettext("Number of dimensions kept for clustering:"), style="display: inline-block; width: 200px; padding: 0px 0px 0px 0px"),
+            div(gettext("Number of dimensions kept for clustering"), style="display: inline-block; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustCAshiny)){5} else {nbdimclustCAshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
 		)
     }
   })
     
-    output$col1CAshiny=renderUI({
-      if(sum(gettext("Rows")==input$invis)==0){
-        return(tags$div( 
-            div(colourpicker::colourInput("colrow", label=NULL, if(!is.null(input$colrow)){if (input$colrow!="blue") input$colrow} else{col1CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-		    div(gettext("active rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
-		)
-      }
-    })
-    output$col2CAshiny=renderUI({
-      if(sum(gettext("Columns")==input$invis)==0){
-        return(tags$div( 
-            div(colourpicker::colourInput("colcol", label=NULL, if(!is.null(input$colcol)){if (input$colcol!="red") input$colcol} else{col2CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-		    div(gettext("active columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
-		)
-      }
-    })
-    output$col3CAshiny=renderUI({
-      if(!is.null(values()$res.CA$row.sup) & sum(gettext("Supplementary rows")==input$invis)==0){
-        return(tags$div( 
-            div(colourpicker::colourInput("colrowsup", label=NULL, if(!is.null(input$colrowsup)){if (input$colrowsup!="darkblue") input$colrowsup} else{col3CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-		    div(gettext("supplementary rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
-		)
-      }
-    })
-    output$col4CAshiny=renderUI({
-      if(!is.null(values()$res.CA$col.sup) & sum(gettext("Supplementary columns")==input$invis)==0){
-        return(tags$div( 
-            div(colourpicker::colourInput("colcolsup", label=NULL, if(!is.null(input$colcolsup)){if (input$colcolsup!="darkred") input$colcolsup} else{col4CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-		    div(gettext("supplementary columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
-		)
-      }
-    })
-    
-    output$col5CAshiny=renderUI({
-      if(!is.null(values()$res.CA$quali.sup) & sum(gettext("Supplementary categories")==input$invis)==0){
-        return(tags$div( 
-            div(colourpicker::colourInput("colqualisup", label=NULL, if(!is.null(input$colqualisup)){if (input$colqualisup!="magenta") input$colqualisup} else{col5CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-		    div(gettext("supplementary categories"), style="display: inline-block;padding: 0px 0px 0px 10px"))
-		)
-      }
-    })
+  output$choixinvis <- renderUI({
+     listechoix <- c(gettext("Rows"),gettext("Columns"))
+	 if (!is.null(input$rowsupl)) listechoix <- c(listechoix,gettext("Supplementary rows"))
+	 if (!is.null(input$supvar)) listechoix <- c(listechoix,gettext("Supplementary columns"))
+	 if (!is.null(input$supquali)) listechoix <- c(listechoix,gettext("Supplementary qualitative variables"))
+     return(selectInput("invis",gettext("Invisible elements"),choices=as.list(listechoix),multiple=TRUE,selected=InvisibleCAshiny))
+  })
 
-    output$ellipsesCAshiny=renderUI({
-      values1=c()
-      if(sum(gettext("Rows")==input$invis)==0){
-        values1=c(values1,gettext("Rows"))
+  output$col1CAshiny=renderUI({
+    if(sum(gettext("Rows")==input$invis)==0){
+      return(tags$div( 
+        div(colourpicker::colourInput("colrow", label=NULL, if(!is.null(input$colrow)){if (input$colrow!="blue") input$colrow} else{col1CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+        div(gettext("active rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+ 	  )
+    }
+  })
+  output$col2CAshiny=renderUI({
+    if(sum(gettext("Columns")==input$invis)==0){
+      return(tags$div( 
+        div(colourpicker::colourInput("colcol", label=NULL, if(!is.null(input$colcol)){if (input$colcol!="red") input$colcol} else{col2CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+	    div(gettext("active columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	  )
+    }
+  })
+  output$col3CAshiny=renderUI({
+    if(!is.null(values()$res.CA$row.sup) & sum(gettext("Supplementary rows")==input$invis)==0){
+      return(tags$div( 
+        div(colourpicker::colourInput("colrowsup", label=NULL, if(!is.null(input$colrowsup)){if (input$colrowsup!="darkblue") input$colrowsup} else{col3CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+	    div(gettext("supplementary rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	  )
+    }
+  })
+  output$col4CAshiny=renderUI({
+    if(!is.null(values()$res.CA$col.sup) & sum(gettext("Supplementary columns")==input$invis)==0){
+      return(tags$div( 
+        div(colourpicker::colourInput("colcolsup", label=NULL, if(!is.null(input$colcolsup)){if (input$colcolsup!="darkred") input$colcolsup} else{col4CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+	    div(gettext("supplementary columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	  )
+    }
+  })
+    
+  output$col5CAshiny=renderUI({
+    if(!is.null(values()$res.CA$quali.sup) & sum(gettext("Supplementary categories")==input$invis)==0){
+      return(tags$div( 
+        div(colourpicker::colourInput("colqualisup", label=NULL, if(!is.null(input$colqualisup)){if (input$colqualisup!="magenta") input$colqualisup} else{col5CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
+	    div(gettext("supplementary categories"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	  )
+    }
+  })
+
+  output$ellipsesCAshiny=renderUI({
+    values1=c()
+    if(sum(gettext("Rows")==input$invis)==0){
+      values1=c(values1,gettext("Rows"))
+    }
+    if(sum(gettext("Columns")==input$invis)==0){
+      values1=c(values1,gettext("Columns"))
+    }
+    if(length(values)!=0){
+      return(checkboxGroupInput("ellip",gettext("Draw confidence ellipses around"),choices=values1,selected=ellipsesCAshiny,inline=TRUE))
+    }
+  })
+    
+    output$contribcol=renderUI({
+      maxx=nrow(values()$res.CA$col$coord)
+      if(selec1CAshiny=="contrib"){
+        return(sliderInput("contrib1",gettext("Number of the most contributive active columns"),min=1,max=maxx,value=valueselec2CAshiny,step=1))
+      } else{
+        return(sliderInput("contrib1",gettext("Number of the most contributive active columns"),min=1,max=maxx,value=maxx,step=1))
       }
-      if(sum(gettext("Columns")==input$invis)==0){
-        values1=c(values1,gettext("Columns"))
+      
+    })
+    
+    output$contribrow=renderUI({
+      maxx=nrow(values()$res.CA$row$coord)
+      if(selec2CAshiny=="contrib"){
+        return(sliderInput("contrib2",gettext("Number of the most contributive active rows"),min=1,max=maxx,value=valueselec2CAshiny,step=1))
       }
-      if(length(values)!=0){
-          return(checkboxGroupInput("ellip",gettext("Draw confidence ellipses around"),choices=values1,selected=ellipsesCAshiny,inline=TRUE))
+      else{
+        return(sliderInput("contrib2",gettext("Number of the most contributive active rows"),min=1,max=maxx,value=maxx,step=1))
       }
     })
     
-    
-    codeGraph <- reactive({
-      validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows")),
-        need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
-      )
-      if(length(input$invis)==0){
-        invisiText <- NULL
-      } else {
-        invisi <- NULL
-        if(sum(gettext("Rows")==input$invis)>0) invisi<-c(invisi,"row")
-        if(sum(gettext("Columns")==input$invis)>0) invisi<-c(invisi,"col")
-        if(sum(gettext("Supplementary rows")==input$invis)>0) invisi<-c(invisi,"row.sup")
-        if(sum(gettext("Supplementary columns")==input$invis)>0) invisi<-c(invisi,"col.sup")
-        if(sum(gettext("Supplementary qualitative variables")==input$invis)>0) invisi<-c(invisi,"quali.sup")
-        if(sum(gettext("Supplementary quantitative variables")==input$invis)>0) invisi<-c(invisi,"quanti.sup")
-        invisiText <- paste0("c(",paste(paste("'",invisi,"'",sep=""),collapse = ","),")")
+  codeGraph <- reactive({
+    validate(
+      need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
+      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows")),
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+    )
+    if(length(input$invis)==0){
+      invisiText <- NULL
+    } else {
+      invisi <- NULL
+      if(sum(gettext("Rows")==input$invis)>0) invisi<-c(invisi,"row")
+      if(sum(gettext("Columns")==input$invis)>0) invisi<-c(invisi,"col")
+      if(sum(gettext("Supplementary rows")==input$invis)>0) invisi<-c(invisi,"row.sup")
+      if(sum(gettext("Supplementary columns")==input$invis)>0) invisi<-c(invisi,"col.sup")
+      if(sum(gettext("Supplementary qualitative variables")==input$invis)>0) invisi<-c(invisi,"quali.sup")
+      if(sum(gettext("Supplementary quantitative variables")==input$invis)>0) invisi<-c(invisi,"quanti.sup")
+      invisiText <- paste0("c(",paste(paste("'",invisi,"'",sep=""),collapse = ","),")")
+    }
+    sel=NULL
+    if(input$seleccol=="cos2"){
+      if(input$slider3!=1){
+        sel=paste0("'cos2 ",input$slider3,"'")
+      } else{
+        sel="'cos2 0.9999999'"
       }
-      sel=NULL
-      if(input$seleccol=="cos2"){
-        if(input$slider3!=1){
-          sel=paste0("'cos2 ",input$slider3,"'")
-        }
-        else{
-          sel="'cos2 0.9999999'"
-        }
+    }
+    if(input$seleccol=="contrib") sel=paste0("'contrib ",input$contrib1,"'")
+    sel2=NULL
+    if(input$selecrow=="cos2"){
+      if(input$slider4!=1){
+        sel2=paste0("'cos2 ",input$slider4,"'")
+      } else{
+        sel2="'cos2 0.9999999'"
       }
-      if(input$seleccol=="contrib"){
-        sel=paste0("'contrib ",input$contrib1,"'")
-      }
-      sel2=NULL
-      if(input$selecrow=="cos2"){
-        if(input$slider4!=1){
-          sel2=paste0("'cos2 ",input$slider4,"'")
-        }
-        else{
-          sel2="'cos2 0.9999999'"
-        }
-      }
-      if(input$selecrow=="contrib"){
-        sel2=paste0("'contrib ",input$contrib2,"'")
-      }
-      values2=c()
-      if(!is.null(input$ellip)){
-        if(gettext("Columns")%in%input$ellip) values2=c(values2,"col")
-        if(gettext("Rows")%in%input$ellip) values2=c(values2,"row")
-      }
+    }
+    if(input$selecrow=="contrib") sel2=paste0("'contrib ",input$contrib2,"'")
+    values2=c()
+    if(!is.null(input$ellip)){
+      if(gettext("Columns")%in%input$ellip) values2=c(values2,"col")
+      if(gettext("Rows")%in%input$ellip) values2=c(values2,"row")
+    }
 
     hab <- "none"
     if(input$color_point == gettext("quantitative variable")) hab <- paste0("'",input$habiller,"'")
@@ -206,7 +229,7 @@
       }
       Code <- paste0(if(is.null(myellip)){"plot.CA"}else{"ellipseCA"},"(res.CA",if(!is.null(myellip)) paste0(",ellipse=c(",myellip,")"),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(sel)) paste0(",selectCol=",sel),if (!is.null(sel2)) paste0(",selectRow=",sel2),if (!is.null(sel2) | !is.null(sel)) paste0(',unselect=0'),if (input$cex!=1) paste0(',cex=',input$cex,',cex.main=',input$cex,',cex.axis=',input$cex),if(input$title1CAshiny!="CA factor map")paste0(',title="',input$title1CAshiny,'"'),if (hab!="none" & hab!="''"){paste0(",habillage=",hab)},if (!is.null(input$colrow)) {if (input$colrow!="#0000FF") paste0(",col.row='",input$colrow,"'")},if (!is.null(input$colcol)){ if (input$colcol!="#FF0000") paste0(",col.col='",input$colcol,"'")},if (!is.null(input$colrowsup)){if (input$colrowsup!="#0C2B94") paste0(",col.row.sup='",input$colrowsup,"'")},if (!is.null(input$colcolsup)){ if (input$colcolsup!="#8B0000") paste0(",col.col.sup='",input$colcolsup,"'")},if (!is.null(input$colqualisup)) paste0(",col.quali.sup='",input$colqualisup,"'"),if (!is.null(invisiText)) paste0(',invisible=',invisiText),')')
 	  res.CA <- values()$res.CA
-	  Plot <- eval(str2expression(Code))
+	  Plot <- eval(parse(text=Code))
       return(list(Code=Code, Plot=Plot))
     })
     
@@ -214,27 +237,34 @@
         p <- print(codeGraph()$Plot)
     })
     
+    codeGraphQuanti <- function(){
+      if (length(input$quantisupvar)>0) {
+		Code <- paste0("plot.CA(res.CA, choix='quanti.sup'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),paste0(',title="',input$title1CAshiny,' - ',gettext("supplementary quantitative variables"),'"'),")")
+		res.CA <- values()$res.CA
+	    Plot <- eval(parse(text=Code))
+	    return(list(Code=Code,Plot=Plot))
+	  }
+    }
     
-    output$contribcol=renderUI({
-      maxx=nrow(values()$res.CA$col$coord)
-      if(selec1CAshiny=="contrib"){
-        return(sliderInput("contrib1",h6(gettext("Number of the most contributive active columns")),min=1,max=maxx,value=valueselec2CAshiny,step=1))
-      } else{
-        return(sliderInput("contrib1",h6(gettext("Number of the most contributive active columns")),min=1,max=maxx,value=maxx,step=1))
-      }
+    output$map2 <- renderPlot({
+	  if (!is.null(codeGraphQuanti()$Plot)) print(codeGraphQuanti()$Plot)
+    })  
+    
+    output$map22=renderUI({
+      validate(
+        need( length(getactive())>2,gettext("Please more active columns"))
+      )
       
+      if(length(input$quantisupvar)==0 | is.null(codeGraphQuanti()$Plot)){
+	    p()
+      } else{
+        column(width = 5,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
+           br(),
+           p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center")
+		)
+	  }
     })
-    
-    output$contribrow=renderUI({
-      maxx=nrow(values()$res.CA$row$coord)
-      if(selec2CAshiny=="contrib"){
-        return(sliderInput("contrib2",h6(gettext("Number of the most contributive active rows")),min=1,max=maxx,value=valueselec2CAshiny,step=1))
-      }
-      else{
-        return(sliderInput("contrib2",h6(gettext("Number of the most contributive active rows")),min=1,max=maxx,value=maxx,step=1))
-      }
-    })
-    
+
     output$out22=renderUI({
       choix=list(gettext("Summary of outputs"),gettext("Eigenvalues"),gettext("Results for the columns"),gettext("Results for the rows"))
       if(length(input$rowsupl)!=0){
@@ -251,15 +281,13 @@
     })
     
     output$warn=renderPrint({
-      if(length(withnaCAshiny)!=0){
-        baba=paste(withnaCAshiny,collapse=", ")
-        bibi=paste(nomrowCAshiny,collapse=", ")
-        a=paste0(gettext("Warning: "), baba, gettext(" have NA : they are considered as supplementary columns"))
-        b=paste0(gettext("Warning: "), bibi, gettext(" have NA : they are considered as supplementary rows"))
+      if(length(nomrownaCAshiny)!=0){
+        # return(cat(paste0(gettext("Warning: "), paste(nomrownaCAshiny,collapse=", "), gettext(" have NA : they are considered as supplementary rows"))))
+        a=paste0(gettext("Warning: "), paste(withnaCAshiny,collapse=", "), gettext(" have NA : they are considered as supplementary columns"))
+        b=paste0(gettext("Warning: "), paste(nomrownaCAshiny,collapse=", "), gettext(" have NA : they are considered as supplementary rows"))
         return(cat(a,b,sep="\n"))
       }
     })
-    
     
     output$sorties=renderTable({
       return(as.data.frame(values()$res.CA$eig))
@@ -335,7 +363,8 @@
     
     
     output$map3=renderPlot({
-      return(barplot(values()$res.CA$eig[,1],names.arg=rownames(values()$res.CA$eig),las=2))
+    print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(values()$res.CA$eig),y=values()$res.CA$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(values()$res.CA$eig)))
+      # return(barplot(values()$res.CA$eig[,1],names.arg=rownames(values()$res.CA$eig),las=2))
     })
     
     output$JDD=renderDataTable({
@@ -401,7 +430,7 @@
         paste('graphCA','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraph()$Plot))
+        ggplot2::ggsave(file,codeGraph()$Plot)
       },
       contentType='image/png')
     
@@ -410,7 +439,7 @@
         paste('graphCA','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraph()$Plot))
+        ggplot2::ggsave(file,codeGraph()$Plot)
       },
       contentType='image/jpg')
     
@@ -419,15 +448,43 @@
         paste('graphCA','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraph()$Plot))
+        ggplot2::ggsave(file,codeGraph()$Plot)
       },
       contentType=NA)
     
+    output$downloadData3 = downloadHandler(
+      filename = function() { 
+        paste('graphCAquanti','.png', sep='') 
+      },
+      content = function(file) {
+        ggplot2::ggsave(file,codeGraphQuanti()$Plot)
+      },
+      contentType='image/png')
+    
+    output$downloadData4 = downloadHandler(
+      filename = function() { 
+        paste('graphCAquanti','.jpg', sep='') 
+      },
+      content = function(file) {
+        ggplot2::ggsave(file,codeGraphQuanti()$Plot)
+      },
+      contentType='image/jpg')
+    
+    output$downloadData5 = downloadHandler(
+      filename = function() { 
+        paste('graphCAquanti','.pdf', sep='') 
+      },
+      content = function(file) {
+        ggplot2::ggsave(file,codeGraphQuanti()$Plot)
+      },
+      contentType=NA)
+
     observe({
       if(input$CAcode!=0){
         isolate({
           cat(values()$codeCA,sep="\n")
           cat(codeGraph()$Code,sep="\n")
+          if (!is.null(input$quantisupvar)) cat(codeGraphQuanti()$Code,sep="\n")
         })
       }
     })
@@ -439,6 +496,7 @@
           res$data <- newdataCAshiny
           res$nomDataCAshiny <- nomDataCAshiny
           res$supvar <- input$supvar
+          res$quantisupvar <- input$quantisupvar
           res$rowsupl <- input$rowsupl
           res$color_point <- input$color_point
           res$supquali=input$supquali
@@ -465,7 +523,9 @@
           res$taille=input$cex
           res$codeCA=values()$codeCA
           res$codeGraph=codeGraph()$Code
+          res$codeGraphQuanti=codeGraphQuanti()$Code
           res$title1CAshiny=input$title1CAshiny
+          res$title2CAshiny=input$title2CAshiny
           res$anafact=values()$res.CA
           if(is.null(input$colrow)){
             col1CAshiny="blue"

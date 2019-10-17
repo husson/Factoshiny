@@ -1,15 +1,16 @@
 # global script for CA2
 if(inherits(x, "data.frame") | inherits(x, "CA")){
   if(inherits(x, "data.frame")){
-    nomDataCAshiny <- nomDataCAshiny
     newdataCAshiny <- x
     colonnesupCAshiny <- NULL
+    quantisupCAshiny <- NULL
     lignesupCAshiny <- NULL
     catsupCAshiny <- NULL
   } else {
     nomDataCAshiny <- as.character(x$call$call[2])
     newdataCAshiny <- x$call$Xtot
     colonnesupCAshiny <- rownames(x$col.sup$coord)
+    quantisupCAshiny <- rownames(x$quanti.sup$coord)
     lignesupCAshiny <- rownames(x$row.sup$coord)
     catsupCAshiny <- if (!is.null(x$quali.sup$coord)) {rownames(x$quali.sup$coord)} else{NULL}
   }
@@ -22,6 +23,7 @@ if(inherits(x, "data.frame") | inherits(x, "CA")){
   valueselec2CAshiny <- NULL
   sizeCAshiny <- 1
   title1CAshiny <- gettext("CA factor map")
+  title2CAshiny <- gettext("Quantitative supplementary variables")
   color_pointInit <- gettext("row/column")
   col1CAshiny <- "blue"
   col2CAshiny <- "red"
@@ -31,12 +33,13 @@ if(inherits(x, "data.frame") | inherits(x, "CA")){
   ellipsesCAshiny <- NULL
   nbdimclustCAshiny <- 5
   hcpcparaCAshiny <- FALSE
-}
+ }
 
 if(inherits(x, "CAshiny")){
 nomDataCAshiny <- x$nomDataCAshiny
 newdataCAshiny <- x$data
 colonnesupCAshiny <- x$supvar
+quantisupCAshiny <- x$quantisupvar
 lignesupCAshiny <- x$rowsupl
 catsupCAshiny <- x$supquali
 axe1CAshiny <- x$nb1
@@ -50,6 +53,7 @@ valueselec1CAshiny <- x$selec1CAshiny
 valueselec2CAshiny <- x$selec2CAshiny
 sizeCAshiny <- x$taille
 title1CAshiny <- x$title1CAshiny
+title2CAshiny <- x$title2CAshiny
 col1CAshiny <- x$col1CAshiny
 col2CAshiny <- x$col2CAshiny
 col3CAshiny <- x$col3CAshiny
@@ -60,43 +64,32 @@ hcpcparaCAshiny <- x$hcpcparam
 nbdimclustCAshiny <- x$nbdimclustCAshiny
 }
 
-withnaCAshiny <- c()
-rownaCAshiny <- c()
-nomrowCAshiny <- c()
-for (i in 1:dim(newdataCAshiny)[2]){
-  if(any(is.na(newdataCAshiny[,i])==TRUE)){
-    if(is.numeric(newdataCAshiny[,i])==TRUE){
-      withnaCAshiny <- c(withnaCAshiny,colnames(newdataCAshiny)[i])
-    }
-  }
-}
 
-for (i in 1:dim(newdataCAshiny)[1]){
-  if(any(is.na(newdataCAshiny[i,])==TRUE)){
-      rownaCAshiny <- c(rownaCAshiny,i)
-      nomrowCAshiny <- c(nomrowCAshiny,rownames(newdataCAshiny)[i])
-  }
-}
-
-VariableChoiceCAshiny <- names(which(sapply(newdataCAshiny,is.numeric)))
-nomsCAshiny <- rownames(newdataCAshiny)
+VariableChoicesCAshiny <- names(which(sapply(newdataCAshiny,is.numeric)))
 QualiChoiceCAshiny <- names(which(!(sapply(newdataCAshiny,is.numeric))))
-supCAshiny <- which( VariableChoiceCAshiny%in%withnaCAshiny)
-if (length(supCAshiny)==0) supCAshiny <- NULL
- 
-if(!(is.null(supCAshiny))){
-  VariableChoicesCAshiny <-  VariableChoiceCAshiny[-supCAshiny]
+if (length(QualiChoiceCAshiny)==0){
+  listeChoixColourPoint<- list(gettext("row/column"),"cos2"="cos2","contribution"="contribution")
+} else {
+  listeChoixColourPoint <- list(gettext("row/column"),"cos2"="cos2","contribution"="contribution",gettext("qualitative variable"))
 }
-if(is.null(supCAshiny)){
-  VariableChoicesCAshiny <-  VariableChoiceCAshiny
+nomCAshiny <- rownames(newdataCAshiny)
+
+rownaCAshiny <- NULL
+nomrownaCAshiny <- NULL
+if(any(apply(is.na(newdataCAshiny),1,sum)>0)){
+  rownaCAshiny <- which(apply(is.na(newdataCAshiny),1,sum)>0)
+  nomrownaCAshiny <- nomCAshiny[rownaCAshiny]
+  lignesupCAshiny <- nomCAshiny[rownaCAshiny]
+  nomCAshiny <- nomCAshiny[-rownaCAshiny]
 }
-sup2CAshiny <- which(nomsCAshiny%in%nomrowCAshiny)
-if (length(sup2CAshiny)==0) sup2CAshiny <- NULL
-if(!(is.null(sup2CAshiny))){
-  nomCAshiny <- nomsCAshiny[-sup2CAshiny]
+withnaCAshiny <- NULL
+colonnesupCAshiny <- NULL
+if(any(apply(is.na(newdataCAshiny),2,sum)>0)){
+  withnaCAshiny <- VariableChoicesCAshiny[which(apply(is.na(newdataCAshiny),2,sum)>0)]
+  supCAshiny <- which(VariableChoicesCAshiny%in%withnaCAshiny)
+  VariableChoicesCAshiny <-  VariableChoicesCAshiny[-supCAshiny]
+  colonnesupCAshiny <- withnaCAshiny
 }
-if(is.null(sup2CAshiny)){
-  nomCAshiny <- nomsCAshiny
-}
-nomDataCAshiny <- unlist(strsplit(as.character(nomDataCAshiny),"\\["))[1]
+
+nomDataCAshinycourt <- unlist(strsplit(as.character(nomDataCAshiny),"\\["))[1]
 if(inherits(x, "data.frame")) catsupCAshiny <- QualiChoiceCAshiny

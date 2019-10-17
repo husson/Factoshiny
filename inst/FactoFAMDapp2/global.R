@@ -1,4 +1,3 @@
-#global script for FAMD
 if(inherits(x, "data.frame")){
   newdata <- x
   quantisup <- NULL
@@ -6,6 +5,7 @@ if(inherits(x, "data.frame")){
   indsupl <- NULL
   axe1 <- 1
   axe2 <- 2
+  indmodFAMDshiny <- c(gettext("Individuals"),gettext("Active categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   nbdimclustFAMDshiny <- 5
   hcpcparaFAMDshiny <- FALSE
   labind <- TRUE
@@ -48,6 +48,7 @@ if(inherits(x, "FAMDshiny")){
   title3 <- x$title3
   labind <- x$labind
   labvar <- x$labvar
+  indmodFAMDshiny <- x$indmodFAMDshiny
   hcpcparaFAMDshiny <- x$hcpcparam
   nbdimclustFAMDshiny <- x$nbdimclustFAMDshiny
 }
@@ -69,6 +70,7 @@ if(inherits(x, "FAMD")){
   selection6 <- NULL
   nbdimclustFAMDshiny <- 5
   hcpcparaFAMDshiny <- FALSE
+  indmodFAMDshiny <- c(gettext("Individuals"),gettext("Active categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   size <- 1
   size2 <- 1
   size3 <- 1
@@ -78,14 +80,10 @@ if(inherits(x, "FAMD")){
   labind <- TRUE
   labvar <- TRUE
 }  
-all <- colnames(newdata)
+allVariables <- colnames(newdata)
 quanti <- names(which(sapply(newdata,is.numeric)))
 quali <- names(which(!(sapply(newdata,is.numeric))))
 VariableChoices <- quanti
 nom <- rownames(newdata)
-num <- c(1:length(nom))
 QualiChoice <- quali
-IdChoices <- c(1:length(VariableChoices))
-Idqualisup <- c(1:length(QualiChoice))
-Idall <- c(1:length(all))
-nomData <- unlist(strsplit(as.character(nomData),"\\["))[1]
+nomDatacourt <- unlist(strsplit(as.character(nomData),"\\["))[1]

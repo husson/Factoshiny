@@ -36,19 +36,10 @@
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
         return(tags$div( 
-            div(gettext("Number of dimensions kept for clustering:"), style="display: inline-block; width: 200px; padding: 0px 0px 0px 0px"),
+            div(gettext("Number of dimensions kept for clustering"), style="display: inline-block; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustMCAshiny)){5} else {nbdimclustMCAshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
 		)
     }
-    # if(input$hcpcparam==TRUE){
-      # fluidRow(
-        # tags$head(
-          # tags$style(type="text/css", "#inline label{ display: table-cell; text-align: left; vertical-align: middle; } # inline .form-group { display: table-row;}")
-          # ),
-          # ),
-        # return(tags$div(id = "inline", numericInput(inputId = "nbDimClustering", label = gettext("Number of dimensions kept for clustering:"),value=nbdimclustMCAshiny,min=1)))
-      # )
-    # }
   })
 
     #Realisation de l'ACM    
@@ -91,8 +82,8 @@
     }
     codeMCA <- paste0(paste0("res.MCA<-MCA(",nomDataMCAshiny, if (!identical(newdataMCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")}))
 	codeMCA <- paste0(codeMCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquanti)) paste0(",quanti.sup=c(",paste(choixquanti,collapse=","),")"),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1MCAshiny)) paste0(",row.w=c(",paste(poids1MCAshiny,collapse=","),")"),",graph=FALSE)")
-    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")) list(res.MCA=eval(str2expression(paste0(codeMCAp,"\n",codeMCA))), codeMCA=codeMCA, codeMCAp=codeMCAp, choixqual=choixquali, choixquant=choixquanti)
-    else list(res.MCA=eval(str2expression(codeMCA)), codeMCA=codeMCA, choixqual=choixquali, choixquant=choixquanti)
+    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")) list(res.MCA=eval(parse(text=paste0(codeMCAp,"\n",codeMCA))), codeMCA=codeMCA, codeMCAp=codeMCAp, choixqual=choixquali, choixquant=choixquanti)
+    else list(res.MCA=eval(parse(text=codeMCA)), codeMCA=codeMCA, choixqual=choixquali, choixquant=choixquanti)
   })
 
     output$col1=renderUI({
@@ -218,7 +209,7 @@
 	  }
       Code <- paste0("plot.MCA(res.MCA, choix='var'",if (length(inv)>0){paste0(",invisible=",vecinv)},if (input$title2MCAshiny!="Variables representation") paste0(',title="',input$title2MCAshiny,'"'),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(input$colvaract1) & input$colvaract1 != "#FF0000" & input$eachvar!=TRUE) paste0(",col.var='",input$colvaract1,"'"),if(!is.null(input$eachvar) & input$eachvar==TRUE) paste0(",col.var=",colouract2),if(!is.null(input$colvarsup1) & input$eachvar!=TRUE) paste0(",col.quali.sup='",input$colvarsup1,"'"),if(!is.null(input$eachvar) & input$eachvar==TRUE & !is.null(input$colvarsup1)) paste0(",col.quali.sup=",coloursup2),if(!is.null(input$colli)) {if (input$colli!="#0000FF") paste0(",col.quanti.sup='",input$colli,"'")},if(input$cex2!=1){paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2)},")") 
 	  res.MCA <- values()$res.MCA
-	  Plot <- eval(str2expression(Code))
+	  Plot <- eval(parse(text=Code))
       return(list(Code=Code,Plot=Plot))
     })
     
@@ -308,7 +299,7 @@
 	  }
       Code <- paste0(if(!is.null(input$drawconf)&&input$drawconf==TRUE){paste0("plotellipses(res.MCA,keepvar=",hab)}else{"plot.MCA(res.MCA"},if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (vecinv!="NULL") paste(",invisible=",vecinv),if (selecindivText!="NULL") paste(",select=",selecindivText),if (selecModText!="NULL") paste(",selectMod=",selecModText),if (hab != "none") paste0(",habillage=",hab),if(input$colindact!="#000000") paste0(",col.ind='",input$colindact,"'"),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'") paste0(",col.var=",colouract2),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'" & !is.null(values()$res.MCA$call$quali.sup)) paste0(",col.quali.sup=",coloursup2), if(input$colvaract1!="#FF0000" & input$eachvar==FALSE) paste0(",col.var='",input$colvaract1,"'"), if(!is.null(input$colindsup)) {if(input$colindsup!="blue") paste0(",col.ind.sup='",input$colindsup,"'")},if(!is.null(input$colvarsup1)& input$eachvar!=TRUE) {if(input$colvarsup1!="darkgreen") paste0(",col.quali.sup='",input$colvarsup1,"'")},if(input$title1MCAshiny!="MCA factor map") paste0(',title="',input$title1MCAshiny,'"'),if (input$cex!=1) paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),")")
 	  res.MCA <- values()$res.MCA
-	  Plot <- eval(str2expression(Code))
+	  Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
     
@@ -328,7 +319,7 @@
       if (!is.null(values()$choixquant)) {
 	    Code <- paste0("plot.MCA(res.MCA, choix='quanti.sup'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (input$title3MCAshiny!="Supplementary variables on the MCA map") paste0(',title="',input$title3MCAshiny,'"'),if(input$colquanti!="#0000FF") paste0(",col.quanti.sup='",input$colquanti,"'"), if (input$cex3!=1) paste0(",cex=",input$cex3,",cex.main=",input$cex3,",cex.axis=",input$cex3),")")
 		res.MCA <- values()$res.MCA
-	    Plot <- eval(str2expression(Code))
+	    Plot <- eval(parse(text=Code))
 	    return(list(Code=Code,Plot=Plot))
       }
     }
@@ -347,11 +338,10 @@
         return(p())
       }
       else{
-        column(width = 6,plotOutput("map2", height="500"),
+        column(width = 6,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
            br(),
            p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center")
 		)
-
 	  }
     })
 
@@ -411,7 +401,8 @@
     
     #Histogramme des valeurs propres
     output$map3=renderPlot({
-      return(barplot(values()$res.MCA$eig[,1],names.arg=rownames(values()$res.MCA$eig),las=2,density=TRUE))
+      print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(values()$res.MCA$eig),y=values()$res.MCA$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(values()$res.MCA$eig)))
+      # return(barplot(values()$res.MCA$eig[,1],names.arg=rownames(values()$res.MCA$eig),las=2,density=TRUE))
     })
     
     #Histogramme du summary
@@ -684,7 +675,7 @@
         paste('graphVarMCA','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
+        ggplot2::ggsave(file,codeGraphVar()$Plot)
       },
       contentType='image/png')
     
@@ -693,7 +684,7 @@
         paste('graphVarMCA','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
+        ggplot2::ggsave(file,codeGraphVar()$Plot)
       },
       contentType='image/jpg')
     
@@ -702,7 +693,7 @@
         paste('graphVarMCA','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
+        ggplot2::ggsave(file,codeGraphVar()$Plot)
       },
       contentType=NA)
     
@@ -714,7 +705,7 @@
         paste('graphMCA','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphInd()$Plot))
+        ggplot2::ggsave(file,codeGraphInd()$Plot)
       },
       contentType='image/png')
     
@@ -723,7 +714,7 @@
         paste('graphMCA','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphInd()$Plot))
+        ggplot2::ggsave(file,codeGraphInd()$Plot)
       },
       contentType='image/jpg')
     
@@ -732,7 +723,7 @@
         paste('graphMCA','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphInd()$Plot))
+        ggplot2::ggsave(file,codeGraphInd()$Plot)
       },
       contentType=NA)
     
@@ -751,7 +742,7 @@
         paste('graphQuantiMCA','.png', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphQuanti()$Plot))
+        ggplot2::ggsave(file,codeGraphQuanti()$Plot)
       },
       contentType='image/png')
     
@@ -769,7 +760,7 @@
         paste('graphQuantiMCA','.jpg', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphQuanti()$Plot))
+        ggplot2::ggsave(file,codeGraphQuanti()$Plot)
       },
       contentType='image/jpg')
     
@@ -788,7 +779,7 @@
         paste('graphQuantiMCA','.pdf', sep='') 
       },
       content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphQuanti()$Plot))
+        ggplot2::ggsave(file,codeGraphQuanti()$Plot)
       },
       contentType=NA)    
         

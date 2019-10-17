@@ -1,13 +1,10 @@
-print.PCAshiny<-
-function(x,...){
+print.PCAshiny <- function(x,...){
   if(!inherits(x,"PCAshiny")) stop(gettext("non convenient data"))
-  cat(gettext("Results for the PCA with Factoshiny"))
+  cat(paste0(gettext("To fine your app the way you left it, use:"),"\n"))
+  cat(paste0("PCAshiny(",sys.calls()[[1]][2],")\n"))
   cat("\n")
-  cat(gettext("You can use it to fine your app the way you left it"))
-  cat("\n")
-  cat("\n")
-  cat(gettext("Corresponding script:"))
-  cat("\n")
+  cat(paste0(gettext("Or use the corresponding script:"),"\n"))
+  if (!is.null(x$codePCAp)) cat(x$codePCAp,"\n")
   cat(x$codePCA,"\n")
   cat("\n")
   cat(x$codeGraphInd,"\n")

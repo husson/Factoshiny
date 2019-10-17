@@ -1,6 +1,5 @@
 #global script for PCA2
 if(inherits(x, "data.frame")){
-  nomDataPCAshiny <- nomDataPCAshiny
   newdataPCAshiny <- x
   quantisupPCAshiny <- NULL
   qualisupPCAshiny <- NULL
@@ -43,8 +42,8 @@ if(inherits(x, "PCAshiny")){
   axe1PCAshiny <- x$nb1
   axe2PCAshiny <- x$nb2
   habillageindPCAshiny <- x$habiller
-  selectionPCAshiny <- x$h
-  selection2PCAshiny <- x$i
+  selectionPCAshiny <- x$selectionPCAshiny
+  selection2PCAshiny <- x$selection2PCAshiny
   selection3PCAshiny <- x$j
   selection4PCAshiny <- x$k
   sizePCAshiny <- x$l
@@ -113,5 +112,5 @@ quantiPCAshiny <- names(which(sapply(newdataPCAshiny,is.numeric)))
 qualiPCAshiny <- names(which(!(sapply(newdataPCAshiny,is.numeric))))
 VariableChoicesPCAshiny <- quantiPCAshiny
 QualiChoicePCAshiny <- qualiPCAshiny
-nomDataPCAshiny <- unlist(strsplit(as.character(nomDataPCAshiny),"\\["))[1]
+nomDataPCAshinycourt <- unlist(strsplit(as.character(nomDataPCAshiny),"\\["))[1]
 if(inherits(x, "data.frame")) qualisupPCAshiny <- QualiChoicePCAshiny

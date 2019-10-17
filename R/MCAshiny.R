@@ -20,15 +20,16 @@ MCAshiny <-
       ###
 
   assign("pathsaveMCAshiny",getwd(),envir=G)
-#  outShiny=shiny::runApp(system.file("FactoMCAapp2", package="Factoshiny"),launch.browser = TRUE)
+  outShiny=shiny::runApp(system.file("FactoMCAapp2", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny=shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoMCAapp2')
-  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMCAapp2')
+#  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMCAapp2')
   assign("myListOfThingsMCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objMCAshiny)),envir=G)  ## on met "outShiny" pour ne pas le supprimer
   rm(list=myListOfThingsMCAshiny, envir=G)
   rm(list=c("myListOfThingsMCAshiny"),envir=G)
-   if (outShiny$hcpcparam==TRUE) {
+  if (outShiny$hcpcparam==TRUE) {
     resHCPC <- HCPCshiny(outShiny)
-    print(list(invisible(outShiny),resHCPC))
+    return(list(invisible(outShiny),resHCPC))
+  } else {
+    return(invisible(outShiny))
   }
-  return(invisible(outShiny))
 }

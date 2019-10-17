@@ -20,9 +20,7 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FA
   title1HCPCshiny <- gettext("Hierarchical tree on the factor map")
   title2HCPCshiny <- gettext("Factor map")
   title3HCPCshiny <- gettext("Hierarchical tree")
-}
-
-if(!((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FAMD")| inherits(x, "MFA")))){
+} else {
 if(inherits(x, "HCPCshiny")){
 resultsHCPCshiny <- x$resultsHCPCshiny$call$t$res
 anafact <- x$anafact
@@ -44,11 +42,13 @@ title3HCPCshiny <- x$title3HCPCshiny
 
 if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | inherits(x, "FAMDshiny")| inherits(x, "MFAshiny")){
   resultsHCPCshiny=x$anafact
-  anafact=x$code1
-  if (inherits(x, "CAshiny")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
-  else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
-  if (inherits(x, "CAshiny")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
-  else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+  if (inherits(x, "CAshiny")) {
+    nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
+    nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+  } else {
+    nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
+    nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+  }
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   clustdfHCPCshiny=resClusHCPCshiny
   consolidfHCPCshiny=FALSE
@@ -88,9 +88,10 @@ if(inherits(x, "HCPC")){
   title3HCPCshiny <- gettext("Hierarchical tree")
 }
 
-if(!(inherits(x, "HCPC") | inherits(x, "HCPCshiny"))) resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-if (inherits(x, "CA")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
-else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
-if (inherits(x, "CA")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
-else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+# if(!(inherits(x, "HCPC") | inherits(x, "HCPCshiny"))) resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
+# if (inherits(x, "CA")) nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
+# else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
+# if (inherits(x, "CA")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+# else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+
 }

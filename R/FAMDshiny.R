@@ -1,6 +1,5 @@
 utils::globalVariables(c("objFAMDshiny","myListOfThingsFAMDshiny"))
-FAMDshiny <-
-function(X){
+FAMDshiny <- function(X){
   G <- .GlobalEnv
   assign("objFAMDshiny",ls(all.names=TRUE, envir=G),envir=G)
   assign("x",X, envir=G)
@@ -16,15 +15,16 @@ if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   }
   outShiny <-shiny::runApp(system.file("FactoFAMDapp2", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoFAMDapp2')
-#  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoFAMDapp2')
+ # outShiny <- shiny::runApp("C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoFAMDapp2")
   assign("myListOfThingsFAMDshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objFAMDshiny)),envir=G)
   rm(list=myListOfThingsFAMDshiny, envir=G)
   rm(list=c("myListOfThingsFAMDshiny"),envir=G)
   if (outShiny$hcpcparam==TRUE) {
     resHCPC <- HCPCshiny(outShiny)
-    print(list(invisible(outShiny),resHCPC))
+    return(list(invisible(outShiny),resHCPC))
+  } else {
+    return(invisible(outShiny))
   }
-  return(invisible(outShiny))
 }
 
 

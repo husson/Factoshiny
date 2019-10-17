@@ -198,6 +198,12 @@ msgstr "Lignes de code de l'ACP"
 msgid "Quit the app"
 msgstr "Quitter l'application"
 
+msgid "To fine your app the way you left it, use:"
+msgstr "Pour retrouver l'appli comme vous l'avez quittée, taper"
+
+msgid "Or use the corresponding script:"
+msgstr "Ou utiliser le script"
+
 msgid "Download as pdf"
 msgstr "Télécharger en pdf"
 
@@ -1365,6 +1371,12 @@ msgstr "**n'est donc pas** significative"
 msgid "The variability expressed by the HCPC is thus **not** significant"
 msgstr "La variabilité exprimée par la CAH **n'est donc pas** significative"
 
+msgid "Decomposition of the total inertia"
+msgstr "Décomposition de l'inertie"
+
+msgid "Percentage of variance"
+msgstr "Pourcentage d'inertie"
+
 msgid "Decomposition of the total inertia on the components of the "
 msgstr "Distribution de l'inertie sur les composantes de l'"
 
@@ -2096,3 +2108,44 @@ msgstr "Le fichier "
 
 msgid "Variables representation"
 msgstr "Graphe des variables"
+
+msgid "Labels for variables selected by:"
+msgstr "Libellés pour variables sélectionnées par :"
+
+msgid "Colour variables according to:"
+msgstr "Colorier les variables selon :"
+
+msgid "active variables"
+msgstr "variables actives"
+
+msgid "supplementary variables"
+msgstr "variables supplémentaires"
+
+msgid "Labels for columns selected by:"
+msgstr "Libellés pour colonnes sélectionnées par :"
+
+msgid "Labels for rows selected by:"
+msgstr "Libellés pour lignes sélectionnées par :"
+
+msgid "Handling missing values"
+msgstr "Gestion des données manquantes"
+
+msgid "Impute by the mean (fast but not recommended)"
+msgstr "Impute par la moyenne (rapide - non recommandé)"
+
+msgid "Impute with 2-dimensional PCA-model (good compromise)"
+msgstr "Impute par un modèle d'ACP à 2 dimensions (bon compromis)"
+
+msgid "Impute with k-dimensional PCA-model (estime k, time consuming)"
+msgstr "Impute par un modèle d'ACP à k dimensions (estime k, chronophage)"
+
+msgid "No missing values"
+msgstr "Pas de données manquantes"
+
+
+
+
+
+
+
+

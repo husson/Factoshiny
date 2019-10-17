@@ -1,5 +1,5 @@
 fluidPage(
-  titlePanel(div(paste(gettext("PCA on the dataset"),nomDataPCAshiny),style="color:#6E6E6E",align="center"),windowTitle="PCAshiny"),
+  titlePanel(div(paste(gettext("PCA on the dataset"),nomDataPCAshinycourt),style="color:#6E6E6E",align="center"),windowTitle="PCAshiny"),
   sidebarLayout(
     sidebarPanel(
       tags$head(
@@ -15,7 +15,8 @@ fluidPage(
             selectizeInput("supvar",label=gettext("Select supplementary quantitative variables"), choices=VariableChoicesPCAshiny, selected=quantisupPCAshiny,multiple=TRUE),
             if(length(QualiChoicePCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoicePCAshiny,multiple=TRUE,selected=qualisupPCAshiny),
             selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomPCAshiny, multiple=TRUE,selected=indsuplPCAshiny),
-            checkboxInput("nor",gettext("Scale data to unit value"),normePCAshiny)
+            checkboxInput("nor",gettext("Scale data to unit value"),normePCAshiny),
+            uiOutput("imputeData")
           ),
         style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
@@ -57,13 +58,9 @@ fluidPage(
               }),
             conditionalPanel(
               condition=paste("input.select=='",gettext("Manual"),"'",sep=''),
-              if(selectionPCAshiny==gettext("Manual")){
                 selectInput("indiv",label=gettext("Select individuals:"),
-                            choices=list(numPCAshiny=nomPCAshiny),multiple=TRUE,selected=selection2PCAshiny)}
-              else{
-                selectInput("indiv",label=gettext("Select individuals:"),
-                            choices=list(numPCAshiny=nomPCAshiny),multiple=TRUE)
-              }),
+                            choices=nomPCAshiny,multiple=TRUE,selected=selection2PCAshiny)
+			  ),
           selectInput("color_point",label=gettext("Colour points according to:"),
                                           choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution",gettext("quantitative variable"),gettext("qualitative variable")),selected=color_pointInit),
             conditionalPanel(
@@ -153,8 +150,8 @@ fluidPage(
                            br(),
                            conditionalPanel(
                              condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
-                             div(align="center",tableOutput("sorties")),
-                             plotOutput("map3", width = "700", height="500")
+                             shinyjqui::jqui_resizable(plotOutput("map3", height="500")),
+                             div(align="center",tableOutput("sorties"))
                            ),
                            conditionalPanel(
                              condition=paste("input.out=='",gettext("Results of the variables"),"'",sep=''),

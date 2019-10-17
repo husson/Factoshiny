@@ -34,15 +34,23 @@ function(input, output,session) {
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
         return(tags$div( 
-            div(gettext("Number of dimensions kept for clustering:"), style="display: inline-block; width: 200px; padding: 0px 0px 0px 0px"),
+            div(gettext("Number of dimensions kept for clustering"), style="display: inline-block; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustPCAshiny)){5} else {nbdimclustPCAshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
 		)
     }
   })
 
+  output$imputeData <- renderUI({
+    # if(any(is.na(newdataPCAshiny[,quantiPCAshiny]))) return(checkboxInput("impute",gettext("Impute the dataset (recommended)"),FALSE))
+    if(any(is.na(newdataPCAshiny[,quantiPCAshiny]))){
+	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by the mean (fast but not recommended)"),gettext("Impute with 2-dimensional PCA-model (good compromise)"),gettext("Impute with k-dimensional PCA-model (estime k, time consuming)")),selected=gettext("Impute by the mean (fast but not recommended)")))
+	} else {
+      return(tags$div(tags$label(class="control-label", "Handling missing values"),
+	   tags$div(HTML("No missing values"))))
+	}
+  })
 
   values <- reactive({
-
     if(length(input$supvar)==0) {
 	  data.selec <- newdataPCAshiny[,VariableChoicesPCAshiny]
 	} else {
@@ -78,10 +86,25 @@ function(input, output,session) {
     } else{
       suple <- which(nomPCAshiny%in%input$indsup)
     }
-    codePCA <- paste0("res.PCA<-PCA(",nomDataPCAshiny, if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
+	boolImpute <- FALSE
+    if(length(input$impute>0)){
+	 if (input$impute!=gettext("Impute by the mean (fast but not recommended)")){
+	  boolImpute <- TRUE
+	  codePCA <- NULL
+	  if (!is.null(suple)) codePCA <- paste0("row.w <- rep(1,nrow(",nomDataPCAshiny,"))\n row.w[",paste0("c(",paste0(suple,collapse=","),")"),"] <- 1e-06\n")
+	  if (input$impute==gettext("Impute with k-dimensional PCA-model (estime k, time consuming)")){
+		codePCA <- paste0(codePCA,"nb <- missMDA::estim_ncpPCA(",nomDataPCAshiny,")$ncp\n")
+		codePCA <- paste0(codePCA, "dfcompleted <- missMDA::imputePCA(",nomDataPCAshiny,", ncp=nb",if (!is.null(suple)) paste0(",row.w=c(",paste0(row.w,collapse=","),")"),")$completeObs\n")
+	  } else {
+		codePCA <- paste0(codePCA, "dfcompleted <- missMDA::imputePCA(",nomDataPCAshiny,", ncp=2",if (!is.null(suple)) paste0(",row.w=c(",paste0(row.w,collapse=","),")"),")$completeObs\n")
+	  }
+	  codePCA <- paste0(codePCA,"res.PCA<-PCA(dfcompleted", if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
+	 }
+    }
+	if (!boolImpute) codePCA <- paste0("res.PCA<-PCA(",nomDataPCAshiny, if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
 	codePCA <- paste0(codePCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti)) paste0(",quanti.sup=c(",paste(choixquanti,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1PCAshiny)) paste0(",row.w=c(",paste(poids1PCAshiny,collapse=","),")"),if (!is.null(poids2PCAshiny)) paste0(",col.w=c(",paste(poids2PCAshiny,collapse=","),")"),if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),",graph=FALSE)")
-    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")) list(res.PCA=eval(str2expression(paste0(codePCAp,"\n",codePCA))), codePCA=codePCA, codePCAp=codePCAp)
-	else list(res.PCA=eval(str2expression(codePCA)), codePCA=codePCA)
+    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")) list(res.PCA=eval(parse(text=paste0(codePCAp,"\n",codePCA))), codePCA=codePCA, codePCAp=codePCAp)
+	else list(res.PCA=eval(parse(text=codePCA)), codePCA=codePCA)
   })
   
   output$colourn2 <- renderUI({
@@ -106,15 +129,9 @@ function(input, output,session) {
     validate(need(!is.null(input$ind_mod),""))
     choix <- list()
     reponse <- input$ind_mod
-    if(sum(gettext("Individuals")==reponse)==0){
-      choix <- c(choix,gettext("Individuals"))
-    }
-    if(sum(gettext("Supplementary individuals")==reponse)==0){
-      choix <- c(choix,gettext("Supplementary individuals"))
-    }
-    if(sum(gettext("Supplementary categories")==reponse)==0){
-      choix <- c(choix,gettext("Supplementary categories"))
-    }
+    if(sum(gettext("Individuals")==reponse)==0) choix <- c(choix,gettext("Individuals"))
+    if(sum(gettext("Supplementary individuals")==reponse)==0) choix <- c(choix,gettext("Supplementary individuals"))
+    if(sum(gettext("Supplementary categories")==reponse)==0) choix <- c(choix,gettext("Supplementary categories"))
     div(align="center",checkboxGroupInput("indmodpoint","",choices=choix,selected=labmodPCAshiny))
   })
   
@@ -154,7 +171,7 @@ function(input, output,session) {
   output$choixindmod <- renderUI({
     choix <- gettext("Individuals")
     bool1 <- FALSE
-    if(!(is.null(input$indsup))){
+    if(length(input$indsup)>0){
       choix <- c(choix,gettext("Supplementary individuals"))
       bool1 <- TRUE
     }
@@ -163,9 +180,7 @@ function(input, output,session) {
         choix <- c(choix,gettext("Supplementary categories"))
         bool1 <- TRUE
       }}
-    if(bool1==TRUE){
-      div(align="left",checkboxGroupInput("ind_mod",gettext("Points to draw"), choices=choix, selected = indmodPCAshiny))
-    }
+    if(bool1==TRUE) div(align="left",checkboxGroupInput("ind_mod",gettext("Points to draw"), choices=choix, selected = indmodPCAshiny))
   })
     
 
@@ -178,8 +193,7 @@ function(input, output,session) {
     if(input$select=="cos2"){
       if(input$slider1!=1){
         selecindiv <- paste("cos2 ",input$slider1)
-      }
-      else{
+      } else{
         selecindiv <- "cos2 0.999999"
       }
       selecindivtext <- paste0("'",selecindiv,"'")
@@ -239,18 +253,18 @@ function(input, output,session) {
         selecindivtext <- paste0("'",c(input$indiv),"'")
       }
     }
-    
+
     inv <- NULL
-    if(!is.null(input$ind_mod)) {
+    if(!is.null(input$ind_mod) & input$graph==TRUE) {
       if(sum(gettext("Individuals")==input$ind_mod)==0) inv<- "ind"
-        if(sum(gettext("Supplementary categories")==input$ind_mod)==0) inv<-c(inv,"quali")
-        if(sum(gettext("Supplementary individuals")==input$ind_mod)==0) inv<-c(inv,"ind.sup")
+      if(sum(gettext("Supplementary categories")==input$ind_mod)==0) inv<-c(inv,"quali")
+      if(sum(gettext("Supplementary individuals")==input$ind_mod)==0) inv<-c(inv,"ind.sup")
 	}
     bool <- (!is.null(input$elip) && input$elip==TRUE && input$color_point == gettext("qualitative variable"))
 
 	res.PCA <- values()$res.PCA
     Code <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},")")
-    Plot <- eval(str2expression(Code))
+    Plot <- eval(parse(text=Code))
 	return(list(Code=Code,Plot=Plot))      
   })
   
@@ -289,7 +303,7 @@ function(input, output,session) {
 
 	res.PCA <- values()$res.PCA
     Code <- paste("plot.PCA(res.PCA",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),",choix='var'",if (hab!="none"){paste0(",habillage = '",hab,"'")},if(!is.null(selecindiv)) paste0(",select='",selecindiv,"',unselect=0"),if (input$cex2!=1) paste0(",cex=",input$cex2,",cex.main=",input$cex2,",cex.axis=",input$cex2),if(input$title2!="PCA graph of variables") paste0(',title="',input$title2,'"'),if(!is.null(input$colorsupvar)) paste0(",col.quanti.sup='",input$colorsupvar,"'"),if(input$coloractvarPCAshiny!="#000000") paste0(",col.var='",input$coloractvarPCAshiny,"'"),")",sep="")
-    Plot <- eval(str2expression(Code))
+    Plot <- eval(parse(text=Code))
 	return(list(Code=Code, Plot=Plot))
   })
   
@@ -456,7 +470,8 @@ function(input, output,session) {
   
   
   output$map3 <- renderPlot({
-    return(barplot(values()$res.PCA$eig[,1],names.arg=rownames(values()$res.PCA$eig),las=2))
+    print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(values()$res.PCA$eig),y=values()$res.PCA$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(values()$res.PCA$eig)))
+    # return(barplot(values()$res.PCA$eig[,1],names.arg=rownames(values()$res.PCA$eig),las=2))
   })
   
   output$JDD <- renderDataTable({
@@ -487,9 +502,6 @@ function(input, output,session) {
   
   output$histo <- renderPlot({
     ggplot2::ggplot(newdataPCAshiny) + aes(x= newdataPCAshiny[,input$bam]) + geom_histogram(bins=nrow(newdataPCAshiny)/5)  + labs(x=input$bam,y="Count")
-    # par(mfrow=c(1,2))
-    # boxplot(newdataPCAshiny[,input$bam])
-    # hist(newdataPCAshiny[,input$bam],main="",xlab="")
   })
   
   observe({
@@ -498,7 +510,6 @@ function(input, output,session) {
         path.aux <- getwd()
         setwd(pathsavePCAshiny)
         FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",codeGraphInd()$Code)} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {codeGraphVar()$Code} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
-        # if (gettext(input$choixLANG)==gettext("French")) FactoInvestigate::Investigate(values()$res.PCA, codeGraphInd = if (input$choixGRAPH==gettext("Graphs done")) {paste0(values()$codePCA,"\n",PlotInd()$codeGraphInd)} else {NULL}, codeGraphVar = if (input$choixGRAPH==gettext("Graphs done")) {PlotVar()$codeGraphVar} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language="fr")
         setwd(path.aux)
       })
     }
@@ -549,7 +560,7 @@ function(input, output,session) {
       paste('graphVar','.pdf', sep='') 
     },
     content = function(file) {
-        ggplot2::ggsave(file,print(codeGraphVar()$Plot))
+        ggplot2::ggsave(file,codeGraphVar()$Plot)
     },
     contentType=NA)
   
@@ -558,7 +569,7 @@ function(input, output,session) {
       paste('graphInd','.png', sep='') 
     },
     content = function(file) {
-         ggplot2::ggsave(file,print(codeGraphInd()$Plot))
+         ggplot2::ggsave(file,codeGraphInd()$Plot)
     },
     contentType='image/png')
   
@@ -567,7 +578,7 @@ function(input, output,session) {
       paste('graphInd','.jpg', sep='') 
     },
     content = function(file) {
-         ggplot2::ggsave(file,print(codeGraphInd()$Plot))
+         ggplot2::ggsave(file,codeGraphInd()$Plot)
     },
     contentType='image/jpg')
   
@@ -576,7 +587,7 @@ function(input, output,session) {
       paste0('graphInd','.pdf') 
     },
     content = function(file) {
-         ggplot2::ggsave(file,print(codeGraphInd()$Plot))
+         ggplot2::ggsave(file,codeGraphInd()$Plot)
     },
     contentType=NA)
 	
@@ -610,8 +621,8 @@ function(input, output,session) {
         if(input$select==gettext("No selection")) selecindiv <- NULL
         if(input$select=="contrib") selecindiv <- input$slider0
         if(input$select==gettext("Manual")) selecindiv <- input$indiv
-        res$h <- input$select
-        res$i <- selecindiv
+        res$selectionPCAshiny <- input$select
+        res$selection2PCAshiny <- selecindiv
         selecindiv2 <- NULL
         if(input$select0=="cos2") selecindiv2 <- input$slider00
         if(input$select0=="contrib") selecindiv2 <- input$slider4
@@ -621,6 +632,7 @@ function(input, output,session) {
         res$m <- input$cex2
 	    res$color_point <- input$color_point
 	    res$color_arrow <- input$color_arrow
+        res$codePCAp <- values()$codePCAp
         res$codePCA <- values()$codePCA
         res$codeGraphVar <- codeGraphVar()$Code
         res$codeGraphInd <- codeGraphInd()$Code

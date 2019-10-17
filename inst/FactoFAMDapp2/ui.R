@@ -1,7 +1,7 @@
 # ui script for FAMD2
 fluidPage(
-  titlePanel(div(paste(gettext("FAMD on the dataset "),nomData),style="color:#6E6E6E",align="center"),windowTitle="FAMDshiny"),
-  
+  titlePanel(div(paste(gettext("FAMD on the dataset "),nomDatacourt),style="color:#6E6E6E",align="center"),windowTitle="FAMDshiny"),
+
   sidebarLayout(
     sidebarPanel(
       tags$head(
@@ -14,66 +14,25 @@ fluidPage(
       div(align="center",checkboxInput("pcaparam",gettext("FAMD parameters"),FALSE)),
       conditionalPanel(
         condition="input.pcaparam==true",
-        if(is.null(quantisup) && is.null(qualisup)){
-        radioButtons("selecactive",label=h6(gettext("Choose the active variables")),
-                          choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))
-        }
-        else{
-          radioButtons("selecactive",label=h6(gettext("Choose the active variables")),
-                       choices=list(gettext("All"),gettext("Choose")),selected=gettext("Choose"))
-        },
-        conditionalPanel(
-          condition=paste("input.selecactive=='",gettext("Choose"),"'",sep=''),
-          h6(gettext("Select the supplementary quantitative variables")),
-          if(length(VariableChoices)>1){
-            selectInput("supvar",label="",
-                    choices=list(IdChoices=VariableChoices),
-                    selected=quantisup,multiple=TRUE)}
-          else{
-            selectInput("supvar",label="",
-                        choices=VariableChoices,
-                        selected=quantisup,multiple=TRUE)
-          },
-          h6(gettext("Select the supplementary qualitative variables")),
-          if(length(QualiChoice)>1){
-          selectInput("supvar1",label="",
-                      choices=list(Idqualisup=QualiChoice),
-                      selected=qualisup,
-                      multiple=TRUE)}
-          else{
-          selectInput("supvar1",label="",
-                        choices=quali,selected=qualisup,
-                        multiple=TRUE)  
-          }
-          ),
-        br(),
-        h6(gettext("Select the supplementary individuals")),
-        if(is.null(indsupl)){
-          selectInput("indsup","",choices=list(num=nom), multiple=TRUE)
-        }
-        else{
-          selectInput("indsup","",choices=list(num=nom), multiple=TRUE,selected=indsupl)
-        }
+          selectizeInput("supvar",label=gettext("Select supplementary quantitative variables"), choices=VariableChoices, selected=quantisup,multiple=TRUE),
+          selectInput("supvar1",label=gettext("Select supplementary categorical variables"),choices=QualiChoice,multiple=TRUE,selected=qualisup),
+          selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nom, multiple=TRUE,selected=indsupl)
       ),
       style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
       div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
       conditionalPanel(
         condition="input.graph==true",
-        fluidRow(
-          column(5,uiOutput("NB1")),
-          column(5,uiOutput("NB2"))),
-        hr(),
-        div(align="center",selectInput("choixgraph",h6(gettext("Which graph would you like to modify?")), choices=list(gettext("Individuals and categories"),"Variables"="var",gettext("Quantitative variables")),selected=gettext("Individuals and categories"))),
-        br(),
+        div(gettext("Axes:"), style="display: inline-block;padding: 5px"),
+        div(uiOutput("NB1"), style="display: inline-block;"),
+        div(uiOutput("NB2"), style="display: inline-block;"),
+        div(align="center",selectInput("choixgraph",gettext("Which graph would you like to modify?"), choices=list(gettext("Individuals and categories"),"Variables"="var",gettext("Quantitative variables")),selected=gettext("Individuals and categories"))),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Individuals and categories"),"'",sep=''),
-          textInput("title1",h6(gettext("Title of the graph: ")), title1),
-          sliderInput("cex",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size,step=0.05,ticks=FALSE),
-          br(),
-          checkboxInput("labels2",gettext("Draw labels of individuals"),labind),
-          checkboxInput("labels",gettext("Draw labels of categories"),labvar),
-          selectInput("select",label=h6(gettext("Draw individuals according to:")),
+          textInput("title1",gettext("Title of the graph: "), title1),
+          uiOutput("choixindmod"),
+          sliderInput("cex",gettext("Size of labels"),min=0.5,max=2.5,value=size,step=0.05,ticks=FALSE),
+          selectInput("select",label=gettext("Draw individuals according to:"),
                       choices=list("No selection"="NONE","cos2"="cos2","Contribution"="contrib","Manual"="Manuel"),selected=selection),
           conditionalPanel(
             condition="input.select=='cos2'",
@@ -90,18 +49,11 @@ fluidPage(
           conditionalPanel(
             condition="input.select=='Manuel'",
             if(selection=="Manuel"){
-            selectInput("indiv",label=gettext("Select individuals"),
-                        choices=list(num=nom),multiple=TRUE,selected=selection2)}
-            else{
-              selectInput("indiv",label=gettext("Select individuals"),
-                          choices=list(num=nom),multiple=TRUE)
+              selectInput("indiv",label=gettext("Select individuals"), choices=nom,multiple=TRUE,selected=selection2)
+			} else{
+              selectInput("indiv",label=gettext("Select individuals"), choices=nom,multiple=TRUE)
             }),
-            if(is.null(habillageind)){
-              checkboxInput("habi",gettext("Points colour depend on categorical variable"),FALSE)
-            }
-            else{
-              checkboxInput("habi",gettext("Points colour depend on categorical variable"),TRUE)
-            },
+            checkboxInput("habi",gettext("Points colour depend on categorical variable"),!is.null(habillageind)),
             conditionalPanel(
               condition="input.habi==true",
               uiOutput("habillage2")
@@ -109,10 +61,10 @@ fluidPage(
         ),
         conditionalPanel(
           condition="input.choixgraph=='var'",
-          textInput("title2",h6(gettext("Title of the graph: ")), title2),
-          sliderInput("cex2",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size2,step=0.05,ticks=FALSE),
+          textInput("title2",gettext("Title of the graph: "), title2),
+          sliderInput("cex2",gettext("Size of labels"),min=0.5,max=2.5,value=size2,step=0.05,ticks=FALSE),
           br(),
-          selectInput("select0",label=h6(gettext("Draw variables according to:")),
+          selectInput("select0",label=gettext("Draw variables according to:"),
                       choices=list("No selection"="NONE","cos2"="cos2","Contribution"="contrib"),selected=selection3),
           conditionalPanel(
             condition="input.select0=='contrib'",
@@ -131,10 +83,10 @@ fluidPage(
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Quantitative variables"),"'",sep=''),
-          textInput("title3",h6(gettext("Title of the graph: ")), title3),
-          sliderInput("cex3",h6(gettext("Size of labels")),min=0.5,max=2.5,value=size3,step=0.05,ticks=FALSE),
+          textInput("title3",gettext("Title of the graph: "), title3),
+          sliderInput("cex3",gettext("Size of labels"),min=0.5,max=2.5,value=size3,step=0.05,ticks=FALSE),
           br(),
-          selectInput("selecti",label=h6(gettext("Draw variables according to:")),
+          selectInput("selecti",label=gettext("Draw variables according to:"),
                       choices=list("No selection"="NONE","cos2"="cos2","Contribution"="contrib"),selected=selection5),
           conditionalPanel(
             condition="input.selecti=='contrib'",
@@ -170,19 +122,19 @@ fluidPage(
                     tabPanel(gettext("Graphs"),
  fluidRow(
                            br(),
-                 column(width = 6,plotOutput("map2", width = "500", height="500"),
+                 column(width = 6,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center"),
                              br(),
 							 align="center"),
-                 column(width = 6,plotOutput("map", width = "500", height="500"),
+                 column(width = 6,shinyjqui::jqui_resizable(plotOutput("map", height="500")),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                              br(),
 							 align="center")),
  fluidRow(
                            br(),
-                 column(width = 6,plotOutput("map4", width = "500", height="500"),
+                 column(width = 6,shinyjqui::jqui_resizable(plotOutput("map4", height="500")),
                              br(),
                              p(gettext("Download as"),downloadButton("downloadData6",gettext("jpg")),downloadButton("downloadData7",gettext("png")),downloadButton("downloadData8",gettext("pdf")),align="center"),
                              align="center"))),
@@ -193,8 +145,8 @@ fluidPage(
                              br(),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
-                               div(align="center",tableOutput("sorties")),
-                               plotOutput("map3", width = "700", height="500")),
+                               shinyjqui::jqui_resizable(plotOutput("map3", height="500")),
+                               div(align="center",tableOutput("sorties"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the variables"),"'",sep=''),
                                h6(gettext("Coordinates")),
@@ -237,8 +189,8 @@ fluidPage(
                              br(),
                              verbatimTextOutput("summary"),
                              br(),
-                             selectInput("bam",h6(gettext("Graphs for")),choices=list(Idall=all),multiple=FALSE),
-                             plotOutput("histo", width = "1000", height="500")),
+                             selectInput("bam",h6(gettext("Graphs for")),choices=allVariables,multiple=FALSE),
+                             plotOutput("histo")),
                     
                     tabPanel(gettext("Data"),
                              br(),

@@ -16,7 +16,7 @@ fluidPage(
         div(align="center",checkboxInput("mcaparam",gettext("Show MCA parameters"),FALSE)),
         conditionalPanel(
           condition="input.mcaparam==true",
-            selectizeInput("supvar",label=gettext("Select supplementary qualitative variables"), choices=VariableChoicesMCAshiny, selected=supqualiMCAshiny,multiple=TRUE),
+            selectizeInput("supvar",label=gettext("Select supplementary categorical variables"), choices=VariableChoicesMCAshiny, selected=supqualiMCAshiny,multiple=TRUE),
             if(length(QuantiChoiceMCAshiny)>=1) selectInput("supquanti",label=gettext("Select supplementary quantitative variables"),choices=QuantiChoiceMCAshiny,multiple=TRUE,selected=quantiMCAshiny),
             selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomMCAshiny, multiple=TRUE,selected=indsuplMCAshiny)
 
@@ -83,9 +83,6 @@ fluidPage(
             textInput("title1MCAshiny",gettext("Title of the graph: "), title1MCAshiny),
             uiOutput("choixindvar"),
             sliderInput("cex",gettext("Size of labels"),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
-            # div(align="center",radioButtons("modind",gettext("Select elements to modify"),choices=list(gettext("Individuals"),gettext("Categories")),selected=gettext("Individuals"),inline=TRUE)),
-            # conditionalPanel(
-             # condition=paste("input.modind=='",gettext("Individuals"),"'",sep=''),
               selectInput("select",label=gettext("Draw individuals according to:"),
                           choices=list(gettext("No selection"),"cos2"="cos2",gettext("Manual"),"Contribution"="Contrib"),selected=selectionMCAshiny),
              conditionalPanel(
@@ -99,9 +96,9 @@ fluidPage(
             conditionalPanel(
               condition=paste("input.select=='",gettext("Manual"),"'",sep=''),
               if(selectionMCAshiny==gettext("Manual")){
-                selectInput("indiv",label=gettext("Select individuals:"),  choices=list(num=nomMCAshiny),multiple=TRUE,selected=selection2MCAshiny) 
+                selectInput("indiv",label=gettext("Select individuals:"),  choices=nomMCAshiny,multiple=TRUE,selected=selection2MCAshiny) 
               } else{
-                selectInput("indiv",label=gettext("Select individuals:"), choices=list(num=nomMCAshiny),multiple=TRUE)  
+                selectInput("indiv",label=gettext("Select individuals:"), choices=nomMCAshiny,multiple=TRUE)  
               }),
             conditionalPanel(
               condition="input.select=='Contrib'",
@@ -135,29 +132,18 @@ fluidPage(
               div(colourpicker::colourInput("colindact", label=NULL, color1MCAshiny,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
               div(gettext("active individuals"), style="display: inline-block;padding: 0px 0px 0px 10px"),
               uiOutput("col1"),
-              # conditionalPanel(
-                # condition="input.graph==false",
-                 # uiOutput("col2")
-			  # ),
               checkboxInput("eachvar",gettext("Colour each variable with different colour"),valdefMCAshiny)
-                # colourpicker::colourInput("colvaract",gettext("Colour of active categories"),color3MCAshiny)
 			),
             conditionalPanel(
               condition=paste0("input.color_point=='",gettext("qualitative variable"),"'"),
               uiOutput("habillage2")
             )
-          # ),
-          
-          # conditionalPanel(
-             # condition=paste0("input.modind=='",gettext("Categories"),"'"),
-          # )
 		  ),
           conditionalPanel(
             condition="input.MCAgraph=='var'",
             textInput("title2MCAshiny",gettext("Title of the graph: "), title2MCAshiny),
             sliderInput("cex2",gettext("Size of labels"),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
             div(align="left",checkboxGroupInput("var_sup",gettext("Points to draw"),choices=list(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables")),selected=varsupMCAshiny)),
-            # colourpicker::colourInput("colvaract1",gettext("Colour of active categories"),color5MCAshiny),
               div(colourpicker::colourInput("colvaract1", label=NULL, color5MCAshiny ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
 		      div(gettext("active categories"), style="display: inline-block;padding: 0px 0px 0px 10px"),
             uiOutput("col3"),
@@ -198,11 +184,11 @@ fluidPage(
         tabPanel(gettext("Graphs"),
           fluidRow(
                  br(),
-                 column(width = 6,plotOutput("map", height="500"),
+                 column(width = 6,shinyjqui::jqui_resizable(plotOutput("map", height="500")),
                  br(),
                  p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
                  br(),align="center"),
-                 column(width = 6,plotOutput("map4", height="500"),
+                 column(width = 6,shinyjqui::jqui_resizable(plotOutput("map4", height="500")),
                  br(),
                  p(gettext("Download as"),downloadButton("downloadData10",gettext("jpg")),downloadButton("downloadData0",gettext("png")),downloadButton("downloadData20",gettext("pdf"))),
                  align="center")
@@ -217,8 +203,8 @@ fluidPage(
                            br(), 
                            conditionalPanel(
                              condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
-                             div(align="center",tableOutput("sorties")),
-                             div(align="center",plotOutput("map3", height=300))),
+                             div(align="center",shinyjqui::jqui_resizable(plotOutput("map3", height=300))),
+                             div(align="center",tableOutput("sorties"))),
                            
                            conditionalPanel(
                              condition=paste("input.out=='",gettext("Results of the variables"),"'",sep=''),

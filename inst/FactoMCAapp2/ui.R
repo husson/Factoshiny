@@ -18,7 +18,9 @@ fluidPage(
           condition="input.mcaparam==true",
             selectizeInput("supvar",label=gettext("Select supplementary categorical variables"), choices=VariableChoicesMCAshiny, selected=supqualiMCAshiny,multiple=TRUE),
             if(length(QuantiChoiceMCAshiny)>=1) selectInput("supquanti",label=gettext("Select supplementary quantitative variables"),choices=QuantiChoiceMCAshiny,multiple=TRUE,selected=quantiMCAshiny),
-            selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomMCAshiny, multiple=TRUE,selected=indsuplMCAshiny)
+            selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomMCAshiny, multiple=TRUE,selected=indsuplMCAshiny),
+            uiOutput("imputeData"),
+            actionButton("submit", label = gettext("Submit"))
 
 
           # if(is.null(supqualiMCAshiny)){
@@ -82,6 +84,7 @@ fluidPage(
             condition=paste("input.MCAgraph=='",gettext("Individuals and categories"),"'",sep=''),
             textInput("title1MCAshiny",gettext("Title of the graph: "), title1MCAshiny),
             uiOutput("choixindvar"),
+            uiOutput("pointlabel"),
             sliderInput("cex",gettext("Size of labels"),min=0.5,max=2.5,value=1,step=0.05,ticks=FALSE),
               selectInput("select",label=gettext("Draw individuals according to:"),
                           choices=list(gettext("No selection"),"cos2"="cos2",gettext("Manual"),"Contribution"="Contrib"),selected=selectionMCAshiny),
@@ -126,7 +129,7 @@ fluidPage(
             ),
 			
           selectInput("color_point",label=gettext("Colour points according to:"),
-                                          choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution",gettext("qualitative variable")),selected=color_pointInit),
+                                          choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution",gettext("1 qualitative variable"),gettext("2 qualitative variables")),selected=color_pointInit),
             conditionalPanel(
               condition=paste0("input.color_point=='",gettext("active/supplementary"),"'"),
               div(colourpicker::colourInput("colindact", label=NULL, color1MCAshiny,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
@@ -135,8 +138,10 @@ fluidPage(
               checkboxInput("eachvar",gettext("Colour each variable with different colour"),valdefMCAshiny)
 			),
             conditionalPanel(
-              condition=paste0("input.color_point=='",gettext("qualitative variable"),"'"),
-              uiOutput("habillage2")
+              condition=paste0("input.color_point!='",gettext("active/supplementary"),"'"),
+              uiOutput("habillage2"),
+			  uiOutput("ellips")
+
             )
 		  ),
           conditionalPanel(
@@ -271,6 +276,7 @@ fluidPage(
                   
                   tabPanel(gettext("Automatic description of axes"),
                            br(),
+                           numericInput("pvalueDimdesc",gettext("P-value"),value=pvalueDimdescInit, min=0,max=1),
                            radioButtons("Dim",label=gettext("Choose the dimensions"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),
                            conditionalPanel(
                              condition="input.Dim=='Dim1'",

@@ -1,8 +1,5 @@
 function(input, output, session) {
   
-  
-  
-  
   resultat <- reactive({
     return(catdes(donnee = my_data,
                   num.var = which(colnames(my_data) == input$select_categorical_var),
@@ -212,8 +209,6 @@ function(input, output, session) {
                                                        num.var = 1, proba = input$select_proba_plot))
     }) 
   })
-  
-  
   
   tableau_link_quanti <- reactive({
     if(!is.null(input$select_quanti_var)){

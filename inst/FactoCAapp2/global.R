@@ -74,22 +74,5 @@ if (length(QualiChoiceCAshiny)==0){
 }
 nomCAshiny <- rownames(newdataCAshiny)
 
-rownaCAshiny <- NULL
-nomrownaCAshiny <- NULL
-if(any(apply(is.na(newdataCAshiny),1,sum)>0)){
-  rownaCAshiny <- which(apply(is.na(newdataCAshiny),1,sum)>0)
-  nomrownaCAshiny <- nomCAshiny[rownaCAshiny]
-  lignesupCAshiny <- nomCAshiny[rownaCAshiny]
-  nomCAshiny <- nomCAshiny[-rownaCAshiny]
-}
-withnaCAshiny <- NULL
-colonnesupCAshiny <- NULL
-if(any(apply(is.na(newdataCAshiny),2,sum)>0)){
-  withnaCAshiny <- VariableChoicesCAshiny[which(apply(is.na(newdataCAshiny),2,sum)>0)]
-  supCAshiny <- which(VariableChoicesCAshiny%in%withnaCAshiny)
-  VariableChoicesCAshiny <-  VariableChoicesCAshiny[-supCAshiny]
-  colonnesupCAshiny <- withnaCAshiny
-}
-
 nomDataCAshinycourt <- unlist(strsplit(as.character(nomDataCAshiny),"\\["))[1]
 if(inherits(x, "data.frame")) catsupCAshiny <- QualiChoiceCAshiny

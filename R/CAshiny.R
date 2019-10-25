@@ -20,12 +20,8 @@ CAshiny <- function(X){
   assign("myListOfThingsCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objCAshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingsCAshiny, envir=G)
   rm(list=c("myListOfThingsCAshiny"),envir=G)
-  if (outShiny$hcpcparam==TRUE) {
-    resHCPC <- HCPCshiny(outShiny)
-    return(list(invisible(outShiny),resHCPC))
-  } else {
-    return(invisible(outShiny))
-  }
+  if (outShiny$hcpcparam==TRUE) resHCPC <- HCPCshiny(outShiny)
+  return(invisible(outShiny))
 }
 
 

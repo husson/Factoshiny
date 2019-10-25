@@ -1,33 +1,24 @@
 function(input, output,session) {
 
-  getactive <- function(){
-      if(length(input$supvar)==0){
-        activevar <- VariableChoicesPCAshiny
-      } else{
-        activevar <- VariableChoicesPCAshiny[-which(VariableChoicesPCAshiny%in%input$supvar)]
-      }
-      return(activevar)
-  }
-  
   output$NB1 <- renderUI({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need(length(VariableChoicesPCAshiny)-length(input$supvar)>1 ,gettext("Please select at least two active variables"))
     )
-    if(length(getactive())>5){
+    if(length(VariableChoicesPCAshiny)-length(input$supvar)>5){
        return(textInput("nb1", label = NULL, axe1PCAshiny,width='41px'))
     } else{
-       return(selectInput("nb1",label=NULL, choices=1:length(getactive()),selected=axe1PCAshiny,width='41px'))
+       return(selectInput("nb1",label=NULL, choices=1:(length(VariableChoicesPCAshiny)-length(input$supvar)),selected=axe1PCAshiny,width='41px'))
     }
   })
   
   output$NB2=renderUI({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
-    if(length(getactive())>5){
+    if((length(VariableChoicesPCAshiny)-length(input$supvar))>5){
        return(textInput("nb2", label = NULL, axe2PCAshiny,width='41px'))
     } else{
-       return(selectInput("nb2",label=NULL, choices=(1:length(getactive())),selected=axe2PCAshiny,width='41px'))
+       return(selectInput("nb2",label=NULL, choices=(1:(length(VariableChoicesPCAshiny)-length(input$supvar))),selected=axe2PCAshiny,width='41px'))
     }
   })
   
@@ -41,70 +32,66 @@ function(input, output,session) {
   })
 
   output$imputeData <- renderUI({
-    # if(any(is.na(newdataPCAshiny[,quantiPCAshiny]))) return(checkboxInput("impute",gettext("Impute the dataset (recommended)"),FALSE))
     if(any(is.na(newdataPCAshiny[,quantiPCAshiny]))){
-	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by the mean (fast but not recommended)"),gettext("Impute with 2-dimensional PCA-model (good compromise)"),gettext("Impute with k-dimensional PCA-model (estime k, time consuming)")),selected=gettext("Impute by the mean (fast but not recommended)")))
+	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by the mean (fast but not recommended)"),gettext("Impute with 2-dimensional PCA-model (good compromise)"),gettext("Impute with k-dimensional PCA-model (estime k, time consuming)")),selected=imputeInit))
 	} else {
-      return(tags$div(tags$label(class="control-label", "Handling missing values"),
-	   tags$div(HTML("No missing values"))))
+      return(tags$div(tags$label(class="control-label", gettext("Handling missing values")),
+	   tags$div(HTML(gettext("No missing values")))))
 	}
   })
 
   values <- reactive({
-    if(length(input$supvar)==0) {
-	  data.selec <- newdataPCAshiny[,VariableChoicesPCAshiny]
-	} else {
-	  data.selec <- newdataPCAshiny[,c(getactive())]
-	}
-    
-    if(length(QualiChoicePCAshiny)==0 || length(input$supquali)==0){
-      choixquali <- NULL
-    } else {
-      data.selec <- cbind(data.selec,newdataPCAshiny[,if(!is.null(input$supquali)){input$supquali} else{QualiChoicePCAshiny},drop=FALSE])
-      choixquali <- seq((ncol(data.selec)-length(input$supquali)+1),ncol(data.selec))
-      colnames(data.selec)[choixquali] <- input$supquali
-    }
+     if (length(input$pcaparam)==0){
+	   return(valeur())
+	 } else {
+       if (length(input$habiller2)==2 & input$color_point==gettext("qualitative variable")) return(isolate(valeur()))
+       if (input$submit>=0) return(isolate(valeur()))
+     }
+ })
 
-    if(length(input$supvar)==0){
-      choixquanti <- NULL
-    } else {
-      data.selec <- cbind(data.selec,newdataPCAshiny[,input$supvar])
-      if(length(input$supvar)==1){
-        choixquanti <- length(data.selec)
-        colnames(data.selec)[choixquanti]<-input$supvar
-      } else{
-        choixquanti <- seq((ncol(data.selec)-length(input$supvar)+1),ncol(data.selec))
-      }
-    }
-    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")){
-	  codePCAp <- paste0(nomDataPCAshiny," <- data.frame(",nomDataPCAshiny,paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")],newCol=paste(",nomDataPCAshiny,"[,'",input$habiller[1],"'],",nomDataPCAshiny,"[,'",input$habiller[2],"']))\n"))
-      data.selec <- data.frame(data.selec,newCol=paste(newdataPCAshiny[,input$habiller[1]],newdataPCAshiny[,input$habiller[2]],sep="/"))
-      choixquali <- c(choixquali,ncol(data.selec))
-    }
+  # values <- reactive({
+  valeur <- reactive({
+    NomCol <- colnames(newdataPCAshiny)
+	SuppressCol <- NULL
+    if (length(QualiChoicePCAshiny)!=0){
+	  if (length(QualiChoicePCAshiny)!=length(input$supquali)) {
+	    SuppressCol <- which(NomCol%in%setdiff(QualiChoicePCAshiny,input$supquali))
+	    NomCol <- NomCol[-SuppressCol]
+	  }
+	}
+    QuantiSup <- which(NomCol%in%input$supvar)
+	QualiSup <- which(NomCol%in%input$supquali)
+	if (length(QuantiSup)==0) QuantiSup <- NULL
+	if (length(QualiSup)==0) QualiSup <- NULL
+	
     if(length(input$indsup)==0){
       suple <- NULL
     } else{
       suple <- which(nomPCAshiny%in%input$indsup)
     }
+	codePCA <- NULL
+	nomTabDon <- paste0(nomDataPCAshiny, if (!is.null(SuppressCol)){paste0("[,-c(",paste0(SuppressCol,collapse=","),")]")})
+    if (length(input$habiller2)==2){
+	  codePCA <- paste0("dfaux <- data.frame(",nomTabDon,",",paste0(input$habiller2[1],"_",input$habiller2[2]),"=paste0(",nomDataPCAshiny,"[,'",input$habiller2[1],"'],",nomDataPCAshiny,"[,'",input$habiller2[2],"']))\n")
+	  QualiSup <- c(QualiSup,length(NomCol)+1)
+    }
+	
 	boolImpute <- FALSE
     if(length(input$impute>0)){
 	 if (input$impute!=gettext("Impute by the mean (fast but not recommended)")){
 	  boolImpute <- TRUE
-	  codePCA <- NULL
-	  if (!is.null(suple)) codePCA <- paste0("row.w <- rep(1,nrow(",nomDataPCAshiny,"))\n row.w[",paste0("c(",paste0(suple,collapse=","),")"),"] <- 1e-06\n")
 	  if (input$impute==gettext("Impute with k-dimensional PCA-model (estime k, time consuming)")){
-		codePCA <- paste0(codePCA,"nb <- missMDA::estim_ncpPCA(",nomDataPCAshiny,")$ncp\n")
-		codePCA <- paste0(codePCA, "dfcompleted <- missMDA::imputePCA(",nomDataPCAshiny,", ncp=nb",if (!is.null(suple)) paste0(",row.w=c(",paste0(row.w,collapse=","),")"),")$completeObs\n")
+		codePCA <- paste0(codePCA,"nb <- missMDA::estim_ncpPCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon},if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
+		codePCA <- paste0(codePCA, "dfcompleted <- missMDA::imputePCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon},",ncp=nb",if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$completeObs\n")
 	  } else {
-		codePCA <- paste0(codePCA, "dfcompleted <- missMDA::imputePCA(",nomDataPCAshiny,", ncp=2",if (!is.null(suple)) paste0(",row.w=c(",paste0(row.w,collapse=","),")"),")$completeObs\n")
+		codePCA <- paste0(codePCA, "dfcompleted <- missMDA::imputePCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon},", ncp=2",if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$completeObs\n")
 	  }
-	  codePCA <- paste0(codePCA,"res.PCA<-PCA(dfcompleted", if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
+	  codePCA <- paste0(codePCA,"res.PCA<-PCA(dfcompleted", if (!is.null(SuppressCol)){paste0("[,-c(",paste0(SuppressCol,collapse=","),")]")})
 	 }
     }
-	if (!boolImpute) codePCA <- paste0("res.PCA<-PCA(",nomDataPCAshiny, if (!identical(newdataPCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
-	codePCA <- paste0(codePCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti)) paste0(",quanti.sup=c(",paste(choixquanti,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1PCAshiny)) paste0(",row.w=c(",paste(poids1PCAshiny,collapse=","),")"),if (!is.null(poids2PCAshiny)) paste0(",col.w=c(",paste(poids2PCAshiny,collapse=","),")"),if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),",graph=FALSE)")
-    if (length(input$habiller)==2 && input$color_point==gettext("qualitative variable")) list(res.PCA=eval(parse(text=paste0(codePCAp,"\n",codePCA))), codePCA=codePCA, codePCAp=codePCAp)
-	else list(res.PCA=eval(parse(text=codePCA)), codePCA=codePCA)
+	if (!boolImpute) codePCA <- paste0(codePCA,"res.PCA<-PCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon})
+	codePCA <- paste0(codePCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(QualiSup)) paste0(",quali.sup=c(",paste(QualiSup,collapse=","),")"),if(!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste(QuantiSup,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1PCAshiny)) paste0(",row.w=c(",paste(poids1PCAshiny,collapse=","),")"),if (!is.null(poids2PCAshiny)) paste0(",col.w=c(",paste(poids2PCAshiny,collapse=","),")"),if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),",graph=FALSE)")
+    list(res.PCA= eval(parse(text=codePCA)), codePCA=codePCA)
   })
   
   output$colourn2 <- renderUI({
@@ -126,28 +113,27 @@ function(input, output,session) {
   })
 
   output$pointlabel <- renderUI({
-    validate(need(!is.null(input$ind_mod),""))
     choix <- list()
-    reponse <- input$ind_mod
-    if(sum(gettext("Individuals")==reponse)==0) choix <- c(choix,gettext("Individuals"))
-    if(sum(gettext("Supplementary individuals")==reponse)==0) choix <- c(choix,gettext("Supplementary individuals"))
-    if(sum(gettext("Supplementary categories")==reponse)==0) choix <- c(choix,gettext("Supplementary categories"))
-    div(align="center",checkboxGroupInput("indmodpoint","",choices=choix,selected=labmodPCAshiny))
+    if (length(input$ind_mod)!=0) reponse <- input$ind_mod
+    else {
+	  reponse <- gettext("Individuals")
+	  if (length(qualiPCAshiny)!=0) reponse <- c(reponse,gettext("Supplementary categories"))
+    }
+    if(sum(gettext("Individuals")==reponse)==1) choix <- c(choix,gettext("Individuals"))
+    if(sum(gettext("Supplementary individuals")==reponse)==1) choix <- c(choix,gettext("Supplementary individuals"))
+    if(sum(gettext("Supplementary categories")==reponse)==1) choix <- c(choix,gettext("Supplementary categories"))
+    div(align="left",checkboxGroupInput("indmodpoint",gettext("Labels for"),choices=choix,selected=labmodPCAshiny))
   })
-  
+
   observe({
     if(input$color_point != gettext("qualitative variable")) updateCheckboxInput(session, "elip", value = FALSE)
   })
   
   output$slider3 <- renderUI({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
-    if (is.null(getactive())){ 
-	  maxvar <- length(VariableChoicesPCAshiny)
-    } else {
-	  maxvar <- length(getactive())
-    }
+	maxvar <- (length(VariableChoicesPCAshiny)-length(input$supvar))
     if(selection3PCAshiny=="contrib"){
       return(div(align="center",sliderInput("slider4",label=gettext("Number of the most contributive variables"),
                                             min=1,max=maxvar,value=selection4,step=1)))  
@@ -157,10 +143,14 @@ function(input, output,session) {
   })
   
   output$habillage2 <- renderUI({
-   if (input$color_point == gettext("quantitative variable")) return(selectizeInput("habiller",gettext("select the variable"), choices=c(getactive(),input$supvar),multiple=FALSE,selected=habillageindPCAshiny))
+   if (input$color_point == gettext("quantitative variable")) return(selectizeInput("habiller",gettext("select the variable"), choices=c(VariableChoicesPCAshiny,input$supvar),multiple=FALSE,selected=habillageindPCAshiny))
    if (input$color_point == gettext("qualitative variable")){
      if(length(QualiChoicePCAshiny)==0 || input$supquali==FALSE || length(input$supquali)==0) return(p(gettext("No categorical variable")))
-     if(length(input$supquali)>=1) return(selectizeInput("habiller",gettext("select 1 or 2 variables"), choices=input$supquali, multiple=TRUE, selected=habillageindPCAshiny))
+     if(length(input$supquali)>=1) return(selectizeInput("habiller",gettext("select the variable"), choices=input$supquali, multiple=FALSE, selected=habillageindPCAshiny))
+   }
+   if (input$color_point == gettext("2 qualitative variables")){
+     if(length(QualiChoicePCAshiny)==0 || input$supquali==FALSE || length(input$supquali)<2) return(p(gettext("Not enough categorical variable")))
+     if(length(input$supquali)>=1) return(selectizeInput("habiller2",gettext("select 2 variables"), choices=input$supquali, multiple=TRUE, selected=habillageindPCAshiny2))
    }
   })
   
@@ -187,9 +177,11 @@ function(input, output,session) {
   codeGraphInd <- reactive({
     validate(
       need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-      need(length(getactive())>1 ,gettext("Please select at least two active variables")),
+      need(((length(input$indsup)+length(input$supquali))==0 | length(input$ind_mod)>=1),gettext("Please select the objects you want to plot: Individuals, categories or both")),
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
       need(!is.null(input$habiller) || length(input$habiller)<=2,gettext("Please select maximum 2 variables as habillage"))
     )
+	
     if(input$select=="cos2"){
       if(input$slider1!=1){
         selecindiv <- paste("cos2 ",input$slider1)
@@ -239,7 +231,11 @@ function(input, output,session) {
     if(input$color_point==gettext("qualitative variable")){
       if(length(input$supquali)>=1){
         if (length(input$habiller)==1) hab <- which(colnames(values()$res.PCA$call$X)==input$habiller)
-        if (length(input$habiller)==2) hab <- ncol(values()$res.PCA$call$X)
+      }
+	}
+    if(input$color_point==gettext("2 qualitative variables")){
+      if(length(input$supquali)>=2){
+        if (length(input$habiller2)==2) hab <- ncol(values()$res.PCA$call$X)
       }
 	}
 	
@@ -254,6 +250,13 @@ function(input, output,session) {
       }
     }
 
+    label <- c()
+    if(sum(gettext("Individuals")==input$indmodpoint)==1) label=c(label,"'ind'")
+    if(sum(gettext("Supplementary individuals")==input$indmodpoint)==1) label=c(label,"'ind.sup'")
+    if(sum(gettext("Supplementary categories")==input$indmodpoint)==1) label=c(label,"'quali'")
+	if (length(label)==0) label <- "'none'"
+	else label <- paste0("c(",paste0(label,collapse=","),")")
+
     inv <- NULL
     if(!is.null(input$ind_mod) & input$graph==TRUE) {
       if(sum(gettext("Individuals")==input$ind_mod)==0) inv<- "ind"
@@ -263,7 +266,7 @@ function(input, output,session) {
     bool <- (!is.null(input$elip) && input$elip==TRUE && input$color_point == gettext("qualitative variable"))
 
 	res.PCA <- values()$res.PCA
-    Code <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},")")
+    Code <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},if (!is.null(label)) paste0(",label =",label),")")
     Plot <- eval(parse(text=Code))
 	return(list(Code=Code,Plot=Plot))      
   })
@@ -285,7 +288,7 @@ function(input, output,session) {
   codeGraphVar <- reactive({
     validate(
       need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     if(input$select0=="cos2"){
       if(input$slider00!=1){    # else if cos2 = 1, one point is drawn
@@ -328,14 +331,14 @@ function(input, output,session) {
   output$sorties12 <- renderTable({
     validate(
       need((length(input$supquali)>0 || input$supquali==TRUE), gettext("No categorical variables selected")),
-      need(length(getactive())>1 ,gettext("Please select at least one supplementary variable"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least one supplementary variable"))
     )
     return(as.data.frame(values()$res.PCA$quali.sup$coord))
   },rownames=TRUE)
   
   output$sorties13 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables")),
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
       need((length(input$supquali)>0 || input$supquali==TRUE), gettext("No categorical variables selected"))
     )
     return(as.data.frame(values()$res.PCA$quali.sup$v.test))
@@ -343,14 +346,14 @@ function(input, output,session) {
   
   output$sorties2 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$var$coord))
   },rownames=TRUE)
   
   output$sorties22 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$ind$coord))
   },rownames=TRUE)
@@ -358,7 +361,7 @@ function(input, output,session) {
   output$sorties23 <- renderTable({
     validate(
       need(length(input$supvar)!=0, gettext("No supplementary quantitative variables")),
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$quanti.sup$coord))
   },rownames=TRUE)
@@ -366,7 +369,7 @@ function(input, output,session) {
   output$sorties32 <- renderTable({
     validate(
       need(length(input$supvar)!=0, gettext("No supplementary quantitative variables")),
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$quanti.sup$cor))
   },rownames=TRUE)
@@ -374,7 +377,7 @@ function(input, output,session) {
   output$sorties36 <- renderTable({
     validate(
       need(length(input$indsup)!=0, gettext("No supplementary individuals")),
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$ind.sup$coord))
   },rownames=TRUE)
@@ -382,7 +385,7 @@ function(input, output,session) {
   output$sorties37 <- renderTable({
     validate(
       need(length(input$indsup)!=0, gettext("No supplementary individuals")),
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$ind.sup$cos2))
   },rownames=TRUE)
@@ -390,83 +393,97 @@ function(input, output,session) {
   
   output$sorties3 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$var$contrib))
   },rownames=TRUE)
   
   output$sorties33 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$ind$contrib))
   },rownames=TRUE)
   
   output$sorties4 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$var$cos2))
   },rownames=TRUE)
   
   output$sorties44 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables"))
     )
     return(as.data.frame(values()$res.PCA$ind$cos2))
   },rownames=TRUE)
   
+  CalculDimdesc <- reactive({
+    validate(
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
+	)
+    return(dimdesc(values()$res.PCA,proba = if (length(input$pvalueDimdesc)!=0) {input$pvalueDimdesc} else {0.05}))
+  })
+
   output$sortieDimdesc3 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables")),
-      need(length(dimdesc(values()$res.PCA))>0,gettext("No quantitative variable describes axis 1"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
+      need(length(CalculDimdesc()[[1]]$quanti)>0,gettext("No quantitative variable describes axis 1")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
 	)
-    return(as.data.frame(dimdesc(values()$res.PCA)[[1]]$quanti))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[1]]$quanti))
+  },rownames=TRUE,digits=-3)
   
   output$sortieDimdesc4 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables")),
-      need(length(dimdesc(values()$res.PCA))>0,gettext("No categorical variable describes axis 1"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
+      need(length(CalculDimdesc()[[1]]$quali)>0,gettext("No categorical variable describes axis 1")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
 	)
-    return(as.data.frame(dimdesc(values()$res.PCA)[[1]]$quali))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[1]]$quali))
+  },rownames=TRUE,digits=-3)
   
   #DIM2
   
   output$sortieDimdesc33 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables")),
-      need(length(dimdesc(values()$res.PCA))>1,gettext("No quantitative variable describes axis 2"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
+      need(length(CalculDimdesc()[[2]]$quanti)!=0,gettext("No quantitative variable describes axis 2")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
 	)
-    return(as.data.frame(dimdesc(values()$res.PCA)[[2]]$quanti))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[2]]$quanti))
+  },rownames=TRUE,digits=-3)
   
   output$sortieDimdesc44 <- renderTable({
     validate(
-      need(length(getactive())>1 ,gettext("Please select at least two active variables")),
-      need(length(dimdesc(values()$res.PCA))>1,gettext("No categorical variable describes axis 2"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>1 ,gettext("Please select at least two active variables")),
+      need(length(CalculDimdesc()[[2]]$quali)>1,gettext("No categorical variable describes axis 2")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
 	)
-    return(as.data.frame(dimdesc(values()$res.PCA)[[2]]$quali))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[2]]$quali))
+  },rownames=TRUE,digits=-3)
   
   #DIM3
   
   output$sortieDimdesc333 <- renderTable({
     validate(
-      need(length(getactive())>2 ,gettext("There are not three dimensions")),
-      need(length(dimdesc(values()$res.PCA))>2,gettext("No quantitative variable describes axis 3"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>2 ,gettext("There are not three dimensions")),
+      need(length(CalculDimdesc()[[3]]$quanti)>2,gettext("No quantitative variable describes axis 3")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
 	)
-    return(as.data.frame(dimdesc(values()$res.PCA)[[3]]$quanti))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[3]]$quanti))
+  },rownames=TRUE,digits=-3)
   
   output$sortieDimdesc444 <- renderTable({
     validate(
-      need(length(getactive())>2 ,gettext("There are not three dimensions")),
-      need(length(dimdesc(values()$res.PCA))>2,gettext("No categorical variable describes axis 3"))
+      need((length(VariableChoicesPCAshiny)-length(input$supvar))>2 ,gettext("There are not three dimensions")),
+      need(length(CalculDimdesc()[[3]]$quali)>2,gettext("No categorical variable describes axis 3")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
 	)
-    return(as.data.frame(dimdesc(values()$res.PCA)[[3]]$quali))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[3]]$quali))
+  },rownames=TRUE,digits=-3)
   
   
   output$map3 <- renderPlot({
@@ -594,7 +611,7 @@ function(input, output,session) {
   observe({
     if(input$PCAcode!=0){
       isolate({
-        if (length(input$habiller)==2 & input$color_point==gettext("qualitative variable")) cat(values()$codePCAp,sep="\n")
+        # if (length(input$habiller)==2 & input$color_point==gettext("qualitative variable")) cat(values()$codePCAp,sep="\n")
         cat(values()$codePCA,sep="\n")
         cat(codeGraphVar()$Code,sep="\n")
         cat(codeGraphInd()$Code,sep="\n")
@@ -632,7 +649,7 @@ function(input, output,session) {
         res$m <- input$cex2
 	    res$color_point <- input$color_point
 	    res$color_arrow <- input$color_arrow
-        res$codePCAp <- values()$codePCAp
+        # res$codePCAp <- values()$codePCAp
         res$codePCA <- values()$codePCA
         res$codeGraphVar <- codeGraphVar()$Code
         res$codeGraphInd <- codeGraphInd()$Code
@@ -650,6 +667,9 @@ function(input, output,session) {
         res$poids2PCAshiny <- values()$res.PCA$call$col.W
         res$hcpcparam <- input$hcpcparam
         res$nbdimclustPCAshiny <- input$nbDimClustering
+		res$imputeInit <- input$impute
+		if (length(input$pvalueDimdesc)) res$pvalueDimdescInit <- input$pvalueDimdesc
+		else res$pvalueDimdescInit <- 0.05
         class(res) <- "PCAshiny"
         stopApp(returnValue=res)
       })

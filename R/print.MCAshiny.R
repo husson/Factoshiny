@@ -7,7 +7,6 @@ print.MCAshiny<-
   cat("\n")
   cat(paste0(gettext("Or use the corresponding script:"),"\n"))
   cat("\n")
-    if (!is.null(x$codeMCAp)) cat(x$codeMCAp,"\n")
     cat(x$codeMCA,"\n")
     cat("\n")
     cat(x$codeGraphInd,"\n")

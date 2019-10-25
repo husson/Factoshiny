@@ -16,7 +16,8 @@ fluidPage(
             if(length(QualiChoicePCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoicePCAshiny,multiple=TRUE,selected=qualisupPCAshiny),
             selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomPCAshiny, multiple=TRUE,selected=indsuplPCAshiny),
             checkboxInput("nor",gettext("Scale data to unit value"),normePCAshiny),
-            uiOutput("imputeData")
+            uiOutput("imputeData"),
+            actionButton("submit", label = gettext("Submit"))
           ),
         style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
@@ -35,6 +36,7 @@ fluidPage(
             condition=paste0("input.ind_var=='",gettext("individuals"),"'"),
             textInput("title1",gettext("Graph title: "), titre1PCAshiny),
             uiOutput("choixindmod"),
+            uiOutput("pointlabel"),
             sliderInput("cex",gettext("Size of labels"),min=0.5,max=2.5,value=sizePCAshiny,step=0.05,ticks=FALSE),
             selectInput("select",label=gettext("Labels for individuals selected by:"), choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib",gettext("Manual")),selected=selectionPCAshiny),
             conditionalPanel(
@@ -62,7 +64,7 @@ fluidPage(
                             choices=nomPCAshiny,multiple=TRUE,selected=selection2PCAshiny)
 			  ),
           selectInput("color_point",label=gettext("Colour points according to:"),
-                                          choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution",gettext("quantitative variable"),gettext("qualitative variable")),selected=color_pointInit),
+                                          choices=list(gettext("active/supplementary"),"cos2"="cos2","contribution"="contribution",gettext("quantitative variable"),gettext("qualitative variable"),gettext("2 qualitative variables")),selected=color_pointInit),
             conditionalPanel(
               condition=paste0("input.color_point=='",gettext("active/supplementary"),"'"),
             div(colourpicker::colourInput("coloract", label=NULL, activeindPCAshiny,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
@@ -203,6 +205,7 @@ fluidPage(
                   ),
                   tabPanel(gettext("Automatic description of axes"),
                            br(),
+                           numericInput("pvalueDimdesc",gettext("P-value"),value=pvalueDimdescInit, min=0,max=1),
                            radioButtons("Dim",label=gettext("Choose the dimensions"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),
                            conditionalPanel(
                              condition="input.Dim=='Dim1'",

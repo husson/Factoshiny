@@ -11,12 +11,14 @@ fluidPage(
         tags$style(type='text/css', "#title3 { height: 25px; }")
       ),
       wellPanel(
-      div(align="center",checkboxInput("pcaparam",gettext("FAMD parameters"),FALSE)),
+      div(align="center",checkboxInput("famdparam",gettext("FAMD parameters"),FALSE)),
       conditionalPanel(
-        condition="input.pcaparam==true",
+        condition="input.famdparam==true",
           selectizeInput("supvar",label=gettext("Select supplementary quantitative variables"), choices=VariableChoices, selected=quantisup,multiple=TRUE),
           selectInput("supvar1",label=gettext("Select supplementary categorical variables"),choices=QualiChoice,multiple=TRUE,selected=qualisup),
-          selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nom, multiple=TRUE,selected=indsupl)
+          selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nom, multiple=TRUE,selected=indsupl),
+            uiOutput("imputeData"),
+          actionButton("submit", label = gettext("Submit"))
       ),
       style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
@@ -185,6 +187,34 @@ fluidPage(
                                h6("Cos2"),
                                div(align="center",tableOutput("sorties37")))
                              ),
+                  tabPanel(gettext("Automatic description of axes"),
+                           br(),
+                           numericInput("pvalueDimdesc",gettext("P-value"),value=pvalueDimdescInit, min=0,max=1),
+                           radioButtons("Dim",label=gettext("Choose the dimensions"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),
+                           conditionalPanel(
+                             condition="input.Dim=='Dim1'",
+                             p("Quantitative"),
+                             div(align="center",tableOutput("sortieDimdesc3")),
+                             p("Qualitative"),
+                             div(align="center",tableOutput("sortieDimdesc4"))
+                           ),
+                           br(),
+                           conditionalPanel(
+                             condition="input.Dim=='Dim2'",
+                             p("Quantitative"),
+                             div(align="center",tableOutput("sortieDimdesc33")),
+                             p("Qualitative"),
+                             div(align="center",tableOutput("sortieDimdesc44"))
+                           ),
+                           br(),
+                           conditionalPanel(
+                             condition="input.Dim=='Dim3'",
+                             p("Quantitative"),
+                             div(align="center",tableOutput("sortieDimdesc333")),
+                             p("Qualitative"),
+                             div(align="center",tableOutput("sortieDimdesc444"))
+                           )
+                  ),
                     tabPanel(gettext("Summary of dataset"),
                              br(),
                              verbatimTextOutput("summary"),

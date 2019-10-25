@@ -17,7 +17,9 @@ fluidPage(
             selectizeInput("rowsupl",gettext("Select supplementary rows"),choices=nomCAshiny, multiple=TRUE,selected=lignesupCAshiny),
             selectizeInput("supvar",label=gettext("Select supplementary columns"), choices=VariableChoicesCAshiny, selected=colonnesupCAshiny,multiple=TRUE),
             if(length(QualiChoiceCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables"),choices=QualiChoiceCAshiny,multiple=TRUE,selected=catsupCAshiny),
-            selectizeInput("quantisupvar",label=gettext("Select supplementary quantitative variables"), choices=VariableChoicesCAshiny, selected=quantisupCAshiny,multiple=TRUE)
+            selectizeInput("quantisupvar",label=gettext("Select supplementary quantitative variables"), choices=VariableChoicesCAshiny, selected=quantisupCAshiny,multiple=TRUE),
+            uiOutput("imputeData"),
+            actionButton("submit", label = gettext("Submit"))
         ),
       style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
@@ -95,9 +97,7 @@ fluidPage(
         tags$style(type = "text/css", "a{color: #2F0B3A;}"),
         tabsetPanel(id = "graph_sort",
                     tabPanel(gettext("Graph"),
-                             br(),
                              div(verbatimTextOutput("warn")),
-                             br(),
           fluidRow(
                  br(),
                  column(width = 7,shinyjqui::jqui_resizable(plotOutput("map",height=550)),
@@ -112,7 +112,7 @@ fluidPage(
                              br(),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
-                               div(align="center",shinyjqui::jqui_resizable(plotOutput("map3", height="500"))),
+                               div(align="center",shinyjqui::jqui_resizable(plotOutput("map3", height="300"))),
                                div(align="center",tableOutput("sorties"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Summary of outputs"),"'",sep=''),

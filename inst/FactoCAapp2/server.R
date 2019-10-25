@@ -1,66 +1,11 @@
 # server scipt for CA2
   function(input, output) {
   
-  getactive <- function(){
-      if (length(input$supvar)==0 & length(input$quantisupvar)==0){
-        activevar <- VariableChoicesCAshiny
-      } else{
-        activevar <- VariableChoicesCAshiny[-which(VariableChoicesCAshiny%in%c(input$supvar,input$quantisupvar))]
-      }
-      return(activevar)
-  }	
-
-    values <- reactive({
-      data.selec=newdataCAshiny[,c(getactive())]
-      validate(
-        need(length(getactive()>2), gettext("Please select at least three active columns"))
-      )
-	  
-      if(length(QualiChoiceCAshiny)==0 | length(input$supquali)==0){
-        choixquali=NULL
-      } else {
-          data.selec=cbind(data.selec,newdataCAshiny[,input$supquali,drop=FALSE])
-          choixquali=seq((ncol(data.selec)-length(input$supquali)+1),ncol(data.selec))
-          colnames(data.selec)[choixquali]=input$supquali
-      }
-
-      if(length(input$supvar)==0){
-        choixquanti=NULL
-      } else {
-        data.selec=cbind(data.selec,newdataCAshiny[,input$supvar,drop=FALSE])
-        choixquanti=seq((ncol(data.selec)-length(input$supvar)+1),ncol(data.selec))
-      }
-	  
-      if(length(input$quantisupvar)==0){
-        choixquantisup=NULL
-      } else {
-        data.selec=cbind(data.selec,newdataCAshiny[,input$quantisupvar,drop=FALSE])
-        choixquantisup=seq((ncol(data.selec)-length(input$quantisupvar)+1),ncol(data.selec))
-      }
-
-      if(length(input$rowsupl)!=0 | !is.null(rownaCAshiny)){
-	    indexes=which(nomCAshiny%in%input$rowsupl)
-	    if (length(indexes)==0) indexes=NULL
-      } else{
-        indexes=NULL
-      }
-      indexes=c(indexes,rownaCAshiny)
-      choixquanti2=choixquanti
-      if(length(withnaCAshiny)>0){
-        data.selec=cbind(data.selec,newdataCAshiny[,withnaCAshiny,drop=FALSE])
-        choixquanti2=c(choixquanti2,seq((ncol(data.selec)-length(withnaCAshiny)+1),ncol(data.selec)))
-      }
-    codeCA <- paste0("res.CA<-CA(",nomDataCAshiny, if (!identical(newdataCAshiny,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")} )	
-	codeCA <- paste0(codeCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixquali)) paste0(",quali.sup=c(",paste(choixquali,collapse=","),")"),if(!is.null(choixquanti2)) paste0(",col.sup=c(",paste(choixquanti2,collapse=","),")"),if(!is.null(choixquantisup)) paste0(",quanti.sup=c(",paste(choixquantisup,collapse=","),")"),if(!is.null(indexes)) paste0(",row.sup=c(",paste(indexes,collapse=","),")"),",graph=FALSE)")
-    list(res.CA=eval(parse(text=codeCA)), codeCA=codeCA)
-    })
-    
   output$NB1 <- renderUI({
     validate(
-      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows")),
-      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+      need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2 ,gettext("Please select at least three active columns"))
     )
-    if((nrow(values()$res.CA$row$coord)>5) & (nrow(values()$res.CA$col$coord)>5)){
+    if((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>5){
        return(textInput("nb1", label = NULL, axe1CAshiny,width='41px'))
     } else{
        return(selectInput("nb1",label=NULL, choices=1:(min(nrow(values()$res.CA$row$coord),nrow(values()$res.CA$col$coord))-1),selected=axe1CAshiny,width='51px'))
@@ -69,10 +14,9 @@
 
   output$NB2 <- renderUI({
     validate(
-      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows")),
-      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+      need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2 ,gettext("Please select at least three active rows"))
     )
-    if((nrow(values()$res.CA$row$coord)>5) & (nrow(values()$res.CA$col$coord)>5)){
+    if((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>5){
        return(textInput("nb2", label = NULL, axe2CAshiny,width='41px'))
     } else{
        return(selectInput("nb2",label=NULL, choices=1:(min(nrow(values()$res.CA$row$coord),nrow(values()$res.CA$col$coord))-1),selected=axe2CAshiny,width='51px'))
@@ -87,6 +31,69 @@
 		)
     }
   })
+    
+  output$imputeData <- renderUI({
+    if(any(is.na(newdataCAshiny[,VariableChoicesCAshiny]))){
+	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Consider NA as supplementary"),gettext("Impute by the independance model"),gettext("Impute with 2-dimensional CA-model (preferred)")),selected=gettext("Consider NA as supplementary")))
+	} else {
+      return(tags$div(tags$label(class="control-label", "Handling missing values"),
+	   tags$div(HTML("No missing values"))))
+	}
+  })
+
+  values <- reactive({
+     if (length(input$caparam)==0){
+	   return(valeur())
+	 } else {
+        if (input$submit>=0) isolate(valeur())
+     }
+ })
+
+  valeur <- function(){
+      validate(
+        need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2, gettext("Please select at least three active columns"))
+      )
+	  
+    NomCol <- colnames(newdataCAshiny)
+	SuppressCol <- NULL
+    if (length(QualiChoiceCAshiny)!=0){
+	  if (length(QualiChoiceCAshiny)!=length(input$supquali)) {
+	    SuppressCol <- which(NomCol%in%setdiff(QualiChoiceCAshiny,input$supquali))
+	    NomCol <- NomCol[-SuppressCol]
+	  }
+	}
+    ColSup <- which(NomCol%in%input$supvar)
+	QuantiSup <- which(NomCol%in%input$quantisupvar)
+	QualiSup <- which(NomCol%in%input$supquali)
+    RowSup <- which(nomCAshiny%in%input$rowsupl)
+	if (length(ColSup)==0) ColSup <- NULL
+	if (length(QuantiSup)==0) QuantiSup <- NULL
+	if (length(QualiSup)==0) QualiSup <- NULL
+    if(length(input$rowsupl)==0) RowSup <- NULL
+	codeCA <- NULL
+	nomTabDon <- paste0(nomDataCAshiny, if (!is.null(SuppressCol)){paste0("[,-c(",paste0(SuppressCol,collapse=","),")]")})
+
+	boolImpute <- FALSE
+    if(any(is.na(newdataCAshiny[,VariableChoicesCAshiny]))){
+	 if (length(input$impute)==0){
+       RowSup <- c(RowSup,which(apply(is.na(newdataCAshiny),1,sum)>0))
+       ColSup <- c(ColSup,which(apply(is.na(newdataCAshiny),2,sum)>0))
+	 } else {
+	   if (input$impute==gettext("Consider NA as supplementary")){
+         RowSup <- c(RowSup,which(apply(is.na(newdataCAshiny),1,sum)>0))
+         ColSup <- c(ColSup,which(apply(is.na(newdataCAshiny),2,sum)>0))
+	   } else {
+	     boolImpute <- TRUE
+	     codeCA <- paste0(codeCA, "dfcompleted <- missMDA::imputeCA(",nomTabDon,", ncp=",if (input$impute==gettext("Impute by independence model")) {"0"} else {"2"},if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(ColSup)) paste0(",col.sup=c(",paste0(ColSup,collapse=","),")"),if (!is.null(RowSup)) paste0(",row.sup=c(",paste0(RowSup,collapse=","),")"),")\n")
+	     codeCA <- paste0(codeCA,"res.CA<-CA(dfcompleted", if (!is.null(SuppressCol)){paste0("[,-c(",paste0(SuppressCol,collapse=","),")]")})
+	   }
+     }
+	}
+	if (!boolImpute) codeCA <- paste0(codeCA,"res.CA<-CA(",nomTabDon)
+
+	codeCA <- paste0(codeCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(QualiSup)) paste0(",quali.sup=c(",paste(QualiSup,collapse=","),")"),if(!is.null(ColSup)) paste0(",col.sup=c(",paste(ColSup,collapse=","),")"),if(!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste(QuantiSup,collapse=","),")"),if(!is.null(RowSup)) paste0(",row.sup=c(",paste(RowSup,collapse=","),")"),",graph=FALSE)")
+    list(res.CA=eval(parse(text=codeCA)), codeCA=codeCA)
+    }
     
   output$choixinvis <- renderUI({
      listechoix <- c(gettext("Rows"),gettext("Columns"))
@@ -217,7 +224,7 @@
     if(input$color_point == gettext("quantitative variable")) hab <- paste0("'",input$habiller,"'")
     if(input$color_point == "cos2") hab <- "'cos2'"
     if(input$color_point == "contribution") hab <- "'contrib'"
-    if(input$color_point==gettext("qualitative variable")) hab <- which(colnames(values()$res.PCA$call$X)==input$habiller)
+    if(input$color_point==gettext("qualitative variable")) hab <- which(colnames(values()$res.CA$call$X)==input$habiller)
 
       if(is.null(input$ellip)||length(input$ellip)==0){
 	    myellip=NULL
@@ -252,7 +259,7 @@
     
     output$map22=renderUI({
       validate(
-        need( length(getactive())>2,gettext("Please more active columns"))
+        need( (length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2,gettext("Please more active columns"))
       )
       
       if(length(input$quantisupvar)==0 | is.null(codeGraphQuanti()$Plot)){
@@ -280,13 +287,18 @@
                    choices=choix,selected=gettext("Summary of outputs"),inline=TRUE)
     })
     
-    output$warn=renderPrint({
-      if(length(nomrownaCAshiny)!=0){
-        # return(cat(paste0(gettext("Warning: "), paste(nomrownaCAshiny,collapse=", "), gettext(" have NA : they are considered as supplementary rows"))))
-        a=paste0(gettext("Warning: "), paste(withnaCAshiny,collapse=", "), gettext(" have NA : they are considered as supplementary columns"))
-        b=paste0(gettext("Warning: "), paste(nomrownaCAshiny,collapse=", "), gettext(" have NA : they are considered as supplementary rows"))
-        return(cat(a,b,sep="\n"))
-      }
+    output$warn <- renderPrint({
+       if (any(is.na(newdataCAshiny))){
+         rowNA=paste0(gettext("Warning: "), paste(rownames(newdataCAshiny)[which(apply(is.na(newdataCAshiny),1,sum)>0)],collapse=", "), gettext(" have NA : they are considered as supplementary rows"))
+         colNA=paste0(gettext("Warning: "), paste(colnames(newdataCAshiny)[which(apply(is.na(newdataCAshiny),2,sum)>0)],collapse=", "), gettext(" have NA : they are considered as supplementary columns"))
+	     if (length(input$impute)==0) { 
+		   return(cat(rowNA,colNA,sep="\n"))
+		 } else {
+	       if (input$submit>=0) isolate({
+		     if (input$impute==gettext("Consider NA as supplementary")) return(cat(rowNA,colNA,sep="\n"))
+			 })
+		 }
+       }
     })
     
     output$sorties=renderTable({

@@ -8,6 +8,6 @@ print.CAshiny<-
   cat(paste0(gettext("Or use the corresponding script:"),"\n"))
   cat("\n")
   cat(x$codeCA,"\n")
-  cat("\n")
   cat(x$codeGraph,"\n")
+  if (!is.null(x$codeGraphQuanti)) cat(x$codeGraphQuanti)
   }

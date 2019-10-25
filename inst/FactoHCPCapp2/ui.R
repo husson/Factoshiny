@@ -1,7 +1,7 @@
 # ui script for HCPC2
 
 fluidPage(
-  titlePanel(div(paste(gettext("HCPC on the dataset "),nomDataHCPCshiny),style="color:#0A2A12",align="center"),windowTitle="HCPCshiny"),
+  titlePanel(div(paste(gettext("HCPC on the dataset"),nomDataHCPCshiny),style="color:#0A2A12",align="center"),windowTitle="HCPCshiny"),
 
   sidebarLayout(
     sidebarPanel(

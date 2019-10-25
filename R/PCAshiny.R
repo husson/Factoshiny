@@ -2,12 +2,12 @@ utils::globalVariables(c("objPCAshiny","quantiPCAshiny","myListOfThingsPCAshiny"
 PCAshiny <- function(X){
   G <- .GlobalEnv
   assign("objPCAshiny",ls(all.names=TRUE, envir=G),envir=G)
+  if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   assign("x",X, envir=G)
   assign("nomDataPCAshiny",sys.calls()[[1]][2], envir=G)
   if (!(inherits(X, "PCAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "PCA"))){
     stop(gettext('X is not a dataframe, a matrix, the results of the PCAshiny function or a PCA result'))
   }
-  if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   if(is.data.frame(X)==TRUE){
     assign("quantiPCAshiny",names(which(sapply(X,is.numeric))),envir=G)
     if(length(quantiPCAshiny)<=2)
@@ -20,10 +20,6 @@ PCAshiny <- function(X){
   assign("myListOfThingsPCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objPCAshiny)),envir=G)  ## on met "a" pour ne pas le supprimer
   rm(list=myListOfThingsPCAshiny, envir=G)
   rm(list=c("myListOfThingsPCAshiny"),envir=G)
-  if (outShiny$hcpcparam==TRUE) {
-    resHCPC <- HCPCshiny(outShiny)
-    return(list(invisible(outShiny),resHCPC))
-  } else {
-    return(invisible(outShiny))
-  }
+  if (outShiny$hcpcparam==TRUE) resHCPC <- HCPCshiny(outShiny)
+  return(invisible(outShiny))
 }

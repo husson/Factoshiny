@@ -24,11 +24,6 @@ MFAshiny <- function(X){
   assign("myListOfThingsMFAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objMFAshiny)),envir=G)  ## on met "outShiny" pour ne pas le supprimer
   rm(list=myListOfThingsMFAshiny, envir=G)
   rm(list=c("myListOfThingsMFAshiny"),envir=G)
-  if (outShiny$hcpcparam==TRUE) {
-    resHCPC <- HCPCshiny(outShiny)
-    return(list(invisible(outShiny),resHCPC))
-  } else {
-    return(invisible(outShiny))
-  }
-
+  if (outShiny$hcpcparam==TRUE)resHCPC <- HCPCshiny(outShiny)
+  return(invisible(outShiny))
 }

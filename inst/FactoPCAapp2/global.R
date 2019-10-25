@@ -4,13 +4,13 @@ if(inherits(x, "data.frame")){
   quantisupPCAshiny <- NULL
   qualisupPCAshiny <- NULL
   indsuplPCAshiny <- NULL
-  labmodPCAshiny <- c()
+  labmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   indmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   axe1PCAshiny <- 1
   axe2PCAshiny <- 2
   nbdimclustPCAshiny <- 5
   hcpcparaPCAshiny <- FALSE
-  habillageindPCAshiny <- NULL
+  habillageindPCAshiny2 <- habillageindPCAshiny <- NULL
   selectionPCAshiny <- gettext("No selection")
   selection2PCAshiny <- NULL
   selection3PCAshiny <- gettext("No selection")
@@ -27,9 +27,11 @@ if(inherits(x, "data.frame")){
   categPCAshiny <- "magenta"
   coloractvarPCAshiny <- "black"
   colorsupvarPCAshiny <- "blue"
+  imputeInit <- gettext("Impute by the mean (fast but not recommended)")
   normePCAshiny <- TRUE
   poids1PCAshiny <- NULL
   poids2PCAshiny <- NULL
+  pvalueDimdescInit <- 0.05
 }
 
 if(inherits(x, "PCAshiny")){
@@ -42,6 +44,7 @@ if(inherits(x, "PCAshiny")){
   axe1PCAshiny <- x$nb1
   axe2PCAshiny <- x$nb2
   habillageindPCAshiny <- x$habiller
+  habillageindPCAshiny2 <- x$habiller2
   selectionPCAshiny <- x$selectionPCAshiny
   selection2PCAshiny <- x$selection2PCAshiny
   selection3PCAshiny <- x$j
@@ -63,6 +66,10 @@ if(inherits(x, "PCAshiny")){
   poids2PCAshiny <- x$poids2PCAshiny
   hcpcparaPCAshiny <- x$hcpcparam
   nbdimclustPCAshiny <- x$nbdimclustPCAshiny
+  if (!is.null(x$impute)) imputeInit <- x$imputeInit
+  else imputeInit <- gettext("Impute by the mean (fast but not recommended)")
+  pvalueDimdescInit <- x$pvalueDimdescInit
+  labmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
 }
 if(inherits(x, "PCA")){
   nomDataPCAshiny <- as.character(x$call$call[2])
@@ -70,13 +77,13 @@ if(inherits(x, "PCA")){
   quantisupPCAshiny <- colnames(x$call$quanti.sup)
   qualisupPCAshiny <- colnames(x$call$quali.sup$quali.sup)
   indsuplPCAshiny <- rownames(x$ind.sup$coord)
-  labmodPCAshiny <- c()
+  labmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   indmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   axe1PCAshiny <- 1
   axe2PCAshiny <- 2
   nbdimclustPCAshiny <- 5
   hcpcparaPCAshiny <- FALSE
-  habillageindPCAshiny <- NULL
+  habillageindPCAshiny2 <- habillageindPCAshiny <- NULL
   selectionPCAshiny <- gettext("No selection")
   selection2PCAshiny <- NULL
   selection3PCAshiny <- gettext("No selection")
@@ -95,6 +102,8 @@ if(inherits(x, "PCA")){
   colorsupvarPCAshiny <- "blue"
   normePCAshiny <- x$call$scale.unit
   poids1PCAshiny <- x$call$row.w.init
+  imputeInit <- gettext("Impute by the mean (fast but not recommended)")
+  pvalueDimdescInit <- 0.05
   if(!is.null(poids1PCAshiny)){
     if(sum(poids1PCAshiny!=rep(1,length(poids1PCAshiny)))==0){
       poids1PCAshiny <- NULL

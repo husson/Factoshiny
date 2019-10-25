@@ -23,6 +23,7 @@ if(inherits(x, "data.frame")){
   title1 <- gettext("Graph of individuals and categories")
   title2 <- gettext("Graph of the variables")
   title3 <- gettext("Correlation circle")
+  pvalueDimdescInit <- 0.05
 }
 
 if(inherits(x, "FAMDshiny")){
@@ -51,6 +52,8 @@ if(inherits(x, "FAMDshiny")){
   indmodFAMDshiny <- x$indmodFAMDshiny
   hcpcparaFAMDshiny <- x$hcpcparam
   nbdimclustFAMDshiny <- x$nbdimclustFAMDshiny
+  pvalueDimdescInit <- x$pvalueDimdescInit
+
 }
 if(inherits(x, "FAMD")){
   nomData <- as.character(x$call$call[2])
@@ -79,6 +82,7 @@ if(inherits(x, "FAMD")){
   title3 <- gettext("Correlation circle")
   labind <- TRUE
   labvar <- TRUE
+  pvalueDimdescInit <- 0.05
 }  
 allVariables <- colnames(newdata)
 quanti <- names(which(sapply(newdata,is.numeric)))

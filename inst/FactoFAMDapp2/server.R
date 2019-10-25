@@ -1,69 +1,24 @@
   function(input, output) {
-  
-  getactive <- function(){
-	  sup=NULL
-      if(length(input$supvar)==0 & length(input$supvar1)==0){
-        activevar <- allVariables
-      } else{
-		if (length(input$supvar)>=0) sup <- input$supvar
-		if (length(input$supvar1)>=0) sup <- c(sup,input$supvar1)
-		sup <- which(allVariables%in%c(input$supvar,input$supvar1))
-        activevar <- allVariables[-sup]
-      }
-      return(list(activevar=activevar,sup=sup))
-  }
-
-    # getactive=function(){
-      # if(input$selecactive==gettext("Choose")){
-      # sup<-sup2<-sup3<-NULL
-      # if(length(input$supvar)==0&&length(input$supvar1)==0){
-        # activevar<-all
-        # supl<-NULL
-      # }
-      # else if(length(input$supvar1)==0&&length(input$supvar)!=0){
-	    # sup<-which(all%in%input$supvar)
-        # activevar<-all[-sup]
-        # supl<-VariableChoices[sup]
-        # quanti<-VariableChoices[-sup]
-      # }
-      # else if(length(input$supvar)==0&&length(input$supvar1)!=0){
-	    # sup=which(all%in%input$supvar1)
-        # activevar=all[-sup]
-        # supl=QualiChoice[sup]
-        # quali=QualiChoice[-sup]
-      # }
-      # else if(length(input$supvar)!=0&&length(input$supvar1)!=0){
-	    # sup=which(all%in%c(input$supvar,input$supvar1))
-        # activevar=all[-sup]
-        # supl=all[sup]
-	    # sup2=which(QualiChoice%in%input$supvar1)
-	    # sup3=which(VariableChoices%in%input$supvar)
-      # quali=QualiChoice[-sup2]
-      # quanti=VariableChoices[-sup3]
-      # }
-      # return(list(activevar=activevar,supl=supl,quanti=quanti,quali=quali,sup=sup))
-    # }
-  # }
-    
+      
   output$NB1 <- renderUI({
     validate(
-      need(length(getactive()$activevar)>1 ,gettext("Please select at least two active variables"))
+      need(length(allVariables)-length(input$supvar)- length(input$supvar1)>1 ,gettext("Please select at least two active variables"))
     )
-    if(length(getactive()$activevar)>5){
+    if(length(allVariables)-length(input$supvar)- length(input$supvar1)>5){
        return(textInput("nb1", label = NULL, axe1,width='41px'))
     } else{
-       return(selectInput("nb1",label=NULL, choices=1:length(getactive()$activevar),selected=axe1,width='41px'))
+       return(selectInput("nb1",label=NULL, choices=1:(length(allVariables)-length(input$supvar)- length(input$supvar1)),selected=axe1,width='41px'))
     }
   })
   
   output$NB2=renderUI({
     validate(
-      need(length(getactive()$activevar)>1 ,gettext("Please select at least two active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1 ,gettext("Please select at least two active variables"))
     )
-    if(length(getactive()$activevar)>5){
+    if((length(allVariables)-length(input$supvar)- length(input$supvar1))>5){
        return(textInput("nb2", label = NULL, axe2,width='41px'))
     } else{
-       return(selectInput("nb2",label=NULL, choices=1:length(getactive()$activevar),selected=axe2,width='41px'))
+       return(selectInput("nb2",label=NULL, choices=1:(length(allVariables)-length(input$supvar)- length(input$supvar1)),selected=axe2,width='41px'))
     }
   })
   
@@ -76,24 +31,55 @@
     }
   })
 
-  values=reactive({
-    data.selec=newdata
-    choixsup=getactive()$sup
+  values <- reactive({
+     if (length(input$famdparam)==0){
+	   return(valeur())
+	 } else {
+        if (input$submit>=0) isolate(valeur())
+     }
+ })
+ 
+  valeur=function(){
+    choixsup=NULL
+	if (length(input$supvar)+length(input$supvar1)>=0) choixsup <- which(allVariables%in%c(input$supvar,input$supvar1))
     if(length(input$indsup)==0){
       suple=NULL
     } else{
 	  suple=which(nom%in%input$indsup)
     }
-    # list(res.FAMD=(FAMD(data.selec,sup.var=choixsup,ind.sup=suple,graph=FALSE,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2)))),DATA=(data.selec),choixsuple=(suple),varsup=(choixsup))
-    codeFAMD <- paste0("res.FAMD<-FAMD(",nomData, if (!identical(newdata,data.selec)){paste0("[,c(",paste0("'",paste(colnames(data.selec),collapse="','"),"'"),")]")})
+
+	boolImpute <- FALSE
+    if(length(input$impute>0)){
+	 if (input$impute!=gettext("Impute by means and proportions (fast but not recommended)")){
+	  boolImpute <- TRUE
+	  if (input$impute==gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")){
+ 	    codeFAMD <- paste0(codeFAMD,"nb <- estim_ncpFAMD(",nomData,if (!is.null(choixsup)) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
+	    Nbncp <- "nb"
+	  }
+      if (input$impute==gettext("Impute with the proportions")) Nbncp <- 0
+      if (input$impute==gettext("Impute with 2-dimensional FAMD-model (good compromise)")) Nbncp <- 2
+	  codeFAMD <- paste0(codeFAMD, "dfcompleted <- missMDA::imputeFAMD(",nomData,",ncp=",Nbncp,if (!is.null(choixsup)) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")
+	 }
+    }
+	codeFAMD <- paste0(codeFAMD,"res.FAMD<-FAMD(",nomData)
+	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.disj=dfcompleted$tab.disj")
 	codeFAMD <- paste0(codeFAMD,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixsup)) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
 	list(res.FAMD=eval(parse(text=codeFAMD)), codeFAMD=codeFAMD)
-    })
+    }
     
+  output$imputeData <- renderUI({
+    if(any(is.na(nomData))){
+	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by means and proportions (fast but not recommended)"),gettext("Impute with 2-dimensional FAMD-model (good compromise)"),gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")),selected=gettext("Impute by means and proportions (fast but not recommended)")))
+	} else {
+      return(tags$div(tags$label(class="control-label", "Handling missing values"),
+	   tags$div(HTML("No missing values"))))
+	}
+  })
+
     codeGraphVar <- reactive({
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       if(input$select0=="cos2"){
         if(input$slider00!=1){
@@ -133,7 +119,7 @@
     codeGraphInd <- reactive({
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       hab="none"
       colquali="magenta"
@@ -201,7 +187,7 @@
     codeGraphQuanti <- reactive({
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       if(input$selecti=="cos2"){
        if(input$slider000!=1){
@@ -218,7 +204,7 @@
       }
       if(input$selecti=="contrib"){
        selecindiv=paste("contrib ",input$slider6)
-      paste("'",selecindiv,"'",sep="")
+      selecindivText=paste("'",selecindiv,"'",sep="")
       }
 	res.FAMD <- values()$res.FAMD
     Code <- paste0("plot.FAMD(res.FAMD, choix='quanti'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(selecindivText!="NULL"){paste0(",select=",selecindivText)},if(input$title3!="Graph of quantitative variables")paste0(',title="',input$title3,'"'),if(input$cex3!=1)paste0(",cex=",input$cex3,",cex.main=",input$cex3,",cex.axis=",input$cex3),")")
@@ -252,14 +238,14 @@
           need((length(input$supquali)>0 || input$supquali==TRUE), gettext("No categorical variables selected"))
         )
         validate(
-          need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+          need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
         )
         return(as.data.frame(values()$res.FAMD$quali.sup$coord))
     },rownames=TRUE)
     
     output$sorties13=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       validate(
         need((length(input$supquali)>0 || input$supquali==TRUE), gettext("No categorical variables selected"))
@@ -269,14 +255,14 @@
     
     output$sorties2=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$var$coord))
     },rownames=TRUE)
     
     output$sorties22=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$ind$coord))
     },rownames=TRUE)
@@ -284,7 +270,7 @@
     output$sorties23=renderTable({
       validate(
         need(length(input$supvar)!=0, gettext("No supplementary quantitative variables")),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$var$coord.sup))
     },rownames=TRUE)
@@ -292,7 +278,7 @@
     output$sorties32=renderTable({
       validate(
         need(length(input$supvar)!=0, gettext("No supplementary quantitative variables")),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$var$cos2.sup))
     },rownames=TRUE)
@@ -300,7 +286,7 @@
     output$sorties36=renderTable({
       validate(
         need(length(input$indsup)!=0, "No supplementary individuals"),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$ind.sup$coord))
     },rownames=TRUE)
@@ -308,7 +294,7 @@
     output$sorties37=renderTable({
       validate(
         need(length(input$indsup)!=0, gettext("No supplementary individuals")),
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$ind.sup$cos2))
     },rownames=TRUE)
@@ -316,77 +302,97 @@
     
     output$sorties3=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$var$contrib))
     },rownames=TRUE)
     
     output$sorties33=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$ind$contrib))
     },rownames=TRUE)
     
     output$sorties4=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$var$cos2))
     },rownames=TRUE)
     
     output$sorties44=renderTable({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least two active variables"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
       )
       return(as.data.frame(values()$res.FAMD$ind$cos2))
     },rownames=TRUE)
   
+  CalculDimdesc <- reactive({
+    validate(
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least two active variables")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
+	)
+    return(dimdesc(values()$res.FAMD,proba = if (length(input$pvalueDimdesc)!=0) {input$pvalueDimdesc} else {0.05}))
+  })
+
   output$sortieDimdesc3=renderTable({
     validate(
-      need(length(getactive()$activevar)>2,gettext("Please select at least two active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least two active variables")),
+      need(length(CalculDimdesc()[[1]]$quanti)>0,gettext("No quantitative variable describes axis 1")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
     )
-    return(as.data.frame(dimdesc(values()$res.FAMD)[[1]]$quanti))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[1]]$quanti))
+    },rownames=TRUE,digits=-3)
   
   output$sortieDimdesc4=renderTable({
     validate(
-      need(length(getactive()$activevar)>2,gettext("Please select at least three active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least three active variables")),
+      need(length(CalculDimdesc()[[1]]$quali)>0,gettext("No qualitative variable describes axis 1")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
     )
-    return(as.data.frame(dimdesc(values()$res.FAMD)[[1]]$quali))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[1]]$quali))
+    },rownames=TRUE,digits=-3)
   
   #DIM2
   
   output$sortieDimdesc33=renderTable({
     validate(
-      need(length(getactive()$activevar)>2,gettext("Please select at least three active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least three active variables")),
+      need(length(CalculDimdesc()[[2]]$quanti)>0,gettext("No quantitative variable describes axis 2")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
     )
-    return(as.data.frame(dimdesc(values()$res.FAMD)[[2]]$quanti))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[2]]$quanti))
+    },rownames=TRUE,digits=-3)
   
   output$sortieDimdesc44=renderTable({
     validate(
-      need(length(getactive()$activevar)>2,gettext("Please select at least three active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least three active variables")),
+      need(length(CalculDimdesc()[[2]]$quali)>0,gettext("No qualitative variable describes axis 2")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
     )
-    return(as.data.frame(dimdesc(values()$res.FAMD)[[2]]$quali))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[2]]$quali))
+    },rownames=TRUE,digits=-3)
   
   #DIM3
   
   output$sortieDimdesc333=renderTable({
     validate(
-      need(length(getactive()$activevar)>2,gettext("Please select at least three active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least three active variables")),
+      need(length(CalculDimdesc()[[3]]$quanti)>0,gettext("No quantitative variable describes axis 3")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
     )
-    return(as.data.frame(dimdesc(values()$res.FAMD)[[3]]$quanti))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[3]]$quanti))
+    },rownames=TRUE,digits=-3)
   
   output$sortieDimdesc444=renderTable({
     validate(
-      need(length(getactive()$activevar)>2,gettext("Please select at least three active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>2,gettext("Please select at least three active variables")),
+      need(length(CalculDimdesc()[[3]]$quali)>0,gettext("No qualitative variable describes axis 3")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0"))
     )
-    return(as.data.frame(dimdesc(values()$res.FAMD)[[3]]$quali))
-  },rownames=TRUE)
+    return(as.data.frame(CalculDimdesc()[[3]]$quali))
+    },rownames=TRUE,digits=-3)
     
     
     output$map3=renderPlot({
@@ -424,9 +430,9 @@
     
     output$slider3=renderUI({
       validate(
-        need(length(getactive()$activevar)>1,gettext("Please select at least one supplementary variable"))
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select 2 active variables"))
       )
-      maxvar=length(getactive()$activevar)
+      maxvar=(length(allVariables)-length(input$supvar)- length(input$supvar1))
       if(selection3=="contrib"){
         return(div(align="center",sliderInput("slider4",label=gettext("Number of the most contributive variables"),
                                               min=1,max=maxvar,value=selection4,step=1)))  
@@ -438,9 +444,9 @@
   
   output$slider5=renderUI({
     validate(
-      need(length(getactive()$activevar)>1,gettext("Please select at least one supplementary variable"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select 2 active variables"))
     )
-    maxvar=length(getactive()$quanti)
+    maxvar=nrow(values()$res.FAMD$quanti.var$coord)
     if(selection5=="contrib"){
       return(div(align="center",sliderInput("slider6",label=gettext("Number of the most contributive variables"),
                                             min=1,max=maxvar,value=selection6,step=1)))  
@@ -452,7 +458,7 @@
   
   output$slider7=renderUI({
     validate(
-      need(length(getactive()$activevar)>1,gettext("Please select at least one supplementary variable"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select 2 active variables"))
     )
     if(is.null(input$indsup)) maxi=length(nom)
     if(!is.null(input$indsup)) maxi=length(nom)-length(input$indsup)
@@ -635,6 +641,8 @@
       res$labvar=input$labels
       res$hcpcparam <- input$hcpcparam
       res$nbdimclustFAMDshiny <- input$nbDimClustering
+	  if (length(input$pvalueDimdesc)) res$pvalueDimdescInit <- input$pvalueDimdesc
+	  else res$pvalueDimdescInit <- 0.05
       class(res) <- "FAMDshiny"
       stopApp(returnValue=res)
      })

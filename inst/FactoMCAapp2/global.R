@@ -35,6 +35,8 @@ if(is.data.frame(x)==TRUE){
   valdefMCAshiny=FALSE
   color_pointInit <- gettext("active/supplementary")
   color_ModInit <- gettext("active/supplementary")
+  pvalueDimdescInit <- 0.05
+  choixLabelInit <- c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
 }
 
 if(inherits(x, "MCAshiny")){
@@ -69,6 +71,8 @@ if(inherits(x, "MCAshiny")){
   nbdimclustMCAshiny <- x$nbdimclustMCAshiny
   color_pointInit <- x$color_point
   color_ModInit <- x$color_Mod
+  pvalueDimdescInit <- x$  pvalueDimdescInit
+  choixLabelInit <- x$choixLabelInit
 }
 if(inherits(x, "MCA")){
   nomDataMCAshiny=as.character(x$call$call[2])
@@ -102,8 +106,10 @@ if(inherits(x, "MCA")){
   color8MCAshiny="blue"
   valdefMCAshiny=FALSE
   poids1MCAshiny <- x$call$row.w
+  pvalueDimdescInit <- 0.05
   color_pointInit <- gettext("active/supplementary")
   color_ModInit <- gettext("active/supplementary")
+  choixLabelInit <- c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
   if(!is.null(poids1MCAshiny)){
     if(sum(poids1MCAshiny!=rep(1,length(poids1MCAshiny)))==0){
       poids1MCAshiny <- NULL

@@ -31,6 +31,15 @@
     }
   })
 
+  output$imputeData <- renderUI({
+    if(any(is.na(newdata))){
+	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by means and proportions (fast but not recommended)"),gettext("Impute with 2-dimensional FAMD-model (good compromise)"),gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")),selected=gettext("Impute by means and proportions (fast but not recommended)")))
+	} else {
+      return(tags$div(tags$label(class="control-label", "Handling missing values"),
+	   tags$div(HTML("No missing values"))))
+	}
+  })
+
   values <- reactive({
      if (length(input$famdparam)==0){
 	   return(valeur())
@@ -49,32 +58,27 @@
     }
 
 	boolImpute <- FALSE
-    if(length(input$impute>0)){
-	 if (input$impute!=gettext("Impute by means and proportions (fast but not recommended)")){
+	codeFAMD <- NULL
+    if (any(is.na(newdata))){
 	  boolImpute <- TRUE
-	  if (input$impute==gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")){
- 	    codeFAMD <- paste0(codeFAMD,"nb <- estim_ncpFAMD(",nomData,if (!is.null(choixsup)) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
-	    Nbncp <- "nb"
+      if(length(input$impute>0)){
+	    if (input$impute==gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")){
+ 	      codeFAMD <- paste0(codeFAMD,"nb <- missMDA::estim_ncpFAMD(",nomData,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
+	      Nbncp <- "nb"
+	    }
+        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)")) Nbncp <- 0
+        if (input$impute==gettext("Impute with 2-dimensional FAMD-model (good compromise)")) Nbncp <- 2
+      } else {
+        Nbncp <- 0
 	  }
-      if (input$impute==gettext("Impute with the proportions")) Nbncp <- 0
-      if (input$impute==gettext("Impute with 2-dimensional FAMD-model (good compromise)")) Nbncp <- 2
-	  codeFAMD <- paste0(codeFAMD, "dfcompleted <- missMDA::imputeFAMD(",nomData,",ncp=",Nbncp,if (!is.null(choixsup)) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")
-	 }
-    }
+	  codeFAMD <- paste0(codeFAMD, "dfcompleted <- imputeFAMD(",nomData,",ncp=",Nbncp,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+	}
 	codeFAMD <- paste0(codeFAMD,"res.FAMD<-FAMD(",nomData)
-	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.disj=dfcompleted$tab.disj")
-	codeFAMD <- paste0(codeFAMD,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(choixsup)) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
+	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.comp=dfcompleted$tab.disj")
+	codeFAMD <- paste0(codeFAMD,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(length(choixsup)!=0) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
 	list(res.FAMD=eval(parse(text=codeFAMD)), codeFAMD=codeFAMD)
     }
     
-  output$imputeData <- renderUI({
-    if(any(is.na(nomData))){
-	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by means and proportions (fast but not recommended)"),gettext("Impute with 2-dimensional FAMD-model (good compromise)"),gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")),selected=gettext("Impute by means and proportions (fast but not recommended)")))
-	} else {
-      return(tags$div(tags$label(class="control-label", "Handling missing values"),
-	   tags$div(HTML("No missing values"))))
-	}
-  })
 
     codeGraphVar <- reactive({
       validate(

@@ -35,6 +35,15 @@ fluidPage(
           tags$style(type='text/css', "#title4 { height: 25px; }"),
           tags$style(type='text/css', "#title5 { height: 25px; }")
         ),
+      wellPanel(
+      div(align="center",checkboxInput("mfaparam",gettext("MFA parameters"),FALSE)),
+      conditionalPanel(
+        condition="input.mfaparam==true",
+          selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomMFAshiny, multiple=TRUE,selected=indsupl),
+          uiOutput("imputeData"),
+          actionButton("submit", label = gettext("Submit"))
+      ),
+      style = "padding: 3px;background-color: #ffdbdb;"),
         wellPanel(
         div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
         conditionalPanel(
@@ -99,6 +108,7 @@ fluidPage(
           condition=paste("input.choixgraph=='",gettext("Frequencies"),"'",sep=''),
           textInput("titleFreq",gettext("Title of the graph: "), titleFreq),
           sliderInput("cexFreq",gettext("Size of labels"),min=0.5,max=2.5,value=sizeFreq,step=0.05,ticks=FALSE),
+            uiOutput("choixindvarfreq"),
           checkboxInput("affichind",gettext("Draw labels for the mean individuals"),freq1),
           checkboxInput("affichcol",gettext("Draw labels for the columns"),freq2)
         ),
@@ -129,20 +139,20 @@ fluidPage(
         tabsetPanel(id = "graph_sort",
                     tabPanel(gettext("Creation of groups"),
                              br(),
-                             checkboxInput("activemodif",gettext("Create the groups"),FALSE),
+                             # checkboxInput("activemodif",gettext("Create the groups"),FALSE),
+                            radioButtons("activemodif",gettext("Create or validate the groups"), choices=c(gettext("Create the groups"),gettext("Validate the groups")), selected = gettext("Create the groups"), inline=TRUE),
                              conditionalPanel(
-                               condition="input.activemodif==true",
+                               condition=paste0("input.activemodif=='",gettext("Create the groups"),"'"),
                                h6("Group 1"),
                               fluidRow(
                               column(3,
-                                     radioButtons("typeG1"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                     radioButtons("typeG1"," ",choices=listeType,selected=listeType[1])
                               ),
                               column(3,
                                      uiOutput("listvarG1")),
                               column(3,
                                      textInput("nameG1", label = " ", value = "Gr 1"),
                                      conditionalPanel(
-#                                       condition="input.typeG1=='quant'",
                                        condition=paste("input.typeG1=='",gettext("Quantitative"),"'",sep=''),
                                        radioButtons("scale1","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                               column(2,
@@ -153,14 +163,13 @@ fluidPage(
                                 condition="input.activeG2==true",
                                 fluidRow(
                                 column(3,
-                                       radioButtons("typeG2"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                       radioButtons("typeG2"," ",choices=listeType,selected=listeType[1])
                                 ),
                                 column(3,
                                        uiOutput("listvarG2")),
                                 column(3,
                                        textInput("nameG2", label = " ", value = "Gr 2"),
                                        conditionalPanel(
-#                                         condition="input.typeG2=='quant'",
                                        condition=paste("input.typeG2=='",gettext("Quantitative"),"'",sep=''),
                                          radioButtons("scale2","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                 column(2,
@@ -171,7 +180,7 @@ fluidPage(
                                   condition="input.activeG3==true",
                                   fluidRow(
                                   column(3,
-                                         radioButtons("typeG3"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                         radioButtons("typeG3"," ",choices=listeType,selected=listeType[1])
                                   ),
                                   column(3,
                                          uiOutput("listvarG3")),
@@ -179,7 +188,6 @@ fluidPage(
                                          textInput("nameG3", label = " ", value = "Gr 3"),
                                          conditionalPanel(
                                             condition=paste("input.typeG3=='",gettext("Quantitative"),"'",sep=''),
-#                                           condition="input.typeG3=='quant'",
                                            radioButtons("scale3","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                   column(3,
                                          radioButtons("typeG32","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
@@ -189,7 +197,7 @@ fluidPage(
                                     condition="input.activeG4==true",
                                     fluidRow(
                                     column(3,
-                                           radioButtons("typeG4"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                           radioButtons("typeG4"," ",choices=listeType,selected=listeType[1])
                                     ),
                                     column(3,
                                            uiOutput("listvarG4")),
@@ -197,7 +205,6 @@ fluidPage(
                                            textInput("nameG4", label = " ", value = "Gr 4"),
                                            conditionalPanel(
                                              condition=paste("input.typeG4=='",gettext("Quantitative"),"'",sep=''),
-#                                             condition="input.typeG4=='quant'",
                                              br(),
                                              radioButtons("scale4","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                     column(3,
@@ -208,7 +215,7 @@ fluidPage(
                                       condition="input.activeG5==true",
                                       fluidRow(
                                       column(3,
-                                             radioButtons("typeG5"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                             radioButtons("typeG5"," ",choices=listeType,selected=listeType[1])
                                       ),
                                       column(3,
                                              uiOutput("listvarG5")),
@@ -216,7 +223,6 @@ fluidPage(
                                              textInput("nameG5", label = " ", value = "Gr 5"),
                                              conditionalPanel(
                                                condition=paste("input.typeG5=='",gettext("Quantitative"),"'",sep=''),
-#                                               condition="input.typeG5=='quant'",
                                                br(),
                                                radioButtons("scale5","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                       column(3,
@@ -227,7 +233,7 @@ fluidPage(
                                         condition="input.activeG6==true",
                                         fluidRow(
                                         column(3,
-                                               radioButtons("typeG6"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                               radioButtons("typeG6"," ",choices=listeType,selected=listeType[1])
                                         ),
                                         column(3,
                                                uiOutput("listvarG6")),
@@ -235,7 +241,6 @@ fluidPage(
                                                textInput("nameG6", label = " ", value = "Gr 6"),
                                                conditionalPanel(
                                              condition=paste("input.typeG6=='",gettext("Quantitative"),"'",sep=''),
-#                                                 condition="input.typeG6=='quant'",
                                                  br(),
                                                  radioButtons("scale6","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                         column(3,
@@ -246,7 +251,7 @@ fluidPage(
                                           condition="input.activeG7==true",
                                           fluidRow(
                                           column(3,
-                                                 radioButtons("typeG7"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                                 radioButtons("typeG7"," ",choices=listeType,selected=listeType[1])
                                           ),
                                           column(3,
                                                  uiOutput("listvarG7")),
@@ -254,7 +259,6 @@ fluidPage(
                                                  textInput("nameG7", label = " ", value = "Gr 7"),
                                                  conditionalPanel(
                                                    condition=paste("input.typeG7=='",gettext("Quantitative"),"'",sep=''),
-#                                                   condition="input.typeG7=='quant'",
                                                    br(),
                                                    radioButtons("scale7","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                           column(3,
@@ -265,7 +269,7 @@ fluidPage(
                                             condition="input.activeG8==true",
                                             fluidRow(
                                             column(3,
-                                                   radioButtons("typeG8"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                                   radioButtons("typeG8"," ",choices=listeType,selected=listeType[1])
                                             ),
                                             column(3,
                                                    uiOutput("listvarG8")),
@@ -273,7 +277,6 @@ fluidPage(
                                                    textInput("nameG8", label = " ", value = "Gr 8"),
                                                    conditionalPanel(
                                              condition=paste("input.typeG8=='",gettext("Quantitative"),"'",sep=''),
-#                                                     condition="input.typeG8=='quant'",
                                                      br(),
                                                      radioButtons("scale8","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                             column(3,
@@ -284,7 +287,7 @@ fluidPage(
                                               condition="input.activeG9==true",
                                               fluidRow(
                                               column(3,
-                                                     radioButtons("typeG9"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                                     radioButtons("typeG9"," ",choices=listeType,selected=listeType[1])
                                               ),
                                               column(3,
                                                      uiOutput("listvarG9")),
@@ -292,7 +295,6 @@ fluidPage(
                                                      textInput("nameG9", label = " ", value = "Gr 9"),
                                                      conditionalPanel(
                                              condition=paste("input.typeG9=='",gettext("Quantitative"),"'",sep=''),
-#                                                       condition="input.typeG9=='quant'",
                                                        br(),
                                                        radioButtons("scale9","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                               column(3,
@@ -303,7 +305,7 @@ fluidPage(
                                                 condition="input.activeG10==true",
                                                 fluidRow(
                                                 column(3,
-                                                       radioButtons("typeG10"," ",choices=list(gettext("Quantitative"),gettext("Qualitative"),gettext("Frequencies")),selected=gettext("Quantitative"))
+                                                       radioButtons("typeG10"," ",choices=listeType,selected=listeType[1])
                                                 ),
                                                 column(3,
                                                        uiOutput("listvarG10")),
@@ -311,7 +313,6 @@ fluidPage(
                                                        textInput("nameG10", label = " ", value = "Gr 10"),
                                                        conditionalPanel(
                                              condition=paste("input.typeG10=='",gettext("Quantitative"),"'",sep=''),
-#                                                         condition="input.typeG10=='quant'",
                                                          br(),
                                                          radioButtons("scale10","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
                                                 column(3,

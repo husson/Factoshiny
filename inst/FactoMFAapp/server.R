@@ -1,258 +1,163 @@
 # server2. AFM
   function(input, output) {
-    codeMFA=reactive({
-    nbfreq=0
-    nbquali=0
-    nbquanti=0
-    # quantisup=0
-    listquali=c()
+
+  codeMFA <- reactive({
+     if (length(input$mfaparam)==0){
+	   return(valeur())
+	 } else {
+        if (input$submit>=0) isolate(valeur())
+		if (input$activemodif==gettext("Validate the groups")) isolate(valeur())
+     }
+ })
+
+  valeur <- function(){
     gsup=c()
-    dataselec=x[,input$variables1]
     groupe=length(input$variables1)
-    nbgroupe=1
     if(input$typeG1==gettext("Quantitative")){
-      nbquanti=nbquanti+1
-      # if(input$typeG12==gettext("Supplementary")) quantisup=quantisup+1
       if(input$scale1==gettext("Scaled")) typ="s"
       if(input$scale1==gettext("Unscaled")) typ="c"
     }
     else if(input$typeG1==gettext("Qualitative")){
       typ="n"
-      nbquali=nbquali+1
-      listquali=c(listquali,input$variables1)
     }
     else if(input$typeG1==gettext("Frequencies")){
       typ="f"
-      nbfreq=nbfreq+1
     }
-    if(input$typeG12==gettext("Supplementary")){
-      gsup=c(gsup,1)
-    }
+    if(input$typeG12==gettext("Supplementary")) gsup=c(gsup,1)
     types=typ
     nom=input$nameG1
     if(input$activeG2==TRUE && length(input$variables2)>0){
-      dataselec=cbind(dataselec,x[,input$variables2])
-      if(length(input$variables2)==1){
-        colnames(dataselec)[dim(dataselec)[2]]=input$variables2
-      }
       groupe=c(groupe,length(input$variables2))
-      nbgroupe=2
       if(input$typeG2==gettext("Quantitative")){
-        nbquanti=nbquanti+1
-        # if(input$typeG22==gettext("Supplementary")){
-          # quantisup=quantisup+1
-        # }
         if(input$scale2==gettext("Scaled")) typ="s"
         if(input$scale2==gettext("Unscaled")) typ="c"
       }
       else if(input$typeG2==gettext("Qualitative")){
         typ="n"
-        nbquali=nbquali+1
-        listquali=c(listquali,input$variables2)
       }
       else if(input$typeG2==gettext("Frequencies")){
         typ="f"
-        nbfreq=nbfreq+1
       }
       if(input$typeG22==gettext("Supplementary")) gsup=c(gsup,2)
       types=c(types,typ)
       nom=c(nom,input$nameG2)
       if(input$activeG3==TRUE && length(input$variables3)>0){
-        dataselec=cbind(dataselec,x[,input$variables3])
-        if(length(input$variables3)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables3
         groupe=c(groupe,as.numeric(length(input$variables3)))
-        nbgroupe=3
         if(input$typeG3==gettext("Quantitative")){
-          nbquanti=nbquanti+1
-          # if(input$typeG32==gettext("Supplementary")){
-            # quantisup=quantisup+1
-          # }
           if(input$scale3==gettext("Scaled")) typ="s"
           if(input$scale3==gettext("Unscaled")) typ="c"
         }
         else if(input$typeG3==gettext("Qualitative")){
           typ="n"
-          nbquali=nbquali+1
-          listquali=c(listquali,input$variables3)
         }
         else if(input$typeG3==gettext("Frequencies")){
           typ="f"
-          nbfreq=nbfreq+1
         }
         if(input$typeG32==gettext("Supplementary")) gsup=c(gsup,3)
         types=c(types,typ)
         nom=c(nom,input$nameG3)
         if(input$activeG4==TRUE && length(input$variables4)>0){
-          dataselec=cbind(dataselec,x[,input$variables4])
-          if(length(input$variables4)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables4
           groupe=c(groupe,length(input$variables4))
-          nbgroupe=4
           if(input$typeG4==gettext("Quantitative")){
-            nbquanti=nbquanti+1
-            # if(input$typeG42==gettext("Supplementary")){
-              # quantisup=quantisup+1
-            # }
             if(input$scale4==gettext("Scaled")) typ="s"
             if(input$scale4==gettext("Unscaled")) typ="c"
           }
           else if(input$typeG4==gettext("Qualitative")){
             typ="n"
-            nbquali=nbquali+1
-            listquali=c(listquali,input$variables4)
           }
           else if(input$typeG4==gettext("Frequencies")){
             typ="f"
-            nbfreq=nbfreq+1
           }
           if(input$typeG42==gettext("Supplementary")) gsup=c(gsup,4)
           types=c(types,typ)
           nom=c(nom,input$nameG4)
           if(input$activeG5==TRUE && length(input$variables5)>0){
-            dataselec=cbind(dataselec,x[,input$variables5])
-            if(length(input$variables5)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables5
             groupe=c(groupe,length(input$variables5))
-            nbgroupe=5
             if(input$typeG5==gettext("Quantitative")){
-              nbquanti=nbquanti+1
-              # if(input$typeG52==gettext("Supplementary")){
-                # quantisup=quantisup+1
-              # }
               if(input$scale5==gettext("Scaled")) typ="s"
               if(input$scale5==gettext("Unscaled")) typ="c"
             }
             else if(input$typeG5==gettext("Qualitative")){
               typ="n"
-              nbquali=nbquali+1
-              listquali=c(listquali,input$variables5)
             }
             else if(input$typeG5==gettext("Frequencies")){
               typ="f"
-              nbfreq=nbfreq+1
             }
             if(input$typeG52==gettext("Supplementary")) gsup=c(gsup,5)
             types=c(types,typ)
             nom=c(nom,input$nameG5)
             if(input$activeG6==TRUE && length(input$variables6)>0){
-              dataselec=cbind(dataselec,x[,input$variables6])
-              if(length(input$variables6)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables6
               groupe=c(groupe,length(input$variables6))
               nbgroupe=6
               if(input$typeG6==gettext("Quantitative")){
-                nbquanti=nbquanti+1
-                # if(input$typeG62==gettext("Supplementary")){
-                  # quantisup=quantisup+1
-                # }
                 if(input$scale6==gettext("Scaled")) typ="s"
                 if(input$scale6==gettext("Unscaled")) typ="c"
               }
               else if(input$typeG6==gettext("Qualitative")){
                 typ="n"
-                nbquali=nbquali+1
-                listquali=c(listquali,input$variables6)
               }
               else if(input$typeG6==gettext("Frequencies")){
                 typ="f"
-                nbfreq=nbfreq+1
               }
               if(input$typeG62==gettext("Supplementary")) gsup=c(gsup,6)
               types=c(types,typ)
               nom=c(nom,input$nameG6)
               if(input$activeG7==TRUE && length(input$variables7)>0){
-                dataselec=cbind(dataselec,x[,input$variables7])
-                if(length(input$variables7)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables7
                 groupe=c(groupe,length(input$variables7))
-                nbgroupe=7
                 if(input$typeG7==gettext("Quantitative")){
-                  nbquanti=nbquanti+1
-                  # if(input$typeG72==gettext("Supplementary")){
-                    # quantisup=quantisup+1
-                  # }
                   if(input$scale7==gettext("Scaled")) typ="s"
                   if(input$scale7==gettext("Unscaled")) typ="c"
                 }
                 else if(input$typeG7==gettext("Qualitative")){
                   typ="n"
-                  nbquali=nbquali+1
-                  listquali=c(listquali,input$variables7)
                 }
                 else if(input$typeG7==gettext("Frequencies")){
                   typ="f"
-                  nbfreq=nbfreq+1
                 }
                 if(input$typeG72==gettext("Supplementary")) gsup=c(gsup,7)
                 types=c(types,typ)
                 nom=c(nom,input$nameG7)
                 if(input$activeG8==TRUE && length(input$variables8)>0){
-                  dataselec=cbind(dataselec,x[,input$variables8])
-                  if(length(input$variables8)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables8
                   groupe=c(groupe,length(input$variables8))
-                  nbgroupe=8
                   if(input$typeG8==gettext("Quantitative")){
-                    nbquanti=nbquanti+1
-                    # if(input$typeG82==gettext("Supplementary")){
-                      # quantisup=quantisup+1
-                    # }
                     if(input$scale8==gettext("Scaled")) typ="s"
                     if(input$scale8==gettext("Unscaled")) typ="c"
                   }
                   else if(input$typeG8==gettext("Qualitative")){
                     typ="n"
-                    nbquali=nbquali+1
-                    listquali=c(listquali,input$variables8)
                   }
                   else if(input$typeG8==gettext("Frequencies")){
                     typ="f"
-                    nbfreq=nbfreq+1
                   }
                   if(input$typeG82==gettext("Supplementary")) gsup=c(gsup,8)
                   types=c(types,typ)
                   nom=c(nom,input$nameG8)
                   if(input$activeG9==TRUE && length(input$variables9)>0){
-                    dataselec=cbind(dataselec,x[,input$variables9])
-                    if(length(input$variables9)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables9
                     groupe=c(groupe,length(input$variables9))
-                    nbgroupe=9
                     if(input$typeG9==gettext("Quantitative")){
-                      nbquanti=nbquanti+1
-                      # if(input$typeG92==gettext("Supplementary")){
-                        # quantisup=quantisup+1
-                      # }
                       if(input$scale9==gettext("Scaled")) typ="s"
                       if(input$scale9==gettext("Unscaled")) typ="c"
                     }
                     else if(input$typeG9==gettext("Qualitative")){
                       typ="n"
-                      nbquali=nbquali+1
-                      listquali=c(listquali,input$variables9)
                     }
                     else if(input$typeG9==gettext("Frequencies")){
                       typ="f"
-                      nbfreq=nbfreq+1
                     }
                     if(input$typeG92==gettext("Supplementary")) gsup=c(gsup,9)
                     types=c(types,typ)
                     nom=c(nom,input$nameG9)
                     if(input$activeG10==TRUE && length(input$variables10)>0){
-                      dataselec=cbind(dataselec,x[,input$variables10])
-                      if(length(input$variables10)==1) colnames(dataselec)[dim(dataselec)[2]]=input$variables10
                       groupe=c(groupe,length(input$variables10))
-                      nbgroupe=10
                       if(input$typeG10==gettext("Quantitative")){
-                        nbquanti=nbquanti+1
-                        # if(input$typeG102==gettext("Supplementary")){
-                          # quantisup=quantisup+1
-                        # }
                         if(input$scale10==gettext("Scaled")) typ="s"
                         if(input$scale10==gettext("Unscaled")) typ="c"
                       }
                       else if(input$typeG10==gettext("Qualitative")){
                         typ="n"
-                        nbquali=nbquali+1
-                        listquali=c(listquali,input$variables10)
                       }
                       else if(input$typeG10==gettext("Frequencies")){
                         typ="f"
-                        nbfreq=nbfreq+1
                       }
                       if(input$typeG102==gettext("Supplementary")) gsup=c(gsup,10)
                       types=c(types,typ)
@@ -262,28 +167,42 @@
                 }
               }
             }
-          }
+		  }
         }
       }
     }
     if(length(gsup)==0) gsup=NULL
-    if(length(input$variables1)==1) colnames(dataselec)[1]=input$variables1
-	Code <- paste0('res.MFA <- MFA(',nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4),if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10,collapse='","'),'")], group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(',ncp=',max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))), if (!is.null(nom)) paste0(',name.group=c("',paste0(nom, collapse='","'),'")'),if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),',graph=FALSE)')
-    # if (length(groupe)>1) list(res.MFA=(MFA(base=dataselec,group=groupe,type=types,name.group=nom,ncp=max(5,as.numeric(input$nb1),as.numeric(input$nb2)),num.group.sup=gsup,graph=FALSE)),DATA=(dataselec),GROUPE=(groupe),NB=(nbgroupe),TYPE=(types),NBFREQ=(nbfreq),NBQUALI=(nbquali),NBQUANTI=(nbquanti),SUP=(gsup),QUANTISUP=(quantisup),LISTQUALI=(listquali))
-    if (length(groupe)>1) list(res.MFA=eval(parse(text=Code)), Code=Code)
-	else NULL
-    })
-    
-    error=function(){
-      if(length(input$variables1)!=0 && length(input$variables2)!=0){
-        etat="ok"
-      } else{
-       etat="not"
-      }
-      return(etat)
+    if(length(input$indsup)==0){
+      suple=NULL
+    } else{
+	  suple=which(nomMFAshiny%in%input$indsup)
+    }
+
+    boolImpute <- FALSE
+	Code <- paste0("newDF <- ",nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4),if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10,collapse='","'),'")]\n')
+  if(!is.null(input$variables1)){
+	if (any(is.na(x[,which(colnames(x)%in%c(input$variables1,input$variables2,input$variables3,input$variables4,input$variables5,input$variables6,input$variables7,input$variables8,input$variables9,input$variables10))]))){
+	  boolImpute <- TRUE
+      if(length(input$impute>0)){
+	    # if (input$impute==gettext("Impute with k-dimensional MFA-model (estime k, time consuming)")){
+ 	      # Code <- paste0(Code,"nb <- missMDA::estim_ncpMFA(",nomData,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
+	      # Nbncp <- "nb"
+	    # }
+        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)")) Nbncp <- 0
+        if (input$impute==gettext("Impute with 2-dimensional MFA-model (good compromise)")) Nbncp <- 2
+      } else {
+        Nbncp <- 0
+	  }
+	  Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(newDF, ncp=",Nbncp,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+	}
+   }
+	Code <- paste0(Code,"res.MFA<-MFA(newDF")
+	if (boolImpute) Code <- paste0(Code,",tab.comp=dfcompleted")
+	Code <- paste0(Code,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(',ncp=',max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))), if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"), if (!is.null(nom)) paste0(',name.group=c("',paste0(nom, collapse='","'),'")'),if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),',graph=FALSE)')
+	if (length(groupe)>1) return(list(res.MFA=eval(parse(text=Code)), Code=Code))
+	else return(NULL)
     }
     
-       
     output$listvarG1=renderUI({
       if(input$typeG1==gettext("Quantitative") || input$typeG1==gettext("Frequencies")){
         if(length(VariableChoices)>=1) choix=VariableChoices
@@ -394,7 +313,15 @@
                          choices=choix,multiple=TRUE,selectize=TRUE))
     })
   
-  
+    error=function(){
+      if(length(input$variables1)!=0 && length(input$variables2)!=0){
+        etat <- "ok"
+      } else{
+       etat <- "not"
+      }
+      return(etat)
+    }
+      
   output$NB1 <- renderUI({
     return(textInput("nb1", label = NULL, axe1,width='41px'))
   })
@@ -412,12 +339,38 @@
     }
   })
 
+  output$imputeData <- renderUI({
+    if(any(is.na(newdataMFAshiny))){
+	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by means and proportions (fast but not recommended)"),gettext("Impute with 2-dimensional MFA-model (good compromise)")),selected=gettext("Impute by means and proportions (fast but not recommended)")))
+	} else {
+      return(tags$div(tags$label(class="control-label", "Handling missing values"),
+	   tags$div(HTML("No missing values"))))
+	}
+  })
+
   output$choixindvar=renderUI({
-    choix=gettext("Individuals")
-    if(!(is.null(codeMFA()$res.MFA[["quali.var"]]))) choix <- c(choix,gettext("Categories"))
-    if(!(is.null(codeMFA()$res.MFA$ind.sup))) choix <- c(choix,gettext("Supplementary individuals"))
-    if(!(is.null(codeMFA()$res.MFA$quali.var.sup))) choix <- c(choix,gettext("Supplementary categories"))
+    choix <- indvarMFAshiny
+      if(is.null(codeMFA()$res.MFA$ind)) choix <- setdiff(choix,gettext("Individuals"))
+      if(is.null(codeMFA()$res.MFA$ind.sup)) choix <- setdiff(choix,gettext("Supplementary individuals"))
+      if(is.null(codeMFA()$res.MFA[["quali.var"]])) choix <- setdiff(choix,gettext("Categories"))
+      if(is.null(codeMFA()$res.MFA$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories"))
+	# choix <- gettext("Individuals")
+    # if(length(input$indsup)>0) choix <- c(choix,gettext("Supplementary individuals"))
+    # if(length(QualiChoice)>0) choix <- c(choix,gettext("Categories"),gettext("Supplementary categories"))
+    ## if(!(is.null(codeMFA()$res.MFA[["quali.var"]]))) choix <- c(choix,gettext("Categories"))
+    ## if(!(is.null(codeMFA()$res.MFA$quali.var.sup))) choix <- c(choix,gettext("Supplementary categories"))
     div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw"), choices=choix, selected = indvarMFAshiny))
+  })
+
+  output$choixindvarfreq=renderUI({
+    choix <- indvarMFAshinyfreq
+      if(is.null(codeMFA()$res.MFA$ind)) choix <- setdiff(choix,gettext("Individuals"))
+      if(is.null(codeMFA()$res.MFA$ind.sup)) choix <- setdiff(choix,gettext("Supplementary individuals"))
+      if(is.null(codeMFA()$res.MFA[["quali.var"]])) choix <- setdiff(choix,gettext("Categories"))
+      if(is.null(codeMFA()$res.MFA$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories"))
+      if(is.null(codeMFA()$res.MFA[["freq"]])) choix <- setdiff(choix,gettext("Frequencies"))
+      if(is.null(codeMFA()$res.MFA$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies"))
+    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw"), choices=choix, selected = indvarMFAshinyfreq))
   })
 
   output$choixgraphic=renderUI({
@@ -478,8 +431,10 @@
     })
     
     CodeGraphInd <- function(){
+	  res.MFA <- codeMFA()$res.MFA
       validate(
         need(error()!="not",gettext("Please select at least 2 groups")),
+        need(!is.null(codeMFA()$res.MFA),gettext("You must validate the groups")),
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
         need(input$nb1 <= ncol(codeMFA()$res.MFA$ind$coord), paste(gettext("The number of dimensions must be less than"),ncol(codeMFA()$res.MFA$ind$coord))),
         need(input$nb2 <= ncol(codeMFA()$res.MFA$ind$coord), paste(gettext("The number of dimensions must be less than"),ncol(codeMFA()$res.MFA$ind$coord)))
@@ -527,14 +482,14 @@
       }
 	  inv <- c()
       if(sum(gettext("Individuals")==input$ind_var)==0)  inv<-c(inv,"'ind'")
-      if(!(is.null(codeMFA()$res.MFA[["quali.var"]])) & sum(gettext("Categories")==input$ind_var)==0) inv<-c(inv,"'quali'")
-      if(!(is.null(codeMFA()$res.MFA$quali.var.sup)) & sum(gettext("Supplementary categories")==input$ind_var)==0) inv<-c(inv,"'quali.sup'")
-      if(!(is.null(codeMFA()$res.MFA$ind.sup)) & sum(gettext("Supplementary individuals")==input$ind_var)==0) inv<-c(inv,"'ind.sup'")
+      if(length(QualiChoice)>0 & sum(gettext("Categories")==input$ind_var)==0) inv<-c(inv,"'quali'")
+      if(length(input$indsup)>0 & sum(gettext("Supplementary individuals")==input$ind_var)==0) inv<-c(inv,"'ind.sup'")
+      if(length(QualiChoice)>0 & sum(gettext("Supplementary categories")==input$ind_var)==0) inv<-c(inv,"'quali.sup'")
       if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
       if(length(inv)==1) vecinv <- inv
-      if(length(inv)==0) vecinv<-"NULL"
-	  res.MFA <- codeMFA()$res.MFA
-      Code <- paste0('plot.MFA(res.MFA, choix="ind"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(part)) paste0(",partial=",part),if(!is.null(input$partind)) {if (input$partind==TRUE) ",lab.par=TRUE"},if (vecinv!="NULL") paste(",invisible=",vecinv), if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)}, if (habi!="none" & habi!="''"){paste0(",habillage='",habi,"'")},if(input$titleInd!="MFA graph of individuals")paste0(',title="',input$titleInd,'"'),if(input$cexInd!=1)paste0(",cex=",input$cexInd,",cex.main=",input$cexInd,",cex.axis=",input$cexInd),")")
+      if(length(inv)==0 | length(input$ind_var)==0) vecinv<-"NULL"
+	  # res.MFA <- codeMFA()$res.MFA
+      Code <- paste0('plot.MFA(res.MFA, choix="ind"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(length(part)>0) paste0(",partial=",part),if(length(input$partind)>0) {paste0(",lab.par=",input$partind)},if (vecinv!="NULL") paste(",invisible=",vecinv), if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)}, if (habi!="none" & habi!="''"){paste0(",habillage='",habi,"'")},if(input$titleInd!="MFA graph of individuals")paste0(',title="',input$titleInd,'"'),if(input$cexInd!=1)paste0(",cex=",input$cexInd,",cex.main=",input$cexInd,",cex.axis=",input$cexInd),")")
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))      
     }
@@ -594,6 +549,7 @@
     CodeGraphGroup <- function(){
       validate(
         need(error()!="not",gettext("Please select at least 2 groups")),
+        need(!is.null(codeMFA()$res.MFA),gettext("You must validate the groups")),
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
 	  res.MFA <- codeMFA()$res.MFA
@@ -609,10 +565,10 @@
     CodeGraphPartial <- function(){
       validate(
         need(error()!="not",gettext("Please select at least 2 groups")),
+        need(!is.null(codeMFA()$res.MFA),gettext("You must validate the groups")),
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
-	  habi <- NULL
-      if(input$coloraxe==TRUE) habi="'group'"
+      habi="'group'"
 	  res.MFA <- codeMFA()$res.MFA
       Code <- paste0('plot.MFA(res.MFA, choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
       Plot <- eval(parse(text=Code))
@@ -629,12 +585,22 @@
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
 	  if (is.null(codeMFA()$res.MFA$freq)) return(NULL)
-	  habi <- NULL
-      if(input$coloraxe==TRUE) habi="'group'"
-      if(input$affichcol==TRUE) col=TRUE
-      if(input$affichcol==FALSE) col=FALSE
+	  habi="'group'"
 	  res.MFA <- codeMFA()$res.MFA
-      Code <- paste0('plot.MFA(res.MFA, choix="freq"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(habi)){paste0(",habillage=",habi)}, if (col==TRUE) ",lab.col=col",if(input$titleFreq!="Graph of the frequencies")paste0(',title="',input$titleFreq,'"'),if(input$cexFreq!=1)paste0(",cex=",input$cexFreq,",cex.main=",input$cexFreq,",cex.axis=",input$cexFreq),")")
+# invisible = row, row.sup, col ou col.sup
+
+	  inv <- c()
+      if(sum(gettext("Individuals")==input$ind_varfreq)==0)  inv<-c(inv,"'row'")
+      if(length(QualiChoice)>0 & sum(gettext("Categories")==input$ind_varfreq)==0) inv<-c(inv,"'quali'")
+      if(length(input$indsup)>0 & sum(gettext("Supplementary individuals")==input$ind_varfreq)==0) inv<-c(inv,"'row.sup'")
+      if(length(QualiChoice)>0 & sum(gettext("Supplementary categories")==input$ind_varfreq)==0) inv<-c(inv,"'quali.sup'")
+      if(sum(gettext("Frequencies")==input$ind_varfreq)==0) inv<-c(inv,"'col'")
+      if(sum(gettext("Supplementary frequencies")==input$ind_varfreq)==0) inv<-c(inv,"'col.sup'")
+      if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
+      if(length(inv)==1) vecinv <- inv
+      if(length(inv)==0 | length(input$ind_varfreq)==0) vecinv<-"NULL"
+
+      Code <- paste0('plot.MFA(res.MFA, choix="freq"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(habi)){paste0(",habillage=",habi)},if (vecinv!="NULL") paste(",invisible=",vecinv), if (length(input$affichcol)>0){ if (input$affichcol==FALSE) ",lab.col=FALSE"},if (length(input$affichind)>0){if (input$affichind==FALSE) paste0(",lab.ind=FALSE")}, if(input$titleFreq!="Graph of the frequencies")paste0(',title="',input$titleFreq,'"'),if(input$cexFreq!=1)paste0(",cex=",input$cexFreq,",cex.main=",input$cexFreq,",cex.axis=",input$cexFreq),")")
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))      
     }
@@ -657,8 +623,6 @@
 		)
 	  }
     })
-
-    
 
   output$sorties=renderTable({
       return(as.data.frame(codeMFA()$res.MFA$eig))
@@ -1002,7 +966,7 @@
     observe({
       if(input$MFAcode!=0){
         isolate({
-          print(codeMFA()$Code)
+          cat(codeMFA()$Code,sep="\n")
           cat(CodeGraphInd()$Code,sep="\n")
           if(!is.null(codeMFA()$res.MFA$quanti.var)) cat(CodeGraphVar()$Code,sep="\n")
           cat(CodeGraphGroup()$Code,sep="\n")
@@ -1065,6 +1029,7 @@
       res$hcpcparam <- input$hcpcparam
       res$nbdimclustMFAshiny <- input$nbDimClustering
 	  res$ind_var <- input$ind_var
+	  res$ind_varfreq <- input$ind_varfreq
       class(res)="MFAshiny"
       stopApp(returnValue=res)
      })

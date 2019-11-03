@@ -13,8 +13,8 @@ MFAshiny <- function(X){
 	  booldf <- TRUE
       assign("nomData",sys.calls()[[1]][2], envir=G)
       if(ncol(X)<=2) stop(gettext('not enough variables in your dataset'))
-     outShiny <- shiny::runApp(system.file("FactoMFAapp", package="Factoshiny"),launch.browser = TRUE)
-    # outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp')
+    outShiny <- shiny::runApp(system.file("FactoMFAapp", package="Factoshiny"),launch.browser = TRUE)
+     # outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp')
     } else{
       assign("nomData",as.character(X$call$call)[2], envir=G)
       if (!booldf) assign("nomObjectMFA",strsplit(as.character(sys.calls()[[1]][2]),split="[(]")[[1]][1], envir=G)

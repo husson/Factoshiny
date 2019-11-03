@@ -7,6 +7,7 @@ data=x
   sizeGroup <- 1
   sizePartial <- 1
   sizeFreq <- 1
+  indsupl <- NULL
   ind1=TRUE
   ind2=TRUE
   ind3=TRUE
@@ -26,7 +27,6 @@ data=x
   partaxe=TRUE
   nbdimclustMFAshiny <- 5
   hcpcparaMFAshiny <- FALSE
-  indvarMFAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary categories"),gettext("Supplementary individuals"))
 titleGroup=gettext("Groups representation")
 titleInd=gettext("Individual factor map")
 titleVar=gettext("Correlation circle")
@@ -38,4 +38,11 @@ quanti=names(which(sapply(data,is.numeric)))
 quali=names(which(!(sapply(data,is.numeric))))
 VariableChoices=quanti
 QualiChoice=quali
+indvarMFAshiny=c(gettext("Individuals"),gettext("Supplementary individuals"))
+if (length(quali)>0) indvarMFAshiny <- c(indvarMFAshiny,gettext("Categories"),gettext("Supplementary categories"))
+if (length(quanti)>0) indvarMFAshinyfreq <- c(indvarMFAshiny,gettext("Frequencies"),gettext("Supplementary frequencies"))
+listeType <- c()
+if (length(quanti)>0) listeType <- gettext("Quantitative")
+if (length(quali)>0) listeType <- c(listeType,gettext("Qualitative"))
+if (length(quanti)>0) listeType <- c(listeType,gettext("Frequencies"))
 nomDatacourt=unlist(strsplit(as.character(nomData),"\\["))[1]

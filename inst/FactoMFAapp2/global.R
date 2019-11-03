@@ -29,7 +29,9 @@ if(inherits(x,"MFA")){
   partaxe=TRUE
   nbdimclustMFAshiny <- 5
   hcpcparaMFAshiny <- FALSE
-  indvarMFAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary categories"),gettext("Supplementary individuals"))
+indvarMFAshiny=c(gettext("Individuals"),gettext("Supplementary individuals"))
+if (length(quali)>0) indvarMFAshiny <- c(indvarMFAshiny,gettext("Categories"),gettext("Supplementary categories"))
+if (length(quanti)>0) indvarMFAshinyfreq <- c(indvarMFAshiny,gettext("Frequencies"),gettext("Supplementary frequencies"))
 titleGroup=gettext("Groups representation")
 titleInd=gettext("Individual factor map")
 titleVar=gettext("Correlation circle")
@@ -62,6 +64,7 @@ if(inherits(x,"MFAshiny")){
   hide=x$hide
   colorvar=x$colorvar
   indvarMFAshiny=x$ind_var
+  indvarMFAshinyfreq=x$ind_varfreq
   freq1=x$freq1
   freq2=x$freq2
   partaxe=x$partaxe

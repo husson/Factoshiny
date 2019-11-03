@@ -220,8 +220,7 @@
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
-	  habi <- NULL
-      if(input$coloraxe==TRUE) habi="'group'"
+      habi="'group'"
       Code <- paste0('plot.MFA(',nomObjectMFA,', choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))      
@@ -231,18 +230,40 @@
       p <- print(CodeGraphPartial()$Plot)
     })
 
+  output$choixindvarfreq=renderUI({
+    choix <- indvarMFAshinyfreq
+      if(is.null(anafact$ind)) choix <- setdiff(choix,gettext("Individuals"))
+      if(is.null(anafact$ind.sup)) choix <- setdiff(choix,gettext("Supplementary individuals"))
+      if(is.null(anafact[["quali.var"]])) choix <- setdiff(choix,gettext("Categories"))
+      if(is.null(anafact$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories"))
+      if(is.null(anafact[["freq"]])) choix <- setdiff(choix,gettext("Frequencies"))
+      if(is.null(anafact$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies"))
+    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw"), choices=choix, selected = indvarMFAshinyfreq))
+  })
+
     CodeGraphFreq <- function(){
       validate(
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
       )
 	  if (is.null(anafact$freq)) return(NULL)
-	  habi <- NULL
-      if(input$coloraxe==TRUE) habi="'group'"
-      if(input$affichcol==TRUE) col=TRUE
-      if(input$affichcol==FALSE) col=FALSE
-      Code <- paste0('plot.MFA(',nomObjectMFA,', choix="freq"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(habi)){paste0(",habillage=",habi)}, if (col==TRUE) ",lab.col=col",if(input$titleFreq!="Graph of the frequencies")paste0(',title="',input$titleFreq,'"'),if(input$cexFreq!=1)paste0(",cex=",input$cexFreq,",cex.main=",input$cexFreq,",cex.axis=",input$cexFreq),")")
+	  habi="'group'"
+# invisible = row, row.sup, col ou col.sup
+
+	  inv <- c()
+      if(sum(gettext("Individuals")==input$ind_varfreq)==0)  inv<-c(inv,"'row'")
+      if(length(QualiChoice)>0 & sum(gettext("Categories")==input$ind_varfreq)==0) inv<-c(inv,"'quali'")
+      if(length(input$indsup)>0 & sum(gettext("Supplementary individuals")==input$ind_varfreq)==0) inv<-c(inv,"'row.sup'")
+      if(length(QualiChoice)>0 & sum(gettext("Supplementary categories")==input$ind_varfreq)==0) inv<-c(inv,"'quali.sup'")
+      if(sum(gettext("Frequencies")==input$ind_varfreq)==0) inv<-c(inv,"'col'")
+      if(sum(gettext("Supplementary frequencies")==input$ind_varfreq)==0) inv<-c(inv,"'col.sup'")
+      if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
+      if(length(inv)==1) vecinv <- inv
+      if(length(inv)==0 | length(input$ind_varfreq)==0) vecinv<-"NULL"
+
+      Code <- paste0('plot.MFA(',nomObjectMFA,', choix="freq"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(habi)){paste0(",habillage=",habi)},if (vecinv!="NULL") paste(",invisible=",vecinv), if (length(input$affichcol)>0){ if (input$affichcol==FALSE) ",lab.col=FALSE"},if (length(input$affichind)>0){if (input$affichind==FALSE) paste0(",lab.ind=FALSE")}, if(input$titleFreq!="Graph of the frequencies")paste0(',title="',input$titleFreq,'"'),if(input$cexFreq!=1)paste0(",cex=",input$cexFreq,",cex.main=",input$cexFreq,",cex.axis=",input$cexFreq),")")
+      # Code <- paste0('plot.MFA(',nomObjectMFA,', choix="freq"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(habi)){paste0(",habillage=",habi)}, if (col==TRUE) ",lab.col=col",if(input$titleFreq!="Graph of the frequencies")paste0(',title="',input$titleFreq,'"'),if(input$cexFreq!=1)paste0(",cex=",input$cexFreq,",cex.main=",input$cexFreq,",cex.axis=",input$cexFreq),")")
       Plot <- eval(parse(text=Code))
-	  return(list(Code=Code,Plot=Plot))      
+	  return(list(Code=Code,Plot=Plot))
     }
     
     output$map6 <- renderPlot({
@@ -628,6 +649,7 @@
       res$hcpcparam <- input$hcpcparam
       res$nbdimclustMFAshiny <- input$nbDimClustering
 	  res$ind_var <- input$ind_var
+	  res$ind_varfreq <- input$ind_varfreq
       class(res)="MFAshiny"
       stopApp(returnValue=res)
      })

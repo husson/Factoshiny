@@ -2195,3 +2195,13 @@ msgstr "Libellés pour un cos2 plus grand que"
 
 msgid "select the variable"
 msgstr "choix de la variable"
+
+msgid "You must validate the groups"
+msgstr "Vous devez valider les groupes"
+
+msgid "Create and validate the groups"
+msgstr "Définir et valider les groupes"
+
+msgid "Validate the groups"
+msgstr "Valider les groupes"
+

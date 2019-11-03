@@ -76,6 +76,7 @@ fluidPage(
           condition=paste("input.choixgraph=='",gettext("Frequencies"),"'",sep=''),
           textInput("titleFreq",gettext("Title of the graph: "), titleFreq),
           sliderInput("cexFreq",gettext("Size of labels"),min=0.5,max=2.5,value=sizeFreq,step=0.05,ticks=FALSE),
+          uiOutput("choixindvarfreq"),
           checkboxInput("affichind",gettext("Draw labels for the mean individuals"),freq1),
           checkboxInput("affichcol",gettext("Draw labels for the columns"),freq2)
         ),
@@ -83,7 +84,6 @@ fluidPage(
           condition=paste("input.choixgraph=='",gettext("Partial axes"),"'",sep=''),
           textInput("titlePartial",gettext("Title of the graph: "), titlePartial),
           sliderInput("cexPartial",gettext("Size of labels"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE)
-          # checkboxInput("coloraxe",gettext("Color the partial axe by group"),partaxe)
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Groups"),"'",sep=''),

@@ -151,8 +151,8 @@
     if(any(is.na(newdataMCAshiny[,qualiMCAshiny]))){
 	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Consider NA as new category",domain="R-Factoshiny"),gettext("Impute with the proportions",domain="R-Factoshiny"),gettext("Impute with 2-dimensional MCA-model (good compromise)",domain="R-Factoshiny"),gettext("Impute with k-dimensional MCA-model (estime k, time consuming)",domain="R-Factoshiny")),selected=gettext("Consider NA as new category",domain="R-Factoshiny")))
 	} else {
-      return(tags$div(tags$label(class="control-label", "Handling missing values"),
-	   tags$div(HTML("No missing values"))))
+      return(tags$div(tags$label(class="control-label", gettext("Handling missing values",domain="R-Factoshiny")),
+	   tags$div(HTML(gettext("No missing values",domain="R-Factoshiny")))))
 	}
   })
 

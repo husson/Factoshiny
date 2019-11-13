@@ -226,21 +226,21 @@ fluidPage(
                            conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the individuals",domain="R-Factoshiny"),"'",sep=''),
                              h6(gettext("Coordinates",domain="R-Factoshiny")),
-                             div(align="center",DT::dataTableOutput("sorties22")),
+                             div(align="center",tableOutput("sorties22")),
                              br(),
                              h6("Contributions"),
-                             div(align="center",DT::dataTableOutput("sorties33")),
+                             div(align="center",tableOutput("sorties33")),
                              br(),
                              h6("Cos2"),
-                             div(align="center",DT::dataTableOutput("sorties44"))),
+                             div(align="center",tableOutput("sorties44"))),
                            
                            conditionalPanel(
                                condition=paste("input.out=='",gettext("Results of the supplementary individuals",domain="R-Factoshiny"),"'",sep=''),
                              h6(gettext("Coordinates",domain="R-Factoshiny")),
-                             div(align="center",DT::dataTableOutput("sorties22s")),
+                             div(align="center",tableOutput("sorties22s")),
                              br(),
                              h6("Cos2"),
-                             div(align="center",DT::dataTableOutput("sorties44s"))),
+                             div(align="center",tableOutput("sorties44s"))),
 
                            conditionalPanel(
                                condition=paste("input.out=='",gettext("Summary of outputs",domain="R-Factoshiny"),"'",sep=''),

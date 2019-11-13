@@ -3,13 +3,13 @@ if(is.data.frame(x)==TRUE){
   newdataMCAshiny=x
   axe1MCAshiny=1
   axe2MCAshiny=2
-  varsupMCAshiny=c(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables"))
-  indvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary categories"),gettext("Supplementary individuals"))
+  varsupMCAshiny=c(gettext("Active qualitative variables",domain="R-Factoshiny"),gettext("Supplementary qualitative variables",domain="R-Factoshiny"),gettext("Supplementary quantitative variables",domain="R-Factoshiny"))
+  indvarMCAshiny=c(gettext("Individuals",domain="R-Factoshiny"),gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"))
   labvarMCAshiny=c()
   habillageindMCAshiny <- NULL
-  selectionMCAshiny=gettext("No selection")
+  selectionMCAshiny=gettext("No selection",domain="R-Factoshiny")
   selection2MCAshiny=NULL
-  selection3MCAshiny=gettext("No selection")
+  selection3MCAshiny=gettext("No selection",domain="R-Factoshiny")
   selection4MCAshiny=NULL
   nbdimclustMCAshiny <- 5
   hcpcparaMCAshiny <- FALSE
@@ -19,11 +19,11 @@ if(is.data.frame(x)==TRUE){
   qualiMCAshiny=names(which(!(sapply(newdataMCAshiny,is.numeric))))
   supqualiMCAshiny=NULL
   quantiSMCAshiny=NULL
-  labvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  labvarMCAshiny=c(gettext("Individuals",domain="R-Factoshiny"),gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   indsuplMCAshiny=NULL
-  title1MCAshiny=gettext("MCA factor map")
-  title2MCAshiny=gettext("Variables representation")
-  title3MCAshiny=gettext("Supplementary variables on the MCA map")
+  title1MCAshiny=gettext("MCA factor map",domain="R-Factoshiny")
+  title2MCAshiny=gettext("Variables representation",domain="R-Factoshiny")
+  title3MCAshiny=gettext("Supplementary variables on the MCA map",domain="R-Factoshiny")
   color1MCAshiny="black"
   color2MCAshiny="blue" #   #0C2B94
   color3MCAshiny="red"
@@ -33,10 +33,10 @@ if(is.data.frame(x)==TRUE){
   color7MCAshiny="blue"
   color8MCAshiny="blue"
   valdefMCAshiny=FALSE
-  color_pointInit <- gettext("active/supplementary")
-  color_ModInit <- gettext("active/supplementary")
+  color_pointInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  color_ModInit <- gettext("active/supplementary",domain="R-Factoshiny")
   pvalueDimdescInit <- 0.05
-  choixLabelInit <- c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  choixLabelInit <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
 }
 
 if(inherits(x, "MCAshiny")){
@@ -83,19 +83,19 @@ if(inherits(x, "MCA")){
   indsuplMCAshiny=rownames(x$ind.sup$coord)
   axe1MCAshiny=1
   axe2MCAshiny=2
-  varsupMCAshiny=c(gettext("Active qualitative variables"),gettext("Supplementary qualitative variables"),gettext("Supplementary quantitative variables"))
-  indvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary categories"),gettext("Supplementary individuals"))
-  labvarMCAshiny=c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  varsupMCAshiny=c(gettext("Active qualitative variables",domain="R-Factoshiny"),gettext("Supplementary qualitative variables",domain="R-Factoshiny"),gettext("Supplementary quantitative variables",domain="R-Factoshiny"))
+  indvarMCAshiny=c(gettext("Individuals",domain="R-Factoshiny"),gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"))
+  labvarMCAshiny=c(gettext("Individuals",domain="R-Factoshiny"),gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   nbdimclustMCAshiny <- 5
   hcpcparaMCAshiny <- FALSE
   habillageindMCAshiny <- NULL
-  selectionMCAshiny=gettext("No selection")
+  selectionMCAshiny=gettext("No selection",domain="R-Factoshiny")
   selection2MCAshiny=NULL
-  selection3MCAshiny=gettext("No selection")
+  selection3MCAshiny=gettext("No selection",domain="R-Factoshiny")
   selection4MCAshiny=NULL
-  title1MCAshiny=gettext("MCA factor map")
-  title2MCAshiny=gettext("Variables representation")
-  title3MCAshiny=gettext("Supplementary variables on the MCA map")
+  title1MCAshiny=gettext("MCA factor map",domain="R-Factoshiny")
+  title2MCAshiny=gettext("Variables representation",domain="R-Factoshiny")
+  title3MCAshiny=gettext("Supplementary variables on the MCA map",domain="R-Factoshiny")
   color1MCAshiny="black"
   color2MCAshiny="blue" #   #0C2B94
   color3MCAshiny="red"
@@ -107,9 +107,9 @@ if(inherits(x, "MCA")){
   valdefMCAshiny=FALSE
   poids1MCAshiny <- x$call$row.w
   pvalueDimdescInit <- 0.05
-  color_pointInit <- gettext("active/supplementary")
-  color_ModInit <- gettext("active/supplementary")
-  choixLabelInit <- c(gettext("Individuals"),gettext("Categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  color_pointInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  color_ModInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  choixLabelInit <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   if(!is.null(poids1MCAshiny)){
     if(sum(poids1MCAshiny!=rep(1,length(poids1MCAshiny)))==0){
       poids1MCAshiny <- NULL

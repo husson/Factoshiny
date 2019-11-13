@@ -1,7 +1,7 @@
 # ui script for HCPC2
 
 fluidPage(
-  titlePanel(div(paste(gettext("HCPC on the dataset"),nomDataHCPCshiny),style="color:#0A2A12",align="center"),windowTitle="HCPCshiny"),
+  titlePanel(div(paste(g 	 	 	ettext("HCPC on the dataset",domain="R-Factoshiny"),nomDataHCPCshiny),style="color:#0A2A12",align="center"),windowTitle="HCPCshiny"),
 
   sidebarLayout(
     sidebarPanel(
@@ -13,99 +13,94 @@ fluidPage(
 		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
-        div(align="center",checkboxInput("hcpcparam",gettext("Show HCPC parameters"),FALSE)),
+        div(align="center",checkboxInput("hcpcparam",gettext("Show HCPC parameters",domain="R-Factoshiny"),FALSE)),
       conditionalPanel(
         condition="input.hcpcparam==true",
       uiOutput("clusters"),
       hr(),
       checkboxInput("consoli","Consolidation",consolidfHCPCshiny),
       hr(),
-      radioButtons("metric",gettext("Which metric would you like to use?"),choices=list(gettext("Euclidean"),"Manhattan"),inline=TRUE,select=metricdfHCPCshiny)
+      radioButtons("metric",gettext("Which metric would you like to use?",domain="R-Factoshiny"),choices=list(gettext("Euclidean",domain="R-Factoshiny"),"Manhattan"),inline=TRUE,select=metricdfHCPCshiny)
       ),
       style = "padding: 3px;background-color: #ffdbdb;"),
       wellPanel(
-      div(align="center",checkboxInput("graph",gettext("Graphical options"),FALSE)),
+      div(align="center",checkboxInput("graph",gettext("Graphical options",domain="R-Factoshiny"),FALSE)),
       conditionalPanel(
         condition="input.graph==true",
-          div(gettext("Axes:"), style="display: inline-block;padding: 5px"),
+          div(gettext("Axes:",domain="R-Factoshiny"), style="display: inline-block;padding: 5px"),
           div(uiOutput("NB1"), style="display: inline-block;"),
           div(uiOutput("NB2"), style="display: inline-block;"),
-      # fluidRow(
-        # column(5,selectInput("nb1", label = h6(gettext("x axis")),
-                             # choices = list("1" = 1, "2" = 2, "3" = 3,"4"= 4,"5" =5), selected = nb1dfHCPCshiny,width='80%')),
-        # column(5,selectInput("nb2", label =h6(gettext("y axis")), 
-                             # choices = list("1" = 1, "2" = 2,"3" = 3,"4"= 4,"5" =5), selected = nb2dfHCPCshiny,width='80%'))),
-      radioButtons("HCPCgraph",gettext("Which graph do you want to modify?"),
-                   choices=list(gettext("Hierarchical tree"),gettext("Factorial map"),gettext("3D plot")),inline=TRUE),
+      radioButtons("HCPCgraph",gettext("Which graph do you want to modify?",domain="R-Factoshiny"),
+                   choices=list(gettext("Hierarchical tree",domain="R-Factoshiny"),gettext("Factorial map",domain="R-Factoshiny"),gettext("3D plot",domain="R-Factoshiny")),inline=TRUE),
       conditionalPanel(
-        condition=paste("input.HCPCgraph=='",gettext("3D plot"),"'",sep=''),
-        textInput("title1HCPCshiny",gettext("Title of the graph: "), title1HCPCshiny),
-        checkboxInput("nom3D",gettext("Names on 3D plot"),dfHCPCshiny),
-        checkboxInput("center",gettext("Draw centers of clusters"),centerdfHCPCshiny),
+        condition=paste("input.HCPCgraph=='",gettext("3D plot",domain="R-Factoshiny"),"'",sep=''),
+        textInput("title1HCPCshiny",gettext("Title of the graph: ",domain="R-Factoshiny"), title1HCPCshiny),
+        checkboxInput("nom3D",gettext("Names on 3D plot",domain="R-Factoshiny"),dfHCPCshiny),
+        checkboxInput("center",gettext("Draw centers of clusters",domain="R-Factoshiny"),centerdfHCPCshiny),
         hr(),
-        sliderInput("num",gettext("Angle (in degrees)"),value=numdfHCPCshiny,min=0,max=360,step=1)
+        sliderInput("num",gettext("Angle (in degrees)",domain="R-Factoshiny"),value=numdfHCPCshiny,min=0,max=360,step=1)
         ),
       conditionalPanel(
-        condition=paste("input.HCPCgraph=='",gettext("Factorial map"),"'",sep=''),
-        textInput("title2HCPCshiny",gettext("Title of the graph:"), title2HCPCshiny),
-        checkboxInput("drawtree",gettext("Draw tree"),drawdfHCPCshiny)
+        condition=paste("input.HCPCgraph=='",gettext("Factorial map",domain="R-Factoshiny"),"'",sep=''),
+        textInput("title2HCPCshiny",gettext("Title of the graph:",domain="R-Factoshiny"), title2HCPCshiny),
+        checkboxInput("drawtree",gettext("Draw tree",domain="R-Factoshiny"),drawdfHCPCshiny)
         ),
       conditionalPanel(
-        condition=paste("input.HCPCgraph=='",gettext("Hierarchical tree"),"'",sep=''),
-        textInput("title3HCPCshiny",gettext("Title of the graph:"), title3HCPCshiny))
+        condition=paste("input.HCPCgraph=='",gettext("Hierarchical tree",domain="R-Factoshiny"),"'",sep=''),
+        textInput("title3HCPCshiny",gettext("Title of the graph:",domain="R-Factoshiny"), title3HCPCshiny))
       ),
       style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
-        div(align="center",checkboxInput("reportparam",gettext("Automatic report"),FALSE)),
+        div(align="center",checkboxInput("reportparam",gettext("Automatic report",domain="R-Factoshiny"),FALSE)),
         conditionalPanel(
           condition="input.reportparam==true",
-		  div(gettext("File name (without extension):")),
-          textInput("titleFile",NULL, paste0(gettext("Report"),"_",Sys.Date()),width=200),
-          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("English"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language"), choices=c(gettext("English"),gettext("French")), selected = gettext("French"), inline=TRUE)},
+		  div(gettext("File name (without extension):",domain="R-Factoshiny")),
+          textInput("titleFile",NULL, paste0(gettext("Report",domain="R-Factoshiny"),"_",Sys.Date()),width=200),
+          if (strsplit(Sys.getlocale("LC_COLLATE"),"_")[[1]][1]!="French"){ radioButtons("choixLANG",gettext("Language",domain="R-Factoshiny"), choices=c(gettext("English",domain="R-Factoshiny"),gettext("French",domain="R-Factoshiny")), selected = gettext("English",domain="R-Factoshiny"), inline=TRUE)} else {radioButtons("choixLANG",gettext("Language",domain="R-Factoshiny"), choices=c(gettext("English",domain="R-Factoshiny"),gettext("French",domain="R-Factoshiny")), selected = gettext("French",domain="R-Factoshiny"), inline=TRUE)},
 		  div(downloadButton("downloadInvestigateRmd", "Rmd",style = "padding: 3px;"),actionButton("Investigatehtml", "html"), actionButton("Investigatedoc", "doc")),
-		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process..."),id="loadmessage"))
+		  conditionalPanel(condition="$('html').hasClass('shiny-busy')",tags$div(gettext("Ongoing reporting process...",domain="R-Factoshiny"),id="loadmessage"))
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-      div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
-      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
       mainPanel(
         tags$style(type = "text/css", "a{color: #0B6121;}"),
         tabsetPanel(id = "graph_sort",
-                    tabPanel(gettext("Graphs"),
+                    tabPanel(gettext("Graphs",domain="R-Factoshiny"),
 fluidRow(
                            br(),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("mapTree", height="500")),
                              br(),
-                        p(gettext("Download as"),downloadButton("downloadData6","jpg"),downloadButton("downloadData7","png"),downloadButton("downloadData8","pdf"),align="center"),
+                        p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData6","jpg"),downloadButton("downloadData7","png"),downloadButton("downloadData8","pdf"),align="center"),
                              br(),
 							 align="center"),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("map2D", height="500")),
                              br(),
-                        p(gettext("Download as"),downloadButton("downloadData1","jpg"),downloadButton("downloadData","png"),downloadButton("downloadData2","pdf"),align="center"),
+                        p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData1","jpg"),downloadButton("downloadData","png"),downloadButton("downloadData2","pdf"),align="center"),
  							 align="center")),
                             br(),
                               div(align="center",shinyjqui::jqui_resizable(plotOutput("map3D", height="500"))),
                              br(),
-                p(gettext("Download as"),downloadButton("downloadData4","jpg"),downloadButton("downloadData3","png"),downloadButton("downloadData5","pdf"),align="center"),
+                p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData4","jpg"),downloadButton("downloadData3","png"),downloadButton("downloadData5","pdf"),align="center"),
                              br()
                              ),
 
-                    tabPanel(gettext("Values"),
+                    tabPanel(gettext("Values",domain="R-Factoshiny"),
                              br(),
-                             radioButtons("out",gettext("Which outputs do you want?"),
-                                          choices=list(gettext("Description of classes by variables"),gettext("Description of classes by axes"),gettext("Parangons")),selected=gettext("Description of classes by variables"),inline=TRUE),
+                             radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
+                                          choices=list(gettext("Description of classes by variables",domain="R-Factoshiny"),gettext("Description of classes by axes",domain="R-Factoshiny"),gettext("Parangons",domain="R-Factoshiny")),selected=gettext("Description of classes by variables",domain="R-Factoshiny"),inline=TRUE),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Description of classes by variables"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Description of classes by variables",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("descript"))
                                ),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Parangons"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Parangons",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("parangons"))),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Description of classes by axes"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Description of classes by axes",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("axes")))
                              )
         )

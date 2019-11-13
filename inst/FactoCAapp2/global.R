@@ -17,14 +17,14 @@ if(inherits(x, "data.frame") | inherits(x, "CA")){
   axe1CAshiny <- 1
   axe2CAshiny <- 2
   InvisibleCAshiny <- NULL
-  selec1CAshiny <- gettext("No selection")
-  selec2CAshiny <- gettext("No selection")
+  selec1CAshiny <- gettext("No selection",domain="R-Factoshiny")
+  selec2CAshiny <- gettext("No selection",domain="R-Factoshiny")
   valueselec1CAshiny <- NULL
   valueselec2CAshiny <- NULL
   sizeCAshiny <- 1
-  title1CAshiny <- gettext("CA factor map")
-  title2CAshiny <- gettext("Quantitative supplementary variables")
-  color_pointInit <- gettext("row/column")
+  title1CAshiny <- gettext("CA factor map",domain="R-Factoshiny")
+  title2CAshiny <- gettext("Quantitative supplementary variables",domain="R-Factoshiny")
+  color_pointInit <- gettext("row/column",domain="R-Factoshiny")
   col1CAshiny <- "blue"
   col2CAshiny <- "red"
   col3CAshiny <- "#0C2B94"
@@ -68,9 +68,9 @@ nbdimclustCAshiny <- x$nbdimclustCAshiny
 VariableChoicesCAshiny <- names(which(sapply(newdataCAshiny,is.numeric)))
 QualiChoiceCAshiny <- names(which(!(sapply(newdataCAshiny,is.numeric))))
 if (length(QualiChoiceCAshiny)==0){
-  listeChoixColourPoint<- list(gettext("row/column"),"cos2"="cos2","contribution"="contribution")
+  listeChoixColourPoint<- list(gettext("row/column",domain="R-Factoshiny"),"cos2"="cos2","contribution"="contribution")
 } else {
-  listeChoixColourPoint <- list(gettext("row/column"),"cos2"="cos2","contribution"="contribution",gettext("qualitative variable"))
+  listeChoixColourPoint <- list(gettext("row/column",domain="R-Factoshiny"),"cos2"="cos2","contribution"="contribution",gettext("qualitative variable",domain="R-Factoshiny"))
 }
 nomCAshiny <- rownames(newdataCAshiny)
 

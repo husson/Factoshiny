@@ -10,16 +10,16 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FA
   else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
   clustdfHCPCshiny <- resClusHCPCshiny
   consolidfHCPCshiny <- FALSE
-  metricdfHCPCshiny <- gettext("Euclidean")
+  metricdfHCPCshiny <- gettext("Euclidean",domain="R-Factoshiny")
   drawdfHCPCshiny <- FALSE
   dfHCPCshiny <- FALSE
   centerdfHCPCshiny <- FALSE
   numdfHCPCshiny <- 60
   nb1dfHCPCshiny <- 1
   nb2dfHCPCshiny <- 2
-  title1HCPCshiny <- gettext("Hierarchical tree on the factor map")
-  title2HCPCshiny <- gettext("Factor map")
-  title3HCPCshiny <- gettext("Hierarchical tree")
+  title1HCPCshiny <- gettext("Hierarchical tree on the factor map",domain="R-Factoshiny")
+  title2HCPCshiny <- gettext("Factor map",domain="R-Factoshiny")
+  title3HCPCshiny <- gettext("Hierarchical tree",domain="R-Factoshiny")
 } else {
 if(inherits(x, "HCPCshiny")){
 resultsHCPCshiny <- x$resultsHCPCshiny$call$t$res
@@ -52,16 +52,16 @@ if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | 
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   clustdfHCPCshiny=resClusHCPCshiny
   consolidfHCPCshiny=FALSE
-  metricdfHCPCshiny=gettext("Euclidean")
+  metricdfHCPCshiny=gettext("Euclidean",domain="R-Factoshiny")
   drawdfHCPCshiny=FALSE
   dfHCPCshiny=FALSE
   centerdfHCPCshiny=FALSE
   numdfHCPCshiny=60
   nb1dfHCPCshiny=1
   nb2dfHCPCshiny=2
-  title1HCPCshiny=gettext("Hierarchical tree on the factor map")
-  title2HCPCshiny=gettext("Factor map")
-  title3HCPCshiny=gettext("Hierarchical tree")
+  title1HCPCshiny=gettext("Hierarchical tree on the factor map",domain="R-Factoshiny")
+  title2HCPCshiny=gettext("Factor map",domain="R-Factoshiny")
+  title3HCPCshiny=gettext("Hierarchical tree",domain="R-Factoshiny")
 }
 
 if(inherits(x, "HCPC")){
@@ -72,7 +72,7 @@ if(inherits(x, "HCPC")){
   clustdfHCPCshiny <- x$call$t$nb.clust
   consolidfHCPCshiny <-FALSE
   if(x$call$t$tree["dist.method"]=="euclidean"){
-    metricdfHCPCshiny=gettext("Euclidean")
+    metricdfHCPCshiny=gettext("Euclidean",domain="R-Factoshiny")
   }
   if(x$call$t$tree["dist.method"]=="manhattan"){
     metricdfHCPCshiny="Manhattan"
@@ -83,9 +83,9 @@ if(inherits(x, "HCPC")){
   numdfHCPCshiny <- 60
   nb1dfHCPCshiny <- 1
   nb2dfHCPCshiny <- 2
-  title1HCPCshiny <- gettext("Hierarchical tree on the factor map")
-  title2HCPCshiny <- gettext("Factor map")
-  title3HCPCshiny <- gettext("Hierarchical tree")
+  title1HCPCshiny <- gettext("Hierarchical tree on the factor map",domain="R-Factoshiny")
+  title2HCPCshiny <- gettext("Factor map",domain="R-Factoshiny")
+  title3HCPCshiny <- gettext("Hierarchical tree",domain="R-Factoshiny")
 }
 
 # if(!(inherits(x, "HCPC") | inherits(x, "HCPCshiny"))) resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust

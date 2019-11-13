@@ -5,7 +5,7 @@ if(inherits(x, "data.frame")){
   indsupl <- NULL
   axe1 <- 1
   axe2 <- 2
-  indmodFAMDshiny <- c(gettext("Individuals"),gettext("Active categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  indmodFAMDshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Active categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   nbdimclustFAMDshiny <- 5
   hcpcparaFAMDshiny <- FALSE
   labind <- TRUE
@@ -20,9 +20,9 @@ if(inherits(x, "data.frame")){
   size <- 1
   size2 <- 1
   size3 <- 1
-  title1 <- gettext("Graph of individuals and categories")
-  title2 <- gettext("Graph of the variables")
-  title3 <- gettext("Correlation circle")
+  title1 <- gettext("Graph of individuals and categories",domain="R-Factoshiny")
+  title2 <- gettext("Graph of the variables",domain="R-Factoshiny")
+  title3 <- gettext("Correlation circle",domain="R-Factoshiny")
   pvalueDimdescInit <- 0.05
 }
 
@@ -73,13 +73,13 @@ if(inherits(x, "FAMD")){
   selection6 <- NULL
   nbdimclustFAMDshiny <- 5
   hcpcparaFAMDshiny <- FALSE
-  indmodFAMDshiny <- c(gettext("Individuals"),gettext("Active categories"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  indmodFAMDshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Active categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   size <- 1
   size2 <- 1
   size3 <- 1
-  title1 <- gettext("Graph of individuals and categories")
-  title2 <- gettext("Graph of the variables")
-  title3 <- gettext("Correlation circle")
+  title1 <- gettext("Graph of individuals and categories",domain="R-Factoshiny")
+  title2 <- gettext("Graph of the variables",domain="R-Factoshiny")
+  title3 <- gettext("Correlation circle",domain="R-Factoshiny")
   labind <- TRUE
   labvar <- TRUE
   pvalueDimdescInit <- 0.05

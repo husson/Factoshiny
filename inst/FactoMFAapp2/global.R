@@ -14,29 +14,29 @@ if(inherits(x,"MFA")){
   ind2=TRUE
   ind3=TRUE
   ind4=TRUE
-  drawing=gettext("group")
+  drawing=gettext("group",domain="R-Factoshiny")
   drawing2=NULL
-  partial=gettext("None")
+  partial=gettext("None",domain="R-Factoshiny")
   partial2=NULL
   partial3=FALSE
   selectvar2=NULL
-  selectionMFAshiny <- gettext("No selection")
+  selectionMFAshiny <- gettext("No selection",domain="R-Factoshiny")
   selection2MFAshiny <- NULL
-  hide=gettext("Nothing")
+  hide=gettext("Nothing",domain="R-Factoshiny")
   colorvar=TRUE
   freq1=TRUE
   freq2=TRUE
   partaxe=TRUE
   nbdimclustMFAshiny <- 5
   hcpcparaMFAshiny <- FALSE
-indvarMFAshiny=c(gettext("Individuals"),gettext("Supplementary individuals"))
-if (length(quali)>0) indvarMFAshiny <- c(indvarMFAshiny,gettext("Categories"),gettext("Supplementary categories"))
-if (length(quanti)>0) indvarMFAshinyfreq <- c(indvarMFAshiny,gettext("Frequencies"),gettext("Supplementary frequencies"))
-titleGroup=gettext("Groups representation")
-titleInd=gettext("Individual factor map")
-titleVar=gettext("Correlation circle")
-titlePartial=gettext("Graph of the partial axes")
-titleFreq=gettext("Graph of the frequencies")
+indvarMFAshiny=c(gettext("Individuals",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"))
+if (length(quali)>0) indvarMFAshiny <- c(indvarMFAshiny,gettext("Categories",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
+if (length(quanti)>0) indvarMFAshinyfreq <- c(indvarMFAshiny,gettext("Frequencies",domain="R-Factoshiny"),gettext("Supplementary frequencies",domain="R-Factoshiny"))
+titleGroup=gettext("Groups representation",domain="R-Factoshiny")
+titleInd=gettext("Individual factor map",domain="R-Factoshiny")
+titleVar=gettext("Correlation circle",domain="R-Factoshiny")
+titlePartial=gettext("Graph of the partial axes",domain="R-Factoshiny")
+titleFreq=gettext("Graph of the frequencies",domain="R-Factoshiny")
 }
 if(inherits(x,"MFAshiny")){
   nomObjectMFA <- x$nomObjectMFA

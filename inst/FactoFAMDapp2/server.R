@@ -2,7 +2,7 @@
       
   output$NB1 <- renderUI({
     validate(
-      need(length(allVariables)-length(input$supvar)- length(input$supvar1)>1 ,gettext("Please select at least two active variables"))
+      need(length(allVariables)-length(input$supvar)- length(input$supvar1)>1 ,gettext("Please select at least two active variables",domain="R-Factoshiny"))
     )
     if(length(allVariables)-length(input$supvar)- length(input$supvar1)>5){
        return(textInput("nb1", label = NULL, axe1,width='41px'))
@@ -13,7 +13,7 @@
   
   output$NB2=renderUI({
     validate(
-      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1 ,gettext("Please select at least two active variables"))
+      need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1 ,gettext("Please select at least two active variables",domain="R-Factoshiny"))
     )
     if((length(allVariables)-length(input$supvar)- length(input$supvar1))>5){
        return(textInput("nb2", label = NULL, axe2,width='41px'))
@@ -25,7 +25,7 @@
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
         return(tags$div( 
-            div(gettext("Number of dimensions kept for clustering"), style="display: inline-block; padding: 0px 0px 0px 0px"),
+            div(gettext("Number of dimensions kept for clustering",domain="R-Factoshiny"), style="display: inline-block; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustFAMDshiny)){5} else {nbdimclustFAMDshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
 		)
     }
@@ -33,7 +33,7 @@
 
   output$imputeData <- renderUI({
     if(any(is.na(newdata))){
-	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Impute by means and proportions (fast but not recommended)"),gettext("Impute with 2-dimensional FAMD-model (good compromise)"),gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")),selected=gettext("Impute by means and proportions (fast but not recommended)")))
+	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny"),gettext("Impute with 2-dimensional FAMD-model (good compromise)",domain="R-Factoshiny"),gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)",domain="R-Factoshiny")),selected=gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")))
 	} else {
       return(tags$div(tags$label(class="control-label", "Handling missing values"),
 	   tags$div(HTML("No missing values"))))
@@ -41,7 +41,9 @@
   })
 
   values <- reactive({
-	 if (max(input$nb1>5) | max(input$nb2>5)) return(isolate(valeur()))
+	 if (length(input$nb1)>0){
+	   if (max(input$nb1,input$nb2)>5) return(isolate(valeur()))
+	 }
 	 if (length(input$nbDimClustering)>0){
 	   if (input$nbDimClustering >5) return(isolate(valeur()))
 	 }
@@ -66,12 +68,12 @@
     if (any(is.na(newdata))){
 	  boolImpute <- TRUE
       if(length(input$impute>0)){
-	    if (input$impute==gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)")){
+	    if (input$impute==gettext("Impute with k-dimensional FAMD-model (estime k, time consuming)",domain="R-Factoshiny")){
  	      codeFAMD <- paste0(codeFAMD,"nb <- missMDA::estim_ncpFAMD(",nomData,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
 	      Nbncp <- "nb"
 	    }
-        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)")) Nbncp <- 0
-        if (input$impute==gettext("Impute with 2-dimensional FAMD-model (good compromise)")) Nbncp <- 2
+        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")) Nbncp <- 0
+        if (input$impute==gettext("Impute with 2-dimensional FAMD-model (good compromise)",domain="R-Factoshiny")) Nbncp <- 2
       } else {
         Nbncp <- 0
 	  }
@@ -87,8 +89,8 @@
 
     codeGraphVar <- reactive({
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables",domain="R-Factoshiny"))
       )
       if(input$select0=="cos2"){
         if(input$slider00!=1){
@@ -118,17 +120,17 @@
     })
     
   output$choixindmod <- renderUI({
-    choix <- gettext("Individuals")
-    if(length(input$indsup)>0) choix <- c(choix,gettext("Supplementary individuals"))
-    choix <- c(choix,gettext("Active categories"))
-    if (length(input$supvar1)>0) choix <- c(choix,gettext("Supplementary categories"))
-    div(align="left",checkboxGroupInput("ind_mod",gettext("Points to draw"), choices=choix, selected = indmodFAMDshiny))
+    choix <- gettext("Individuals",domain="R-Factoshiny")
+    if(length(input$indsup)>0) choix <- c(choix,gettext("Supplementary individuals",domain="R-Factoshiny"))
+    choix <- c(choix,gettext("Active categories",domain="R-Factoshiny"))
+    if (length(input$supvar1)>0) choix <- c(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
+    div(align="left",checkboxGroupInput("ind_mod",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indmodFAMDshiny))
   })
     
     codeGraphInd <- reactive({
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
+        need((length(allVariables)-length(input$supvar)- length(input$supvar1))>1,gettext("Please select at least two active variables",domain="R-Factoshiny"))
       )
       hab="none"
       colquali="magenta"
@@ -162,10 +164,10 @@
       selecindivtext <- paste0("'",selecindiv,"'")
     }
 
-    if(input$select==gettext("Manual")){
+    if(input$select==gettext("Manual",domain="R-Factoshiny")){
       selecindiv <- c(input$indiv)
     }
-    if(input$select==gettext("Manual")){
+    if(input$select==gettext("Manual",domain="R-Factoshiny")){
       if(length(input$indiv)==0) selecindivtext <- "NULL"
       if(length(input$indiv)>1){
         vec<- paste("'",paste(selecindiv,collapse="','"),"'",sep="")
@@ -177,10 +179,10 @@
     }
     inv <- NULL
     if(!is.null(input$ind_mod) & input$graph==TRUE) {
-      if(sum(gettext("Individuals")==input$ind_mod)==0) inv<- "ind"
-      if(sum(gettext("Active categories")==input$ind_mod)==0) inv<-c(inv,"quali")
-      if(sum(gettext("Supplementary categories")==input$ind_mod)==0) inv<-c(inv,"quali.sup")
-      if(sum(gettext("Supplementary individuals")==input$ind_mod)==0) inv<-c(inv,"ind.sup")
+      if(sum(gettext("Individuals",domain="R-Factoshiny")==input$ind_mod)==0) inv<- "ind"
+      if(sum(gettext("Active categories",domain="R-Factoshiny")==input$ind_mod)==0) inv<-c(inv,"quali")
+      if(sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$ind_mod)==0) inv<-c(inv,"quali.sup")
+      if(sum(gettext("Supplementary individuals",domain="R-Factoshiny")==input$ind_mod)==0) inv<-c(inv,"ind.sup")
 	}
 	res.FAMD <- values()$res.FAMD
     Code <- paste0("plot.FAMD(res.FAMD",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="Graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),")")
@@ -409,7 +411,7 @@
       # return(barplot(values()$res.FAMD$eig[,1],names.arg=rownames(values()$res.FAMD$eig),las=2))
     })
     
-    output$JDD=renderDataTable({
+    output$JDD=DT::renderDataTable({
       cbind(Names=rownames(newdata),newdata)},
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,

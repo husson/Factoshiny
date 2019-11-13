@@ -4,30 +4,30 @@ if(inherits(x, "data.frame")){
   quantisupPCAshiny <- NULL
   qualisupPCAshiny <- NULL
   indsuplPCAshiny <- NULL
-  labmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
-  indmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  labmodPCAshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
+  indmodPCAshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   axe1PCAshiny <- 1
   axe2PCAshiny <- 2
   nbdimclustPCAshiny <- 5
   hcpcparaPCAshiny <- FALSE
   habillageindPCAshiny2 <- habillageindPCAshiny <- NULL
-  selectionPCAshiny <- gettext("No selection")
+  selectionPCAshiny <- gettext("No selection",domain="R-Factoshiny")
   selection2PCAshiny <- NULL
-  selection3PCAshiny <- gettext("No selection")
+  selection3PCAshiny <- gettext("No selection",domain="R-Factoshiny")
   selection4PCAshiny <- NULL
   sizePCAshiny <- 1
   size2PCAshiny <- 1
-  color_pointInit <- gettext("active/supplementary")
-  color_arrowInit <- gettext("active/supplementary")
-  titre1PCAshiny <- gettext("PCA graph of individuals")
-  titre2PCAshiny <- gettext("PCA graph of variables")
+  color_pointInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  color_arrowInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  titre1PCAshiny <- gettext("PCA graph of individuals",domain="R-Factoshiny")
+  titre2PCAshiny <- gettext("PCA graph of variables",domain="R-Factoshiny")
   ellipsesPCAshiny <- FALSE
   activeindPCAshiny <- "black"
   supindPCAshiny <- "blue"
   categPCAshiny <- "magenta"
   coloractvarPCAshiny <- "black"
   colorsupvarPCAshiny <- "blue"
-  imputeInit <- gettext("Impute by the mean (fast but not recommended)")
+  imputeInit <- gettext("Impute by the mean (fast but not recommended)",domain="R-Factoshiny")
   normePCAshiny <- TRUE
   poids1PCAshiny <- NULL
   poids2PCAshiny <- NULL
@@ -67,9 +67,9 @@ if(inherits(x, "PCAshiny")){
   hcpcparaPCAshiny <- x$hcpcparam
   nbdimclustPCAshiny <- x$nbdimclustPCAshiny
   if (!is.null(x$impute)) imputeInit <- x$imputeInit
-  else imputeInit <- gettext("Impute by the mean (fast but not recommended)")
+  else imputeInit <- gettext("Impute by the mean (fast but not recommended)",domain="R-Factoshiny")
   pvalueDimdescInit <- x$pvalueDimdescInit
-  labmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  labmodPCAshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
 }
 if(inherits(x, "PCA")){
   nomDataPCAshiny <- as.character(x$call$call[2])
@@ -77,23 +77,23 @@ if(inherits(x, "PCA")){
   quantisupPCAshiny <- colnames(x$call$quanti.sup)
   qualisupPCAshiny <- colnames(x$call$quali.sup$quali.sup)
   indsuplPCAshiny <- rownames(x$ind.sup$coord)
-  labmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
-  indmodPCAshiny <- c(gettext("Individuals"),gettext("Supplementary individuals"),gettext("Supplementary categories"))
+  labmodPCAshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
+  indmodPCAshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))
   axe1PCAshiny <- 1
   axe2PCAshiny <- 2
   nbdimclustPCAshiny <- 5
   hcpcparaPCAshiny <- FALSE
   habillageindPCAshiny2 <- habillageindPCAshiny <- NULL
-  selectionPCAshiny <- gettext("No selection")
+  selectionPCAshiny <- gettext("No selection",domain="R-Factoshiny")
   selection2PCAshiny <- NULL
-  selection3PCAshiny <- gettext("No selection")
+  selection3PCAshiny <- gettext("No selection",domain="R-Factoshiny")
   selection4PCAshiny <- NULL
   sizePCAshiny <- 1
   size2PCAshiny <- 1
-  color_arrowInit <- gettext("active/supplementary")
-  color_pointInit <- gettext("active/supplementary")
-  titre1PCAshiny <- gettext("PCA graph of individuals")
-  titre2PCAshiny <- gettext("PCA graph of variables")
+  color_arrowInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  color_pointInit <- gettext("active/supplementary",domain="R-Factoshiny")
+  titre1PCAshiny <- gettext("PCA graph of individuals",domain="R-Factoshiny")
+  titre2PCAshiny <- gettext("PCA graph of variables",domain="R-Factoshiny")
   ellipsesPCAshiny <- FALSE
   activeindPCAshiny <- "black"
   supindPCAshiny <- "blue"
@@ -102,7 +102,7 @@ if(inherits(x, "PCA")){
   colorsupvarPCAshiny <- "blue"
   normePCAshiny <- x$call$scale.unit
   poids1PCAshiny <- x$call$row.w.init
-  imputeInit <- gettext("Impute by the mean (fast but not recommended)")
+  imputeInit <- gettext("Impute by the mean (fast but not recommended)",domain="R-Factoshiny")
   pvalueDimdescInit <- 0.05
   if(!is.null(poids1PCAshiny)){
     if(sum(poids1PCAshiny!=rep(1,length(poids1PCAshiny)))==0){

@@ -14,7 +14,7 @@
   })
 
     output$clusters=renderUI({
-      sliderInput("clust",gettext("Number of clusters"),min=2,max=min(10,nbindivHCPCshiny-1),value=if (!is.null(input$clust)) {input$clust} else {resClusHCPCshiny},step=1)
+      sliderInput("clust",gettext("Number of clusters",domain="R-Factoshiny"),min=2,max=min(10,nbindivHCPCshiny-1),value=if (!is.null(input$clust)) {input$clust} else {resClusHCPCshiny},step=1)
     })
     
     CodeHCPC <- reactive({
@@ -59,7 +59,7 @@
       if(input$out=="para") return(as.data.frame(values()$ind.desc))
     },rownames=TRUE)
 
-    output$JDD=renderDataTable({
+    output$JDD=DT::renderDataTable({
       cbind(Names=rownames(x),x)},
       options = list( "orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10))
     
@@ -93,7 +93,7 @@
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
 	    FactoInvestigate::Investigate(values(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= substr(tolower(input$choixLANG),1,2))
-	    print(paste0(gettext("The file "),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: "),getwd()))
+	    print(paste0(gettext("The file ",domain="R-Factoshiny"),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: ",domain="R-Factoshiny"),getwd()))
         setwd(path.aux)
     }
   )

@@ -1,7 +1,7 @@
 # ui2.R AFM
 
 fluidPage(
-  titlePanel(div(paste(gettext("MFA on the dataset "),nomData),style="color:#6E6E6E",align="center"),windowTitle="MFAshiny"),
+  titlePanel(div(paste(gettext("MFA on the dataset ",domain="R-Factoshiny"),nomData),style="color:#6E6E6E",align="center"),windowTitle="MFAshiny"),
   
   sidebarLayout(
       sidebarPanel(
@@ -36,113 +36,113 @@ fluidPage(
           tags$style(type='text/css', "#title5 { height: 25px; }")
         ),
       wellPanel(
-      div(align="center",checkboxInput("mfaparam",gettext("MFA parameters"),FALSE)),
+      div(align="center",checkboxInput("mfaparam",gettext("MFA parameters",domain="R-Factoshiny"),FALSE)),
       conditionalPanel(
         condition="input.mfaparam==true",
-          selectizeInput("indsup",gettext("Select supplementary individuals"),choices=nomMFAshiny, multiple=TRUE,selected=indsupl),
+          selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomMFAshiny, multiple=TRUE,selected=indsupl),
           uiOutput("imputeData"),
-          actionButton("submit", label = gettext("Submit"))
+          actionButton("submit", label = gettext("Submit",domain="R-Factoshiny"))
       ),
       style = "padding: 3px;background-color: #ffdbdb;"),
         wellPanel(
-        div(align="center",checkboxInput("graph",gettext("Show graphs options"),FALSE)),
+        div(align="center",checkboxInput("graph",gettext("Show graphs options",domain="R-Factoshiny"),FALSE)),
         conditionalPanel(
           condition="input.graph==true",
-          div(gettext("Axes:"), style="display: inline-block;padding: 5px"),
+          div(gettext("Axes:",domain="R-Factoshiny"), style="display: inline-block;padding: 5px"),
           div(uiOutput("NB1"), style="display: inline-block;"),
           div(uiOutput("NB2"), style="display: inline-block;"),
           uiOutput("choixgraphic"),
         conditionalPanel(
-          condition=paste("input.choixgraph=='",gettext("Individuals"),"'",sep=''),
-          textInput("titleInd",gettext("Title of the graph: "), titleInd),
-          sliderInput("cexInd",gettext("Size of labels"),min=0.5,max=2.5,value=sizeInd,step=0.05,ticks=FALSE),
+          condition=paste("input.choixgraph=='",gettext("Individuals",domain="R-Factoshiny"),"'",sep=''),
+          textInput("titleInd",gettext("Title of the graph: ",domain="R-Factoshiny"), titleInd),
+          sliderInput("cexInd",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizeInd,step=0.05,ticks=FALSE),
             uiOutput("choixindvar"),
-            selectInput("select",label=gettext("Labels for individuals selected by:"), choices=list(gettext("No selection"),"cos2"="cos2","Contribution"="contrib",gettext("Manual")),selected=selectionMFAshiny),
+            selectInput("select",label=gettext("Labels for individuals selected by:",domain="R-Factoshiny"), choices=list(gettext("No selection",domain="R-Factoshiny"),"cos2"="cos2","Contribution"="contrib",gettext("Manual",domain="R-Factoshiny")),selected=selectionMFAshiny),
             conditionalPanel(
               condition="input.select=='cos2'",
               if(selectionMFAshiny=="cos2"){
-                div(align="center",sliderInput("sliderind1", label = gettext("Labels for cos2 greater than"),
+                div(align="center",sliderInput("sliderind1", label = gettext("Labels for cos2 greater than",domain="R-Factoshiny"),
                                                min = 0, max = 1, value =as.numeric(selection2MFAshiny),step=0.05))}
               else{
-                div(align="center",sliderInput("sliderind1", label = gettext("Labels for cos2 greater than"),
+                div(align="center",sliderInput("sliderind1", label = gettext("Labels for cos2 greater than",domain="R-Factoshiny"),
                                                min = 0, max = 1, value =0,step=0.05))
               }),
 			  
             conditionalPanel(
               condition="input.select=='contrib'",
               if(selectionMFAshiny=="contrib"){
-                div(align="center",sliderInput("sliderind0", label = gettext("Number of the most contributive individuals"),
+                div(align="center",sliderInput("sliderind0", label = gettext("Number of the most contributive individuals",domain="R-Factoshiny"),
                                                min = 1, max = length(nomMFAshiny), value =as.numeric(selection2MFAshiny),step=1))}
               else{
-                div(align="center",sliderInput("sliderind0", label = gettext("Number of the most contributive individuals"),
+                div(align="center",sliderInput("sliderind0", label = gettext("Number of the most contributive individuals",domain="R-Factoshiny"),
                                                min = 1, max = length(nomMFAshiny), value =length(nomMFAshiny),step=1)) 
               }),
             conditionalPanel(
-              condition=paste("input.select=='",gettext("Manual"),"'",sep=''),
-                selectInput("indiv",label=gettext("Select individuals:"),
+              condition=paste("input.select=='",gettext("Manual",domain="R-Factoshiny"),"'",sep=''),
+                selectInput("indiv",label=gettext("Select individuals:",domain="R-Factoshiny"),
                             choices=nomMFAshiny,multiple=TRUE,selected=selection2MFAshiny)
 			  ),
 			  uiOutput("drawindiv"),
           conditionalPanel(
-            condition=paste("input.drawind=='",gettext("categorical variable"),"'",sep=''),
+            condition=paste("input.drawind=='",gettext("categorical variable",domain="R-Factoshiny"),"'",sep=''),
             uiOutput("habillagequali")
             ),
-          radioButtons("choixpartial",gettext("Partial points to draw"),choices=list(gettext("None"),gettext("All"),gettext("Choose")),selected=partial,inline=TRUE),
+          radioButtons("choixpartial",gettext("Partial points to draw",domain="R-Factoshiny"),choices=list(gettext("None",domain="R-Factoshiny"),gettext("All",domain="R-Factoshiny"),gettext("Choose",domain="R-Factoshiny")),selected=partial,inline=TRUE),
           conditionalPanel(
-            condition=paste("input.choixpartial=='",gettext("Choose"),"'",sep=''),
+            condition=paste("input.choixpartial=='",gettext("Choose",domain="R-Factoshiny"),"'",sep=''),
             uiOutput("indivpartiel2")),
           conditionalPanel(
-            condition=paste("input.choixpartial!='",gettext("None"),"'",sep=''),
-            checkboxInput("partind",gettext("Draw labels for the partial individuals"),partial3))
+            condition=paste("input.choixpartial!='",gettext("None",domain="R-Factoshiny"),"'",sep=''),
+            checkboxInput("partind",gettext("Draw labels for the partial individuals",domain="R-Factoshiny"),partial3))
           ),
         conditionalPanel(
-          condition=paste("input.choixgraph=='",gettext("Quantitative variables"),"'",sep=''),
-          textInput("titleVar",gettext("Title of the graph: "), titleVar),
-          sliderInput("cexVar",gettext("Size of labels"),min=0.5,max=2.5,value=sizeVar,step=0.05,ticks=FALSE),
-          radioButtons("selection",gettext("Draw variables according to:"),choices=list(gettext("No selection"),"Contribution"="contrib","Cos2"="cos2"),selected=gettext("No selection")),
+          condition=paste("input.choixgraph=='",gettext("Quantitative variables",domain="R-Factoshiny"),"'",sep=''),
+          textInput("titleVar",gettext("Title of the graph: ",domain="R-Factoshiny"), titleVar),
+          sliderInput("cexVar",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizeVar,step=0.05,ticks=FALSE),
+          radioButtons("selection",gettext("Draw variables according to:",domain="R-Factoshiny"),choices=list(gettext("No selection",domain="R-Factoshiny"),"Contribution"="contrib","Cos2"="cos2"),selected=gettext("No selection",domain="R-Factoshiny")),
           uiOutput("slider1"),
           uiOutput("hide2"),
-          checkboxInput("colorgroup",gettext("Color the variables by group"),colorvar) 
+          checkboxInput("colorgroup",gettext("Color the variables by group",domain="R-Factoshiny"),colorvar) 
         ),
         conditionalPanel(
-          condition=paste("input.choixgraph=='",gettext("Frequencies"),"'",sep=''),
-          textInput("titleFreq",gettext("Title of the graph: "), titleFreq),
-          sliderInput("cexFreq",gettext("Size of labels"),min=0.5,max=2.5,value=sizeFreq,step=0.05,ticks=FALSE),
+          condition=paste("input.choixgraph=='",gettext("Frequencies",domain="R-Factoshiny"),"'",sep=''),
+          textInput("titleFreq",gettext("Title of the graph: ",domain="R-Factoshiny"), titleFreq),
+          sliderInput("cexFreq",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizeFreq,step=0.05,ticks=FALSE),
             uiOutput("choixindvarfreq"),
-          checkboxInput("affichind",gettext("Draw labels for the mean individuals"),freq1),
-          checkboxInput("affichcol",gettext("Draw labels for the columns"),freq2)
+          checkboxInput("affichind",gettext("Draw labels for the mean individuals",domain="R-Factoshiny"),freq1),
+          checkboxInput("affichcol",gettext("Draw labels for the columns",domain="R-Factoshiny"),freq2)
         ),
         conditionalPanel(
-          condition=paste("input.choixgraph=='",gettext("Partial axes"),"'",sep=''),
-          textInput("titlePartial",gettext("Title of the graph: "), titlePartial),
-          sliderInput("cexPartial",gettext("Size of labels"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE)
-          # checkboxInput("coloraxe",gettext("Color the partial axe by group"),partaxe)
+          condition=paste("input.choixgraph=='",gettext("Partial axes",domain="R-Factoshiny"),"'",sep=''),
+          textInput("titlePartial",gettext("Title of the graph: ",domain="R-Factoshiny"), titlePartial),
+          sliderInput("cexPartial",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE)
+          # checkboxInput("coloraxe",gettext("Color the partial axe by group",domain="R-Factoshiny"),partaxe)
         ),
         conditionalPanel(
-          condition=paste("input.choixgraph=='",gettext("Groups"),"'",sep=''),
-          textInput("titleGroup",gettext("Title of the graph: "), titleGroup),
-          sliderInput("cexGroup",gettext("Size of labels"),min=0.5,max=2.5,value=sizeGroup,step=0.05,ticks=FALSE)
+          condition=paste("input.choixgraph=='",gettext("Groups",domain="R-Factoshiny"),"'",sep=''),
+          textInput("titleGroup",gettext("Title of the graph: ",domain="R-Factoshiny"), titleGroup),
+          sliderInput("cexGroup",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizeGroup,step=0.05,ticks=FALSE)
         )
        ), style = "padding: 3px;background-color: #fcefba"),
       wellPanel(
-        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving MFA app?"),hcpcparaMFAshiny)),
+        div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving MFA app?",domain="R-Factoshiny"),hcpcparaMFAshiny)),
         conditionalPanel(
           condition="input.hcpcparam==true",
           uiOutput("NbDimForClustering")
         ),
         align="center", style = "padding: 3px;background-color: #ecffdb"),
-      div(align="center",actionButton("MFAcode", gettext("Get the MFA code"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
-      div(align="center",actionButton("Quit", gettext("Quit the app"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
+      div(align="center",actionButton("MFAcode", gettext("Get the MFA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
       mainPanel(
         tabsetPanel(id = "graph_sort",
-                    tabPanel(gettext("Creation of groups"),
+                    tabPanel(gettext("Creation of groups",domain="R-Factoshiny"),
                              br(),
-                             # checkboxInput("activemodif",gettext("Create the groups"),FALSE),
-                            radioButtons("activemodif",gettext("Create or validate the groups"), choices=c(gettext("Create the groups"),gettext("Validate the groups")), selected = gettext("Create the groups"), inline=TRUE),
+                             # checkboxInput("activemodif",gettext("Create the groups",domain="R-Factoshiny"),FALSE),
+                            radioButtons("activemodif",gettext("Create or validate the groups",domain="R-Factoshiny"), choices=c(gettext("Create the groups",domain="R-Factoshiny"),gettext("Validate the groups",domain="R-Factoshiny")), selected = gettext("Create the groups",domain="R-Factoshiny"), inline=TRUE),
                              conditionalPanel(
-                               condition=paste0("input.activemodif=='",gettext("Create the groups"),"'"),
+                               condition=paste0("input.activemodif=='",gettext("Create the groups",domain="R-Factoshiny"),"'"),
                                h6("Group 1"),
                               fluidRow(
                               column(3,
@@ -153,12 +153,12 @@ fluidPage(
                               column(3,
                                      textInput("nameG1", label = " ", value = "Gr 1"),
                                      conditionalPanel(
-                                       condition=paste("input.typeG1=='",gettext("Quantitative"),"'",sep=''),
-                                       radioButtons("scale1","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                       condition=paste("input.typeG1=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
+                                       radioButtons("scale1","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                               column(2,
-                                     radioButtons("typeG12","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                     radioButtons("typeG12","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                               br(),
-                              checkboxInput("activeG2",h6(paste(gettext("Create Group"),2)),FALSE),
+                              checkboxInput("activeG2",h6(paste(gettext("Create Group",domain="R-Factoshiny"),2)),FALSE),
                               conditionalPanel(
                                 condition="input.activeG2==true",
                                 fluidRow(
@@ -170,12 +170,12 @@ fluidPage(
                                 column(3,
                                        textInput("nameG2", label = " ", value = "Gr 2"),
                                        conditionalPanel(
-                                       condition=paste("input.typeG2=='",gettext("Quantitative"),"'",sep=''),
-                                         radioButtons("scale2","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                       condition=paste("input.typeG2=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
+                                         radioButtons("scale2","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                 column(2,
-                                       radioButtons("typeG22","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                       radioButtons("typeG22","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                 br(),
-                                checkboxInput("activeG3",h6(paste(gettext("Create Group"),3)),FALSE),
+                                checkboxInput("activeG3",h6(paste(gettext("Create Group",domain="R-Factoshiny"),3)),FALSE),
                                 conditionalPanel(
                                   condition="input.activeG3==true",
                                   fluidRow(
@@ -187,12 +187,12 @@ fluidPage(
                                   column(3,
                                          textInput("nameG3", label = " ", value = "Gr 3"),
                                          conditionalPanel(
-                                            condition=paste("input.typeG3=='",gettext("Quantitative"),"'",sep=''),
-                                           radioButtons("scale3","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                            condition=paste("input.typeG3=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
+                                           radioButtons("scale3","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                   column(3,
-                                         radioButtons("typeG32","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                         radioButtons("typeG32","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                   br(),
-                                  checkboxInput("activeG4",h6(paste(gettext("Create Group"),4)),FALSE),
+                                  checkboxInput("activeG4",h6(paste(gettext("Create Group",domain="R-Factoshiny"),4)),FALSE),
                                   conditionalPanel(
                                     condition="input.activeG4==true",
                                     fluidRow(
@@ -206,11 +206,11 @@ fluidPage(
                                            conditionalPanel(
                                              condition=paste("input.typeG4=='",gettext("Quantitative"),"'",sep=''),
                                              br(),
-                                             radioButtons("scale4","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                             radioButtons("scale4","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                     column(3,
-                                           radioButtons("typeG42","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                           radioButtons("typeG42","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                     br(),
-                                    checkboxInput("activeG5",h6(paste(gettext("Create Group"),5)),FALSE),
+                                    checkboxInput("activeG5",h6(paste(gettext("Create Group",domain="R-Factoshiny"),5)),FALSE),
                                     conditionalPanel(
                                       condition="input.activeG5==true",
                                       fluidRow(
@@ -222,13 +222,13 @@ fluidPage(
                                       column(3,
                                              textInput("nameG5", label = " ", value = "Gr 5"),
                                              conditionalPanel(
-                                               condition=paste("input.typeG5=='",gettext("Quantitative"),"'",sep=''),
+                                               condition=paste("input.typeG5=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                                br(),
-                                               radioButtons("scale5","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                               radioButtons("scale5","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                       column(3,
-                                             radioButtons("typeG52","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                             radioButtons("typeG52","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                       br(),
-                                      checkboxInput("activeG6",h6(paste(gettext("Create Group"),6)),FALSE),
+                                      checkboxInput("activeG6",h6(paste(gettext("Create Group",domain="R-Factoshiny"),6)),FALSE),
                                       conditionalPanel(
                                         condition="input.activeG6==true",
                                         fluidRow(
@@ -240,13 +240,13 @@ fluidPage(
                                         column(3,
                                                textInput("nameG6", label = " ", value = "Gr 6"),
                                                conditionalPanel(
-                                             condition=paste("input.typeG6=='",gettext("Quantitative"),"'",sep=''),
+                                             condition=paste("input.typeG6=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                                  br(),
-                                                 radioButtons("scale6","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                                 radioButtons("scale6","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                         column(3,
-                                               radioButtons("typeG62","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                               radioButtons("typeG62","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                         br(),
-                                        checkboxInput("activeG7",h6(paste(gettext("Create Group"),7)),FALSE),
+                                        checkboxInput("activeG7",h6(paste(gettext("Create Group",domain="R-Factoshiny"),7)),FALSE),
                                         conditionalPanel(
                                           condition="input.activeG7==true",
                                           fluidRow(
@@ -258,13 +258,13 @@ fluidPage(
                                           column(3,
                                                  textInput("nameG7", label = " ", value = "Gr 7"),
                                                  conditionalPanel(
-                                                   condition=paste("input.typeG7=='",gettext("Quantitative"),"'",sep=''),
+                                                   condition=paste("input.typeG7=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                                    br(),
-                                                   radioButtons("scale7","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                                   radioButtons("scale7","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                           column(3,
-                                                 radioButtons("typeG72","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                                 radioButtons("typeG72","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                           br(),
-                                          checkboxInput("activeG8",h6(paste(gettext("Create Group"),8)),FALSE),
+                                          checkboxInput("activeG8",h6(paste(gettext("Create Group",domain="R-Factoshiny"),8)),FALSE),
                                           conditionalPanel(
                                             condition="input.activeG8==true",
                                             fluidRow(
@@ -276,13 +276,13 @@ fluidPage(
                                             column(3,
                                                    textInput("nameG8", label = " ", value = "Gr 8"),
                                                    conditionalPanel(
-                                             condition=paste("input.typeG8=='",gettext("Quantitative"),"'",sep=''),
+                                             condition=paste("input.typeG8=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                                      br(),
-                                                     radioButtons("scale8","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                                     radioButtons("scale8","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                             column(3,
-                                                   radioButtons("typeG82","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                                   radioButtons("typeG82","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                             br(),
-                                            checkboxInput("activeG9",h6(paste(gettext("Create Group"),9)),FALSE),
+                                            checkboxInput("activeG9",h6(paste(gettext("Create Group",domain="R-Factoshiny"),9)),FALSE),
                                             conditionalPanel(
                                               condition="input.activeG9==true",
                                               fluidRow(
@@ -294,13 +294,13 @@ fluidPage(
                                               column(3,
                                                      textInput("nameG9", label = " ", value = "Gr 9"),
                                                      conditionalPanel(
-                                             condition=paste("input.typeG9=='",gettext("Quantitative"),"'",sep=''),
+                                             condition=paste("input.typeG9=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                                        br(),
-                                                       radioButtons("scale9","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                                       radioButtons("scale9","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                               column(3,
-                                                     radioButtons("typeG92","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active")))),
+                                                     radioButtons("typeG92","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny")))),
                                               br(),
-                                              checkboxInput("activeG10",h6(paste(gettext("Create Group"),10)),FALSE),
+                                              checkboxInput("activeG10",h6(paste(gettext("Create Group",domain="R-Factoshiny"),10)),FALSE),
                                               conditionalPanel(
                                                 condition="input.activeG10==true",
                                                 fluidRow(
@@ -312,11 +312,11 @@ fluidPage(
                                                 column(3,
                                                        textInput("nameG10", label = " ", value = "Gr 10"),
                                                        conditionalPanel(
-                                             condition=paste("input.typeG10=='",gettext("Quantitative"),"'",sep=''),
+                                             condition=paste("input.typeG10=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                                          br(),
-                                                         radioButtons("scale10","",choices=list(gettext("Scaled"),gettext("Unscaled")),selected=gettext("Scaled"),inline=TRUE))),
+                                                         radioButtons("scale10","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                                 column(3,
-                                                       radioButtons("typeG102","",choices=list(gettext("Active"),gettext("Supplementary")),selected=gettext("Active"))))
+                                                       radioButtons("typeG102","",choices=list(gettext("Active",domain="R-Factoshiny"),gettext("Supplementary",domain="R-Factoshiny")),selected=gettext("Active",domain="R-Factoshiny"))))
                                               )
                                             )
                                           )
@@ -327,12 +327,12 @@ fluidPage(
                                   )
                                 )
                              )),
-                    tabPanel(gettext("Graphs"),
+                    tabPanel(gettext("Graphs",domain="R-Factoshiny"),
      fluidRow(
                  br(),
                           column(width = 6,shinyjqui::jqui_resizable(plotOutput("map", height="500")),
                              br(),
-                             p(gettext("Download as"),downloadButton("downloadData1",gettext("jpg")),downloadButton("downloadData",gettext("png")),downloadButton("downloadData2",gettext("pdf")),align="center"),
+                             p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData1",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData2",gettext("pdf",domain="R-Factoshiny")),align="center"),
 							 align="center"),
                              div(align = "center",uiOutput("map22", height="500"))
 							 ),
@@ -340,11 +340,11 @@ fluidPage(
                              br(),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("map5", height="500")),
                              br(),
-                             p(gettext("Download as"),downloadButton("downloadData11",gettext("jpg")),downloadButton("downloadData12",gettext("png")),downloadButton("downloadData13",gettext("pdf")),align="center"),
+                             p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData11",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData12",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData13",gettext("pdf",domain="R-Factoshiny")),align="center"),
 							 align="center"),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("map4", height="500")),
                              br(),
-                             p(gettext("Download as"),downloadButton("downloadData15",gettext("jpg")),downloadButton("downloadData16",gettext("png")),downloadButton("downloadData17",gettext("pdf")),align="center"),
+                             p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData15",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData16",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData17",gettext("pdf",domain="R-Factoshiny")),align="center"),
 							 align="center")),
  fluidRow(
                              br(),
@@ -352,84 +352,84 @@ fluidPage(
 							 )
 							 ),
 
-                    tabPanel(gettext("Values"),
+                    tabPanel(gettext("Values",domain="R-Factoshiny"),
                              br(),
-                             radioButtons("out",gettext("Which outputs do you want?"),
-                                          choices=list(gettext("Summary of outputs"),gettext("Eigenvalues"),gettext("Results for the individuals"),
-                                                       gettext("Results for the quantitative variables"),gettext("Results for the groups"),gettext("Results for the partial axes")),inline=TRUE),
+                             radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
+                                          choices=list(gettext("Summary of outputs",domain="R-Factoshiny"),gettext("Eigenvalues",domain="R-Factoshiny"),gettext("Results for the individuals",domain="R-Factoshiny"),
+                                                       gettext("Results for the quantitative variables",domain="R-Factoshiny"),gettext("Results for the groups",domain="R-Factoshiny"),gettext("Results for the partial axes",domain="R-Factoshiny")),inline=TRUE),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Summary of outputs"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Summary of outputs",domain="R-Factoshiny"),"'",sep=''),
                                verbatimTextOutput("summaryMFA")
                                ),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Eigenvalues"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Eigenvalues",domain="R-Factoshiny"),"'",sep=''),
                                shinyjqui::jqui_resizable(plotOutput("map3", height="500")),
                                tableOutput("sorties")),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Results for the individuals"),"'",sep=''),
-                               radioButtons("out2",gettext("What type of results?"),choices=list(gettext("Coordinates"),gettext("Contributions"),gettext("Cos2"),gettext("Within inertia"),
-                                                                                         gettext("Partial coordinates"),gettext("Within partial inertia")),selected=gettext("Coordinates"),inline=TRUE),
+                               condition=paste("input.out=='",gettext("Results for the individuals",domain="R-Factoshiny"),"'",sep=''),
+                               radioButtons("out2",gettext("What type of results?",domain="R-Factoshiny"),choices=list(gettext("Coordinates",domain="R-Factoshiny"),gettext("Contributions",domain="R-Factoshiny"),gettext("Cos2",domain="R-Factoshiny"),gettext("Within inertia",domain="R-Factoshiny"),
+                                                                                         gettext("Partial coordinates",domain="R-Factoshiny"),gettext("Within partial inertia",domain="R-Factoshiny")),selected=gettext("Coordinates",domain="R-Factoshiny"),inline=TRUE),
                                conditionalPanel(
-                               condition=paste("input.out2=='",gettext("Coordinates"),"'",sep=''),
+                               condition=paste("input.out2=='",gettext("Coordinates",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties1"))),
                                conditionalPanel(
-                               condition=paste("input.out2=='",gettext("Contributions"),"'",sep=''),
+                               condition=paste("input.out2=='",gettext("Contributions",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties2"))),
                                conditionalPanel(
-                               condition=paste("input.out2=='",gettext("Cos2"),"'",sep=''),
+                               condition=paste("input.out2=='",gettext("Cos2",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties3"))),
                                conditionalPanel(
-                               condition=paste("input.out2=='",gettext("Within inertia"),"'",sep=''),
+                               condition=paste("input.out2=='",gettext("Within inertia",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties4"))),
                                conditionalPanel(
-                               condition=paste("input.out2=='",gettext("Partial coordinates"),"'",sep=''),
+                               condition=paste("input.out2=='",gettext("Partial coordinates",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties5"))),
                                conditionalPanel(
-                               condition=paste("input.out2=='",gettext("Within partial inertia"),"'",sep=''),
+                               condition=paste("input.out2=='",gettext("Within partial inertia",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties6")))
                                ),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Results for the quantitative variables"),"'",sep=''),
-                               radioButtons("out3","What type of results?",choices=list(gettext("Coordinates"),gettext("Contributions"),gettext("Cos2"),gettext("Correlations")),selected=gettext("Coordinates"),inline=TRUE),
+                               condition=paste("input.out=='",gettext("Results for the quantitative variables",domain="R-Factoshiny"),"'",sep=''),
+                               radioButtons("out3",gettext("What type of results?",domain="R-Factoshiny"),choices=list(gettext("Coordinates",domain="R-Factoshiny"),gettext("Contributions",domain="R-Factoshiny"),gettext("Cos2",domain="R-Factoshiny"),gettext("Correlations",domain="R-Factoshiny")),selected=gettext("Coordinates",domain="R-Factoshiny"),inline=TRUE),
                                conditionalPanel(
-                               condition=paste("input.out3=='",gettext("Coordinates"),"'",sep=''),
+                               condition=paste("input.out3=='",gettext("Coordinates",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties11"))),
                                conditionalPanel(
-                               condition=paste("input.out3=='",gettext("Contributions"),"'",sep=''),
+                               condition=paste("input.out3=='",gettext("Contributions",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties22"))),
                                conditionalPanel(
-                               condition=paste("input.out3=='",gettext("Cos2"),"'",sep=''),
+                               condition=paste("input.out3=='",gettext("Cos2",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties33"))),
                                conditionalPanel(
-                               condition=paste("input.out3=='",gettext("Correlations"),"'",sep=''),
+                               condition=paste("input.out3=='",gettext("Correlations",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties44")))
                              ),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Results for the groups"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Results for the groups",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("sortiegroup"))
                                ),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Results for the partial axes"),"'",sep=''),
-                               radioButtons("out4",gettext("What type of results?"),choices=list(gettext("Coordinates"),gettext("Correlations"),gettext("Contribution"),gettext("Correlations between")),selected=gettext("Coordinates"),inline=TRUE),
+                               condition=paste("input.out=='",gettext("Results for the partial axes",domain="R-Factoshiny"),"'",sep=''),
+                               radioButtons("out4",gettext("What type of results?"),choices=list(gettext("Coordinates",domain="R-Factoshiny"),gettext("Correlations",domain="R-Factoshiny"),gettext("Contribution",domain="R-Factoshiny"),gettext("Correlations between",domain="R-Factoshiny")),selected=gettext("Coordinates",domain="R-Factoshiny"),inline=TRUE),
                                conditionalPanel(
-                               condition=paste("input.out4=='",gettext("Coordinates"),"'",sep=''),
+                               condition=paste("input.out4=='",gettext("Coordinates",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties12"))),
                                conditionalPanel(
-                               condition=paste("input.out4=='",gettext("Correlations"),"'",sep=''),
+                               condition=paste("input.out4=='",gettext("Correlations",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties23"))),
                                conditionalPanel(
-                               condition=paste("input.out4=='",gettext("Correlations between"),"'",sep=''),
+                               condition=paste("input.out4=='",gettext("Correlations between",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties45")))
                                )
                              
                              ),
-                    tabPanel(gettext("Summary of dataset"),
+                    tabPanel(gettext("Summary of dataset",domain="R-Factoshiny"),
                              br(),
                              verbatimTextOutput("summary")),
                     
-                    tabPanel(gettext("Data"),
+                    tabPanel(gettext("Data",domain="R-Factoshiny"),
                              br(),
-                             dataTableOutput("JDD")
+                             DT::dataTableOutput("JDD")
                              )
         )
       ,width=9)

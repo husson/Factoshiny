@@ -3,7 +3,7 @@
   
   output$NB1 <- renderUI({
     validate(
-      need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2 ,gettext("Please select at least three active columns"))
+      need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
     )
     if((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>5){
        return(textInput("nb1", label = NULL, axe1CAshiny,width='41px'))
@@ -14,7 +14,7 @@
 
   output$NB2 <- renderUI({
     validate(
-      need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2 ,gettext("Please select at least three active rows"))
+      need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny"))
     )
     if((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>5){
        return(textInput("nb2", label = NULL, axe2CAshiny,width='41px'))
@@ -26,7 +26,7 @@
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
         return(tags$div( 
-            div(gettext("Number of dimensions kept for clustering"), style="display: inline-block; padding: 0px 0px 0px 0px"),
+            div(gettext("Number of dimensions kept for clustering",domain="R-Factoshiny"), style="display: inline-block; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustCAshiny)){5} else {nbdimclustCAshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
 		)
     }
@@ -34,7 +34,7 @@
     
   output$imputeData <- renderUI({
     if(any(is.na(newdataCAshiny[,VariableChoicesCAshiny]))){
-	  return(radioButtons("impute",gettext("Handling missing values"),choices=list(gettext("Consider NA as supplementary"),gettext("Impute by the independance model"),gettext("Impute with 2-dimensional CA-model (preferred)")),selected=gettext("Consider NA as supplementary")))
+	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Consider NA as supplementary",domain="R-Factoshiny"),gettext("Impute by the independance model",domain="R-Factoshiny"),gettext("Impute with 2-dimensional CA-model (preferred)",domain="R-Factoshiny")),selected=gettext("Consider NA as supplementary",domain="R-Factoshiny")))
 	} else {
       return(tags$div(tags$label(class="control-label", "Handling missing values"),
 	   tags$div(HTML("No missing values"))))
@@ -42,7 +42,9 @@
   })
 
   values <- reactive({
-	 if (max(input$nb1>5) | max(input$nb2>5)) return(isolate(valeur()))
+	 if (length(input$nb1)>0){
+	   if (max(input$nb1,input$nb2)>5) return(isolate(valeur()))
+	 }
 	 if (length(input$nbDimClustering)>0){
 	   if (input$nbDimClustering >5) return(isolate(valeur()))
 	 }
@@ -55,7 +57,7 @@
 
   valeur <- function(){
       validate(
-        need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2, gettext("Please select at least three active columns"))
+        need((length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2, gettext("Please select at least three active columns",domain="R-Factoshiny"))
       )
 	  
     NomCol <- colnames(newdataCAshiny)
@@ -83,12 +85,12 @@
        RowSup <- c(RowSup,which(apply(is.na(newdataCAshiny),1,sum)>0))
        ColSup <- c(ColSup,which(apply(is.na(newdataCAshiny),2,sum)>0))
 	 } else {
-	   if (input$impute==gettext("Consider NA as supplementary")){
+	   if (input$impute==gettext("Consider NA as supplementary",domain="R-Factoshiny")){
          RowSup <- c(RowSup,which(apply(is.na(newdataCAshiny),1,sum)>0))
          ColSup <- c(ColSup,which(apply(is.na(newdataCAshiny),2,sum)>0))
 	   } else {
 	     boolImpute <- TRUE
-	     codeCA <- paste0(codeCA, "dfcompleted <- missMDA::imputeCA(",nomTabDon,", ncp=",if (input$impute==gettext("Impute by independence model")) {"0"} else {"2"},if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(ColSup)) paste0(",col.sup=c(",paste0(ColSup,collapse=","),")"),if (!is.null(RowSup)) paste0(",row.sup=c(",paste0(RowSup,collapse=","),")"),")\n")
+	     codeCA <- paste0(codeCA, "dfcompleted <- missMDA::imputeCA(",nomTabDon,", ncp=",if (input$impute==gettext("Impute by independence model",domain="R-Factoshiny")) {"0"} else {"2"},if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(ColSup)) paste0(",col.sup=c(",paste0(ColSup,collapse=","),")"),if (!is.null(RowSup)) paste0(",row.sup=c(",paste0(RowSup,collapse=","),")"),")\n")
 	     codeCA <- paste0(codeCA,"res.CA<-CA(dfcompleted", if (!is.null(SuppressCol)){paste0("[,-c(",paste0(SuppressCol,collapse=","),")]")})
 	   }
      }
@@ -100,74 +102,74 @@
     }
     
   output$choixinvis <- renderUI({
-     listechoix <- c(gettext("Rows"),gettext("Columns"))
-	 if (!is.null(input$rowsupl)) listechoix <- c(listechoix,gettext("Supplementary rows"))
-	 if (!is.null(input$supvar)) listechoix <- c(listechoix,gettext("Supplementary columns"))
-	 if (!is.null(input$supquali)) listechoix <- c(listechoix,gettext("Supplementary qualitative variables"))
-     return(selectInput("invis",gettext("Invisible elements"),choices=as.list(listechoix),multiple=TRUE,selected=InvisibleCAshiny))
+     listechoix <- c(gettext("Rows",domain="R-Factoshiny"),gettext("Columns",domain="R-Factoshiny"))
+	 if (!is.null(input$rowsupl)) listechoix <- c(listechoix,gettext("Supplementary rows",domain="R-Factoshiny"))
+	 if (!is.null(input$supvar)) listechoix <- c(listechoix,gettext("Supplementary columns",domain="R-Factoshiny"))
+	 if (!is.null(input$supquali)) listechoix <- c(listechoix,gettext("Supplementary qualitative variables",domain="R-Factoshiny"))
+     return(selectInput("invis",gettext("Invisible elements",domain="R-Factoshiny"),choices=as.list(listechoix),multiple=TRUE,selected=InvisibleCAshiny))
   })
 
   output$col1CAshiny=renderUI({
-    if(sum(gettext("Rows")==input$invis)==0){
+    if(sum(gettext("Rows",domain="R-Factoshiny")==input$invis)==0){
       return(tags$div( 
         div(colourpicker::colourInput("colrow", label=NULL, if(!is.null(input$colrow)){if (input$colrow!="blue") input$colrow} else{col1CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-        div(gettext("active rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+        div(gettext("active rows",domain="R-Factoshiny"), style="display: inline-block;padding: 0px 0px 0px 10px"))
  	  )
     }
   })
   output$col2CAshiny=renderUI({
-    if(sum(gettext("Columns")==input$invis)==0){
+    if(sum(gettext("Columns",domain="R-Factoshiny")==input$invis)==0){
       return(tags$div( 
         div(colourpicker::colourInput("colcol", label=NULL, if(!is.null(input$colcol)){if (input$colcol!="red") input$colcol} else{col2CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-	    div(gettext("active columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	    div(gettext("active columns",domain="R-Factoshiny"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 	  )
     }
   })
   output$col3CAshiny=renderUI({
-    if(!is.null(values()$res.CA$row.sup) & sum(gettext("Supplementary rows")==input$invis)==0){
+    if(!is.null(values()$res.CA$row.sup) & sum(gettext("Supplementary rows",domain="R-Factoshiny")==input$invis)==0){
       return(tags$div( 
         div(colourpicker::colourInput("colrowsup", label=NULL, if(!is.null(input$colrowsup)){if (input$colrowsup!="darkblue") input$colrowsup} else{col3CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-	    div(gettext("supplementary rows"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	    div(gettext("supplementary rows",domain="R-Factoshiny"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 	  )
     }
   })
   output$col4CAshiny=renderUI({
-    if(!is.null(values()$res.CA$col.sup) & sum(gettext("Supplementary columns")==input$invis)==0){
+    if(!is.null(values()$res.CA$col.sup) & sum(gettext("Supplementary columns",domain="R-Factoshiny")==input$invis)==0){
       return(tags$div( 
         div(colourpicker::colourInput("colcolsup", label=NULL, if(!is.null(input$colcolsup)){if (input$colcolsup!="darkred") input$colcolsup} else{col4CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-	    div(gettext("supplementary columns"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	    div(gettext("supplementary columns",domain="R-Factoshiny"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 	  )
     }
   })
     
   output$col5CAshiny=renderUI({
-    if(!is.null(values()$res.CA$quali.sup) & sum(gettext("Supplementary categories")==input$invis)==0){
+    if(!is.null(values()$res.CA$quali.sup) & sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$invis)==0){
       return(tags$div( 
         div(colourpicker::colourInput("colqualisup", label=NULL, if(!is.null(input$colqualisup)){if (input$colqualisup!="magenta") input$colqualisup} else{col5CAshiny} ,allowTransparent=TRUE), style="display: inline-block; width: 15px; padding: 0px 0px 0px 0px"),
-	    div(gettext("supplementary categories"), style="display: inline-block;padding: 0px 0px 0px 10px"))
+	    div(gettext("supplementary categories",domain="R-Factoshiny"), style="display: inline-block;padding: 0px 0px 0px 10px"))
 	  )
     }
   })
 
   output$ellipsesCAshiny=renderUI({
     values1=c()
-    if(sum(gettext("Rows")==input$invis)==0){
-      values1=c(values1,gettext("Rows"))
+    if(sum(gettext("Rows",domain="R-Factoshiny")==input$invis)==0){
+      values1=c(values1,gettext("Rows",domain="R-Factoshiny"))
     }
-    if(sum(gettext("Columns")==input$invis)==0){
-      values1=c(values1,gettext("Columns"))
+    if(sum(gettext("Columns",domain="R-Factoshiny")==input$invis)==0){
+      values1=c(values1,gettext("Columns",domain="R-Factoshiny"))
     }
     if(length(values)!=0){
-      return(checkboxGroupInput("ellip",gettext("Draw confidence ellipses around"),choices=values1,selected=ellipsesCAshiny,inline=TRUE))
+      return(checkboxGroupInput("ellip",gettext("Draw confidence ellipses around",domain="R-Factoshiny"),choices=values1,selected=ellipsesCAshiny,inline=TRUE))
     }
   })
     
     output$contribcol=renderUI({
       maxx=nrow(values()$res.CA$col$coord)
       if(selec1CAshiny=="contrib"){
-        return(sliderInput("contrib1",gettext("Number of the most contributive active columns"),min=1,max=maxx,value=valueselec2CAshiny,step=1))
+        return(sliderInput("contrib1",gettext("Number of the most contributive active columns",domain="R-Factoshiny"),min=1,max=maxx,value=valueselec2CAshiny,step=1))
       } else{
-        return(sliderInput("contrib1",gettext("Number of the most contributive active columns"),min=1,max=maxx,value=maxx,step=1))
+        return(sliderInput("contrib1",gettext("Number of the most contributive active columns",domain="R-Factoshiny"),min=1,max=maxx,value=maxx,step=1))
       }
       
     })
@@ -175,29 +177,29 @@
     output$contribrow=renderUI({
       maxx=nrow(values()$res.CA$row$coord)
       if(selec2CAshiny=="contrib"){
-        return(sliderInput("contrib2",gettext("Number of the most contributive active rows"),min=1,max=maxx,value=valueselec2CAshiny,step=1))
+        return(sliderInput("contrib2",gettext("Number of the most contributive active rows",domain="R-Factoshiny"),min=1,max=maxx,value=valueselec2CAshiny,step=1))
       }
       else{
-        return(sliderInput("contrib2",gettext("Number of the most contributive active rows"),min=1,max=maxx,value=maxx,step=1))
+        return(sliderInput("contrib2",gettext("Number of the most contributive active rows",domain="R-Factoshiny"),min=1,max=maxx,value=maxx,step=1))
       }
     })
     
   codeGraph <- reactive({
     validate(
-      need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows")),
-      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+      need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
+      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny")),
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
     )
     if(length(input$invis)==0){
       invisiText <- NULL
     } else {
       invisi <- NULL
-      if(sum(gettext("Rows")==input$invis)>0) invisi<-c(invisi,"row")
-      if(sum(gettext("Columns")==input$invis)>0) invisi<-c(invisi,"col")
-      if(sum(gettext("Supplementary rows")==input$invis)>0) invisi<-c(invisi,"row.sup")
-      if(sum(gettext("Supplementary columns")==input$invis)>0) invisi<-c(invisi,"col.sup")
-      if(sum(gettext("Supplementary qualitative variables")==input$invis)>0) invisi<-c(invisi,"quali.sup")
-      if(sum(gettext("Supplementary quantitative variables")==input$invis)>0) invisi<-c(invisi,"quanti.sup")
+      if(sum(gettext("Rows",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"row")
+      if(sum(gettext("Columns",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"col")
+      if(sum(gettext("Supplementary rows",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"row.sup")
+      if(sum(gettext("Supplementary columns",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"col.sup")
+      if(sum(gettext("Supplementary qualitative variables",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"quali.sup")
+      if(sum(gettext("Supplementary quantitative variables",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"quanti.sup")
       invisiText <- paste0("c(",paste(paste("'",invisi,"'",sep=""),collapse = ","),")")
     }
     sel=NULL
@@ -220,22 +222,22 @@
     if(input$selecrow=="contrib") sel2=paste0("'contrib ",input$contrib2,"'")
     values2=c()
     if(!is.null(input$ellip)){
-      if(gettext("Columns")%in%input$ellip) values2=c(values2,"col")
-      if(gettext("Rows")%in%input$ellip) values2=c(values2,"row")
+      if(gettext("Columns",domain="R-Factoshiny")%in%input$ellip) values2=c(values2,"col")
+      if(gettext("Rows",domain="R-Factoshiny")%in%input$ellip) values2=c(values2,"row")
     }
 
     hab <- "none"
-    if(input$color_point == gettext("quantitative variable")) hab <- paste0("'",input$habiller,"'")
+    if(input$color_point == gettext("quantitative variable",domain="R-Factoshiny")) hab <- paste0("'",input$habiller,"'")
     if(input$color_point == "cos2") hab <- "'cos2'"
     if(input$color_point == "contribution") hab <- "'contrib'"
-    if(input$color_point==gettext("qualitative variable")) hab <- which(colnames(values()$res.CA$call$X)==input$habiller)
+    if(input$color_point==gettext("qualitative variable",domain="R-Factoshiny")) hab <- which(colnames(values()$res.CA$call$X)==input$habiller)
 
       if(is.null(input$ellip)||length(input$ellip)==0){
 	    myellip=NULL
       }else{
         vect=c()
-        if(gettext("Columns")%in%input$ellip) vect=c(vect,"col")
-        if(gettext("Rows")%in%input$ellip) vect=c(vect,"row")
+        if(gettext("Columns",domain="R-Factoshiny")%in%input$ellip) vect=c(vect,"col")
+        if(gettext("Rows",domain="R-Factoshiny")%in%input$ellip) vect=c(vect,"row")
         myellip=paste(paste("'",vect,"'",sep=""),collapse=",")
       }
       Code <- paste0(if(is.null(myellip)){"plot.CA"}else{"ellipseCA"},"(res.CA",if(!is.null(myellip)) paste0(",ellipse=c(",myellip,")"),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(sel)) paste0(",selectCol=",sel),if (!is.null(sel2)) paste0(",selectRow=",sel2),if (!is.null(sel2) | !is.null(sel)) paste0(',unselect=0'),if (input$cex!=1) paste0(',cex=',input$cex,',cex.main=',input$cex,',cex.axis=',input$cex),if(input$title1CAshiny!="CA factor map")paste0(',title="',input$title1CAshiny,'"'),if (hab!="none" & hab!="''"){paste0(",habillage=",hab)},if (!is.null(input$colrow)) {if (input$colrow!="#0000FF") paste0(",col.row='",input$colrow,"'")},if (!is.null(input$colcol)){ if (input$colcol!="#FF0000") paste0(",col.col='",input$colcol,"'")},if (!is.null(input$colrowsup)){if (input$colrowsup!="#0C2B94") paste0(",col.row.sup='",input$colrowsup,"'")},if (!is.null(input$colcolsup)){ if (input$colcolsup!="#8B0000") paste0(",col.col.sup='",input$colcolsup,"'")},if (!is.null(input$colqualisup)) paste0(",col.quali.sup='",input$colqualisup,"'"),if (!is.null(invisiText)) paste0(',invisible=',invisiText),')')
@@ -250,7 +252,7 @@
     
     codeGraphQuanti <- function(){
       if (length(input$quantisupvar)>0) {
-		Code <- paste0("plot.CA(res.CA, choix='quanti.sup'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),paste0(',title="',input$title1CAshiny,' - ',gettext("supplementary quantitative variables"),'"'),")")
+		Code <- paste0("plot.CA(res.CA, choix='quanti.sup'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),paste0(',title="',input$title1CAshiny,' - ',gettext("supplementary quantitative variables",domain="R-Factoshiny"),'"'),")")
 		res.CA <- values()$res.CA
 	    Plot <- eval(parse(text=Code))
 	    return(list(Code=Code,Plot=Plot))
@@ -263,7 +265,7 @@
     
     output$map22=renderUI({
       validate(
-        need( (length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2,gettext("Please more active columns"))
+        need( (length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2,gettext("Please more active columns",domain="R-Factoshiny"))
       )
       
       if(length(input$quantisupvar)==0 | is.null(codeGraphQuanti()$Plot)){
@@ -271,35 +273,35 @@
       } else{
         column(width = 5,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
            br(),
-           p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center")
+           p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData4",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData3",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData5",gettext("pdf",domain="R-Factoshiny")),align="center")
 		)
 	  }
     })
 
     output$out22=renderUI({
-      choix=list(gettext("Summary of outputs"),gettext("Eigenvalues"),gettext("Results for the columns"),gettext("Results for the rows"))
+      choix=list(gettext("Summary of outputs",domain="R-Factoshiny"),gettext("Eigenvalues",domain="R-Factoshiny"),gettext("Results for the columns",domain="R-Factoshiny"),gettext("Results for the rows",domain="R-Factoshiny"))
       if(length(input$rowsupl)!=0){
-        choix=c(choix,gettext("Results for the supplementary rows"))
+        choix=c(choix,gettext("Results for the supplementary rows",domain="R-Factoshiny"))
       }
       if(!is.null(values()$res.CA$col.sup)){
-        choix=c(choix,gettext("Results for the supplementary columns"))
+        choix=c(choix,gettext("Results for the supplementary columns",domain="R-Factoshiny"))
       }
       if(!is.null(values()$res.CA$quali.sup)){
-        choix=c(choix,gettext("Results for the categorical variables"))
+        choix=c(choix,gettext("Results for the categorical variables",domain="R-Factoshiny"))
       }
-      radioButtons("out",gettext("Which outputs do you want?"),
-                   choices=choix,selected=gettext("Summary of outputs"),inline=TRUE)
+      radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
+                   choices=choix,selected=gettext("Summary of outputs",domain="R-Factoshiny"),inline=TRUE)
     })
     
     output$warn <- renderPrint({
        if (any(is.na(newdataCAshiny))){
-         rowNA=paste0(gettext("Warning: "), paste(rownames(newdataCAshiny)[which(apply(is.na(newdataCAshiny),1,sum)>0)],collapse=", "), gettext(" have NA : they are considered as supplementary rows"))
-         colNA=paste0(gettext("Warning: "), paste(colnames(newdataCAshiny)[which(apply(is.na(newdataCAshiny),2,sum)>0)],collapse=", "), gettext(" have NA : they are considered as supplementary columns"))
+         rowNA=paste0(gettext("Warning: ",domain="R-Factoshiny"), paste(rownames(newdataCAshiny)[which(apply(is.na(newdataCAshiny),1,sum)>0)],collapse=", "), gettext(" have NA : they are considered as supplementary rows",domain="R-Factoshiny"))
+         colNA=paste0(gettext("Warning: ",domain="R-Factoshiny"), paste(colnames(newdataCAshiny)[which(apply(is.na(newdataCAshiny),2,sum)>0)],collapse=", "), gettext(" have NA : they are considered as supplementary columns",domain="R-Factoshiny"))
 	     if (length(input$impute)==0) { 
 		   return(cat(rowNA,colNA,sep="\n"))
 		 } else {
 	       if (input$submit>=0) isolate({
-		     if (input$impute==gettext("Consider NA as supplementary")) return(cat(rowNA,colNA,sep="\n"))
+		     if (input$impute==gettext("Consider NA as supplementary",domain="R-Factoshiny")) return(cat(rowNA,colNA,sep="\n"))
 			 })
 		 }
        }
@@ -311,49 +313,49 @@
     
     output$sorties1=renderTable({
       validate(
-      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
       )
       return(as.data.frame(values()$res.CA$col$coord))
     },rownames=TRUE)
     
     output$sorties2=renderTable({
       validate(
-      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
       )
       return(as.data.frame(values()$res.CA$col$cos2))
     },rownames=TRUE)
     
     output$sorties3=renderTable({
       validate(
-      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns"))
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
       )
       return(as.data.frame(values()$res.CA$col$contrib))
     },rownames=TRUE)
     
     output$sorties4=renderTable({
       validate(
-        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows"))
+        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny"))
 	  )
       return(as.data.frame(values()$res.CA$row$coord))
     },rownames=TRUE)
     
     output$sorties5=renderTable({
       validate(
-        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows"))
+        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny"))
 	  )
       return(as.data.frame(values()$res.CA$row$cos2))
     },rownames=TRUE)
     
     output$sorties6=renderTable({
       validate(
-        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows"))
+        need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny"))
 	  )
       return(as.data.frame(values()$res.CA$row$contrib))
     },rownames=TRUE)
     
     output$sorties7=renderTable({
       validate(
-        need((length(input$rowsupl)>0), gettext("No supplementary rows selected"))
+        need((length(input$rowsupl)>0), gettext("No supplementary rows selected",domain="R-Factoshiny"))
       )
       return(as.data.frame(values()$res.CA$row.sup$coord))
     },rownames=TRUE)
@@ -372,18 +374,18 @@
     
     output$sorties11=renderTable({
       validate(
-        need((length(input$supquali)>0 || input$supquali==TRUE), gettext("No categorical variables selected"))
+        need((length(input$supquali)>0 || input$supquali==TRUE), gettext("No categorical variables selected",domain="R-Factoshiny"))
       )
       return(as.data.frame(values()$res.CA$quali.sup))
     },rownames=TRUE)
     
     
     output$map3=renderPlot({
-    print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(values()$res.CA$eig),y=values()$res.CA$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(values()$res.CA$eig)))
+    print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(values()$res.CA$eig),y=values()$res.CA$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance",domain="R-Factoshiny")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia",domain="R-Factoshiny")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(values()$res.CA$eig)))
       # return(barplot(values()$res.CA$eig[,1],names.arg=rownames(values()$res.CA$eig),las=2))
     })
     
-    output$JDD=renderDataTable({
+    output$JDD=DT::renderDataTable({
       cbind(Names=rownames(newdataCAshiny),newdataCAshiny)},
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,
@@ -412,7 +414,7 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
@@ -423,7 +425,7 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
@@ -434,8 +436,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
-	    print(paste0(gettext("The file "),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: "),getwd()))
+        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+	    print(paste0(gettext("The file ",domain="R-Factoshiny"),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: ",domain="R-Factoshiny"),getwd()))
         setwd(path.aux)
       })
     }
@@ -521,11 +523,11 @@
           invisi=NULL
           if(length(input$invis)!=0){
             invisi=NULL
-            if(sum(gettext("Rows")==input$invis)>0) invisi<-c(invisi,"row")
-            if(sum(gettext("Columns")==input$invis)>0) invisi<-c(invisi,"col")
-                if(sum(gettext("Supplementary rows")==input$invis)>0) invisi<-c(invisi,"row.sup")
-            if(sum(gettext("Supplementary columns")==input$invis)>0) invisi<-c(invisi,"col.sup")
-            if(sum(gettext("Supplementary qualitative variables")==input$invis)>0) invisi<-c(invisi,"quali.sup")
+            if(sum(gettext("Rows",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"row")
+            if(sum(gettext("Columns",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"col")
+                if(sum(gettext("Supplementary rows",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"row.sup")
+            if(sum(gettext("Supplementary columns",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"col.sup")
+            if(sum(gettext("Supplementary qualitative variables",domain="R-Factoshiny")==input$invis)>0) invisi<-c(invisi,"quali.sup")
           }
           res$invisi=invisi
           res$seleccol=input$seleccol

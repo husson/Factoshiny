@@ -6,12 +6,12 @@ CAshiny <- function(X){
   assign("nomDataCAshiny",sys.calls()[[1]][2], envir=G)
   if (is.table(X)) X <- as.data.frame(X)
   if (!(inherits(X, "CAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "CA"))){
-    stop(gettext('X is not a dataframe, a matrix, a table, the results of the CAshiny function or a CA result'))
+    stop(gettext('X is not a dataframe, a matrix, a table, the results of the CAshiny function or a CA result',domain="R-Factoshiny"))
   }
   if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   if(is.data.frame(X)==TRUE){
     if(dim(X)[1]<3 && dim(X)[2]<3)
-      stop(gettext('not enough row/column'))
+      stop(gettext('not enough row/column',domain="R-Factoshiny"))
   }
   assign("pathsaveCAshiny",getwd(),envir=G)
  outShiny=shiny::runApp(system.file("FactoCAapp2", package="Factoshiny"),launch.browser = TRUE)

@@ -11,35 +11,35 @@
   output$NbDimForClustering <- renderUI({
     if(input$hcpcparam==TRUE){
         return(tags$div( 
-            div(gettext("Number of dimensions kept for clustering"), style="display: inline-block; padding: 0px 0px 0px 0px"),
+            div(gettext("Number of dimensions kept for clustering",domain="R-Factoshiny"), style="display: inline-block; padding: 0px 0px 0px 0px"),
 		    div(numericInput(inputId = "nbDimClustering", label = NULL,value=if(is.null(nbdimclustMFAshiny)){5} else {nbdimclustMFAshiny},min=1), style="display: inline-block;width: 70px; padding: 0px 0px 0px 10px"))
 		)
     }
   })
 
   output$choixindvar=renderUI({
-    choix=gettext("Individuals")
-    if(!(is.null(anafact[["quali.var"]]))) choix <- c(choix,gettext("Categories"))
-    if(!(is.null(anafact$ind.sup))) choix <- c(choix,gettext("Supplementary individuals"))
-    if(!(is.null(anafact$quali.var.sup))) choix <- c(choix,gettext("Supplementary categories"))
-    div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw"), choices=choix, selected = indvarMFAshiny))
+    choix=gettext("Individuals",domain="R-Factoshiny")
+    if(!(is.null(anafact[["quali.var"]]))) choix <- c(choix,gettext("Categories",domain="R-Factoshiny"))
+    if(!(is.null(anafact$ind.sup))) choix <- c(choix,gettext("Supplementary individuals",domain="R-Factoshiny"))
+    if(!(is.null(anafact$quali.var.sup))) choix <- c(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
+    div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshiny))
   })
 
   output$choixgraphic=renderUI({
-    choix=gettext("Individuals")
-    if(!(is.null(anafact$quanti.var))) choix <- c(choix,gettext("Quantitative variables"))
-    choix <- c(choix,gettext("Groups"),gettext("Partial axes"))
-    if(!(is.null(anafact$freq))) choix <- c(choix,gettext("Frequencies"))
-    div(align="center",selectInput("choixgraph",gettext("Which graph would you like to modify?"), choices=choix,selected=gettext("Individuals")))
+    choix=gettext("Individuals",domain="R-Factoshiny")
+    if(!(is.null(anafact$quanti.var))) choix <- c(choix,gettext("Quantitative variables",domain="R-Factoshiny"))
+    choix <- c(choix,gettext("Groups",domain="R-Factoshiny"),gettext("Partial axes",domain="R-Factoshiny"))
+    if(!(is.null(anafact$freq))) choix <- c(choix,gettext("Frequencies",domain="R-Factoshiny"))
+    div(align="center",selectInput("choixgraph",gettext("Which graph would you like to modify?",domain="R-Factoshiny"), choices=choix,selected=gettext("Individuals",domain="R-Factoshiny")))
 })
     
   output$drawindiv=renderUI({
-    if(input$choixpartial==gettext("None")){
-      if (is.null(anafact$quali.var) & is.null(anafact$quali.var.sup)) return(radioButtons("drawind",gettext("Drawing by"),choices=list(gettext("No selection"),gettext("individual")),selected=gettext("No selection"),inline=TRUE))
-      else return(radioButtons("drawind",gettext("Drawing by"),choices=list(gettext("No selection"),gettext("individual"),gettext("categorical variable")),selected=gettext("No selection"),inline=TRUE))
+    if(input$choixpartial==gettext("None",domain="R-Factoshiny")){
+      if (is.null(anafact$quali.var) & is.null(anafact$quali.var.sup)) return(radioButtons("drawind",gettext("Drawing by",domain="R-Factoshiny"),choices=list(gettext("No selection",domain="R-Factoshiny"),gettext("individual",domain="R-Factoshiny")),selected=gettext("No selection",domain="R-Factoshiny"),inline=TRUE))
+      else return(radioButtons("drawind",gettext("Drawing by",domain="R-Factoshiny"),choices=list(gettext("No selection",domain="R-Factoshiny"),gettext("individual",domain="R-Factoshiny"),gettext("categorical variable",domain="R-Factoshiny")),selected=gettext("No selection",domain="R-Factoshiny"),inline=TRUE))
     } else{
-      if (is.null(anafact$quali.var) & is.null(anafact$quali.var.sup)) return(radioButtons("drawind",gettext("Drawing by"),choices=list(gettext("group"),gettext("individual")),selected=drawing,inline=TRUE))
-      else return(radioButtons("drawind",gettext("Drawing by"),choices=list(gettext("group"),gettext("individual"),gettext("categorical variable")),selected=drawing,inline=TRUE))
+      if (is.null(anafact$quali.var) & is.null(anafact$quali.var.sup)) return(radioButtons("drawind",gettext("Drawing by",domain="R-Factoshiny"),choices=list(gettext("group",domain="R-Factoshiny"),gettext("individual",domain="R-Factoshiny")),selected=drawing,inline=TRUE))
+      else return(radioButtons("drawind",gettext("Drawing by",domain="R-Factoshiny"),choices=list(gettext("group",domain="R-Factoshiny"),gettext("individual",domain="R-Factoshiny"),gettext("categorical variable",domain="R-Factoshiny")),selected=drawing,inline=TRUE))
     }
   })
     
@@ -47,17 +47,17 @@
       if(!(is.null(anafact$quali.var))){
         return(selectInput("habiquali"," ",choices=quali))
       } else{
-      p(gettext("No groups of categorical variable"))
+      p(gettext("No groups of categorical variable",domain="R-Factoshiny"))
     }
   })
     
     output$indivpartiel2=renderUI({
       if(is.null(partial2)){
-        return(selectInput("indivpartiel",label=gettext("Select individuals"),
+        return(selectInput("indivpartiel",label=gettext("Select individuals",domain="R-Factoshiny"),
                            choices=rownames(data),multiple=TRUE))
       }
       else{
-        return(selectInput("indivpartiel",label=gettext("Select individuals"),
+        return(selectInput("indivpartiel",label=gettext("Select individuals",domain="R-Factoshiny"),
                            choices=rownames(data),multiple=TRUE,selected=partial2))
       }
     })
@@ -66,19 +66,19 @@
       if(inherits(x,"MFA")){
         maxlength=dim(anafact$quanti.var$coord)[1]
         if(input$selection=="contrib"){
-          return(sliderInput("slider2",gettext("Number of the most contributive variables"),min=1, max=maxlength, value=maxlength, step=1))
+          return(sliderInput("slider2",gettext("Number of the most contributive variables",domain="R-Factoshiny"),min=1, max=maxlength, value=maxlength, step=1))
         }
         if(input$selection=="cos2"){
-          return(sliderInput("slider3",gettext("Variables with cos2 highest than"),min=0, max=1, value=0, step=0.01))
+          return(sliderInput("slider3",gettext("Variables with cos2 highest than",domain="R-Factoshiny"),min=0, max=1, value=0, step=0.01))
         }
       }
       if(inherits(x,"MFAshiny")){
         maxlength=dim(anafact$quanti.var$coord)[1]
         if(input$selection=="contrib"){
-            return(sliderInput("slider2",gettext("Number of the most contributive variables"),min=1, max=maxlength, value=if (is.null(selectvar2)){maxlength} else {selectvar2}, step=1))  
+            return(sliderInput("slider2",gettext("Number of the most contributive variables",domain="R-Factoshiny"),min=1, max=maxlength, value=if (is.null(selectvar2)){maxlength} else {selectvar2}, step=1))  
         }
         if(input$selection=="cos2"){
-            return(sliderInput("slider3",gettext("Variables with cos2 highest than"),min=0, max=1, value=if (is.null(selectvar2)){0} else {selectvar2}, step=0.01))  
+            return(sliderInput("slider3",gettext("Variables with cos2 highest than",domain="R-Factoshiny"),min=0, max=1, value=if (is.null(selectvar2)){0} else {selectvar2}, step=0.01))  
         }  
       }
     })
@@ -86,18 +86,18 @@
     output$hide2=renderUI({
       if(!(is.null(anafact$quanti.var.sup))){
         if(!is.null(hide)){
-          return(radioButtons("hides",gettext("Hide:"),choices=list(gettext("Nothing"),gettext("Active variables"),gettext("Supplementary variables")),selected=hide))
+          return(radioButtons("hides",gettext("Hide:",domain="R-Factoshiny"),choices=list(gettext("Nothing",domain="R-Factoshiny"),gettext("Active variables",domain="R-Factoshiny"),gettext("Supplementary variables",domain="R-Factoshiny")),selected=hide))
         } else{
-          return(radioButtons("hides",gettext("Hide:"),choices=list(gettext("Nothing"),gettext("Active variables"),gettext("Supplementary variables")),selected=gettext("Nothing")))
+          return(radioButtons("hides",gettext("Hide:",domain="R-Factoshiny"),choices=list(gettext("Nothing",domain="R-Factoshiny"),gettext("Active variables",domain="R-Factoshiny"),gettext("Supplementary variables",domain="R-Factoshiny")),selected=gettext("Nothing",domain="R-Factoshiny")))
         }
       }
     })
     
     CodeGraphInd <- function(){
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
-        need(input$nb1 <= ncol(anafact$ind$coord), paste(gettext("The number of dimensions must be less than"),ncol(anafact$ind$coord))),
-        need(input$nb2 <= ncol(anafact$ind$coord), paste(gettext("The number of dimensions must be less than"),ncol(anafact$ind$coord)))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
+        need(input$nb1 <= ncol(anafact$ind$coord), paste(gettext("The number of dimensions must be less than",domain="R-Factoshiny"),ncol(anafact$ind$coord))),
+        need(input$nb2 <= ncol(anafact$ind$coord), paste(gettext("The number of dimensions must be less than",domain="R-Factoshiny"),ncol(anafact$ind$coord)))
       )      
     if(input$select=="cos2"){
       if(input$sliderind1!=1){
@@ -108,7 +108,7 @@
       }
       selecindivtext <- paste0("'",selecindiv,"'")
     }
-    if(input$select==gettext("No selection")){
+    if(input$select==gettext("No selection",domain="R-Factoshiny")){
       selecindiv <- NULL
       selecindivtext <- "NULL"
     }
@@ -117,7 +117,7 @@
       selecindivtext <- paste0("'",selecindiv,"'")
     }
 
-    if(input$select==gettext("Manual")){
+    if(input$select==gettext("Manual",domain="R-Factoshiny")){
       selecindiv <- c(input$indiv)
       if(length(input$indiv)==0) selecindivtext <- "NULL"
       if(length(input$indiv)>1){
@@ -130,21 +130,21 @@
     }
 
       part=NULL
-      if(input$choixpartial==gettext("All")) part="'all'"
-      if(input$choixpartial==gettext("Choose") & !is.null(input$indivpartiel)) part=paste0("c('",paste0(input$indivpartiel,collapse="','"),"')")
+      if(input$choixpartial==gettext("All",domain="R-Factoshiny")) part="'all'"
+      if(input$choixpartial==gettext("Choose",domain="R-Factoshiny") & !is.null(input$indivpartiel)) part=paste0("c('",paste0(input$indivpartiel,collapse="','"),"')")
       lapbar=TRUE
-      if(input$choixpartial!=gettext("None") && input$partind==FALSE) lapbar=FALSE
+      if(input$choixpartial!=gettext("None",domain="R-Factoshiny") && input$partind==FALSE) lapbar=FALSE
       habi="none"
       if(!(is.null(input$drawind))){
-        if(input$drawind==gettext("individual")) habi="ind"
-        if((input$choixpartial==gettext("All") || input$choixpartial==gettext("Choose")) && input$drawind==gettext("group")) habi="group"
-        if(input$drawind==gettext("categorical variable")) habi=input$habiquali
+        if(input$drawind==gettext("individual",domain="R-Factoshiny")) habi="ind"
+        if((input$choixpartial==gettext("All",domain="R-Factoshiny") || input$choixpartial==gettext("Choose",domain="R-Factoshiny")) && input$drawind==gettext("group",domain="R-Factoshiny")) habi="group"
+        if(input$drawind==gettext("categorical variable",domain="R-Factoshiny")) habi=input$habiquali
       }
 	  inv <- c()
       if(sum(gettext("Individuals")==input$ind_var)==0)  inv<-c(inv,"'ind'")
-      if(!(is.null(anafact[["quali.var"]])) & sum(gettext("Categories")==input$ind_var)==0) inv<-c(inv,"'quali'")
-      if(!(is.null(anafact$quali.var.sup)) & sum(gettext("Supplementary categories")==input$ind_var)==0) inv<-c(inv,"'quali.sup'")
-      if(!(is.null(anafact$ind.sup)) & sum(gettext("Supplementary individuals")==input$ind_var)==0) inv<-c(inv,"'ind.sup'")
+      if(!(is.null(anafact[["quali.var"]])) & sum(gettext("Categories",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'quali'")
+      if(!(is.null(anafact$quali.var.sup)) & sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'quali.sup'")
+      if(!(is.null(anafact$ind.sup)) & sum(gettext("Supplementary individuals",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'ind.sup'")
       if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
       if(length(inv)==1) vecinv <- inv
       if(length(inv)==0) vecinv<-"NULL"
@@ -161,7 +161,7 @@
       if (is.null(anafact$quanti.var) & is.null(anafact$quanti.sup)) return(NULL)
 	  habi <- NULL
 	  if(input$colorgroup==TRUE) habi="'group'"
-      if(input$selection==gettext("No selection")) selec=NULL
+      if(input$selection==gettext("No selection",domain="R-Factoshiny")) selec=NULL
       if(input$selection=="contrib") selec=paste0("'contrib ",input$slider2,"'")
       if(input$selection=="cos2"){
         if (is.null(input$slider3)) {
@@ -175,9 +175,9 @@
       if(is.null(input$hides)){
         invi="none"
 	  }else{
-	    if (input$hides==gettext("Nothing")) invi="none"
-	    if (input$hides==gettext("Active variables")) invi="quanti"
-	    if (input$hides==gettext("Supplementary variables")) invi="quanti.sup"
+	    if (input$hides==gettext("Nothing",domain="R-Factoshiny")) invi="none"
+	    if (input$hides==gettext("Active variables",domain="R-Factoshiny")) invi="quanti"
+	    if (input$hides==gettext("Supplementary variables",domain="R-Factoshiny")) invi="quanti.sup"
       }
       Code <- paste0('plot.MFA(',nomObjectMFA,', choix="var"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (!is.null(selec)) paste0(",select=",selec),if(invi!="none"){paste0(",invisible=c(",paste0("'",paste(invi,collapse="','"),"'"),")")}, if (!is.null(habi)){paste0(",habillage=",habi)},if(input$titleVar!="Graph of quantitative variables")paste0(',title="',input$titleVar,'"'),if(input$cexVar!=1)paste0(",cex=",input$cexVar,",cex.main=",input$cexVar,",cex.axis=",input$cexVar),")")
       Plot <- eval(parse(text=Code))
@@ -190,7 +190,7 @@
     
     output$map22=renderUI({
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny"))
       )
       
       if(is.null(anafact$quanti.var)){
@@ -198,14 +198,14 @@
       } else{
         column(width = 6,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
            br(),
-           p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg")),downloadButton("downloadData3",gettext("png")),downloadButton("downloadData5",gettext("pdf")),align="center")
+           p(gettext("Download as"),downloadButton("downloadData4",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData3",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData5",gettext("pdf",domain="R-Factoshiny")),align="center")
 		)
 	  }
     })
     
     CodeGraphGroup <- function(){
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny"))
       )
       Code <- paste0('plot.MFA(',nomObjectMFA,', choix="group"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titleGroup!="Groups representation")paste0(',title="',input$titleGroup,'"'),if(input$cexGroup!=1)paste0(",cex=",input$cexGroup,",cex.main=",input$cexGroup,",cex.axis=",input$cexGroup),")")
       Plot <- eval(parse(text=Code))
@@ -218,7 +218,7 @@
     
     CodeGraphPartial <- function(){
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny"))
       )
       habi="'group'"
       Code <- paste0('plot.MFA(',nomObjectMFA,', choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
@@ -232,18 +232,18 @@
 
   output$choixindvarfreq=renderUI({
     choix <- indvarMFAshinyfreq
-      if(is.null(anafact$ind)) choix <- setdiff(choix,gettext("Individuals"))
-      if(is.null(anafact$ind.sup)) choix <- setdiff(choix,gettext("Supplementary individuals"))
-      if(is.null(anafact[["quali.var"]])) choix <- setdiff(choix,gettext("Categories"))
-      if(is.null(anafact$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories"))
-      if(is.null(anafact[["freq"]])) choix <- setdiff(choix,gettext("Frequencies"))
-      if(is.null(anafact$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies"))
-    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw"), choices=choix, selected = indvarMFAshinyfreq))
+      if(is.null(anafact$ind)) choix <- setdiff(choix,gettext("Individuals",domain="R-Factoshiny"))
+      if(is.null(anafact$ind.sup)) choix <- setdiff(choix,gettext("Supplementary individuals",domain="R-Factoshiny"))
+      if(is.null(anafact[["quali.var"]])) choix <- setdiff(choix,gettext("Categories",domain="R-Factoshiny"))
+      if(is.null(anafact$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
+      if(is.null(anafact[["freq"]])) choix <- setdiff(choix,gettext("Frequencies",domain="R-Factoshiny"))
+      if(is.null(anafact$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies",domain="R-Factoshiny"))
+    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw,domain="R-Factoshiny""), choices=choix, selected = indvarMFAshinyfreq))
   })
 
     CodeGraphFreq <- function(){
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny"))
       )
 	  if (is.null(anafact$freq)) return(NULL)
 	  habi="'group'"
@@ -251,11 +251,11 @@
 
 	  inv <- c()
       if(sum(gettext("Individuals")==input$ind_varfreq)==0)  inv<-c(inv,"'row'")
-      if(length(QualiChoice)>0 & sum(gettext("Categories")==input$ind_varfreq)==0) inv<-c(inv,"'quali'")
-      if(length(input$indsup)>0 & sum(gettext("Supplementary individuals")==input$ind_varfreq)==0) inv<-c(inv,"'row.sup'")
-      if(length(QualiChoice)>0 & sum(gettext("Supplementary categories")==input$ind_varfreq)==0) inv<-c(inv,"'quali.sup'")
-      if(sum(gettext("Frequencies")==input$ind_varfreq)==0) inv<-c(inv,"'col'")
-      if(sum(gettext("Supplementary frequencies")==input$ind_varfreq)==0) inv<-c(inv,"'col.sup'")
+      if(length(QualiChoice)>0 & sum(gettext("Categories",domain="R-Factoshiny")==input$ind_varfreq)==0) inv<-c(inv,"'quali'")
+      if(length(input$indsup)>0 & sum(gettext("Supplementary individuals",domain="R-Factoshiny")==input$ind_varfreq)==0) inv<-c(inv,"'row.sup'")
+      if(length(QualiChoice)>0 & sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$ind_varfreq)==0) inv<-c(inv,"'quali.sup'")
+      if(sum(gettext("Frequencies",domain="R-Factoshiny")==input$ind_varfreq)==0) inv<-c(inv,"'col'")
+      if(sum(gettext("Supplementary frequencies",domain="R-Factoshiny")==input$ind_varfreq)==0) inv<-c(inv,"'col.sup'")
       if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
       if(length(inv)==1) vecinv <- inv
       if(length(inv)==0 | length(input$ind_varfreq)==0) vecinv<-"NULL"
@@ -272,14 +272,14 @@
     
     output$map66=renderUI({
       validate(
-        need(input$nb1 != input$nb2, gettext("Please select two different dimensions"))
+        need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny"))
       )
       if(is.null(anafact$freq)){
         return(p())
       } else{
         column(width = 6,shinyjqui::jqui_resizable(plotOutput("map6", height="500")),
            br(),
-           p(gettext("Download as"),downloadButton("downloadData19",gettext("jpg")),downloadButton("downloadData20",gettext("png")),downloadButton("downloadData21",gettext("pdf")),align="center")
+           p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData19",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData20",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData21",gettext("pdf",domain="R-Factoshiny")),align="center")
 		)
 	  }
     })
@@ -291,10 +291,10 @@
     },rownames=TRUE)
     
     output$map3=renderPlot({
-      print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(anafact$eig),y=anafact$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(anafact$eig)))
+      print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(anafact$eig),y=anafact$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance",domain="R-Factoshiny")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia",domain="R-Factoshiny")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(anafact$eig)))
       # return(barplot(anafact$eig[,1],names.arg=rownames(anafact$eig),las=2))
     })
-    output$JDD=renderDataTable({
+    output$JDD=DT::renderDataTable({
       tab=cbind(Names=rownames(anafact$global.pca$call$X),anafact$global.pca$call$X)
       quanti=names(which(sapply(tab,is.numeric)))
       tab[quanti]=round(tab[quanti],5)
@@ -341,7 +341,7 @@
         return()
       }
       else{
-        return(downloadButton("downloadData3",gettext("Download as png")))
+        return(downloadButton("downloadData3",gettext("Download as png",domain="R-Factoshiny")))
       }
     })
     
@@ -415,7 +415,7 @@
         return()
       }
       else{
-        return(downloadButton("downloadData19",gettext("Download as jpg")))
+        return(downloadButton("downloadData19",gettext("Download as jpg",domain="R-Factoshiny")))
       }
     })
     
@@ -433,7 +433,7 @@
         return()
       }
       else{
-        return(downloadButton("downloadData20",gettext("Download as png")))
+        return(downloadButton("downloadData20",gettext("Download as png",domain="R-Factoshiny")))
       }
     })
     
@@ -451,7 +451,7 @@
         return()
       }
       else{
-        return(downloadButton("downloadData21",gettext("Download as pdf")))
+        return(downloadButton("downloadData21",gettext("Download as pdf",domain="R-Factoshiny")))
       }
     })
     
@@ -496,7 +496,7 @@
         return()
       }
       else{
-        return(downloadButton("downloadData4",gettext("Download as jpg")))
+        return(downloadButton("downloadData4",gettext("Download as jpg",domain="R-Factoshiny")))
       }
     })
     
@@ -514,7 +514,7 @@
         return()
       }
       else{
-        return(downloadButton("downloadData5",gettext("Download as pdf")))
+        return(downloadButton("downloadData5",gettext("Download as pdf",domain="R-Factoshiny")))
       }
     })
         
@@ -623,13 +623,17 @@
       res$partial3=input$partind
       res$selectionMFAshiny <- input$select
       sel=NULL
-      if(input$selection=="contrib") sel=input$slider2
-      if(input$selection=="cos2") sel=input$slider3
-      if(input$select=="cos2") res$selection2MFAshiny <- input$sliderind1
-      if(input$select==gettext("No selection")) res$selection2MFAshiny <- NULL
-      if(input$select=="contrib") res$selection2MFAshiny <- input$sliderind0
-      if(input$select==gettext("Manual")) res$selection2MFAshiny <- input$indiv
-      res$selectvar2=sel
+      if (length(input$selection)>0){
+	    if(input$selection=="contrib") sel=input$slider2
+        if(input$selection=="cos2") sel=input$slider3
+      }
+	  if (length(input$select)>0){
+	    if(input$select=="cos2") res$selection2MFAshiny <- input$sliderind1
+        if(input$select==gettext("No selection",domain="R-Factoshiny")) res$selection2MFAshiny <- NULL
+        if(input$select=="contrib") res$selection2MFAshiny <- input$sliderind0
+        if(input$select==gettext("Manual",domain="R-Factoshiny")) res$selection2MFAshiny <- input$indiv
+      }
+	  res$selectvar2=sel
       res$hide=input$hides
       res$colorvar=input$colorgroup
       res$freq1=input$affichind

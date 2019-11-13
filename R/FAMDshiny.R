@@ -5,13 +5,13 @@ FAMDshiny <- function(X){
   assign("x",X, envir=G)
   assign("nomData",sys.calls()[[1]][2], envir=G)
   if (!(inherits(X, "FAMDshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "FAMD"))){
-    stop(gettext('X is not a dataframe, a matrix, the results of the FAMDshiny function or a FAMD result'))
+    stop(gettext('X is not a dataframe, a matrix, the results of the FAMDshiny function or a FAMD result',domain="R-Factoshiny"))
   }
 if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   if(is.data.frame(X)==TRUE){
     quanti=names(which(sapply(X,is.numeric)))
     quali=names(which(!(sapply(X,is.numeric))))
-    if(length(quanti)==0 || length(quali)==0) stop(gettext('Your dataset is not mixed'))
+    if(length(quanti)==0 || length(quali)==0) stop(gettext('Your dataset is not mixed',domain="R-Factoshiny"))
   }
  outShiny <-shiny::runApp(system.file("FactoFAMDapp2", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny <- shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoFAMDapp2')

@@ -8,14 +8,14 @@ MCAshiny <-
     assign("nomDataMCAshiny",as.character(sys.calls()[[1]][2]), envir=G)	
 
     if (!(inherits(X, "MCAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "MCA"))){
-        stop(gettext('X is not a dataframe, a matrix, the results of the MCAshiny function or a MCA result'))
+        stop(gettext('X is not a dataframe, a matrix, the results of the MCAshiny function or a MCA result',domain="R-Factoshiny"))
     }
     
       if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
       if(is.data.frame(X)==TRUE){
         qualiMCAshiny=names(which(!(sapply(X,is.numeric))))
       if(length(qualiMCAshiny)<=2)
-        stop(gettext('not enough qualitative variables in your dataset'))
+        stop(gettext('not enough qualitative variables in your dataset',domain="R-Factoshiny"))
       }
       ###
 

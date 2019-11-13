@@ -34,10 +34,14 @@
   })
 
   values <- reactive({
+     if (length(input$habiller2)==2 & input$color_point==gettext("qualitative variable")) return(isolate(valeur()))
+	 if (max(input$nb1>5) | max(input$nb2>5)) return(isolate(valeur()))
+	 if (length(input$nbDimClustering)>0){
+	   if (input$nbDimClustering >5) return(isolate(valeur()))
+	 }
      if (length(input$mcaparam)==0){
 	   return(valeur())
 	 } else {
-        if (length(input$habiller2)==2 && input$color_point==gettext("2 qualitative variables")) isolate(valeur())
         if (input$submit>=0) isolate(valeur())
      }
  })

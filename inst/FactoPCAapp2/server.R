@@ -41,16 +41,20 @@ function(input, output,session) {
   })
 
   values <- reactive({
+     if (length(input$habiller2)==2 & input$color_point==gettext("qualitative variable")) return(isolate(valeur()))
+	 if (max(input$nb1>5) | max(input$nb2>5)) return(isolate(valeur()))
+	 if (length(input$nbDimClustering)>0){
+	   if (input$nbDimClustering >5) return(isolate(valeur()))
+	 }
      if (length(input$pcaparam)==0){
 	   return(valeur())
 	 } else {
-       if (length(input$habiller2)==2 & input$color_point==gettext("qualitative variable")) return(isolate(valeur()))
        if (input$submit>=0) return(isolate(valeur()))
      }
  })
 
   # values <- reactive({
-  valeur <- reactive({
+  valeur <- function(){
     NomCol <- colnames(newdataPCAshiny)
 	SuppressCol <- NULL
     if (length(QualiChoicePCAshiny)!=0){
@@ -92,7 +96,7 @@ function(input, output,session) {
 	if (!boolImpute) codePCA <- paste0(codePCA,"res.PCA<-PCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon})
 	codePCA <- paste0(codePCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(QualiSup)) paste0(",quali.sup=c(",paste(QualiSup,collapse=","),")"),if(!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste(QuantiSup,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1PCAshiny)) paste0(",row.w=c(",paste(poids1PCAshiny,collapse=","),")"),if (!is.null(poids2PCAshiny)) paste0(",col.w=c(",paste(poids2PCAshiny,collapse=","),")"),if(input$nor!="TRUE") paste0(",scale.unit=",input$nor),",graph=FALSE)")
     list(res.PCA= eval(parse(text=codePCA)), codePCA=codePCA)
-  })
+  }
   
   output$colourn2 <- renderUI({
     if(length(input$indsup)!=0){
@@ -173,7 +177,6 @@ function(input, output,session) {
     if(bool1==TRUE) div(align="left",checkboxGroupInput("ind_mod",gettext("Points to draw"), choices=choix, selected = indmodPCAshiny))
   })
     
-
   codeGraphInd <- reactive({
     validate(
       need(input$nb1 != input$nb2, gettext("Please select two different dimensions")),
@@ -182,6 +185,8 @@ function(input, output,session) {
       need(!is.null(input$habiller) || length(input$habiller)<=2,gettext("Please select maximum 2 variables as habillage"))
     )
 	
+    selecindiv <- NULL
+    selecindivtext <- NULL
     if(input$select=="cos2"){
       if(input$slider1!=1){
         selecindiv <- paste("cos2 ",input$slider1)
@@ -189,10 +194,6 @@ function(input, output,session) {
         selecindiv <- "cos2 0.999999"
       }
       selecindivtext <- paste0("'",selecindiv,"'")
-    }
-    if(input$select==gettext("No selection")){
-      selecindiv <- NULL
-      selecindivtext <- "NULL"
     }
     if(input$select=="contrib"){
       selecindiv <- paste("contrib ",input$slider0)
@@ -266,7 +267,7 @@ function(input, output,session) {
     bool <- (!is.null(input$elip) && input$elip==TRUE && input$color_point == gettext("qualitative variable"))
 
 	res.PCA <- values()$res.PCA
-    Code <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},if (!is.null(label)) paste0(",label =",label),")")
+    Code <- paste0(if (bool){"plotellipses"} else{"plot.PCA"},"(res.PCA", if (bool) paste0(", keepvar=",if (is.numeric(hab)){hab} else {which(colnames(values()$res.PCA$call$X)==hab)}),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(inv)){paste0(",invisible=c(",paste0("'",paste(inv,collapse="','"),"'"),")")}, if(!is.null(selecindivtext)){paste0(",select=",selecindivtext)},if (!bool & hab!="none" & hab!="''"){paste0(",habillage=",hab)},if(input$title1!="PCA graph of individuals")paste0(',title="',input$title1,'"'),if(input$cex!=1)paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if(input$coloract!="#000000")paste0(",col.ind='",input$coloract,"'"), if(!is.null(input$colorsup)){ if(input$colorsup!="#0000FF") paste0(",col.ind.sup='",input$colorsup,"'")},if(!is.null(input$colorquali)) { if (input$colorquali!="#FF00FF")paste0(",col.quali='",input$colorquali,"'")},if (!is.null(label)) paste0(",label =",label),")")
     Plot <- eval(parse(text=Code))
 	return(list(Code=Code,Plot=Plot))      
   })

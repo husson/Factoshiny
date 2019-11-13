@@ -41,6 +41,10 @@
   })
 
   values <- reactive({
+	 if (max(input$nb1>5) | max(input$nb2>5)) return(isolate(valeur()))
+	 if (length(input$nbDimClustering)>0){
+	   if (input$nbDimClustering >5) return(isolate(valeur()))
+	 }
      if (length(input$famdparam)==0){
 	   return(valeur())
 	 } else {
@@ -75,7 +79,8 @@
 	}
 	codeFAMD <- paste0(codeFAMD,"res.FAMD<-FAMD(",nomData)
 	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.comp=dfcompleted$tab.disj")
-	codeFAMD <- paste0(codeFAMD,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(length(choixsup)!=0) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
+	if (length(input$nb1)>0) codeFAMD <- paste0(codeFAMD,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(length(choixsup)!=0) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
+	else codeFAMD <- paste0(codeFAMD,if(max(axe1,axe2,nbdimclustFAMDshiny)!=5) paste0(",ncp=",max(axe1,axe2,nbdimclustFAMDshiny)),if(length(choixsup)!=0) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
 	list(res.FAMD=eval(parse(text=codeFAMD)), codeFAMD=codeFAMD)
     }
     

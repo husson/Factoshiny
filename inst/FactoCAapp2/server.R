@@ -42,6 +42,10 @@
   })
 
   values <- reactive({
+	 if (max(input$nb1>5) | max(input$nb2>5)) return(isolate(valeur()))
+	 if (length(input$nbDimClustering)>0){
+	   if (input$nbDimClustering >5) return(isolate(valeur()))
+	 }
      if (length(input$caparam)==0){
 	   return(valeur())
 	 } else {

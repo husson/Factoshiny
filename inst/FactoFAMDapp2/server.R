@@ -77,7 +77,7 @@
       } else {
         Nbncp <- 0
 	  }
-	  codeFAMD <- paste0(codeFAMD, "dfcompleted <- imputeFAMD(",nomData,",ncp=",Nbncp,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+	  codeFAMD <- paste0(codeFAMD, "dfcompleted <- missMDA::imputeFAMD(",nomData,",ncp=",Nbncp,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
 	}
 	codeFAMD <- paste0(codeFAMD,"res.FAMD<-FAMD(",nomData)
 	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.comp=dfcompleted$tab.disj")

@@ -141,13 +141,13 @@
         if(input$drawind==gettext("categorical variable",domain="R-Factoshiny")) habi=input$habiquali
       }
 	  inv <- c()
-      if(sum(gettext("Individuals")==input$ind_var)==0)  inv<-c(inv,"'ind'")
+      if(sum(gettext("Individuals",domain="R-Factoshiny")==input$ind_var)==0)  inv<-c(inv,"'ind'")
       if(!(is.null(anafact[["quali.var"]])) & sum(gettext("Categories",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'quali'")
       if(!(is.null(anafact$quali.var.sup)) & sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'quali.sup'")
       if(!(is.null(anafact$ind.sup)) & sum(gettext("Supplementary individuals",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'ind.sup'")
       if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
       if(length(inv)==1) vecinv <- inv
-      if(length(inv)==0) vecinv<-"NULL"
+      if(length(inv)==0 | length(input$ind_var)==0) vecinv<-"NULL"
       Code <- paste0('plot.MFA(',nomObjectMFA,', choix="ind"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if(!is.null(part)) paste0(",partial=",part),if(!is.null(input$partind)) {if (input$partind==TRUE) ",lab.par=TRUE"},if (vecinv!="NULL") paste(",invisible=",vecinv), if(selecindivtext!="NULL"){paste0(",select=",selecindivtext)}, if (habi!="none" & habi!="''"){paste0(",habillage='",habi,"'")},if(input$titleInd!="MFA graph of individuals")paste0(',title="',input$titleInd,'"'),if(input$cexInd!=1)paste0(",cex=",input$cexInd,",cex.main=",input$cexInd,",cex.axis=",input$cexInd),")")
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))      
@@ -238,7 +238,7 @@
       if(is.null(anafact$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
       if(is.null(anafact[["freq"]])) choix <- setdiff(choix,gettext("Frequencies",domain="R-Factoshiny"))
       if(is.null(anafact$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies",domain="R-Factoshiny"))
-    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw,domain="R-Factoshiny""), choices=choix, selected = indvarMFAshinyfreq))
+    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshinyfreq))
   })
 
     CodeGraphFreq <- function(){

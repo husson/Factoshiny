@@ -11,20 +11,20 @@ Factoshiny <- function(res, language="auto"){
   assign("nomDatashiny",sys.calls()[[1]][2], envir=G)
   if(inherits(res, "catdes") |inherits(res, "condes") |inherits(res, "PCA") | inherits(res, "MCA") | inherits(res, "CA")| inherits(res, "FAMD")| inherits(res, "MFA") | inherits(res,"HCPC") | inherits(res, "PCAshiny") | inherits(res, "MCAshiny") | inherits(res, "CAshiny")| inherits(res, "FAMDshiny")| inherits(res, "MFAshiny") | inherits(res,"HCPCshiny")){
     switch(class(res)[1],
-           condes = {condesshiny(res)},
-           catdes = {catdesshiny(res)},
-           PCA = {PCAshiny(res)},
-           PCAshiny = {PCAshiny(res)},
-           CA = {CAshiny(res)},
-           CAshiny = {CAshiny(res)},
-           MCA = {MCAshiny(res)},
-           MCAshiny = {MCAshiny(res)},
-           FAMD = {FAMDshiny(res)},
-           FAMDshiny = {FAMDshiny(res)},
-           MFA = {MFAshiny(res)},
-           MFAshiny = {MFAshiny(res)},
-           HCPC = {HCPCshiny(res)},
-           HCPCshiny = {HCPCshiny(res)}			 
+           condes = {result <-condesshiny(res)},
+           catdes = {result <-catdesshiny(res)},
+           PCA = {result <-PCAshiny(res)},
+           PCAshiny = {result <-PCAshiny(res)},
+           CA = {result <-CAshiny(res)},
+           CAshiny = {result <-CAshiny(res)},
+           MCA = {result <-MCAshiny(res)},
+           MCAshiny = {result <-MCAshiny(res)},
+           FAMD = {result <-FAMDshiny(res)},
+           FAMDshiny = {result <-FAMDshiny(res)},
+           MFA = {result <-MFAshiny(res)},
+           MFAshiny = {result <-MFAshiny(res)},
+           HCPC = {result <-HCPCshiny(res)},
+           HCPCshiny = {result <-HCPCshiny(res)}			 
       )
     } else {
      if (!(inherits(res, "data.frame") | inherits(res, "matrix"))) stop("res should be a data frame, a matrix or a result object of FactoMineR")

@@ -4,10 +4,15 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FA
   resultsHCPCshiny <- x
   anafact <- lignecodeHCPCshiny
   resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-  if (inherits(x, "CA")) nbindivHCPCshiny <- nrow(resultsHCPCshiny$row$coord)
-  else nbindivHCPCshiny <- nrow(resultsHCPCshiny$ind$coord)
-  if (inherits(x, "CA")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
-  else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+  if (inherits(x, "CA")){
+    nbindivHCPCshiny <- nrow(resultsHCPCshiny$row$coord)
+    nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+    clusterOnCA <- gettext("Rows",domain="R-Factoshiny")
+  } else {
+    nbindivHCPCshiny <- nrow(resultsHCPCshiny$ind$coord)
+    nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+    clusterOnCA <- NULL
+  }
   clustdfHCPCshiny <- resClusHCPCshiny
   consolidfHCPCshiny <- FALSE
   metricdfHCPCshiny <- gettext("Euclidean",domain="R-Factoshiny")
@@ -38,6 +43,7 @@ nb2dfHCPCshiny <- x$nb2
 title1HCPCshiny <- x$title1HCPCshiny
 title2HCPCshiny <- x$title2HCPCshiny
 title3HCPCshiny <- x$title3HCPCshiny
+clusterOnCA <- x$clusterOnCA
 }
 
 if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | inherits(x, "FAMDshiny")| inherits(x, "MFAshiny")){
@@ -45,9 +51,11 @@ if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | 
   if (inherits(x, "CAshiny")) {
     nbindivHCPCshiny=nrow(resultsHCPCshiny$row$coord)
     nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
+    clusterOnCA <- gettext("Rows",domain="R-Factoshiny")
   } else {
     nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
     nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
+    clusterOnCA <- NULL
   }
   resClusHCPCshiny=HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   clustdfHCPCshiny=resClusHCPCshiny
@@ -70,6 +78,7 @@ if(inherits(x, "HCPC")){
   resultsHCPCshiny <- anafact
   nomDataHCPCshiny <- x$call$call[2]
   clustdfHCPCshiny <- x$call$t$nb.clust
+  clusterOnCA <- x$clusterOnCA
   consolidfHCPCshiny <-FALSE
   if(x$call$t$tree["dist.method"]=="euclidean"){
     metricdfHCPCshiny=gettext("Euclidean",domain="R-Factoshiny")
@@ -93,5 +102,4 @@ if(inherits(x, "HCPC")){
 # else nbindivHCPCshiny=nrow(resultsHCPCshiny$ind$coord)
 # if (inherits(x, "CA")) nbcolHCPCshiny <- ncol(resultsHCPCshiny$row$coord)
 # else nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
-
 }

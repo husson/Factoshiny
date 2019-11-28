@@ -1,8 +1,9 @@
 # server script for HCPC
   function(input, output) {
 	values <- reactive({
-      if (input$metric=="Manhattan") res <- HCPC(resultsHCPCshiny,nb.clust=if (is.null(input$clust)){resClusHCPCshiny } else{input$clust},consol=input$consoli,graph=FALSE,metric="manhattan")
-      else res <- HCPC(resultsHCPCshiny,nb.clust=if (is.null(input$clust)){resClusHCPCshiny} else{input$clust},consol=input$consoli,graph=FALSE)
+      res <- HCPC(resultsHCPCshiny,nb.clust=if (length(input$clust)==0){resClusHCPCshiny } else{input$clust},consol=if (length(input$consoli)==0){consolidfHCPCshiny} else{input$consoli},graph=FALSE, metric=if (length(input$metric)==0) {"euclidean"} else { if (input$metric=="Manhattan") {"manhattan"} else {"euclidean"}}, cluster.CA=if (length(input$clustCA)==0){"rows"} else {if (input$clustCA==gettext("Columns",domain="R-Factoshiny")) {"columns"} else {"rows"}})
+	  codeHCPC <- paste0("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",if (length(input$consoli)==0){consolidfHCPCshiny} else{input$consoli},if (length(input$clustCA)>0) {if (input$clustCA==gettext("Columns",domain="R-Factoshiny")) ",cluster.CA='columns'"},",graph=FALSE",if (input$metric=="Manhattan") {",metric='manhattan'"},")")
+      list(res.HCPC=res, codeHCPC=codeHCPC)
     })
         
   output$NB1 <- renderUI({
@@ -17,27 +18,28 @@
       sliderInput("clust",gettext("Number of clusters",domain="R-Factoshiny"),min=2,max=min(10,nbindivHCPCshiny-1),value=if (!is.null(input$clust)) {input$clust} else {resClusHCPCshiny},step=1)
     })
     
-    CodeHCPC <- reactive({
-      paste0("res.HCPC<-HCPC(",nomDataHCPCshiny,",nb.clust=",input$clust,",consol=",input$consoli,",graph=FALSE",if (input$metric=="Manhattan") {",metric='manhattan'"},")")
+    output$clusterCA=renderUI({
+      if (!is.null(clusterOnCA)) radioButtons("clustCA",gettext("Clustering on",domain="R-Factoshiny"),choices=list(gettext("Rows",domain="R-Factoshiny"),gettext("Columns",domain="R-Factoshiny")),inline=TRUE,select=clusterOnCA)
     })
+
     
     PlotTree <- reactive({
       Code <- paste0("plot.HCPC(res.HCPC,choice='tree',title='",input$title3HCPCshiny,"')")
-	  res.HCPC <- values()
+	  res.HCPC <- values()$res.HCPC
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
         
     Plot2Dmap <- reactive({
       Code <- paste0("plot.HCPC(res.HCPC,choice='map',draw.tree=",input$drawtree,",title='",input$title2HCPCshiny,"'",if (!is.null(input$nb1)) {if (as.numeric(input$nb1)!=1 | as.numeric(input$nb2)!=2) paste0(",axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),")")},")") 
-	  res.HCPC <- values()
+	  res.HCPC <- values()$res.HCPC
 	  Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
     
     Plot3D <- reactive({
       Code <- paste0("plot.HCPC(res.HCPC,choice='3D.map',ind.names=",input$nom3D,",centers.plot=",input$center,",angle=",input$num,",title='",input$title1HCPCshiny,"'",if (!is.null(input$nb1)) {if (as.numeric(input$nb1)!=1 | as.numeric(input$nb2)!=2) paste0(",axes=c(",as.numeric(input$nb1),",",as.numeric(input$nb2),")")},")") 
-	  res.HCPC <- values()
+	  res.HCPC <- values()$res.HCPC
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
     })
@@ -68,7 +70,7 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        FactoInvestigate::Investigate(values(), openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
+        FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
@@ -79,7 +81,7 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        FactoInvestigate::Investigate(values(),document="word_document",openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
+        FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
         setwd(path.aux)
       })
     }
@@ -92,7 +94,7 @@
     content = function(file) {
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-	    FactoInvestigate::Investigate(values(), openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= substr(tolower(input$choixLANG),1,2))
+	    FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= substr(tolower(input$choixLANG),1,2))
 	    print(paste0(gettext("The file ",domain="R-Factoshiny"),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: ",domain="R-Factoshiny"),getwd()))
         setwd(path.aux)
     }
@@ -181,7 +183,7 @@
         
     ### Fonction permettant d'afficher la description des classes par les variables
     output$descript=renderTable({
-      write.infile(X=values()$desc.var$quanti,file=paste(getwd(),"essai.csv"),sep=";")
+      write.infile(X=values()$res.HCPC$desc.var$quanti,file=paste(getwd(),"essai.csv"),sep=";")
       baba=read.csv(paste(getwd(),"essai.csv"),sep=";",header=FALSE)
       colnames(baba)=NULL
       b=which(baba[,1]=="format non affichable")
@@ -190,11 +192,10 @@
     },
     rownames=FALSE)
     
-    ### Fonction permettant d'afficher les parangons des classes
      output$parangons=renderTable({
        bibi=list()
        for (i in 1:input$clust){
-         bibi[[i]]=rbind(colnames(values()$desc.ind$para[[i]]),values()$desc.ind$para[[i]])
+         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$para[[i]]),values()$res.HCPC$desc.ind$para[[i]])
 		 rownames(bibi[[i]])="Distance"
        }
        write.infile(X=bibi,file=paste(getwd(),"essai3.csv"),sep=";",nb.dec=8)
@@ -207,7 +208,7 @@
     
     ### Fonction permettant d'afficher la description des classes par les axes 
     output$axes=renderTable({
-      write.infile(X=values()$desc.axes$quanti,file=paste(getwd(),"essai2.csv"),sep=";",nb.dec=8)
+      write.infile(X=values()$res.HCPC$desc.axes$quanti,file=paste(getwd(),"essai2.csv"),sep=";",nb.dec=8)
       baba=read.csv(paste(getwd(),"essai2.csv"),sep=";",header=FALSE)
       colnames(baba)=NULL
       file.remove(paste(getwd(),"essai2.csv"))
@@ -215,17 +216,35 @@
     },
     rownames=FALSE)  
 
-    observe({
-      if(input$HCPCcode!=0){
-        isolate({
-          if (!is.null(lignecodeHCPCshiny)) print(lignecodeHCPCshiny)
-          cat(CodeHCPC(),sep="\n")
+    output$CodePrinted <- renderPrint({
+       if (input$HCPCcode!=0){
+          if (!is.null(lignecodeHCPCshiny)) cat(lignecodeHCPCshiny,sep="\n")
+          cat(values()$codeHCPC,sep="\n")
           cat(PlotTree()$Code,sep="\n")
           cat(Plot2Dmap()$Code,sep="\n")
           cat(Plot3D()$Code,sep="\n")
-        })
-      }
+       }
     })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$HCPCcode!=0){
+          if (!is.null(lignecodeHCPCshiny)) cat(lignecodeHCPCshiny,sep="\n")
+          cat(values()$codeHCPC,sep="\n")
+        cat("summary(res.HCPC)",sep="\n")
+       }
+    })
+
+    # observe({
+      # if(input$HCPCcode!=0){
+        # isolate({
+          # if (!is.null(lignecodeHCPCshiny)) print(lignecodeHCPCshiny)
+          # cat(CodeHCPC(),sep="\n")
+          # cat(PlotTree()$Code,sep="\n")
+          # cat(Plot2Dmap()$Code,sep="\n")
+          # cat(Plot3D()$Code,sep="\n")
+        # })
+      # }
+    # })
     
     observe({
       if(input$Quit!=0){
@@ -234,17 +253,18 @@
           res$nomDataHCPCshiny <- nomDataHCPCshiny
           # res$anafact <- anafact
           res$anafact <- lignecodeHCPCshiny
-          res$resultsHCPCshiny <- values()
+          res$resultsHCPCshiny <- values()$res.HCPC
           res$classx <- c("PCA", "list")
           class(res) <- c("HCPCshiny")
           res$clust <- input$clust
+		  res$clusterOnCA <- input$clustCA
           res$consoli <- input$consoli
           res$metric <- input$metric
           res$drawtree <- input$drawtree 
           res$nom3D <- input$nom3D
           res$center <- input$center
           res$num <- input$num
-          res$Code <- CodeHCPC()
+          res$Code <- values()$codeHCPC
           res$CodeTree <- PlotTree()$Code
           res$Code2Dmap <- Plot2Dmap()$Code
           res$Code3D <- Plot3D()$Code

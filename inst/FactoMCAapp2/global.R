@@ -79,7 +79,7 @@ if(inherits(x, "MCA")){
 #  nomDataMCAshiny=unlist(strsplit(nomDataMCAshiny, split='[', fixed=TRUE))[1]
   newdataMCAshiny=x$call$X
   quantiSMCAshiny=rownames(x$quanti.sup$coord)
-  supqualiMCAshiny=rownames(x$quali.sup$coord)
+  supqualiMCAshiny=rownames(x$quali.sup$eta2)
   indsuplMCAshiny=rownames(x$ind.sup$coord)
   axe1MCAshiny=1
   axe2MCAshiny=2

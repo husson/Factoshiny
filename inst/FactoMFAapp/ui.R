@@ -131,7 +131,10 @@ fluidPage(
           uiOutput("NbDimForClustering")
         ),
         align="center", style = "padding: 3px;background-color: #ecffdb"),
-      div(align="center",actionButton("MFAcode", gettext("Get the MFA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      wellPanel(
+        div(align="center",checkboxInput("MFAcode",gettext("Get the MFA code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
+	  ),
+      # div(align="center",actionButton("MFAcode", gettext("Get the MFA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
@@ -328,6 +331,7 @@ fluidPage(
                                 )
                              )),
                     tabPanel(gettext("Graphs",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrinted")),
      fluidRow(
                  br(),
                           column(width = 6,shinyjqui::jqui_resizable(plotOutput("map", height="500")),
@@ -353,12 +357,14 @@ fluidPage(
 							 ),
 
                     tabPanel(gettext("Values",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedSummary")),
                              br(),
                              radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
                                           choices=list(gettext("Summary of outputs",domain="R-Factoshiny"),gettext("Eigenvalues",domain="R-Factoshiny"),gettext("Results for the individuals",domain="R-Factoshiny"),
                                                        gettext("Results for the quantitative variables",domain="R-Factoshiny"),gettext("Results for the groups",domain="R-Factoshiny"),gettext("Results for the partial axes",domain="R-Factoshiny")),inline=TRUE),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Summary of outputs",domain="R-Factoshiny"),"'",sep=''),
+                               numericInput("nbele",gettext("Number of elements to print",domain="R-Factoshiny"),value=10),
                                verbatimTextOutput("summaryMFA")
                                ),
                              conditionalPanel(

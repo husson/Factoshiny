@@ -115,13 +115,17 @@ fluidPage(
         ),
         align="center", style = "padding: 3px;background-color: #ecffdb"
       ),
-      div(align="center",actionButton("FAMDcode", gettext("Get the FAMD code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      wellPanel(
+        div(align="center",checkboxInput("FAMDcode",gettext("Get the FAMD code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
+	  ),
+      # div(align="center",actionButton("FAMDcode", gettext("Get the FAMD code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
       mainPanel(
         tabsetPanel(id = "graph_sort",
                     tabPanel(gettext("Graphs",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrinted")),
  fluidRow(
                            br(),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
@@ -142,6 +146,7 @@ fluidPage(
                              align="center"))),
 
                     tabPanel(gettext("Values",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedSummary")),
                              br(),
                              uiOutput("out22", width = "500", height="500"),
                              br(),
@@ -188,6 +193,7 @@ fluidPage(
                                div(align="center",tableOutput("sorties37")))
                              ),
                   tabPanel(gettext("Automatic description of axes",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedDimdesc")),
                            br(),
                            numericInput("pvalueDimdesc",gettext("P-value",domain="R-Factoshiny"),value=pvalueDimdescInit, min=0,max=1),
                            radioButtons("Dim",label=gettext("Choose the dimensions",domain="R-Factoshiny"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),

@@ -30,6 +30,8 @@ fluidPage(
           div(uiOutput("NB1"), style="display: inline-block;"),
           div(uiOutput("NB2"), style="display: inline-block;"),
           textInput("title1CAshiny",gettext("Title of the graph:",domain="R-Factoshiny"),title1CAshiny),
+		  uiOutput("Titre2"),
+          # textInput("title2CAshiny",gettext("Title of the graph for quantitative variables:",domain="R-Factoshiny"),title2CAshiny),
           sliderInput("cex",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=3.5,value=sizeCAshiny,step=0.05),
           uiOutput("choixinvis"),
           uiOutput("ellipsesCAshiny"),
@@ -73,6 +75,7 @@ fluidPage(
         div(align="center",checkboxInput("hcpcparam",gettext("Perform clustering after leaving CA app?",domain="R-Factoshiny"),hcpcparaCAshiny)),
         conditionalPanel(
           condition="input.hcpcparam==true",
+		  # radioButtons("ellipseCA",gettext("Clustering on the",domain="R-Factoshiny"), choices=c(gettext("Rows",domain="R-Factoshiny"),gettext("Columns",domain="R-Factoshiny")), selected = gettext("Rows",domain="R-Factoshiny"), inline=TRUE),
           uiOutput("NbDimForClustering")
         ),
         align="center", style = "padding: 3px;background-color: #ecffdb"
@@ -90,7 +93,10 @@ fluidPage(
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-      div(align="center",actionButton("CAcode", gettext("Get the CA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      wellPanel(
+        div(align="center",checkboxInput("CAcode",gettext("Get the CA code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
+	  ),
+      # div(align="center",actionButton("CAcode", gettext("Get the CA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       mainPanel(
@@ -98,6 +104,7 @@ fluidPage(
         tabsetPanel(id = "graph_sort",
                     tabPanel(gettext("Graph",domain="R-Factoshiny"),
                              div(verbatimTextOutput("warn")),
+                             div(verbatimTextOutput("CodePrinted")),
           fluidRow(
                  br(),
                  column(width = 7,shinyjqui::jqui_resizable(plotOutput("map",height=550)),
@@ -107,6 +114,7 @@ fluidPage(
                  uiOutput("map22"),
 							 br(),align="center")),
                     tabPanel(gettext("Values",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedSummary")),
                              br(),
                              uiOutput("out22"),
                              br(),

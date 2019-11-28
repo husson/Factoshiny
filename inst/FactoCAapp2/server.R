@@ -36,8 +36,8 @@
     if(any(is.na(newdataCAshiny[,VariableChoicesCAshiny]))){
 	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Consider NA as supplementary",domain="R-Factoshiny"),gettext("Impute by the independance model",domain="R-Factoshiny"),gettext("Impute with 2-dimensional CA-model (preferred)",domain="R-Factoshiny")),selected=gettext("Consider NA as supplementary",domain="R-Factoshiny")))
 	} else {
-      return(tags$div(tags$label(class="control-label", "Handling missing values"),
-	   tags$div(HTML("No missing values"))))
+      return(tags$div(tags$label(class="control-label", gettext("Handling missing values",domain="R-Factoshiny")),
+	   tags$div(HTML(gettext("No missing values",domain="R-Factoshiny")))))
 	}
   })
 
@@ -250,25 +250,42 @@
         p <- print(codeGraph()$Plot)
     })
     
-    codeGraphQuanti <- function(){
-      if (length(input$quantisupvar)>0) {
-		Code <- paste0("plot.CA(res.CA, choix='quanti.sup'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),paste0(',title="',input$title1CAshiny,' - ',gettext("supplementary quantitative variables",domain="R-Factoshiny"),'"'),")")
+  codeGraphQuanti <- function(){
+    validate(
+      need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
+      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny")),
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
+    )
+      if (!is.null(values()$res.CA$quanti.sup)) {
+		Code <- paste0("plot.CA(res.CA, choix='quanti.sup'",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),paste0(',title="',if (length(input$title2CAshiny)==0) {title2CAshiny} else {input$title2CAshiny},'"'),")")
 		res.CA <- values()$res.CA
-	    Plot <- eval(parse(text=Code))
+		Plot <- eval(parse(text=Code))
 	    return(list(Code=Code,Plot=Plot))
-	  }
-    }
+	  } else {return(NULL)}
+  }
     
-    output$map2 <- renderPlot({
+  output$Titre2 <- renderUI({
+	  if (!is.null(values()$res.CA$quanti.sup)) {
+	    textInput("title2CAshiny",gettext("Title of the graph for quantitative variables:",domain="R-Factoshiny"),title2CAshiny)
+	  }
+  })
+
+  output$map2 <- renderPlot({
+    validate(
+      need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
+      need(nrow(values()$res.CA$row$coord)>2 ,gettext("Please select at least three active rows",domain="R-Factoshiny")),
+      need(nrow(values()$res.CA$col$coord)>2 ,gettext("Please select at least three active columns",domain="R-Factoshiny"))
+    )
 	  if (!is.null(codeGraphQuanti()$Plot)) print(codeGraphQuanti()$Plot)
     })  
     
     output$map22=renderUI({
       validate(
         need( (length(VariableChoicesCAshiny)-length(input$supvar)-length(input$quantisupvar))>2,gettext("Please more active columns",domain="R-Factoshiny"))
+        # need( length(input$quantisupvar)==0 | (input$submit>0 | input$caparam==FALSE) ,gettext("Submit or close the parameters window",domain="R-Factoshiny"))
       )
       
-      if(length(input$quantisupvar)==0 | is.null(codeGraphQuanti()$Plot)){
+      if(is.null(codeGraphQuanti()$Plot)){
 	    p()
       } else{
         column(width = 5,shinyjqui::jqui_resizable(plotOutput("map2", height="500")),
@@ -497,15 +514,37 @@
       },
       contentType=NA)
 
-    observe({
-      if(input$CAcode!=0){
-        isolate({
+    output$CodePrinted <- renderPrint({
+       if (input$CAcode!=0){
           cat(values()$codeCA,sep="\n")
           cat(codeGraph()$Code,sep="\n")
           if (!is.null(input$quantisupvar)) cat(codeGraphQuanti()$Code,sep="\n")
-        })
-      }
+       }
     })
+
+    output$CodePrintedDimdesc <- renderPrint({
+       if (input$CAcode!=0){
+        cat(values()$codeCA,sep="\n")
+        cat("dimdesc(res.CA)",sep="\n")
+       }
+    })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$CAcode!=0){
+        cat(values()$codeCA,sep="\n")
+        cat("summary(res.CA)",sep="\n")
+       }
+    })
+
+    # observe({
+      # if(input$CAcode!=0){
+        # isolate({
+          # cat(values()$codeCA,sep="\n")
+          # cat(codeGraph()$Code,sep="\n")
+          # if (!is.null(input$quantisupvar)) cat(codeGraphQuanti()$Code,sep="\n")
+        # })
+      # }
+    # })
     
     observe({
       if(input$Quit!=0){
@@ -578,6 +617,7 @@
           res$ellip=input$ellip
           res$hcpcparam <- input$hcpcparam
           res$nbdimclustCAshiny <- input$nbDimClustering
+		  # res$ellipseCA <- input$ellipseCA
           class(res) <- "CAshiny"
           stopApp(returnValue=res)
         })

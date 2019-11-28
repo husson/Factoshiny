@@ -125,13 +125,17 @@ fluidPage(
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-      div(align="center",actionButton("PCAcode", gettext("Get the PCA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      # div(align="center",actionButton("PCAcode", gettext("Get the PCA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      wellPanel(
+        div(align="center",checkboxInput("PCAcode",gettext("Get the PCA code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
+	  ),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
     
     mainPanel(
       tabsetPanel(id = "graph_sort",
                   tabPanel(gettext("Graphs",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrinted")),
                            fluidRow(
                              br(),
 ##                             column(width = 6,plotOutput("map2", width = "500", brush = brushOpts(id = "plot_brush_ind")),
@@ -145,6 +149,7 @@ fluidPage(
                                     p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData1",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData2",gettext("pdf",domain="R-Factoshiny")),align="center"),
                                     align="center"))),
                   tabPanel(gettext("Values",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedSummary")),
                            br(),
                            uiOutput("out22"),
                            br(),
@@ -202,6 +207,7 @@ fluidPage(
                            )
                   ),
                   tabPanel(gettext("Automatic description of axes",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedDimdesc")),
                            br(),
                            numericInput("pvalueDimdesc",gettext("P-value",domain="R-Factoshiny"),value=pvalueDimdescInit, min=0,max=1),
                            radioButtons("Dim",label=gettext("Choose the dimensions",domain="R-Factoshiny"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),

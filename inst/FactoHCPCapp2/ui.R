@@ -17,9 +17,8 @@ fluidPage(
       conditionalPanel(
         condition="input.hcpcparam==true",
       uiOutput("clusters"),
-      hr(),
+      uiOutput("clusterCA"),
       checkboxInput("consoli","Consolidation",consolidfHCPCshiny),
-      hr(),
       radioButtons("metric",gettext("Which metric would you like to use?",domain="R-Factoshiny"),choices=list(gettext("Euclidean",domain="R-Factoshiny"),"Manhattan"),inline=TRUE,select=metricdfHCPCshiny)
       ),
       style = "padding: 3px;background-color: #ffdbdb;"),
@@ -62,7 +61,9 @@ fluidPage(
         ),
         align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
-      div(align="center",actionButton("HCPCcode", gettext("Get the HCPC code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      wellPanel(
+        div(align="center",checkboxInput("HCPCcode",gettext("Get the HCPC code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
+	  ),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       
@@ -70,6 +71,7 @@ fluidPage(
         tags$style(type = "text/css", "a{color: #0B6121;}"),
         tabsetPanel(id = "graph_sort",
                     tabPanel(gettext("Graphs",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrinted")),
 fluidRow(
                            br(),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("mapTree", height="500")),
@@ -89,6 +91,7 @@ fluidRow(
                              ),
 
                     tabPanel(gettext("Values",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedSummary")),
                              br(),
                              radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
                                           choices=list(gettext("Description of classes by variables",domain="R-Factoshiny"),gettext("Description of classes by axes",domain="R-Factoshiny"),gettext("Parangons",domain="R-Factoshiny")),selected=gettext("Description of classes by variables",domain="R-Factoshiny"),inline=TRUE),

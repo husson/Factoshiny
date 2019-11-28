@@ -185,7 +185,7 @@
     }
 
     boolImpute <- FALSE
-	Code <- paste0("newDF <- ",nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4),if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10,collapse='","'),'")]\n')
+	Code <- paste0("newDF <- ",nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4,if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10),collapse='","'),'")]\n')
   if(!is.null(input$variables1)){
 	if (any(is.na(x[,which(colnames(x)%in%c(input$variables1,input$variables2,input$variables3,input$variables4,input$variables5,input$variables6,input$variables7,input$variables8,input$variables9,input$variables10))]))){
 	  boolImpute <- TRUE
@@ -309,7 +309,7 @@
     })
     
     output$listvarG10=renderUI({
-      if(input$typeG10==gettext("Quantitative") || input$typeG10==gettext("Frequencies")){
+      if(input$typeG10==gettext("Quantitative",domain="R-Factoshiny") || input$typeG10==gettext("Frequencies",domain="R-Factoshiny")){
         if(length(VariableChoices)>=1) choix=VariableChoices
       }
       if(input$typeG10==gettext("Qualitative",domain="R-Factoshiny")){
@@ -651,7 +651,10 @@
     })
     
     output$summaryMFA=renderPrint({
-      summary.MFA(codeMFA()$res.MFA)
+      validate(
+        need(input$nbele!=0, gettext("Please select at least one element"))
+      )
+      summary.MFA(codeMFA()$res.MFA,nbelements=input$nbele)
     })  
     
       
@@ -969,18 +972,43 @@
     },
     rownames=FALSE)
     
-    observe({
-      if(input$MFAcode!=0){
-        isolate({
+    output$CodePrinted <- renderPrint({
+       if (input$MFAcode!=0){
           cat(codeMFA()$Code,sep="\n")
           cat(CodeGraphInd()$Code,sep="\n")
           if(!is.null(codeMFA()$res.MFA$quanti.var)) cat(CodeGraphVar()$Code,sep="\n")
           cat(CodeGraphGroup()$Code,sep="\n")
           cat(CodeGraphPartial()$Code,sep="\n")
           if(!is.null(codeMFA()$res.MFA$freq)) cat(CodeGraphFreq()$Code,sep="\n")
-        })
-      }
+       }
     })
+
+    output$CodePrintedDimdesc <- renderPrint({
+       if (input$MFAcode!=0){
+        cat(codeMFA()$Code,sep="\n")
+        cat("dimdesc(res.MFA)",sep="\n")
+       }
+    })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$MFAcode!=0){
+        cat(codeMFA()$Code,sep="\n")
+        cat("summary(res.MFA)",sep="\n")
+       }
+    })
+
+    # observe({
+      # if(input$MFAcode!=0){
+        # isolate({
+          # cat(codeMFA()$Code,sep="\n")
+          # cat(CodeGraphInd()$Code,sep="\n")
+          # if(!is.null(codeMFA()$res.MFA$quanti.var)) cat(CodeGraphVar()$Code,sep="\n")
+          # cat(CodeGraphGroup()$Code,sep="\n")
+          # cat(CodeGraphPartial()$Code,sep="\n")
+          # if(!is.null(codeMFA()$res.MFA$freq)) cat(CodeGraphFreq()$Code,sep="\n")
+        # })
+      # }
+    # })
     
   observe({
    if(input$Quit!=0){

@@ -381,6 +381,12 @@ msgstr "Voir les paramètres de l'ACM"
 msgid "MCA parameters"
 msgstr "Paramètres de l'ACM"
 
+msgid "Clustering on"
+msgstr "Classification sur les"
+
+msgid "MFA parameters"
+msgstr "Paramètres de l'AFM"
+
 msgid "Graph of individuals and categories"
 msgstr "Graphe des individus et des modalités"
 
@@ -2177,6 +2183,15 @@ msgstr "Pas de données manquantes"
 
 msgid "Submit"
 msgstr "Soumettre"
+
+msgid "Quantitative supplementary variables"
+msgstr "Variables quantitatives supplémentaires"
+
+msgid "Title of the graph for quantitative variables:"
+msgstr "Titre du graphe des variables quantitatives :"
+
+msgid "Submit or close the parameters window"
+msgstr "Soumettre ou fermer la fenêtre paramètres"
 
 msgid "Please select the objects you want to plot: Individuals, categories or both"
 msgstr "Choisir les objets que vous voulez dessinés :  individus et/ou modalités"

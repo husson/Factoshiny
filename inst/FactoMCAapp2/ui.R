@@ -141,7 +141,6 @@ fluidPage(
               condition=paste0("input.color_point!='",gettext("active/supplementary",domain="R-Factoshiny"),"'"),
               uiOutput("habillage2"),
 			  uiOutput("ellips")
-
             )
 		  ),
           conditionalPanel(
@@ -180,13 +179,17 @@ fluidPage(
         ), align="center", style = "padding: 3px;background-color: #dbe6ff"
       ),
       
-      div(align="center",actionButton("MCAcode", gettext("Get the MCA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
+      wellPanel(
+        div(align="center",checkboxInput("MCAcode",gettext("Get the MCA code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
+	  ),
+      # div(align="center",actionButton("MCAcode", gettext("Get the MCA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
     mainPanel(
       tags$style(type = "text/css", "a{color: #B53977;}"),
       tabsetPanel(id = "graph_sort",
         tabPanel(gettext("Graphs",domain="R-Factoshiny"),
+          div(verbatimTextOutput("CodePrinted")),
           fluidRow(
                  br(),
                  column(width = 6,shinyjqui::jqui_resizable(plotOutput("map", height="500")),
@@ -203,6 +206,7 @@ fluidPage(
         ),
                   
                   tabPanel(gettext("Values",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedSummary")),
                            br(),
                            uiOutput("out22"),
                            br(), 
@@ -244,7 +248,7 @@ fluidPage(
 
                            conditionalPanel(
                                condition=paste("input.out=='",gettext("Summary of outputs",domain="R-Factoshiny"),"'",sep=''),
-                             numericInput("nbele",h6(gettext("Number of elements to print",domain="R-Factoshiny")),value=10),
+                             numericInput("nbele",gettext("Number of elements to print",domain="R-Factoshiny"),value=10),
                              br(),
                              verbatimTextOutput("summaryMCA"),
                              p(downloadButton("summary2",gettext("Download the summary",domain="R-Factoshiny")),align="center")
@@ -275,6 +279,7 @@ fluidPage(
                   ),
                   
                   tabPanel(gettext("Automatic description of axes",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedDimdesc")),
                            br(),
                            numericInput("pvalueDimdesc",gettext("P-value",domain="R-Factoshiny"),value=pvalueDimdescInit, min=0,max=1),
                            radioButtons("Dim",label=gettext("Choose the dimensions",domain="R-Factoshiny"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),

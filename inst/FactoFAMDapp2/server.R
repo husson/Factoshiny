@@ -595,9 +595,8 @@
     },
     contentType=NA)
   
-    observe({
-      if(input$FAMDcode!=0){
-        isolate({
+    output$CodePrinted <- renderPrint({
+       if (input$FAMDcode!=0){
           if (length(input$habiller)==2 & input$habi==TRUE){
             cat(paste("newCol<-paste(",nomData,"[,'",input$habiller[1],"'],",nomData,"[,'",input$habiller[2],"'],","sep='/')",sep=""),sep="\n")
           }
@@ -605,9 +604,36 @@
           cat(codeGraphInd()$Code,sep="\n")
           cat(codeGraphVar()$Code,sep="\n")
           cat(codeGraphQuanti()$Code,sep="\n")
-        })
-      }
+       }
     })
+
+    output$CodePrintedDimdesc <- renderPrint({
+       if (input$FAMDcode!=0){
+        cat(values()$codeFAMD,sep="\n")
+        cat("dimdesc(res.FAMD)",sep="\n")
+       }
+    })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$FAMDcode!=0){
+        cat(values()$codeFAMD,sep="\n")
+        cat("summary(res.FAMD)",sep="\n")
+       }
+    })
+
+    # observe({
+      # if(input$FAMDcode!=0){
+        # isolate({
+          # if (length(input$habiller)==2 & input$habi==TRUE){
+            # cat(paste("newCol<-paste(",nomData,"[,'",input$habiller[1],"'],",nomData,"[,'",input$habiller[2],"'],","sep='/')",sep=""),sep="\n")
+          # }
+          # cat(values()$codeFAMD,sep="\n")
+          # cat(codeGraphInd()$Code,sep="\n")
+          # cat(codeGraphVar()$Code,sep="\n")
+          # cat(codeGraphQuanti()$Code,sep="\n")
+        # })
+      # }
+    # })
 
  observe({
    if(input$Quit!=0){

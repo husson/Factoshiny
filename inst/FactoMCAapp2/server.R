@@ -205,7 +205,7 @@
     })
 
     output$ellips=renderUI({
-      if(length(input$habiller)>0 | length(input$habiller2)>0)  return(checkboxInput("drawconf","Draw confidence ellipses around center of caregories",FALSE))
+      if(length(input$habiller)>0 | length(input$habiller2)>0)  return(checkboxInput("drawconf","Draw confidence ellipses around center of caregories",if (length(input$drawconf)==0){FALSE}else{input$drawconf}))
     })
 
     codeGraphInd <- reactive({
@@ -274,7 +274,7 @@
 		  coloursup2 <- paste0("c(",paste0(coloursup2,collapse=','),")")
 		}
 	  }
-      Code <- paste0(if(!is.null(input$drawconf)&&input$drawconf==TRUE){paste0("plotellipses(res.MCA,keepvar=",hab)}else{"plot.MCA(res.MCA"},if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (vecinv!="NULL") paste(",invisible=",vecinv),if (selecindivText!="NULL") paste(",select=",selecindivText),if (selecModText!="NULL") paste(",selectMod=",selecModText),if (hab != "none" & length(hab)!=0) paste0(",habillage=",hab),if(input$colindact!="#000000") paste0(",col.ind='",input$colindact,"'"),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'") paste0(",col.var=",colouract2),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'" & !is.null(values()$res.MCA$call$quali.sup)) paste0(",col.quali.sup=",coloursup2), if(input$colvaract1!="#FF0000" & input$eachvar==FALSE) paste0(",col.var='",input$colvaract1,"'"), if(!is.null(input$colindsup)) {if(input$colindsup!="blue") paste0(",col.ind.sup='",input$colindsup,"'")},if(!is.null(input$colvarsup1)& input$eachvar!=TRUE) {if(input$colvarsup1!="darkgreen") paste0(",col.quali.sup='",input$colvarsup1,"'")},if(input$title1MCAshiny!="MCA factor map") paste0(',title="',input$title1MCAshiny,'"'),if (input$cex!=1) paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if (!is.null(label)) paste0(",label =",label),")")
+      Code <- paste0(if(!is.null(input$drawconf)&&input$drawconf==TRUE){paste0("plotellipses(res.MCA,keepvar=",hab)}else{"plot.MCA(res.MCA"},if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (vecinv!="NULL") paste(",invisible=",vecinv),if (selecindivText!="NULL") paste(",select=",selecindivText),if (selecModText!="NULL") paste(",selectMod=",selecModText),if(is.null(input$drawconf)||input$drawconf==FALSE){if (hab != "none" & length(hab)!=0) paste0(",habillage=",hab)},if(input$colindact!="#000000") paste0(",col.ind='",input$colindact,"'"),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'") paste0(",col.var=",colouract2),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'" & !is.null(values()$res.MCA$call$quali.sup)) paste0(",col.quali.sup=",coloursup2), if(input$colvaract1!="#FF0000" & input$eachvar==FALSE) paste0(",col.var='",input$colvaract1,"'"), if(!is.null(input$colindsup)) {if(input$colindsup!="blue") paste0(",col.ind.sup='",input$colindsup,"'")},if(!is.null(input$colvarsup1)& input$eachvar!=TRUE) {if(input$colvarsup1!="darkgreen") paste0(",col.quali.sup='",input$colvarsup1,"'")},if(input$title1MCAshiny!="MCA factor map") paste0(',title="',input$title1MCAshiny,'"'),if (input$cex!=1) paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if (!is.null(label)) paste0(",label =",label),")")
 	  res.MCA <- values()$res.MCA
 	  Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
@@ -348,8 +348,8 @@
       validate(
         need((length(VariableChoicesMCAshiny)-length(input$supvar))>2,gettext("Please select more variables",domain="R-Factoshiny"))
       )
-      maxvar=dim(values()$res.MCA$var$coord)[1]
-
+      # maxvar=nrow(values()$res.MCA$var$coord)
+     maxvar=length(VariableChoicesMCAshiny)-length(input$supvar)
       if(selection3MCAshiny=="Contrib"){return(sliderInput("slider4",label="Contribution",
                                                    min=1,max=maxvar,value=as.numeric(selection4MCAshiny),step=1)) }
       else{
@@ -764,16 +764,39 @@
       },
       contentType=NA)    
         
-    observe({
-      if(input$MCAcode!=0){
-        isolate({
+    output$CodePrinted <- renderPrint({
+       if (input$MCAcode!=0){
           cat(values()$codeMCA,sep="\n")
           cat(codeGraphVar()$Code,sep="\n")
           cat(codeGraphInd()$Code,sep="\n")
           if((length(input$supquanti)!=0)) cat(codeGraphQuanti()$Code,sep="\n") 
-        })
-      }
+       }
     })
+
+    output$CodePrintedDimdesc <- renderPrint({
+       if (input$MCAcode!=0){
+        cat(values()$codeMCA,sep="\n")
+        cat("dimdesc(res.MCA)",sep="\n")
+       }
+    })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$MCAcode!=0){
+        cat(values()$codeMCA,sep="\n")
+        cat("summary(res.MCA)",sep="\n")
+       }
+    })
+
+    # observe({
+      # if(input$MCAcode!=0){
+        # isolate({
+          # cat(values()$codeMCA,sep="\n")
+          # cat(codeGraphVar()$Code,sep="\n")
+          # cat(codeGraphInd()$Code,sep="\n")
+          # if((length(input$supquanti)!=0)) cat(codeGraphQuanti()$Code,sep="\n") 
+        # })
+      # }
+    # })
     
     observe({
       if(input$Quit!=0){
@@ -786,7 +809,7 @@
       res$c=input$supvar
       res$z=input$var_sup
       res$y=input$ind_var
-      res$lab=input$indvarpoint
+      res$choixLabelInit=input$indvarpoint
       res$d=input$indsup
       
       res$e=input$nb1

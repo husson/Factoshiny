@@ -26,6 +26,6 @@ MCAshiny <-
   assign("myListOfThingsMCAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objMCAshiny)),envir=G)  ## on met "outShiny" pour ne pas le supprimer
   rm(list=myListOfThingsMCAshiny, envir=G)
   rm(list=c("myListOfThingsMCAshiny"),envir=G)
-  if (outShiny$hcpcparam==TRUE)resHCPC <- HCPCshiny(outShiny)
+  if (outShiny$hcpcparam==TRUE) resHCPC <- HCPCshiny(outShiny)
   return(invisible(outShiny))
 }

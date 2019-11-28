@@ -610,15 +610,37 @@ function(input, output,session) {
     },
     contentType=NA)
 	
-  observe({
-    if(input$PCAcode!=0){
-      isolate({
+    output$CodePrinted <- renderPrint({
+       if (input$PCAcode!=0){
         cat(values()$codePCA,sep="\n")
         cat(codeGraphVar()$Code,sep="\n")
         cat(codeGraphInd()$Code,sep="\n")
-      })
-    }
-  })
+       }
+    })
+
+    output$CodePrintedDimdesc <- renderPrint({
+       if (input$PCAcode!=0){
+        cat(values()$codePCA,sep="\n")
+        cat("dimdesc(res.PCA)",sep="\n")
+       }
+    })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$PCAcode!=0){
+        cat(values()$codePCA,sep="\n")
+        cat("summary(res.PCA)",sep="\n")
+       }
+    })
+
+  # observe({
+    # if(input$PCAcode!=0){
+      # isolate({
+        # cat(values()$codePCA,sep="\n")
+        # cat(codeGraphVar()$Code,sep="\n")
+        # cat(codeGraphInd()$Code,sep="\n")
+      # })
+    # }
+  # })
 
   ### Bouton pour quitter l'application
   ### Recuperation parametres

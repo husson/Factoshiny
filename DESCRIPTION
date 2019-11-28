@@ -1,11 +1,11 @@
 Package: Factoshiny
 Type: Package
 Title: Perform Factorial Analysis from 'FactoMineR' with a Shiny Application
-Version: 1.2
-Date: 2019-11-15
+Version: 2.0
+Date: 2019-11-21
 Author: Pauline Vaissie, Astrid Monge, Francois Husson
 Maintainer: Francois Husson <husson@agrocampus-ouest.fr>
-Depends: FactoMineR (>= 1.43),shiny,FactoInvestigate (>= 1.5),ggplot2
+Depends: FactoMineR (>= 2.0),shiny,FactoInvestigate (>= 1.5),ggplot2
 Imports: DT,colourpicker,grDevices,tcltk,ggrepel,shinydashboard,shinyjqui,missMDA
 Description: Perform factorial analysis with a menu and draw graphs interactively thanks to 'FactoMineR' and a Shiny application.
 URL: http://factominer.free.fr/graphs/factoshiny.html

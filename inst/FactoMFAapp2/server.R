@@ -307,15 +307,18 @@
     })
     
     output$summaryMFA=renderPrint({
-      summary.MFA(anafact)
+      validate(
+        need(input$nbele!=0, gettext("Please select at least one element"))
+      )
+      summary.MFA(anafact,nbelements=input$nbele)
     })  
     
       
-    output$histo=renderPlot({
-      par(mfrow=c(1,2))
-      boxplot(x[,input$bam])
-      plot(density(x[,input$bam]),main="",xlab="")
-    })
+    # output$histo=renderPlot({
+      # par(mfrow=c(1,2))
+      # boxplot(x[,input$bam])
+      # plot(density(x[,input$bam]),main="",xlab="")
+    # })
     
     
     output$downloadData = downloadHandler(
@@ -583,18 +586,43 @@
     },
     rownames=FALSE)
     
-    observe({
-      if(input$MFAcode!=0){
-        isolate({
-          print(ligne)
+    output$CodePrinted <- renderPrint({
+       if (input$MFAcode!=0){
+          cat(ligne,sep="\n")
           cat(CodeGraphInd()$Code,sep="\n")
           if(!is.null(anafact$quanti.var)) cat(CodeGraphVar()$Code,sep="\n")
           cat(CodeGraphGroup()$Code,sep="\n")
           cat(CodeGraphPartial()$Code,sep="\n")
           if(!is.null(anafact$freq)) cat(CodeGraphFreq()$Code,sep="\n")
-        })
-      }
+       }
     })
+
+    output$CodePrintedDimdesc <- renderPrint({
+       if (input$MFAcode!=0){
+        cat(codeMFA()$Code,sep="\n")
+        cat("dimdesc(res.MFA)",sep="\n")
+       }
+    })
+
+    output$CodePrintedSummary <- renderPrint({
+       if (input$MFAcode!=0){
+        cat(codeMFA()$Code,sep="\n")
+        cat("summary(res.MFA)",sep="\n")
+       }
+    })
+
+    # observe({
+      # if(input$MFAcode!=0){
+        # isolate({
+          # print(ligne)
+          # cat(CodeGraphInd()$Code,sep="\n")
+          # if(!is.null(anafact$quanti.var)) cat(CodeGraphVar()$Code,sep="\n")
+          # cat(CodeGraphGroup()$Code,sep="\n")
+          # cat(CodeGraphPartial()$Code,sep="\n")
+          # if(!is.null(anafact$freq)) cat(CodeGraphFreq()$Code,sep="\n")
+        # })
+      # }
+    # })
     
   observe({
    if(input$Quit!=0){

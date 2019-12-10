@@ -13,13 +13,13 @@ MFAshiny <- function(X){
 	  booldf <- TRUE
       assign("nomData",sys.calls()[[1]][2], envir=G)
       if(ncol(X)<=2) stop(gettext('not enough variables in your dataset',domain="R-Factoshiny"))
-   # outShiny <- shiny::runApp(system.file("FactoMFAapp", package="Factoshiny"),launch.browser = TRUE)
-      outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp')
+    outShiny <- shiny::runApp(system.file("FactoMFAapp", package="Factoshiny"),launch.browser = TRUE)
+  #    outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp')
     } else{
       assign("nomData",as.character(X$call$call)[2], envir=G)
       if (!booldf) assign("nomObjectMFA",strsplit(as.character(sys.calls()[[1]][2]),split="[(]")[[1]][1], envir=G)
-  #  outShiny <- shiny::runApp(system.file("FactoMFAapp2", package="Factoshiny"),launch.browser = TRUE)
-    outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp2')
+    outShiny <- shiny::runApp(system.file("FactoMFAapp2", package="Factoshiny"),launch.browser = TRUE)
+  #  outShiny <- shiny::runApp('C:/Users/husson/AOBox/Travail/huss/Divers/Site_Github/Factoshiny/inst/FactoMFAapp2')
     }
   assign("myListOfThingsMFAshiny",setdiff(ls(all.names=TRUE,envir=G),c("outShiny",objMFAshiny)),envir=G)  ## on met "outShiny" pour ne pas le supprimer
   rm(list=myListOfThingsMFAshiny, envir=G)

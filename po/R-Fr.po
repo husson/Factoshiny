@@ -18,6 +18,9 @@ msgstr "df n'est ni un dataframe ni le résultat de la fonction CAshiny ou CA"
 msgid "not enough row/column"
 msgstr "pas assez de lignes/colonnes"
 
+msgid "Not enough numeric columns"
+msgstr "Pas assez de colonnes quanitatives"
+
 msgid "df is not a dataframe, the results of the FAMDshiny function or a FAMD result"
 msgstr "df n'est ni un dataframe ni le résultat de la fonction FAMDshiny ou FAMD"
 
@@ -386,6 +389,9 @@ msgstr "Classification sur les"
 
 msgid "MFA parameters"
 msgstr "Paramètres de l'AFM"
+
+msgid "Other MFA parameters"
+msgstr "Autres paramètres de l'AFM"
 
 msgid "Graph of individuals and categories"
 msgstr "Graphe des individus et des modalités"
@@ -2220,3 +2226,53 @@ msgstr "Définir et valider les groupes"
 msgid "Validate the groups"
 msgstr "Valider les groupes"
 
+msgid "Create the groups with lines of code"
+msgstr "Créer les groupes par lignes de code"
+
+msgid "Create the groups one by one (max 10 groups)"
+msgstr "Créer les groupes un par un (max 10 groupes)"
+
+msgid "Number of variables in each group"
+msgstr "Nombre de variables par groupe"
+
+msgid "Type of each group (s for scale, c for continuous, f for frequency, n for nominal)"
+msgstr "Type de chaque groupe (s pour réduit, c pour continu, f pour fréquence, n pour qualitative)"
+
+msgid "Names of the groups (NULL by default"
+msgstr "Noms des groupes (NULL par défaut)"
+
+msgid "Supplementary groups (if NULL all groups are active)"
+msgstr "Groupes supplémentaires (si NULL tous les groupes sont actifs)"
+
+msgid "Within inertia"
+msgstr "Inertie partielle"
+
+msgid "partial coordinates"
+msgstr "coordonnées partielles"
+
+msgid "Within partial intertia"
+msgstr "Inertie intra partielle" 
+
+msgid "Correlations"
+msgstr "Corrélations"
+
+msgid "Correlations between"
+msgstr "Corrélations inter"
+
+msgid "Variables with cos2 highest than"
+msgstr "Variables avec un cos2 supérieur à"
+
+msgid "Lg coefficients"
+msgstr "Coefficients Lg"
+
+msgid "RV coefficients"
+msgstr "Coefficients RV"
+
+msgid "Group coordinates"
+msgstr "Coordonnées des groupes"
+
+msgid "Group contribution"
+msgstr "Contribution des groupes"
+
+msgid "Group cos2"
+msgstr "Cos2 des groupes"

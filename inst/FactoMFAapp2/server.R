@@ -1,11 +1,11 @@
   function(input, output) {
     
   output$NB1 <- renderUI({
-    return(textInput("nb1", label = NULL, axe1,width='41px'))
+    return(textInput("nb1", label = NULL, axe1,width='61px'))
   })
   
   output$NB2=renderUI({
-    return(textInput("nb2", label = NULL, axe2,width='41px'))
+    return(textInput("nb2", label = NULL, axe2,width='61px'))
   })
   
   output$NbDimForClustering <- renderUI({
@@ -22,7 +22,8 @@
     if(!(is.null(anafact[["quali.var"]]))) choix <- c(choix,gettext("Categories",domain="R-Factoshiny"))
     if(!(is.null(anafact$ind.sup))) choix <- c(choix,gettext("Supplementary individuals",domain="R-Factoshiny"))
     if(!(is.null(anafact$quali.var.sup))) choix <- c(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
-    div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshiny))
+    if (is.null(anafact$ind.sup) & is.null(anafact[["quali.var"]]) & is.null(anafact$quali.var.sup)) return(NULL)
+	else return(div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshiny)))
   })
 
   output$choixgraphic=renderUI({
@@ -221,7 +222,7 @@
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny"))
       )
       habi="'group'"
-      Code <- paste0('plot.MFA(',nomObjectMFA,', choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
+      Code <- paste0('plot.MFA(',nomObjectMFA,', choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(input$nbDimPartialAxes)){if (input$nbDimPartialAxes!=2) paste0(",ncp=",input$nbDimPartialAxes)},if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))      
     }
@@ -238,7 +239,8 @@
       if(is.null(anafact$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
       if(is.null(anafact[["freq"]])) choix <- setdiff(choix,gettext("Frequencies",domain="R-Factoshiny"))
       if(is.null(anafact$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies",domain="R-Factoshiny"))
-    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshinyfreq))
+    if (is.null(anafact$ind.sup) & is.null(anafact[["quali.var"]]) & is.null(anafact$quali.var.sup) & is.null(anafact[["freq"]]) & is.null(anafact$freq.sup)) return(NULL)
+	else return(div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshinyfreq)))
   })
 
     CodeGraphFreq <- function(){
@@ -300,7 +302,7 @@
       tab[quanti]=round(tab[quanti],5)
       tab
       },
-      options = list( "orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10))
+      options = list( "orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10), rownames=FALSE)
     
     output$summary=renderPrint({
       summary(anafact$global.pca$call$X)
@@ -577,6 +579,85 @@
       return(as.data.frame(anafact$partial.axes$cor.between))
     },rownames=TRUE)    
     
+    output$sortiegroupRV=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$RV))
+    },rownames=TRUE)
+
+    output$sortiegroupLg=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$Lg))
+    },rownames=TRUE)
+
+    output$sortiegroupcoord=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$coord))
+    },rownames=TRUE)
+
+    output$sortiegroupcontrib=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$contrib))
+    },rownames=TRUE)
+
+    output$sortiegroupcos2=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$cos2))
+    },rownames=TRUE)
+
+    output$sortiegroupdist2=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$dist2))
+    },rownames=TRUE)
+
+    output$sortiegroupcorrelation=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$correlation))
+    },rownames=TRUE)
+
+    output$sortiegroupcoordsup=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$coord.sup))
+    },rownames=TRUE)
+
+    output$sortiegroupcos2sup=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$cos2.sup))
+    },rownames=TRUE)
+
+    output$sortiegroupdist2sup=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(anafact$group$dist2.sup))
+    },rownames=TRUE)
+
+     output$sortiegroupOther=renderTable({
+      write.infile(X=anafact$group[-c(1:6)],file=paste(getwd(),"fichgroup.csv"),sep=";",nb.dec=5)
+      baba=read.csv(paste(getwd(),"fichgroup.csv"),sep=";",header=FALSE)
+      colnames(baba)=NULL
+      file.remove(paste(getwd(),"fichgroup.csv"))
+      baba
+    },
+    rownames=FALSE)
+
     output$sortiegroup=renderTable({
       write.infile(X=anafact$group,file=paste(getwd(),"fichgroup.csv"),sep=";",nb.dec=5)
       baba=read.csv(paste(getwd(),"fichgroup.csv"),sep=";",header=FALSE)
@@ -680,6 +761,7 @@
       res$titlePartial=input$titlePartial
       res$hcpcparam <- input$hcpcparam
       res$nbdimclustMFAshiny <- input$nbDimClustering
+	  res$nbDimPartialAxes=nbDimPartialAxes
 	  res$ind_var <- input$ind_var
 	  res$ind_varfreq <- input$ind_varfreq
       class(res)="MFAshiny"

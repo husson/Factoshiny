@@ -614,7 +614,7 @@
     
     output$JDD=DT::renderDataTable({
       cbind(Names=rownames(newdataMCAshiny),newdataMCAshiny)},      
-      options = list("orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10))
+      options = list("orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10), rownames=FALSE)
     ####
   observe({
     if(input$Investigatehtml!=0){

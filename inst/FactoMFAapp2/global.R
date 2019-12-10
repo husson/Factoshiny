@@ -28,6 +28,7 @@ if(inherits(x,"MFA")){
   freq2=TRUE
   partaxe=TRUE
   nbdimclustMFAshiny <- 5
+  nbDimPartialAxes <- 2
   hcpcparaMFAshiny <- FALSE
 data=anafact$global.pca$call$X
 nomMFAshiny <- rownames(data)
@@ -46,6 +47,7 @@ if(inherits(x,"MFAshiny")){
   nomObjectMFA <- x$nomObjectMFA
   ligne=x$codeMFA
   anafact=x$anafact
+  res.MFA <- x$anafact
   newdataMFAshiny=x$data
   nomData=x$nomData
   axe1=x$axe1
@@ -74,6 +76,7 @@ if(inherits(x,"MFAshiny")){
   partaxe=x$partaxe
   selectionMFAshiny <- x$selectionMFAshiny
   selection2MFAshiny <- x$selection2MFAshiny
+  nbDimPartialAxes <- x$nbDimPartialAxes
 
   titlePartial=x$titlePartial
   titleInd=x$titleInd

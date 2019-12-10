@@ -415,7 +415,7 @@
       cbind(Names=rownames(newdata),newdata)},
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,
-                         "pageLength" = 10))
+                         "pageLength" = 10), rownames=FALSE)
   
     output$summary=renderPrint({
       summary(newdata)

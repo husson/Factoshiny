@@ -36,7 +36,7 @@ fluidPage(
           tags$style(type='text/css', "#title5 { height: 25px; }")
         ),
       wellPanel(
-      div(align="center",checkboxInput("mfaparam",gettext("MFA parameters",domain="R-Factoshiny"),FALSE)),
+      div(align="center",checkboxInput("mfaparam",gettext("Other MFA parameters",domain="R-Factoshiny"),FALSE)),
       conditionalPanel(
         condition="input.mfaparam==true",
           selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomMFAshiny, multiple=TRUE,selected=indsupl),
@@ -79,7 +79,7 @@ fluidPage(
               }),
             conditionalPanel(
               condition=paste("input.select=='",gettext("Manual",domain="R-Factoshiny"),"'",sep=''),
-                selectInput("indiv",label=gettext("Select individuals:",domain="R-Factoshiny"),
+                selectInput("indiv",label=gettext("Select individuals",domain="R-Factoshiny"),
                             choices=nomMFAshiny,multiple=TRUE,selected=selection2MFAshiny)
 			  ),
 			  uiOutput("drawindiv"),
@@ -115,7 +115,8 @@ fluidPage(
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Partial axes",domain="R-Factoshiny"),"'",sep=''),
           textInput("titlePartial",gettext("Title of the graph: ",domain="R-Factoshiny"), titlePartial),
-          sliderInput("cexPartial",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE)
+          sliderInput("cexPartial",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE),
+          textInput("nbDimPartialAxes",gettext("Number of dim to draw",domain="R-Factoshiny"), nbDimPartialAxes)
           # checkboxInput("coloraxe",gettext("Color the partial axe by group",domain="R-Factoshiny"),partaxe)
         ),
         conditionalPanel(
@@ -142,10 +143,19 @@ fluidPage(
         tabsetPanel(id = "graph_sort",
                     tabPanel(gettext("Creation of groups",domain="R-Factoshiny"),
                              br(),
-                             # checkboxInput("activemodif",gettext("Create the groups",domain="R-Factoshiny"),FALSE),
-                            radioButtons("activemodif",gettext("Create or validate the groups",domain="R-Factoshiny"), choices=c(gettext("Create the groups",domain="R-Factoshiny"),gettext("Validate the groups",domain="R-Factoshiny")), selected = gettext("Create the groups",domain="R-Factoshiny"), inline=TRUE),
+                            # radioButtons("activemodif",gettext("Create the groups",domain="R-Factoshiny"), choices=c(gettext("Create the groups with lines of code",domain="R-Factoshiny"),gettext("Create the groups one by one",domain="R-Factoshiny"),gettext("Validate the groups",domain="R-Factoshiny")), selected = gettext("Create the groups with lines of code",domain="R-Factoshiny")),
+                            radioButtons("activemodif",gettext("Create the groups",domain="R-Factoshiny"), choices=c(gettext("Create the groups one by one (max 10 groups)",domain="R-Factoshiny"),gettext("Create the groups with lines of code",domain="R-Factoshiny")), selected = gettext("Create the groups one by one (max 10 groups)",domain="R-Factoshiny"), width="100%"),
+							 actionButton("ValidateGroup", label = gettext("Validate the groups",domain="R-Factoshiny"),style='padding:5px; background-color: #F39081;text-align:center;white-space: normal;'),
+                             br(),
                              conditionalPanel(
-                               condition=paste0("input.activemodif=='",gettext("Create the groups",domain="R-Factoshiny"),"'"),
+                               condition=paste0("input.activemodif=='",gettext("Create the groups with lines of code",domain="R-Factoshiny"),"'"),
+                                textInput("DefGroup",gettext("Number of variables in each group",domain="R-Factoshiny"), width="100%",NULL,placeholder ="3 3 4   or   3,3,4  or  c(rep(3,2),4)"),
+                                textInput("DefType",gettext("Type of each group (s for scale, c for continuous, f for frequency, n for nominal)",domain="R-Factoshiny"), width="100%", NULL,placeholder ="s s n   or   s,s,n   or   c('s','s','n')"),
+                                textInput("DefNameGroup",gettext("Names of the groups (NULL by default)",domain="R-Factoshiny"), width="100%", NULL,placeholder ="c('Group1', 'G2', 'Gr quali')"),
+                                textInput("DefNumGroupSup",gettext("Supplementary groups (if NULL all groups are active)",domain="R-Factoshiny"), width="100%", NULL)
+		                     ),
+                             conditionalPanel(
+                               condition=paste0("input.activemodif=='",gettext("Create the groups one by one (max 10 groups)",domain="R-Factoshiny"),"'"),
                                h6("Group 1"),
                               fluidRow(
                               column(3,
@@ -412,11 +422,31 @@ fluidPage(
                              ),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results for the groups",domain="R-Factoshiny"),"'",sep=''),
-                               div(align="center",tableOutput("sortiegroup"))
+                                h6(gettext("Lg coefficients",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupLg")),
+                                h6(gettext("RV coefficients",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupRV")),
+                                h6(gettext("Group coordinates",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcoord")),
+                                h6(gettext("Group contribution",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcontrib")),
+                                h6(gettext("Group cos2",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcos2")),
+                                h6(gettext("Group correlation",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcorrelation"))
+                                # h6(gettext("Group dist2",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupdist2")),
+                                # h6(gettext("Supplementary group coordinates",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupcoordsup")),
+                                # h6(gettext("Supplementary group cos2",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupcos2sup")),
+                                # h6(gettext("Supplementary group dist2",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupdist2sup"))
+                                # tableOutput("sortiegroupOther")
                                ),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results for the partial axes",domain="R-Factoshiny"),"'",sep=''),
-                               radioButtons("out4",gettext("What type of results?"),choices=list(gettext("Coordinates",domain="R-Factoshiny"),gettext("Correlations",domain="R-Factoshiny"),gettext("Contribution",domain="R-Factoshiny"),gettext("Correlations between",domain="R-Factoshiny")),selected=gettext("Coordinates",domain="R-Factoshiny"),inline=TRUE),
+                               radioButtons("out4",gettext("What type of results?",domain="R-Factoshiny"),choices=list(gettext("Coordinates",domain="R-Factoshiny"),gettext("Correlations",domain="R-Factoshiny"),gettext("Contribution",domain="R-Factoshiny"),gettext("Correlations between",domain="R-Factoshiny")),selected=gettext("Coordinates",domain="R-Factoshiny"),inline=TRUE),
                                conditionalPanel(
                                condition=paste("input.out4=='",gettext("Coordinates",domain="R-Factoshiny"),"'",sep=''),
                                  div(align="center",tableOutput("sorties12"))),

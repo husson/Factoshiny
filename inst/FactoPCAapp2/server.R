@@ -495,7 +495,7 @@ function(input, output,session) {
   
   output$JDD <- DT::renderDataTable({
     cbind(Names=rownames(newdataPCAshiny),newdataPCAshiny)},
-    options = list("orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10))
+    options = list("orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10), rownames=FALSE)
   
   output$summary <- renderPrint({
     summary(newdataPCAshiny)

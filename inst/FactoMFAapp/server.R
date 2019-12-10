@@ -1,5 +1,5 @@
 # server2. AFM
-  function(input, output) {
+  function(input, output, session) {
 
   codeMFA <- reactive({
 	 if (length(input$nb1)>0){
@@ -8,15 +8,52 @@
 	 if (length(input$nbDimClustering)>0){
 	   if (input$nbDimClustering >5) return(isolate(valeur()))
 	 }
+     observeEvent(input$ValidateGroup, {
+        updateTabsetPanel(session, "graph_sort", selected = gettext("Graphs",domain="R-Factoshiny"))
+	 })
      if (length(input$mfaparam)==0){
 	   return(valeur())
 	 } else {
         if (input$submit>=0) isolate(valeur())
-		if (input$activemodif==gettext("Validate the groups",domain="R-Factoshiny")) isolate(valeur())
+        if (input$ValidateGroup>=0) isolate(valeur())
      }
  })
 
-  valeur <- function(){
+ valeur <- function(){
+   if (input$activemodif==gettext("Create the groups with lines of code",domain="R-Factoshiny")){
+   if (length(input$DefGroup)>0){
+     groupe <- input$DefGroup
+	 if (!(grepl("rep",groupe)|grepl("seq",groupe))){
+	   groupe <- strsplit(gsub("[^\\d]+", " ", paste0(" ",groupe), perl=TRUE)," ")[[1]][-1]  ## add " " to have always the same structure
+	   groupe <- paste0("c(",paste0(groupe,collapse=","),")")
+	 }
+   }
+   if (length(input$DefType)>0){
+	 types <- input$DefType
+	 if (!(grepl("rep",types)|grepl("c",types))){
+	   types <- strsplit(gsub("[^sncf]+", " ", paste0(" ",types), perl=TRUE)," ")[[1]][-1]
+	   types <- paste0("c('",paste0(types,collapse="','"),"')")
+	 }
+   }
+   if (length(input$DefNameGroup)>0){
+	 nom <- input$DefNameGroup
+	 if (nom!=""){
+	   if (!(grepl("rep",nom)|grepl("c",nom))){
+	     if (grepl("','",nom)|grepl('","',nom)) nom <- paste0("c(",nom,")")
+	     else nom <- paste0("c('",paste0(strsplit(nom," ")[[1]],collapse="','"),"')")
+	   }
+	 }
+	}
+   if (length(input$DefNumGroupSup)>0){
+	 gsup <- input$DefNumGroupSup
+	 if (gsup!=""){
+  	   if (!(grepl("rep",gsup))){
+	     gsup <- strsplit(gsub("[^\\d]+", " ", paste0(" ",gsup), perl=TRUE)," ")[[1]][-1]  ## add " " to have always the same structure
+	     gsup <- paste0("c(",paste0(gsup,collapse=","),")")
+	   }
+	 }
+    }
+   } else {
     gsup=c()
     groupe=length(input$variables1)
     if(input$typeG1==gettext("Quantitative",domain="R-Factoshiny")){
@@ -178,34 +215,47 @@
       }
     }
     if(length(gsup)==0) gsup=NULL
+   }	
     if(length(input$indsup)==0){
       suple=NULL
     } else{
 	  suple=which(nomMFAshiny%in%input$indsup)
     }
 
-    boolImpute <- FALSE
-	Code <- paste0("newDF <- ",nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4,if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10),collapse='","'),'")]\n')
-  if(!is.null(input$variables1)){
-	if (any(is.na(x[,which(colnames(x)%in%c(input$variables1,input$variables2,input$variables3,input$variables4,input$variables5,input$variables6,input$variables7,input$variables8,input$variables9,input$variables10))]))){
+    Code <- NULL
+	boolImpute <- FALSE
+  if (!is.null(input$variables2) | ((input$DefGroup!="")&(input$DefType!=""))){
+	if(!is.null(input$variables1)){
+	  Code <- paste0("newDF <- ",nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4,if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10),collapse='","'),'")]\n')
+	  if (any(is.na(x[,which(colnames(x)%in%c(input$variables1,input$variables2,input$variables3,input$variables4,input$variables5,input$variables6,input$variables7,input$variables8,input$variables9,input$variables10))]))){
+	   boolImpute <- TRUE
+       if(length(input$impute>0)){
+        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")) Nbncp <- 0
+        if (input$impute==gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")) Nbncp <- 2
+       } else {
+        Nbncp <- 0
+	   }
+	   Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(newDF, ncp=",Nbncp,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+	 }
+	 Code <- paste0(Code,"res.MFA<-MFA(newDF")
+   } else{
+	if (any(is.na(x))){
 	  boolImpute <- TRUE
       if(length(input$impute>0)){
-	    # if (input$impute==gettext("Impute with k-dimensional MFA-model (estime k, time consuming)",domain="R-Factoshiny")){
- 	      # Code <- paste0(Code,"nb <- missMDA::estim_ncpMFA(",nomData,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
-	      # Nbncp <- "nb"
-	    # }
         if (input$impute==gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")) Nbncp <- 0
         if (input$impute==gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")) Nbncp <- 2
       } else {
         Nbncp <- 0
 	  }
-	  Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(newDF, ncp=",Nbncp,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+	  Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(",nomData,", ncp=",Nbncp,',group=',groupe,',type=',types,if (!is.null(gsup)) paste0(',num.group.sup=',gsup),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
 	}
+	Code <- paste0(Code,"res.MFA<-MFA(",nomData)
    }
-	Code <- paste0(Code,"res.MFA<-MFA(newDF")
 	if (boolImpute) Code <- paste0(Code,",tab.comp=dfcompleted")
-	Code <- paste0(Code,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(',ncp=',max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))), if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"), if (!is.null(nom)) paste0(',name.group=c("',paste0(nom, collapse='","'),'")'),if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),',graph=FALSE)')
-	if (length(groupe)>1) return(list(res.MFA=eval(parse(text=Code)), Code=Code))
+	if(!is.null(input$variables1)) Code <- paste0(Code,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(',ncp=',max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))), if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"), if (!is.null(nom)) paste0(',name.group=c("',paste0(nom, collapse='","'),'")'),if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),',graph=FALSE)')
+	else Code <- paste0(Code,',group=',groupe,',type=',types,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(',ncp=',max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))), if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"), if (!is.null(nom) & nom!="") paste0(',name.group=',nom),if (!is.null(gsup)&(gsup!="")) paste0(',num.group.sup=',gsup),',graph=FALSE)')
+   }
+	if (length(groupe)>1 | ((input$DefGroup!="")&(input$DefType!=""))) return(list(res.MFA=eval(parse(text=Code)), Code=Code))
 	else return(NULL)
     }
     
@@ -320,7 +370,7 @@
     })
   
     error=function(){
-      if(length(input$variables1)!=0 && length(input$variables2)!=0){
+      if((length(input$variables1)!=0 && length(input$variables2)!=0)| length(input$DefGroup)>0){
         etat <- "ok"
       } else{
        etat <- "not"
@@ -365,7 +415,8 @@
     # if(length(QualiChoice)>0) choix <- c(choix,gettext("Categories"),gettext("Supplementary categories",domain="R-Factoshiny"))
     ## if(!(is.null(codeMFA()$res.MFA[["quali.var"]]))) choix <- c(choix,gettext("Categories",domain="R-Factoshiny"))
     ## if(!(is.null(codeMFA()$res.MFA$quali.var.sup))) choix <- c(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
-    div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshiny))
+    if (is.null(codeMFA()$res.MFA$ind.sup) & is.null(codeMFA()$res.MFA[["quali.var"]]) & is.null(codeMFA()$res.MFA$quali.var.sup)) return(NULL)
+	else return(div(align="left",checkboxGroupInput("ind_var",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshiny)))
   })
 
   output$choixindvarfreq=renderUI({
@@ -376,7 +427,8 @@
       if(is.null(codeMFA()$res.MFA$quali.var.sup)) choix <- setdiff(choix,gettext("Supplementary categories",domain="R-Factoshiny"))
       if(is.null(codeMFA()$res.MFA[["freq"]])) choix <- setdiff(choix,gettext("Frequencies",domain="R-Factoshiny"))
       if(is.null(codeMFA()$res.MFA$freq.sup)) choix <- setdiff(choix,gettext("Supplementary frequencies",domain="R-Factoshiny"))
-    div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshinyfreq))
+    if (is.null(codeMFA()$res.MFA$ind.sup) & is.null(codeMFA()$res.MFA[["quali.var"]]) & is.null(codeMFA()$res.MFA$quali.var.sup) & is.null(codeMFA()$res.MFA[["freq"]]) & is.null(codeMFA()$res.MFA$freq.sup)) return(NULL)
+	else return(div(align="left",checkboxGroupInput("ind_varfreq",gettext("Points to draw",domain="R-Factoshiny"), choices=choix, selected = indvarMFAshinyfreq)))
   })
 
   output$choixgraphic=renderUI({
@@ -487,7 +539,7 @@
         if(input$drawind==gettext("categorical variable",domain="R-Factoshiny")) habi=input$habiquali
       }
 	  inv <- c()
-      if(sum(gettext("Individuals")==input$ind_var)==0)  inv<-c(inv,"'ind'")
+      if(sum(gettext("Individuals",domain="R-Factoshiny")==input$ind_var)==0)  inv<-c(inv,"'ind'")
       if(length(QualiChoice)>0 & sum(gettext("Categories",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'quali'")
       if(length(input$indsup)>0 & sum(gettext("Supplementary individuals",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'ind.sup'")
       if(length(QualiChoice)>0 & sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$ind_var)==0) inv<-c(inv,"'quali.sup'")
@@ -508,6 +560,7 @@
       if (is.null(codeMFA()$res.MFA$quanti.var) & is.null(codeMFA()$res.MFA$quanti.sup)) return(NULL)
 	  habi <- NULL
 	  if(input$colorgroup==TRUE) habi="'group'"
+	  if(input$colorgroup==FALSE) habi="'none'"
       if(input$selection==gettext("No selection",domain="R-Factoshiny")) selec=NULL
       if(input$selection=="contrib") selec=paste0("'contrib ",input$slider2,"'")
       if(input$selection=="cos2"){
@@ -576,7 +629,7 @@
       )
       habi="'group'"
 	  res.MFA <- codeMFA()$res.MFA
-      Code <- paste0('plot.MFA(res.MFA, choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
+      Code <- paste0('plot.MFA(res.MFA, choix="axes"',if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"), if(input$titlePartial!="Graph of the partial axes")paste0(',title="',input$titlePartial,'"'),if (!is.null(input$nbDimPartialAxes)){if (input$nbDimPartialAxes!=2) paste0(",ncp=",input$nbDimPartialAxes)},if (!is.null(habi)){paste0(",habillage=",habi)},if(input$cexPartial!=1)paste0(",cex=",input$cexPartial,",cex.main=",input$cexPartial,",cex.axis=",input$cexPartial),")")
       Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))      
     }
@@ -639,12 +692,12 @@
       # return(barplot(codeMFA()$res.MFA$eig[,1],names.arg=rownames(codeMFA()$res.MFA$eig),las=2))
     })
     output$JDD=DT::renderDataTable({
-      tab=cbind(Names=rownames(codeMFA()$res.MFA$global.pca$call$X),codeMFA()$res.MFA$global.pca$call$X)
-      quanti=names(which(sapply(tab,is.numeric)))
-      tab[quanti]=round(tab[quanti],5)
+      tab <- cbind(Names=rownames(newdataMFAshiny),newdataMFAshiny)
+      quanti <- names(which(sapply(tab,is.numeric)))
+      tab[quanti] <- round(tab[quanti],5)
       tab
       },
-      options = list( "orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10))
+      options = list( "orderClasses" = TRUE, "responsive" = TRUE, "pageLength" = 10), rownames=FALSE)
     
     output$summary=renderPrint({
       summary(codeMFA()$res.MFA$global.pca$call$X)
@@ -963,7 +1016,86 @@
       return(as.data.frame(codeMFA()$res.MFA$partial.axes$cor.between))
     },rownames=TRUE)    
     
-    output$sortiegroup=renderTable({
+    output$sortiegroupRV=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$RV))
+    },rownames=TRUE)
+
+    output$sortiegroupLg=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$Lg))
+    },rownames=TRUE)
+
+    output$sortiegroupcoord=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$coord))
+    },rownames=TRUE)
+
+    output$sortiegroupcontrib=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$contrib))
+    },rownames=TRUE)
+
+    output$sortiegroupcos2=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$cos2))
+    },rownames=TRUE)
+
+    output$sortiegroupdist2=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$dist2))
+    },rownames=TRUE)
+
+    output$sortiegroupcorrelation=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$correlation))
+    },rownames=TRUE)
+
+    output$sortiegroupcoordsup=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$coord.sup))
+    },rownames=TRUE)
+
+    output$sortiegroupcos2sup=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$cos2.sup))
+    },rownames=TRUE)
+
+    output$sortiegroupdist2sup=renderTable({
+      validate(
+        need(error()!="not",gettext("Please select at least 2 groups",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(codeMFA()$res.MFA$group$dist2.sup))
+    },rownames=TRUE)
+
+     output$sortiegroupOther=renderTable({
+      write.infile(X=codeMFA()$res.MFA$group[-c(1:6)],file=paste(getwd(),"fichgroup.csv"),sep=";",nb.dec=5)
+      baba=read.csv(paste(getwd(),"fichgroup.csv"),sep=";",header=FALSE)
+      colnames(baba)=NULL
+      file.remove(paste(getwd(),"fichgroup.csv"))
+      baba
+    },
+    rownames=FALSE)
+
+     output$sortiegroup=renderTable({
       write.infile(X=codeMFA()$res.MFA$group,file=paste(getwd(),"fichgroup.csv"),sep=";",nb.dec=5)
       baba=read.csv(paste(getwd(),"fichgroup.csv"),sep=";",header=FALSE)
       colnames(baba)=NULL
@@ -1062,6 +1194,7 @@
       res$titleInd=input$titleInd
       res$titleVar=input$titleVar
       res$titleGroup=input$titleGroup
+	  res$nbDimPartialAxes=nbDimPartialAxes
       res$titleFreq=input$titleFreq
       res$titlePartial=input$titlePartial
       res$hcpcparam <- input$hcpcparam

@@ -26,6 +26,7 @@ data=x
   freq2=TRUE
   partaxe=TRUE
   nbdimclustMFAshiny <- 5
+  nbDimPartialAxes <- 2
   hcpcparaMFAshiny <- FALSE
 titleGroup=gettext("Groups representation",domain="R-Factoshiny")
 titleInd=gettext("Individual factor map",domain="R-Factoshiny")

@@ -47,7 +47,7 @@ fluidPage(
               }),
             conditionalPanel(
               condition=paste("input.select=='",gettext("Manual",domain="R-Factoshiny"),"'",sep=''),
-                selectInput("indiv",label=gettext("Select individuals:",domain="R-Factoshiny"),
+                selectInput("indiv",label=gettext("Select individuals",domain="R-Factoshiny"),
                             choices=nomMFAshiny,multiple=TRUE,selected=selection2MFAshiny)
 			  ),
 			  uiOutput("drawindiv"),
@@ -83,7 +83,8 @@ fluidPage(
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Partial axes",domain="R-Factoshiny"),"'",sep=''),
           textInput("titlePartial",gettext("Title of the graph: ",domain="R-Factoshiny"), titlePartial),
-          sliderInput("cexPartial",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE)
+          sliderInput("cexPartial",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE),
+          textInput("nbDimPartialAxes",gettext("Number of dim to draw",domain="R-Factoshiny"), nbDimPartialAxes)
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Groups",domain="R-Factoshiny"),"'",sep=''),
@@ -189,7 +190,28 @@ fluidPage(
                              ),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results for the groups",domain="R-Factoshiny"),"'",sep=''),
-                               div(align="center",tableOutput("sortiegroup"))
+                                h6(gettext("Lg coefficients",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupLg")),
+                                h6(gettext("RV coefficients",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupRV")),
+                                h6(gettext("Group coordinates",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcoord")),
+                                h6(gettext("Group contribution",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcontrib")),
+                                h6(gettext("Group cos2",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcos2")),
+                                h6(gettext("Group correlation",domain="R-Factoshiny")),
+                                div(align="center",tableOutput("sortiegroupcorrelation"))
+                                # h6(gettext("Group dist2",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupdist2")),
+                                # h6(gettext("Supplementary group coordinates",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupcoordsup")),
+                                # h6(gettext("Supplementary group cos2",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupcos2sup")),
+                                # h6(gettext("Supplementary group dist2",domain="R-Factoshiny")),
+                                # div(align="center",tableOutput("sortiegroupdist2sup"))
+                                # tableOutput("sortiegroupOther")
+                               # div(align="center",tableOutput("sortiegroup"))
                                ),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Results for the partial axes",domain="R-Factoshiny"),"'",sep=''),

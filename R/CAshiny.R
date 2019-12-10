@@ -10,9 +10,9 @@ CAshiny <- function(X){
   }
   if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   if(is.data.frame(X)==TRUE){
-    if(dim(X)[1]<3 && dim(X)[2]<3)
-      stop(gettext('not enough row/column',domain="R-Factoshiny"))
+    if(nrow(X)<3 || ncol(X)<3) stop(gettext('not enough row/column',domain="R-Factoshiny"))
   }
+ if (length(which(sapply(X,is.numeric)))<3) stop(gettext("Not enough numeric columns",domain="R-Factoshiny"))
   assign("pathsaveCAshiny",getwd(),envir=G)
  outShiny=shiny::runApp(system.file("FactoCAapp2", package="Factoshiny"),launch.browser = TRUE)
 #  outShiny=shiny::runApp('/home/husson/Site_Git/Factoshiny/inst/FactoCAapp2')

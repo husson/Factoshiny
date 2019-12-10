@@ -406,7 +406,7 @@
       cbind(Names=rownames(newdataCAshiny),newdataCAshiny)},
       options = list(    "orderClasses" = TRUE,
                          "responsive" = TRUE,
-                         "pageLength" = 10))
+                         "pageLength" = 10), rownames=FALSE)
     
     output$summary=renderPrint({
       summary(newdataCAshiny)

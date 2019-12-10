@@ -36,7 +36,7 @@ page_Facto <-
                      align="center", style='padding:5px; background-color: #FFF8EA;text-align:justify; white-space: normal;'
                    ),
                    wellPanel(
-                     div(align="center",gettext("Correspondence Analysis"), style='font-size:14pt; padding:5px;text-align:center;background-color: light-blue;white-space: normal;'),
+                     div(align="center",gettext("Correspondence Analysis",domain="R-Factoshiny"), style='font-size:14pt; padding:5px;text-align:center;background-color: light-blue;white-space: normal;'),
                      actionButton("CAmethod", icon=icon("caret-square-right"), gettext("Run",domain="R-Factoshiny"), style='padding:5px;text-align:center;background-color: yellow; white-space: normal;'),
                      div(align="center",style="display:inline-block",actionButton("action_ca", icon=icon("question-circle"), label = gettext("Help",domain="R-Factoshiny"))),
                      uiOutput("def_ca"), 
@@ -53,7 +53,7 @@ page_Facto <-
             column(width = 4,
                    wellPanel(
                      div(align="center",gettext("Multiple Correspondence Analysis",domain="R-Factoshiny"), style='font-size:14pt; padding:5px;text-align:center;background-color: light-blue;white-space: normal;'),
-                     actionButton("MCAmethod", icon=icon("caret-square-right"), gettext("Run"), style='padding:5px;text-align:center;background-color: yellow; white-space: normal;'),
+                     actionButton("MCAmethod", icon=icon("caret-square-right"), gettext("Run",domain="R-Factoshiny"), style='padding:5px;text-align:center;background-color: yellow; white-space: normal;'),
                      div(style="display:inline-block",actionButton("action_mca", icon=icon("question-circle"), label = gettext("Help",domain="R-Factoshiny"))),
                      uiOutput("def_mca"), 
                      align="center", style='padding:5px; background-color: #FFF8EA;text-align:justify; white-space: normal;'

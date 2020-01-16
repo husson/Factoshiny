@@ -949,8 +949,14 @@ msgstr "variables quantitatives sont illustratives"
 msgid ", 1 qualitative variable is considered as illustrative"
 msgstr ", 1 variable qualitative est illustrative"
 
+msgid "1 qualitative variable"
+msgstr "1 variable qualitative"
+
 msgid "qualitative variables are considered as illustrative"
 msgstr "variables qualitatives sont illustratives"
+
+msgid "Draw confidence ellipses around center of caregories"
+msgstr "Trace les ellipses de confiance autour des barycentres"
 
 msgid ", 1 individual is considered as illustrative"
 msgstr ", 1 individu est illustratif"
@@ -1999,7 +2005,7 @@ msgid "Description of each category by quantitative variables"
 msgstr "Description de chaque modalité par les variables quantitatives"
 
 msgid "Description of each category by quantitative variables and categories"
-msgstr "Description de chaque modalité par les variables quantitatives et les mdoalités"
+msgstr "Description de chaque modalité par les variables quantitatives et les modalités"
 
 msgid "Link with the quantitative variables"
 msgstr "Lien avec les variables quantitatives"
@@ -2276,3 +2282,63 @@ msgstr "Contribution des groupes"
 
 msgid "Group cos2"
 msgstr "Cos2 des groupes"
+
+msgid "This method is not available"
+msgstr "Cette méthode n'est pas disponible"
+
+msgid "You need at least 1 quantitative variable"
+msgstr "Il faut au moins 1 variable quantitative"
+
+msgid "You need at least 3 quantitative variables"
+msgstr "Il faut au moins 3 variables quantitatives"
+
+msgid "You need at least 3 quantitative columns"
+msgstr "Il faut au moins 3 colonnes quantitatives"
+
+msgid "You need at least 3 qualitative variables"
+msgstr "Il faut au moins 3 variable qualitatives"
+
+msgid "You need at least 1 qualitative variable"
+msgstr "Il faut au moins 1 variable qualitative"
+
+msgid "Number of clusters for Kmeans preprocessing"
+msgstr "Nombre de classes pour le prétraitement par Kmeans"
+
+msgid "Kmeans preprocessing before clustering (useful if many elements)"
+msgstr "Prétraitement par K-means avant classification (utile si beaucoup d'éléments)"
+
+msgid "Choose a number of clusters for preprocessing less than the number of individuals, i.e. strictly less than"
+msgstr "Choisir un nombre de classe pour le prétraitement  inférieur au nombre d'individus, i.e. inférieur strictement à"
+
+msgid "Choose a number of clusters for preprocessing greater than the number of clusters"
+msgstr "Choisir un nombre de classe pour le prétraitement supérieur au nombre de classes"
+
+msgid "Description of partition and classes by the variables"
+msgstr "Description de la partition et des classes par les variables"
+
+msgid "Number of dim to draw"
+msgstr "Nombre de dim à dessiner"
+
+msgid "Impute with the proportions"
+msgstr "Impute par les proportions"
+
+msgid "Impute by means and proportions (fast but not recommended)"
+msgstr "Impute par les moyennes et les proportions (rapide mais non recommandé)"
+
+msgid "Impute with 2-dimensional MFA-model (good compromise)"
+msgstr "Impute par le modèle d'AFM en 2 dimensions (bon compromis)"
+
+msgid "Description of each cluster by quantitative variables and categories"
+msgstr "Description de chaque classe par les variables et les modalités"
+
+msgid "Clusters' characterization"
+msgstr "Caractérisation des classes"
+
+msgid "Links with the partition"
+msgstr "Liens avec la partition"
+
+msgid "Description of the partition by the variables"
+msgstr "Description de la partition par les variables"
+
+msgid "Cluster"
+msgstr "Classe"

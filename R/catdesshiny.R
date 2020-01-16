@@ -1,15 +1,15 @@
 utils::globalVariables(c("objcatdesshiny","qualicatdesshiny","myListOfThingscatdesshiny"))
 catdesshiny <- function(X){
   G <- .GlobalEnv
-  if (!(inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "catdes"))){
+  if (!(inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "catdes")| inherits(X, "catdesshiny"))){
     stop(gettext('X is not a dataframe, a matrix, the results of the catdesshiny function or a catdes result',domain="R-Factoshiny"))
   }
-  for (i in 1:ncol(X)) colnames(X)[i] <- gsub(" ",".",colnames(X)[i])
   assign("objcatdesshiny",ls(all.names=TRUE, envir=G),envir=G)
   assign("jdd",X, envir=G)
   assign("nomDatacatdesshiny",sys.calls()[[1]][2], envir=G)
   if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
   if(is.data.frame(X)==TRUE){
+    for (i in 1:ncol(X)) colnames(X)[i] <- gsub(" ",".",colnames(X)[i])
     assign("qualicatdesshiny",names(which(!sapply(X,is.numeric))),envir=G)
     if(length(qualicatdesshiny)==0)
       stop(gettext('No qualitative variable in your dataset',domain="R-Factoshiny"))

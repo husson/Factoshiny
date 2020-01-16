@@ -22,7 +22,6 @@ fluidPage(
             uiOutput("imputeData"),
             actionButton("submit", label = gettext("Submit",domain="R-Factoshiny"))
 
-
           # if(is.null(supqualiMCAshiny)){
             # radioButtons("selecactive",label=h6(gettext("Choose the active qualitative variables",domain="R-Factoshiny")),
                          # choices=list(gettext("All"),gettext("Choose")),selected=gettext("All"))

@@ -47,3 +47,4 @@ if (length(quanti)>0) listeType <- gettext("Quantitative",domain="R-Factoshiny")
 if (length(quali)>0) listeType <- c(listeType,gettext("Qualitative",domain="R-Factoshiny"))
 if (length(quanti)>0) listeType <- c(listeType,gettext("Frequencies",domain="R-Factoshiny"))
 nomDatacourt=unlist(strsplit(as.character(nomData),"\\["))[1]
+pvalueDimdescInit <- 0.05

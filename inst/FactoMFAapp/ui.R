@@ -459,6 +459,47 @@ fluidPage(
                                )
                              
                              ),
+                  tabPanel(gettext("Automatic description of axes",domain="R-Factoshiny"),
+                             div(verbatimTextOutput("CodePrintedDimdesc")),
+                           br(),
+                           numericInput("pvalueDimdesc",gettext("P-value",domain="R-Factoshiny"),value=pvalueDimdescInit, min=0,max=1),
+                           radioButtons("Dim",label=gettext("Choose the dimensions",domain="R-Factoshiny"),choices=list("Dimension 1"="Dim1","Dimension 2"="Dim2","Dimension 3"="Dim3"),selected="Dim1"),
+                           conditionalPanel(
+                             condition="input.Dim=='Dim1'",
+                             p(gettext("Categorical variables",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc2")),
+                             br(),
+                             p(gettext("Categories",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc")),
+                             br(),
+                             p(gettext("Quantitative variables",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc3"))
+                           ),
+                           br(), 
+                           conditionalPanel(
+                             condition="input.Dim=='Dim2'",
+                             p(gettext("Categorical variables",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc22")),
+                             br(),
+                             p(gettext("Categories",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc00")),
+                             br(),
+                             p(gettext("Quantitative variables",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc33"))
+                           ),
+                           br(),
+                           conditionalPanel(
+                             condition="input.Dim=='Dim3'",
+                             p(gettext("Categorical variables",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc222")),
+                             br(),
+                             p(gettext("Categories",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc000")),
+                             br(),
+                             p(gettext("Quantitative variables",domain="R-Factoshiny")),
+                             div(align="center",tableOutput("sortieDimdesc333"))
+                           )
+                  ),
                     tabPanel(gettext("Summary of dataset",domain="R-Factoshiny"),
                              br(),
                              verbatimTextOutput("summary")),

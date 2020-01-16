@@ -691,6 +691,84 @@
       print(ggplot2::ggplot(cbind.data.frame(x=1:nrow(codeMFA()$res.MFA$eig),y=codeMFA()$res.MFA$eig[,2])) + ggplot2::aes(x=x, y=y)+ ggplot2::geom_col(fill="blue") + ggplot2::xlab("Dimension") + ggplot2::ylab(gettext("Percentage of variance",domain="R-Factoshiny")) + ggplot2::ggtitle(gettext("Decomposition of the total inertia",domain="R-Factoshiny")) + ggplot2::theme_light() + ggplot2::theme(plot.title = ggplot2::element_text(hjust =0.5))  + ggplot2::scale_x_continuous(breaks=1:nrow(codeMFA()$res.MFA$eig)))
       # return(barplot(codeMFA()$res.MFA$eig[,1],names.arg=rownames(codeMFA()$res.MFA$eig),las=2))
     })
+
+  CalculDimdesc <- reactive({
+    validate(
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+	)
+    return(dimdesc(codeMFA()$res.MFA,proba = if (length(input$pvalueDimdesc)!=0) {input$pvalueDimdesc} else {0.05}))
+  })
+    #DIM1
+    
+    output$sortieDimdesc=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[1]]$category)>0,gettext("No category describes axis 1",domain="R-Factoshiny")),
+        need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[1]]$category))
+    },rownames=TRUE,digits=-3)
+    
+    output$sortieDimdesc2=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[1]]$quali)>0,gettext("No qualitative variable describes axis 1",domain="R-Factoshiny")),
+        need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[1]]$quali))
+    },rownames=TRUE,digits=-3)
+    output$sortieDimdesc3=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[1]]$quanti)!=0,,gettext("No quantitative variable describes axis 1",domain="R-Factoshiny")),
+        need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[1]]$quanti))
+    },rownames=TRUE,digits=-3)
+    
+    #DIM2
+    output$sortieDimdesc00=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[2]]$category)>0,gettext("No category describes axis 2",domain="R-Factoshiny")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[2]]$category))
+    },rownames=TRUE,digits=-3)
+    output$sortieDimdesc22=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[2]]$quali)>0,gettext("No qualitative variable describes axis 2",domain="R-Factoshiny")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[2]]$quali))
+    },rownames=TRUE,digits=-3)
+    output$sortieDimdesc33=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[2]]$quanti)!=0,gettext("No quantitative variable describes axis 2",domain="R-Factoshiny")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+	  )
+      return(as.data.frame(CalculDimdesc()[[2]]$quanti))
+    },rownames=TRUE,digits=-3)
+    
+    #DIM3
+    output$sortieDimdesc000=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[3]]$category)>0,gettext("No category describes axis 3",domain="R-Factoshiny")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[3]]$category))
+    },rownames=TRUE,digits=-3)
+    output$sortieDimdesc222=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[3]]$quali)>0,gettext("No qualitative variable describes axis 3",domain="R-Factoshiny")),
+      need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+      )
+      return(as.data.frame(CalculDimdesc()[[3]]$quali))
+    },rownames=TRUE,digits=-3)
+    output$sortieDimdesc333=renderTable({
+      validate(
+        need(length(CalculDimdesc()[[3]]$quanti)!=0,gettext("No quantitative variable describes axis 3",domain="R-Factoshiny")),
+        need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
+	  )
+      return(as.data.frame(CalculDimdesc()[[3]]$quanti))
+    },rownames=TRUE,digits=-3)
+
     output$JDD=DT::renderDataTable({
       tab <- cbind(Names=rownames(newdataMFAshiny),newdataMFAshiny)
       quanti <- names(which(sapply(tab,is.numeric)))

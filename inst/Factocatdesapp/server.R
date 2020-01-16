@@ -42,10 +42,13 @@ function(input, output, session) {
       tabmean$overall <- resultat()$quanti[[1]][sort(rownames(resultat()$quanti[[1]])),3]
       
       validate(
-        need(input$select_proba_plot > min(tabpvalue), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),signif(min(tabpvalue),3)))
+        need(as.numeric(input$select_proba_plot) > 0, paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),0))
       )
-      sortie <- signif(t(as.matrix(tabvtest[apply(tabpvalue,1,min) <= input$select_proba_plot & rownames(tabvtest) %in% input$select_quanti_var,])),3)
-      return(sortie)
+      if (input$select_proba_plot <= min(tabpvalue)) return(NULL)
+      else {
+	    sortie <- signif(t(as.matrix(tabvtest[apply(tabpvalue,1,min) <= input$select_proba_plot & rownames(tabvtest) %in% input$select_quanti_var,])),3)
+        return(sortie)
+      }
     }
   })
   
@@ -60,21 +63,27 @@ function(input, output, session) {
       }
       lvl <- length(resultat()$category)
       x <- resultat()$category[[1]][rows,"v.test", drop = FALSE]
-      tabvtest <- as.data.frame(x[sort(rownames(x)),])
+      tabvtest <- as.data.frame(x[sort(rownames(x)),,drop=FALSE])
       x <- resultat()$category[[1]][rows,"p.value", drop = FALSE]
-      tabpvalue <- as.data.frame(x[sort(rownames(x)),])
+      tabpvalue <- as.data.frame(x[sort(rownames(x)),,drop=FALSE])
       for(i in 2:lvl){
         x <- resultat()$category[[i]][rows,"v.test", drop = FALSE]
-        tabvtest <- cbind(tabvtest,as.data.frame(x[sort(rownames(x)),]))
+        tabvtest <- cbind(tabvtest,as.data.frame(x[sort(rownames(x)),,drop=FALSE]))
         x <- resultat()$category[[i]][rows,"p.value", drop = FALSE]
-        tabpvalue <- cbind(tabpvalue,as.data.frame(x[sort(rownames(x)),]))
+        tabpvalue <- cbind(tabpvalue,as.data.frame(x[sort(rownames(x)),,drop=FALSE]))
       }
       colnames(tabpvalue) <- colnames(tabvtest) <- names(resultat()$category)
       validate(
-        need(input$select_proba_plot > min(tabpvalue), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),signif(min(tabpvalue),3)))
+        need(as.numeric(input$select_proba_plot) > 0, paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),0))
       )
-      sortie <- signif(tabvtest[apply(tabpvalue,1,min) <= input$select_proba_plot,,drop = FALSE],3)
-      return(sortie)
+      # validate(
+        # need(input$select_proba_plot > min(tabpvalue), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),signif(min(tabpvalue),3)))
+      # )
+      if (input$select_proba_plot <= min(tabpvalue)) return(NULL)
+	  else {
+	    sortie <- signif(tabvtest[apply(tabpvalue,1,min) <= input$select_proba_plot,,drop = FALSE],3)
+        return(sortie)
+      }
     }
     
   })
@@ -91,30 +100,24 @@ function(input, output, session) {
   tab_quanti <- reactive({
     if(!is.null(resultat()$quanti)){
       if(!is.null(input$select_quanti_var)){
-        
         lvl <- length(resultat()$category)
-        
-        quant <- seq(
-          min(tableau_vtest(), na.rm = T), 
-          max(tableau_vtest(), na.rm = T), 
-          length.out = 100
+        tabVtest <- tableau_vtest()
+		mini <- 1
+		if (!is.null(resultat()$quanti.var)) mini <- min(resultat()$quanti.var[,2])
+		# if (!is.null(resultat()$test.chi2)) mini <- min(mini,resultat()$test.chi2[,1])
+        validate(
+          need(!is.null(tabVtest), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),mini,"."))
         )
+        quant <- seq(min(tabVtest, na.rm = T), max(tabVtest, na.rm = T),length.out = 100)
         color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
         
         a <- DT::formatStyle(
-          DT::datatable(t(as.matrix(tableau_vtest())),
-                        # options = list(pageLength = ncol(tableau_vtest())),
+          DT::datatable(t(as.matrix(tabVtest)),
                         extensions = c('Buttons','FixedColumns','FixedHeader'),
-                        options =
-                          list(
-                            pageLength = ncol(tableau_vtest()),
-                            dom = 'Bfrtip',
-                            buttons = c('csv'),
-                            fixedColumns = TRUE,
-                            fixedHeader = TRUE
-                          )
+                        options = list( pageLength = ncol(tabVtest),
+                            dom = 'Bfrtip', buttons = c('csv'), fixedColumns = TRUE, fixedHeader = TRUE)
           ),
-          rownames(tableau_vtest()),
+          rownames(tabVtest),
           backgroundColor = DT::styleInterval(quant, color)
         )
         return(a)
@@ -132,24 +135,19 @@ function(input, output, session) {
     if(!is.null(input$select_quali_var_test)){
       
       if(!(input$select_categorical_var %in% input$select_quali_var_test)){
-        
-        quant <- seq(min(tableau_quali(),na.rm = TRUE), max(tableau_quali(), na.rm = TRUE), length.out = 100)
+        tabQuali <- tableau_quali()
+        validate(
+          need(!is.null(tabQuali), paste(gettext("The p-value is too small. You should increase the p-value.",domain="R-Factoshiny")))
+        )
+        quant <- seq(min(tabQuali,na.rm = TRUE), max(tabQuali, na.rm = TRUE), length.out = 100)
         color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
         
         a <- DT::formatStyle(
-          DT::datatable(
-            tableau_quali(),
-            extensions = c('Buttons','FixedColumns','FixedHeader'),
-            options = list(
-              pageLength = nrow(tableau_quali()),
-              dom = 'Bfrtip',
-              buttons = c('csv'),
-              fixedColumns = TRUE,
-              fixedHeader = TRUE
-            )
+          DT::datatable(tabQuali, extensions = c('Buttons','FixedColumns','FixedHeader'),
+            options = list(pageLength = nrow(tabQuali), dom = 'Bfrtip',
+              buttons = c('csv'), fixedColumns = TRUE, fixedHeader = TRUE)
           ),
-          colnames(tableau_quali()),
-          backgroundColor = DT::styleInterval(quant, color)
+          colnames(tabQuali), backgroundColor = DT::styleInterval(quant, color)
         )  
         return(a)
       }
@@ -163,38 +161,30 @@ function(input, output, session) {
   
   tab_both <- reactive({
     tab <- NULL
-    if(!is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)){
-      tab <- rbind(tableau_quali(), t(tableau_vtest()))
-    }
-    
-    if(!is.null(input$select_quali_var_test) & is.null(input$select_quanti_var)){
-      tab <- tableau_quali()
-    }
-    
-    if(is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)){
-      tab <- t(tableau_vtest())
-    }
-    
+    # if(!is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)) tab <- rbind(tableau_quali(), t(tableau_vtest()))
+    # if(!is.null(input$select_quali_var_test) & is.null(input$select_quanti_var)) tab <- rbind(tableau_quali())
+    # if(is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)) tab <- rbind(t(tableau_vtest()))
+    if(!is.null(input$select_quali_var_test)) tab <- rbind(tab,tableau_quali())
+    if(!is.null(input$select_quanti_var) & !is.null(tableau_vtest())) tab <- rbind(tab,t(tableau_vtest()))
+	mini <- 1
+	if (!is.null(resultat()$quanti.var)) mini <- min(resultat()$quanti.var[input$select_quanti_var,2])
+	if (!is.null(resultat()$category)) mini <- min(mini,resultat()$test.chi2[input$select_quali_var_test,1])
+    validate(
+      need(!is.null(tab), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),signif(mini,3),"."))
+    )
+      # validate(
+        # need(!is.null(tab), paste(gettext("The p-value is too small. You should increase the p-value.",domain="R-Factoshiny")))
+      # )
+
     if (!is.null(tab)){
       quant <- seq(min(tab, na.rm = T), max(tab, na.rm = T), length.out = 100)
       color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
       
       a <- DT::formatStyle(
-        DT::datatable(
-          tab,
-          extensions = c('Buttons','FixedColumns','FixedHeader'),
-          options = list(
-            pageLength = nrow(tab),
-            dom = 'Bfrtip',
-            buttons = c('csv'),
-            fixedColumns = TRUE,
-            fixedHeader = TRUE
-            
-            
-          )
-        ),
-        colnames(tab),
-        backgroundColor = DT::styleInterval(quant, color)
+        DT::datatable(tab,extensions = c('Buttons','FixedColumns','FixedHeader'),
+          options = list(pageLength = nrow(tab),dom = 'Bfrtip',
+            buttons = c('csv'),fixedColumns = TRUE,fixedHeader = TRUE)
+        ), colnames(tab),backgroundColor = DT::styleInterval(quant, color)
       )
       return(a)
     }
@@ -212,11 +202,9 @@ function(input, output, session) {
   
   tableau_link_quanti <- reactive({
     if(!is.null(input$select_quanti_var)){
-      
       validate(
         need(input$select_proba_plot > min(resultat()$quanti.var[,"P-value"]), paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),signif(min(resultat()$quanti.var[,"P-value"]),3)))
       )
-      
       tab <- as.data.frame(resultat()$quanti.var[rownames(resultat()$quanti.var) %in% input$select_quanti_var  & resultat()$quanti.var[,"P-value"] <= input$select_proba_plot,c("Eta2","P-value"), drop = FALSE])
       return(tab)
     }
@@ -224,20 +212,13 @@ function(input, output, session) {
   
   df_link_quanti <- reactive({
     if(!is.null(input$select_quanti_var)){
-      
       quant <- seq(min(tableau_link_quanti()[,1]), max(tableau_link_quanti()[,1]), length.out = 100)
       color <- grDevices::colorRampPalette(c(input$col_low,"white",input$col_up))(length(quant)+1)
-      
       a <- DT::formatStyle(
         DT::datatable(signif(tableau_link_quanti(),3),
                       extensions = c('Buttons','FixedColumns','FixedHeader'),
-                      options = list(
-                        pageLength = nrow(tableau_link_quanti()),
-                        dom = 'Bfrtip',
-                        buttons = c('csv'),
-                        fixedColumns = TRUE,
-                        fixedHeader = TRUE
-                      )
+                      options = list(pageLength = nrow(tableau_link_quanti()),
+                        dom = 'Bfrtip',buttons = c('csv'),fixedColumns = TRUE,fixedHeader = TRUE)
         ),
         columns = colnames(tableau_link_quanti()),
         valueColumns = 'P-value',
@@ -266,33 +247,19 @@ function(input, output, session) {
     if(!is.null(resultat()$test.chi2)){
       if(nrow(tableau_link_chisquare()) > 0){
         
-        # Je définis les quantiles entre la plus petite valeur du tableau et la plus grande 
         quant <- seq(min(tableau_link_chisquare()[,"p.value"]), max(tableau_link_chisquare()[,"p.value"]), length.out = 100)
-        
-        # Je crée toutes mes nuances de couleurs
         color <- grDevices::colorRampPalette(c(input$col_up,"white",input$col_low))(length(quant)+1)
         
         a <- DT::formatStyle(
           DT::datatable(
-            # Je mets mon tableau
             signif(tableau_link_chisquare(),3),
             extensions = c('Buttons','FixedColumns','FixedHeader'),
-            # Je choisis le nb d'éléments à afficher
             options = list(pageLength = nrow(tableau_link_chisquare()),
-                           dom = 'Bfrtip',
-                           buttons = c('csv'),
-                           fixedColumns = TRUE,
-                           fixedHeader = TRUE
-            )
+                           dom = 'Bfrtip', buttons = c('csv'), fixedColumns = TRUE, fixedHeader = TRUE)
           ),
           
-          #Les colonnes sur lesquelles j'applique les couleurs
           columns = colnames(tableau_link_chisquare()),
-          
-          # Les/La colonnes(s) sur lesquelle je définis les couleurs (ici l'échelle de couleur se fera en fonction de la pvalue)
           valueColumns = "p.value",
-          
-          # J'applique les couleurs
           backgroundColor = DT::styleInterval(quant, color)
         )
         return(a)
@@ -308,33 +275,16 @@ function(input, output, session) {
     xx <- gettext("Quantitative",domain="R-Factoshiny")
     old.x <- gettext("Both",domain="R-Factoshiny")
     if(!is.null(input$quanti_quali_both)) old.x <- input$quanti_quali_both
-    if(!is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)){
-      xx <- c(gettext("Both",domain="R-Factoshiny"),gettext("Quantitative",domain="R-Factoshiny"),gettext("Qualitative",domain="R-Factoshiny"))
-    }
-    
-    if(is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)){
-      xx <- c(gettext("Quantitative",domain="R-Factoshiny"))
-    }
-    
-    if(!is.null(input$select_quali_var_test) & is.null(input$select_quanti_var)){      
-      xx <- c(gettext("Qualitative",domain="R-Factoshiny"))
-    }
+    if(!is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)) xx <- c(gettext("Both",domain="R-Factoshiny"),gettext("Quantitative",domain="R-Factoshiny"),gettext("Qualitative",domain="R-Factoshiny"))
+    if(is.null(input$select_quali_var_test) & !is.null(input$select_quanti_var)) xx <- c(gettext("Quantitative",domain="R-Factoshiny"))
+    if(!is.null(input$select_quali_var_test) & is.null(input$select_quanti_var)) xx <- c(gettext("Qualitative",domain="R-Factoshiny"))
     
     if (old.x%in%xx){
-      radioButtons(
-        inputId = "quanti_quali_both",
-        choices = xx,
-        inline = TRUE,
-        label = gettext("Describe by ... variables",domain="R-Factoshiny"),
-        selected = old.x
-      )
+      radioButtons(inputId = "quanti_quali_both",choices = xx,
+        inline = TRUE,label = gettext("Describe by ... variables",domain="R-Factoshiny"),selected = old.x)
     } else {
-      radioButtons(
-        inputId = "quanti_quali_both",
-        choices = xx,
-        inline = TRUE,
-        label = gettext("Describe by ... variables",domain="R-Factoshiny")
-      )
+      radioButtons(inputId = "quanti_quali_both", choices = xx,
+        inline = TRUE,label = gettext("Describe by ... variables",domain="R-Factoshiny"))
     }
   })
   

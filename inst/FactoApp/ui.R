@@ -3,11 +3,11 @@ page_Facto <-
           h1(gettext("Select an analysis",domain="R-Factoshiny")),
           h2(" "),
           fluidRow(
+            div(verbatimTextOutput("warn"),style='padding:0px;text-align:center;background-color:light-blue;color:red;white-space:normal;'),
             column(width = 4,
                    wellPanel(
                      div(align="center",gettext("Characterizing a qualitative variable",domain="R-Factoshiny"), style='font-size:14pt; padding:5px;text-align:center;background-color: light-blue;white-space: normal;'),
                      div(align="center",style="display:inline-block",actionButton("catdesmethod", icon=icon("caret-square-right"), paste(gettext("Run",domain="R-Factoshiny")),style='padding:5px;text-align:center;background-color: yellow;white-space: normal;'),actionButton("action_catdes", icon=icon("question-circle"), label = gettext("Help",domain="R-Factoshiny"))),
-                     #                     div(align="center",style="display:inline-block",actionButton("catdesmethod", icon=icon("caret-square-right"), paste(gettext("Run",domain="R-Factoshiny")),style='padding:5px;text-align:center;background-color: yellow;white-space: normal;'),actionButton("action_catdes", icon=icon("question-circle"), label = gettext("Help",domain="R-Factoshiny"))),
                      uiOutput("def_catdes"),
                      align="center", style='padding:5px; background-color: #FFF8EA;text-align:justify; white-space: normal;'
                    ),
@@ -88,8 +88,8 @@ ui <- shinydashboard::dashboardPage(skin = "purple",
                     HTML(if(sum(!sapply(x,is.numeric))==0){gettext("All the variables are quantitative.",domain="R-Factoshiny")}),
                     HTML(if(sum(sapply(x,is.numeric))==0){gettext("All the variables are qualitative.",domain="R-Factoshiny")}),
                     HTML(if(sum(sapply(x,is.numeric))==1){paste(sum(sapply(x,is.numeric)),gettext("variable is quantitative and",domain="R-Factoshiny"),sum(!sapply(x,is.numeric)), gettext("are qualitative.",domain="R-Factoshiny"))}),
-                    HTML(if(sum(!sapply(x,is.numeric))==1){paste(sum(sapply(x,is.numeric)),gettext("variables are quantitative and"),sum(!sapply(x,is.numeric)), gettext("is qualitative."))}),
-                    HTML(if((sum(sapply(x,is.numeric))>1) & (sum(!sapply(x,is.numeric))>1)){paste(sum(sapply(x,is.numeric)),gettext("variables are quantitative and"),sum(!sapply(x,is.numeric)), gettext("are qualitative.",domain="R-Factoshiny"))}),
+                    HTML(if(sum(!sapply(x,is.numeric))==1){paste(sum(sapply(x,is.numeric)),gettext("variables are quantitative and",domain="R-Factoshiny"),sum(!sapply(x,is.numeric)), gettext("is qualitative.",domain="R-Factoshiny"))}),
+                    HTML(if((sum(sapply(x,is.numeric))>1) & (sum(!sapply(x,is.numeric))>1)){paste(sum(sapply(x,is.numeric)),gettext("variables are quantitative and",domain="R-Factoshiny"),sum(!sapply(x,is.numeric)), gettext("are qualitative.",domain="R-Factoshiny"))}),
                     HTML("<br><h3>",gettext("Select an analysis",domain="R-Factoshiny"),"</h3>",gettext("You can use one of the following methods: ",domain="R-Factoshiny")),
                     if(sum(!sapply(x,is.numeric))==0){ if(Sys.getenv("LANG")=="fr") {HTML("ACP, AFC, AFM ou classification.")} else {HTML("PCA, CA, MFA or clustering.")}},
                     if(sum(sapply(x,is.numeric))==0){ if(Sys.getenv("LANG")=="fr") {HTML("ACM ou AFM si vous avez des groupes de variables.")} else {HTML("MCA or MFA if you have groups of variables.")}},

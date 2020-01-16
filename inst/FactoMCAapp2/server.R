@@ -34,7 +34,7 @@
   })
 
   values <- reactive({
-     if (length(input$habiller2)==2 & input$color_point==gettext("qualitative variable",domain="R-Factoshiny")) return(isolate(valeur()))
+     if (length(input$habiller)==2 & input$color_point==gettext("2 qualitative variables",domain="R-Factoshiny")) return(isolate(valeur()))
 	 if (length(input$nb1)>0){
 	   if (max(input$nb1,input$nb2)>5) return(isolate(valeur()))
 	 }
@@ -71,8 +71,8 @@
     }
 	codeMCA <- NULL
 	nomTabDon <- paste0(nomDataMCAshiny, if (!is.null(SuppressCol)){paste0("[,-c(",paste0(SuppressCol,collapse=","),")]")})
-    if (length(input$habiller2)==2 && input$color_point==gettext("2 qualitative variables",domain="R-Factoshiny")){
-	  codeMCA <- paste0("dfaux <- data.frame(",nomTabDon,",",paste0(input$habiller2[1],"_",input$habiller2[2]),"=paste0(",nomDataMCAshiny,"[,'",input$habiller2[1],"'],",nomDataMCAshiny,"[,'",input$habiller2[2],"']))\n")
+    if (length(input$habiller)==2 && input$color_point==gettext("2 qualitative variables",domain="R-Factoshiny")){
+	  codeMCA <- paste0("dfaux <- data.frame(",nomTabDon,",",paste0(input$habiller[1],"_",input$habiller[2]),"=paste0(",nomDataMCAshiny,"[,'",input$habiller[1],"'],",nomDataMCAshiny,"[,'",input$habiller[2],"']))\n")
 	  QualiSup <- c(QualiSup,length(NomCol)+1)
 	}
 
@@ -85,15 +85,15 @@
 	 if (input$impute!=gettext("Consider NA as new category",domain="R-Factoshiny")){
 	  boolImpute <- TRUE
 	  if (input$impute==gettext("Impute with k-dimensional MCA-model (estime k, time consuming)",domain="R-Factoshiny")){
- 	    codeMCA <- paste0(codeMCA,"nb <- estim_ncpMCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon},if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
+ 	    codeMCA <- paste0(codeMCA,"nb <- estim_ncpMCA(",if (length(input$habiller)==2){"dfaux"} else {nomTabDon},if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")$ncp\n")
 	    Nbncp <- "nb"
 	  }
       if (input$impute==gettext("Impute with the proportions",domain="R-Factoshiny")) Nbncp <- 0
       if (input$impute==gettext("Impute with 2-dimensional MCA-model (good compromise)",domain="R-Factoshiny")) Nbncp <- 2
-	  codeMCA <- paste0(codeMCA, "dfcompleted <- missMDA::imputeMCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon},",ncp=",Nbncp,if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")
+	  codeMCA <- paste0(codeMCA, "dfcompleted <- missMDA::imputeMCA(",if (length(input$habiller)==2){"dfaux"} else {nomTabDon},",ncp=",Nbncp,if (!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste0(QuantiSup,collapse=","),")"),if (!is.null(QualiSup)) paste0(",quali.sup=c(",paste0(QualiSup,collapse=","),")"),if (!is.null(suple)) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")
 	 }
     }
-	codeMCA <- paste0(codeMCA,"res.MCA<-MCA(",if (length(input$habiller2)==2){"dfaux"} else {nomTabDon})
+	codeMCA <- paste0(codeMCA,"res.MCA<-MCA(",if (length(input$habiller)==2  && input$color_point==gettext("2 qualitative variables",domain="R-Factoshiny")){"dfaux"} else {nomTabDon})
 	if (boolImpute) codeMCA <- paste0(codeMCA,",tab.disj = dfcompleted$tab.disj")
 	codeMCA <- paste0(codeMCA,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(!is.null(QuantiSup)) paste0(",quanti.sup=c(",paste(QuantiSup,collapse=","),")"),if(!is.null(QualiSup)) paste0(",quali.sup=c(",paste(QualiSup,collapse=","),")"),if(!is.null(suple)) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),if (!is.null(poids1MCAshiny)) paste0(",row.w=c(",paste(poids1MCAshiny,collapse=","),")"),",graph=FALSE)")
     list(res.MCA=eval(parse(text=codeMCA)), codeMCA=codeMCA)
@@ -201,11 +201,12 @@
     })
     
     observe({
-      if(input$color_point==gettext("1 qualitative variable",domain="R-Factoshiny") | input$color_point==gettext("2 qualitative variables",domain="R-Factoshiny")) updateCheckboxInput(session, "drawconf", value = FALSE)
+      updateCheckboxInput(session, "drawconf", value = FALSE)
     })
 
     output$ellips=renderUI({
-      if(length(input$habiller)>0 | length(input$habiller2)>0)  return(checkboxInput("drawconf","Draw confidence ellipses around center of caregories",if (length(input$drawconf)==0){FALSE}else{input$drawconf}))
+      if(length(input$habiller)>0 & !(input$color_point == gettext("active/supplementary",domain="R-Factoshiny") || input$color_point == "cos2" || input$color_point == "contribution"))  return(checkboxInput("drawconf",gettext("Draw confidence ellipses around center of caregories",domain="R-Factoshiny"),if (length(input$drawconf)==0){drawconfInit}else{input$drawconf}))
+      else return(NULL)
     })
 
     codeGraphInd <- reactive({
@@ -214,7 +215,7 @@
         need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),
         need((length(VariableChoicesMCAshiny)-length(input$supvar))>2 ,gettext("Please select more variables",domain="R-Factoshiny")),
         need(length(input$ind_var)>=1,gettext("Please select the objects you want to plot: Individuals, categories or both",domain="R-Factoshiny")),
-        need(length(input$habiller2)<=2,gettext("Please select maximum 2 variables as habillage",domain="R-Factoshiny"))
+        need(length(input$habiller)<=2,gettext("Please select maximum 2 variables as habillage",domain="R-Factoshiny"))
       )
       
       inv<-c()
@@ -255,7 +256,11 @@
 	  if (length(hab)==0) hab <- "none"
 
       label <- c()
-      if(sum(gettext("Individuals",domain="R-Factoshiny")==input$indvarpoint)==1) label=c(label,"'ind'")
+	  keepn=FALSE
+      if(sum(gettext("Individuals",domain="R-Factoshiny")==input$indvarpoint)==1) {
+	    label=c(label,"'ind'")
+		keepn=TRUE   # useful if plotellipses
+	  }
       if(sum(gettext("Categories",domain="R-Factoshiny")==input$indvarpoint)==1) label=c(label,"'var'")
       if(sum(gettext("Supplementary individuals",domain="R-Factoshiny")==input$indvarpoint)==1) label=c(label,"'ind.sup'")
       if(sum(gettext("Supplementary categories",domain="R-Factoshiny")==input$indvarpoint)==1) label=c(label,"'quali.sup'")
@@ -274,7 +279,11 @@
 		  coloursup2 <- paste0("c(",paste0(coloursup2,collapse=','),")")
 		}
 	  }
-      Code <- paste0(if(!is.null(input$drawconf)&&input$drawconf==TRUE){paste0("plotellipses(res.MCA,keepvar=",hab)}else{"plot.MCA(res.MCA"},if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (vecinv!="NULL") paste(",invisible=",vecinv),if (selecindivText!="NULL") paste(",select=",selecindivText),if (selecModText!="NULL") paste(",selectMod=",selecModText),if(is.null(input$drawconf)||input$drawconf==FALSE){if (hab != "none" & length(hab)!=0) paste0(",habillage=",hab)},if(input$colindact!="#000000") paste0(",col.ind='",input$colindact,"'"),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'") paste0(",col.var=",colouract2),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'" & !is.null(values()$res.MCA$call$quali.sup)) paste0(",col.quali.sup=",coloursup2), if(input$colvaract1!="#FF0000" & input$eachvar==FALSE) paste0(",col.var='",input$colvaract1,"'"), if(!is.null(input$colindsup)) {if(input$colindsup!="blue") paste0(",col.ind.sup='",input$colindsup,"'")},if(!is.null(input$colvarsup1)& input$eachvar!=TRUE) {if(input$colvarsup1!="darkgreen") paste0(",col.quali.sup='",input$colvarsup1,"'")},if(input$title1MCAshiny!="MCA factor map") paste0(',title="',input$title1MCAshiny,'"'),if (input$cex!=1) paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if (!is.null(label)) paste0(",label =",label),")")
+	  if(!is.null(input$drawconf)&&input$drawconf==TRUE&& (length(input$habiller)>0 & !(input$color_point == gettext("active/supplementary",domain="R-Factoshiny") || input$color_point == "cos2" || input$color_point == "contribution"))){
+		Code <- paste0(paste0("plotellipses(res.MCA,keepvar=",hab),if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (selecindivText!="NULL") paste(",select=",selecindivText),if(input$colindact!="#000000") paste0(",col.ind='",input$colindact,"'"), if(!is.null(input$colindsup)) {if(input$colindsup!="blue") paste0(",col.ind.sup='",input$colindsup,"'")},if(input$title1MCAshiny!="MCA factor map") paste0(',title="',input$title1MCAshiny,'"'),if (input$cex!=1) paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if (keepn==FALSE) paste0(",keepnames=FALSE"),")")
+      } else {
+		Code <- paste0("plot.MCA(res.MCA",if (input$nb1!=1 | input$nb2!=2) paste0(",axes=c(",input$nb1,",",input$nb2,")"),if (vecinv!="NULL") paste(",invisible=",vecinv),if (selecindivText!="NULL") paste(",select=",selecindivText),if (selecModText!="NULL") paste(",selectMod=",selecModText),if (hab != "none" & length(hab)!=0) paste0(",habillage=",hab),if(input$colindact!="#000000") paste0(",col.ind='",input$colindact,"'"),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'") paste0(",col.var=",colouract2),if(input$eachvar==TRUE & hab!="'cos2'" & hab!="'contrib'" & !is.null(values()$res.MCA$call$quali.sup)) paste0(",col.quali.sup=",coloursup2), if(input$colvaract1!="#FF0000" & input$eachvar==FALSE) paste0(",col.var='",input$colvaract1,"'"), if(!is.null(input$colindsup)) {if(input$colindsup!="blue") paste0(",col.ind.sup='",input$colindsup,"'")},if(!is.null(input$colvarsup1)& input$eachvar!=TRUE) {if(input$colvarsup1!="darkgreen") paste0(",col.quali.sup='",input$colvarsup1,"'")},if(input$title1MCAshiny!="MCA factor map") paste0(',title="',input$title1MCAshiny,'"'),if (input$cex!=1) paste0(",cex=",input$cex,",cex.main=",input$cex,",cex.axis=",input$cex),if (!is.null(label)) paste0(",label =",label),")")
+	  }
 	  res.MCA <- values()$res.MCA
 	  Plot <- eval(parse(text=Code))
 	  return(list(Code=Code,Plot=Plot))
@@ -335,13 +344,11 @@
     output$habillage2=renderUI({
       if (input$color_point == gettext("1 qualitative variable",domain="R-Factoshiny")){
         return(selectizeInput("habiller",gettext("select the variable",domain="R-Factoshiny"), choices=qualiMCAshiny, multiple=FALSE, selected=habillageindMCAshiny))
+      } else {
+        if (input$color_point == gettext("2 qualitative variables",domain="R-Factoshiny")){
+         return(selectizeInput("habiller",gettext("select 2 variables",domain="R-Factoshiny"), choices=qualiMCAshiny, multiple=TRUE, selected=habillageindMCAshiny))
+        } else {return(NULL)}
       }
-      # if (input$color_point == gettext("quantitative variable",domain="R-Factoshiny")){
-        # return(selectizeInput("habiller",gettext("select the variable",domain="R-Factoshiny"), choices=quantiMCAshiny, multiple=FALSE, selected=habillageindMCAshiny))
-      # }
-   if (input$color_point == gettext("2 qualitative variables",domain="R-Factoshiny")){
-     return(selectizeInput("habiller2",gettext("select 2 variables",domain="R-Factoshiny"), choices=qualiMCAshiny, multiple=TRUE, selected=habillageindMCAshiny))
-   }
     }) 
         
     output$slider3=renderUI({
@@ -552,7 +559,7 @@
       validate(
         need((length(VariableChoicesMCAshiny)-length(input$supvar))>2 ,gettext("Please select more variables",domain="R-Factoshiny")),
         need(length(input$supquanti)>0,gettext("No quantitative variable",domain="R-Factoshiny")),
-        need(length(CalculDimdesc()[[1]]$quanti)!=0,"No quantitative variable describes axis 1"),
+        need(length(CalculDimdesc()[[1]]$quanti)!=0,gettext("No quantitative variable describes axis 1",domain="R-Factoshiny")),
         need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
       )
       return(as.data.frame(CalculDimdesc()[[1]]$quanti))
@@ -578,7 +585,7 @@
     output$sortieDimdesc33=renderTable({
       validate(
         need((length(VariableChoicesMCAshiny)-length(input$supvar))>2 ,gettext("Please select more variables",domain="R-Factoshiny")),
-        need(length(CalculDimdesc()[[2]]$quanti)!=0,"No quantitative variable describes axis 2",domain="R-Factoshiny"),
+        need(length(CalculDimdesc()[[2]]$quanti)!=0,gettext("No quantitative variable describes axis 2",domain="R-Factoshiny")),
         need(length(input$supquanti)>0,gettext("No quantitative variable",domain="R-Factoshiny")),
       need(input$pvalueDimdesc>0,gettext("P-value should be strictly greater than 0",domain="R-Factoshiny"))
 	  )
@@ -817,7 +824,7 @@
       
       hab <- "none"
       if (length(input$habiller)==1) hab <- as.character(input$habiller)
-      if (length(input$habiller2)==2) hab <- ncol(values()$res.MCA$call$X)
+      if (length(input$habiller)==2) hab <- ncol(values()$res.MCA$call$X)
  
       res$g=hab
       
@@ -850,8 +857,10 @@
     res$color1MCAshiny=input$colindact
     res$color2MCAshiny=input$colindsup
 	res$habillageindMCAshiny <- input$habiller
-	res$habillageindMCAshiny2 <- input$habiller2
-    # res$color3MCAshiny=input$colvaract
+	res$drawconf <- input$drawconf
+	res$valdefMCA <- input$eachvar
+	res$ellips <- input$ellips
+	# res$color3MCAshiny=input$colvaract
     # res$color4MCAshiny=input$colvarsup1
     res$color5MCAshiny=input$colvaract1
     res$color6MCAshiny=input$colvarsup1

@@ -12,12 +12,12 @@ HCPCshiny <- function(res){
     qualiHCPCshiny=which(!(1:ncol(res)%in%which(sapply(res,is.numeric))))
     if (length(quantiHCPCshiny)==0) {
       res <- MCA(res, ncp=Inf, graph=FALSE)
-	  res$call$call <- paste0("res <- MCA(",sys.calls()[[1]][2],",ncp=Inf ,graph=FALSE)")
-	  assign("nomDataHCPCshiny","res.MCA", envir=G)
+	    res$call$call <- paste0("MCA(",sys.calls()[[1]][2],",ncp=Inf ,graph=FALSE)")
+	    assign("nomDataHCPCshiny","res.MCA", envir=G)
     } else {
       res <- PCA(res, ncp=Inf, scale.unit=FALSE, quali.sup=if (length(qualiHCPCshiny)>0){qualiHCPCshiny} else NULL, graph=FALSE)
-	  res$call$call <- paste0("res <- PCA(",sys.calls()[[1]][2],",ncp=Inf, scale.unit=FALSE",if(length(qualiHCPCshiny)>0) paste0(",quali.sup=c(",paste0(qualiHCPCshiny,collapse=","),")"),",graph=FALSE)")
-	  assign("nomDataHCPCshiny","res.PCA", envir=G)
+	    res$call$call <- paste0("PCA(",sys.calls()[[1]][2],",ncp=Inf, scale.unit=FALSE",if(length(qualiHCPCshiny)>0) paste0(",quali.sup=c(",paste0(qualiHCPCshiny,collapse=","),")"),",graph=FALSE)")
+	    assign("nomDataHCPCshiny","res.PCA", envir=G)
     }
   }
 

@@ -18,6 +18,10 @@ fluidPage(
         condition="input.hcpcparam==true",
       uiOutput("clusters"),
       uiOutput("clusterCA"),
+	  div(checkboxInput("kkparam",gettext("Kmeans preprocessing before clustering (useful if many elements)",domain="R-Factoshiny"),kkparamInit)),
+      conditionalPanel(
+        condition="input.kkparam==true",
+        uiOutput("kkInt")),
       checkboxInput("consoli","Consolidation",consolidfHCPCshiny),
       radioButtons("metric",gettext("Which metric would you like to use?",domain="R-Factoshiny"),choices=list(gettext("Euclidean",domain="R-Factoshiny"),"Manhattan"),inline=TRUE,select=metricdfHCPCshiny)
       ),
@@ -90,18 +94,51 @@ fluidRow(
                              br()
                              ),
 
+                    tabPanel(gettext("Clusters' characterization",domain="R-Factoshiny"),
+                             # div(verbatimTextOutput("CodePrintedCatdes")),
+                             br(),
+                             numericInput(inputId = "select_proba_plot", label = gettext("P-value",domain="R-Factoshiny"), min = 0, max = 1, value = 0.05, step = 0.1),
+                             h4(gettext("Description of each cluster by quantitative variables and categories",domain="R-Factoshiny")),
+                             # actionButton("download_cate_both", gettext("HTML",domain="R-Factoshiny")),
+                             DT::dataTableOutput("tableau_df_both", width = "80%")
+                             ),
+                   tabPanel(
+                        title = gettext("Links with the partition",domain="R-Factoshiny"),
+                           h4(gettext("Link with the quantitative variables",domain="R-Factoshiny")),
+                           # actionButton("download_tabquanti", gettext("HTML",domain="R-Factoshiny")),
+                           DT::dataTableOutput("table_link_quanti"),
+                           h4(gettext("Link with the qualitative variables",domain="R-Factoshiny")),
+                           # actionButton("download_tabquali", gettext("HTML",domain="R-Factoshiny")),
+                           DT::dataTableOutput("table_link_chisquare")
+                     ),
                     tabPanel(gettext("Values",domain="R-Factoshiny"),
                              div(verbatimTextOutput("CodePrintedSummary")),
                              br(),
+                             numericInput("pvalueDimdesc",gettext("P-value",domain="R-Factoshiny"),value=pvalueDimdescInit, min=0,max=1),
                              radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
-                                          choices=list(gettext("Description of classes by variables",domain="R-Factoshiny"),gettext("Description of classes by axes",domain="R-Factoshiny"),gettext("Parangons",domain="R-Factoshiny")),selected=gettext("Description of classes by variables",domain="R-Factoshiny"),inline=TRUE),
+                                          choices=list(gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),gettext("Description of classes by axes",domain="R-Factoshiny"),gettext("Parangons",domain="R-Factoshiny"),gettext("Dist",domain="R-Factoshiny")),selected=gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),inline=TRUE),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Description of classes by variables",domain="R-Factoshiny"),"'",sep=''),
-                               div(align="center",tableOutput("descript"))
+                               condition=paste("input.out=='",gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),"'",sep=''),
+                                verbatimTextOutput("printDescVar"),
                                ),
+                             # conditionalPanel(
+                               # condition=paste("input.out=='",gettext("Description of classes by quantitative variables",domain="R-Factoshiny"),"'",sep=''),
+                               # div(align="center",tableOutput("descriptquanti"))
+                               # ),
+                             # conditionalPanel(
+                               # condition=paste("input.out=='",gettext("Description of partition by qualitative variables",domain="R-Factoshiny"),"'",sep=''),
+                               # div(align="center",tableOutput("descriptqualivar"))
+                               # ),
+                             # conditionalPanel(
+                               # condition=paste("input.out=='",gettext("Description of classes by qualitative variables",domain="R-Factoshiny"),"'",sep=''),
+                               # div(align="center",tableOutput("descriptquali"))
+                               # ),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Parangons",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("parangons"))),
+                             conditionalPanel(
+                               condition=paste("input.out=='",gettext("Dist",domain="R-Factoshiny"),"'",sep=''),
+                               div(align="center",tableOutput("distind"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Description of classes by axes",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("axes")))

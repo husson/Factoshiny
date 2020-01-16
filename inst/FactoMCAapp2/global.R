@@ -33,6 +33,7 @@ if(is.data.frame(x)==TRUE){
   color7MCAshiny="blue"
   color8MCAshiny="blue"
   valdefMCAshiny=FALSE
+  drawconfInit <- FALSE
   color_pointInit <- gettext("active/supplementary",domain="R-Factoshiny")
   color_ModInit <- gettext("active/supplementary",domain="R-Factoshiny")
   pvalueDimdescInit <- 0.05
@@ -71,7 +72,9 @@ if(inherits(x, "MCAshiny")){
   nbdimclustMCAshiny <- x$nbdimclustMCAshiny
   color_pointInit <- x$color_point
   color_ModInit <- x$color_Mod
-  pvalueDimdescInit <- x$  pvalueDimdescInit
+  drawconfInit <- x$drawconf
+  valdefMCA <- x$valdefMCA
+  pvalueDimdescInit <- x$pvalueDimdescInit
   choixLabelInit <- x$choixLabelInit
 }
 if(inherits(x, "MCA")){
@@ -81,6 +84,7 @@ if(inherits(x, "MCA")){
   quantiSMCAshiny=rownames(x$quanti.sup$coord)
   supqualiMCAshiny=rownames(x$quali.sup$eta2)
   indsuplMCAshiny=rownames(x$ind.sup$coord)
+  drawconfInit <- FALSE
   axe1MCAshiny=1
   axe2MCAshiny=2
   varsupMCAshiny=c(gettext("Active qualitative variables",domain="R-Factoshiny"),gettext("Supplementary qualitative variables",domain="R-Factoshiny"),gettext("Supplementary quantitative variables",domain="R-Factoshiny"))

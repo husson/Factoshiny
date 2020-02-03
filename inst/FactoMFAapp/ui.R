@@ -117,7 +117,6 @@ fluidPage(
           textInput("titlePartial",gettext("Title of the graph: ",domain="R-Factoshiny"), titlePartial),
           sliderInput("cexPartial",gettext("Size of labels",domain="R-Factoshiny"),min=0.5,max=2.5,value=sizePartial,step=0.05,ticks=FALSE),
           textInput("nbDimPartialAxes",gettext("Number of dim to draw",domain="R-Factoshiny"), nbDimPartialAxes)
-          # checkboxInput("coloraxe",gettext("Color the partial axe by group",domain="R-Factoshiny"),partaxe)
         ),
         conditionalPanel(
           condition=paste("input.choixgraph=='",gettext("Groups",domain="R-Factoshiny"),"'",sep=''),
@@ -135,7 +134,6 @@ fluidPage(
       wellPanel(
         div(align="center",checkboxInput("MFAcode",gettext("Get the MFA code",domain="R-Factoshiny"),FALSE)),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;'
 	  ),
-      # div(align="center",actionButton("MFAcode", gettext("Get the MFA code",domain="R-Factoshiny"),style='padding:5px; background-color: yellow;text-align:center;white-space: normal;')),
       div(align="center",actionButton("Quit", gettext("Quit the app",domain="R-Factoshiny"),style='padding:5px; background-color: #fcac44;text-align:center;white-space: normal;'))
       ,width=3,style="background-color: #9b9b9b;padding: 4px"),
       

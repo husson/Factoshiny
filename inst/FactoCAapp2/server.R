@@ -431,7 +431,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+        if (substr(tolower(input$choixLANG),1,2)=="fr") FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= "fr")
+        else FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= "en")
         setwd(path.aux)
       })
     }
@@ -442,7 +443,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+        if (substr(tolower(input$choixLANG),1,2)=="fr") FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= "fr")
+        else FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, document="word_document", openFile=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= "en")
         setwd(path.aux)
       })
     }
@@ -453,7 +455,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveCAshiny)
-        FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= substr(tolower(input$choixLANG),1,2))
+        if (substr(tolower(input$choixLANG),1,2)=="fr") FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= "fr")
+        else FactoInvestigate::Investigate(values()$res.CA, codeGraphCA = if (input$choixGRAPH==gettext("Graph done",domain="R-Factoshiny")){paste0(values()$codeCA,"\n",codeGraph()$Code)} else {NULL}, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = input$titleFile, display.HCPC =input$hcpcparam, language= "en")
 	    print(paste0(gettext("The file ",domain="R-Factoshiny"),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: ",domain="R-Factoshiny"),getwd()))
         setwd(path.aux)
       })

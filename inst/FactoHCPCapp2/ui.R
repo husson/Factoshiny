@@ -116,7 +116,7 @@ fluidRow(
                              br(),
                              numericInput("pvalueDimdesc",gettext("P-value",domain="R-Factoshiny"),value=pvalueDimdescInit, min=0,max=1),
                              radioButtons("out",gettext("Which outputs do you want?",domain="R-Factoshiny"),
-                                          choices=list(gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),gettext("Description of classes by axes",domain="R-Factoshiny"),gettext("Parangons",domain="R-Factoshiny"),gettext("Dist",domain="R-Factoshiny")),selected=gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),inline=TRUE),
+                                          choices=list(gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),gettext("Description of classes by axes",domain="R-Factoshiny"),gettext("Parangons",domain="R-Factoshiny"),gettext("Specificity",domain="R-Factoshiny")),selected=gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),inline=TRUE),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Description of partition and classes by the variables",domain="R-Factoshiny"),"'",sep=''),
                                 verbatimTextOutput("printDescVar"),
@@ -137,7 +137,7 @@ fluidRow(
                                condition=paste("input.out=='",gettext("Parangons",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("parangons"))),
                              conditionalPanel(
-                               condition=paste("input.out=='",gettext("Dist",domain="R-Factoshiny"),"'",sep=''),
+                               condition=paste("input.out=='",gettext("Specificity",domain="R-Factoshiny"),"'",sep=''),
                                div(align="center",tableOutput("distind"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Description of classes by axes",domain="R-Factoshiny"),"'",sep=''),

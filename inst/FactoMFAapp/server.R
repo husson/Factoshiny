@@ -228,26 +228,30 @@
 	if(!is.null(input$variables1)){
 	  Code <- paste0("newDF <- ",nomData,'[,c("',paste0(c(input$variables1,input$variables2,if (!is.null(input$variables3)) input$variables3,if (!is.null(input$variables4)) input$variables4,if (!is.null(input$variables5)) input$variables5,if (!is.null(input$variables6)) input$variables6,if (!is.null(input$variables7)) input$variables7,if (!is.null(input$variables8)) input$variables8,if (!is.null(input$variables9)) input$variables9,if (!is.null(input$variables10)) input$variables10),collapse='","'),'")]\n')
 	  if (any(is.na(x[,which(colnames(x)%in%c(input$variables1,input$variables2,input$variables3,input$variables4,input$variables5,input$variables6,input$variables7,input$variables8,input$variables9,input$variables10))]))){
-	   boolImpute <- TRUE
        if(length(input$impute>0)){
-        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")) Nbncp <- 0
+        if (input$impute==gettext("Impute by means and proportions",domain="R-Factoshiny")) Nbncp <- 0
         if (input$impute==gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")) Nbncp <- 2
        } else {
         Nbncp <- 0
 	   }
-	   Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(newDF, ncp=",Nbncp,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+       if (input$impute!=gettext("Impute by means and add NA categories (fast but not recommended)",domain="R-Factoshiny")){
+	     Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(newDF, ncp=",Nbncp,',group=c(',paste0(groupe,collapse=','),'), type=c("',paste0(types,collapse='","'),'")',if (!is.null(gsup)) paste0(',num.group.sup=c(',paste0(gsup,collapse=','),')'),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")
+	     boolImpute <- TRUE
+	   }
 	 }
 	 Code <- paste0(Code,"res.MFA<-MFA(newDF")
    } else{
 	if (any(is.na(x))){
-	  boolImpute <- TRUE
       if(length(input$impute>0)){
-        if (input$impute==gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")) Nbncp <- 0
+        if (input$impute==gettext("Impute by means and proportions",domain="R-Factoshiny")) Nbncp <- 0
         if (input$impute==gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")) Nbncp <- 2
       } else {
         Nbncp <- 0
 	  }
-	  Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(",nomData,", ncp=",Nbncp,',group=',groupe,',type=',types,if (!is.null(gsup)) paste0(',num.group.sup=',gsup),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
+	  if (input$impute!=gettext("Impute by means and add NA categories (fast but not recommended)",domain="R-Factoshiny")){
+	    Code <- paste0(Code, "dfcompleted <- missMDA::imputeMFA(",nomData,", ncp=",Nbncp,',group=',groupe,',type=',types,if (!is.null(gsup)) paste0(',num.group.sup=',gsup),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")
+	    boolImpute <- TRUE
+	  }
 	}
 	Code <- paste0(Code,"res.MFA<-MFA(",nomData)
    }
@@ -397,7 +401,7 @@
 
   output$imputeData <- renderUI({
     if(any(is.na(newdataMFAshiny))){
-	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny"),gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")),selected=gettext("Impute by means and proportions (fast but not recommended)",domain="R-Factoshiny")))
+	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Impute by means and add NA categories (fast but not recommended)",domain="R-Factoshiny"),gettext("Impute by means and proportions",domain="R-Factoshiny"),gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")),selected=gettext("Impute by means and add NA categories (fast but not recommended)",domain="R-Factoshiny")))
 	} else {
       return(tags$div(tags$label(class="control-label", "Handling missing values"),
 	   tags$div(HTML("No missing values"))))

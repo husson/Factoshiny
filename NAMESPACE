@@ -1,4 +1,4 @@
-### Modify 01.05.2016
+### Modify 2019.11.29
 import(FactoMineR)
 import(FactoInvestigate)
 importFrom(ggplot2,aes,aes_string,annotate,arrow,coord_fixed,element_rect,element_text,geom_hline,geom_line,geom_path,geom_point,geom_segment,geom_text,geom_vline,ggplot,ggtitle,labs,margin,unit,scale_color_gradient,scale_color_manual,theme,theme_light,xlab,xlim,ylab,ylim)

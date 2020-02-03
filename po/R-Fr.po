@@ -2322,8 +2322,8 @@ msgstr "Nombre de dim à dessiner"
 msgid "Impute with the proportions"
 msgstr "Impute par les proportions"
 
-msgid "Impute by means and proportions (fast but not recommended)"
-msgstr "Impute par les moyennes et les proportions (rapide mais non recommandé)"
+msgid "Impute by means and proportions"
+msgstr "Impute par les moyennes et les proportions"
 
 msgid "Impute with 2-dimensional MFA-model (good compromise)"
 msgstr "Impute par le modèle d'AFM en 2 dimensions (bon compromis)"
@@ -2342,3 +2342,9 @@ msgstr "Description de la partition par les variables"
 
 msgid "Cluster"
 msgstr "Classe"
+
+msgid "Specificity"
+msgstr "Specificité"
+
+msgid "Impute by means and add NA categories (fast but not recommended)"
+msgstr "Impute par la moyenne et ajoute des modalités NA (rapide - non recommandé)"

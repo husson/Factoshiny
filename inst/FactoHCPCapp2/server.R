@@ -85,7 +85,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
+        if (substr(tolower(input$choixLANG),1,2)=="fr") FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language= "fr")
+        else FactoInvestigate::Investigate(values()$res.HCPC, openFile=TRUE, file = input$titleFile, language= "en")
         setwd(path.aux)
       })
     }
@@ -96,7 +97,8 @@
       isolate({
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-        FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language= substr(tolower(input$choixLANG),1,2))
+        if (substr(tolower(input$choixLANG),1,2)=="fr") FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language= "fr")
+        else FactoInvestigate::Investigate(values()$res.HCPC,document="word_document",openFile=TRUE, file = input$titleFile, language= "en")
         setwd(path.aux)
       })
     }
@@ -109,7 +111,8 @@
     content = function(file) {
         path.aux <- getwd()
         setwd(pathsaveHCPCshiny)
-	    FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= substr(tolower(input$choixLANG),1,2))
+	    if (substr(tolower(input$choixLANG),1,2)=="fr") FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= "fr")
+	    else FactoInvestigate::Investigate(values()$res.HCPC, openFile=FALSE,remove.temp =FALSE, keepRmd=TRUE, file = "Investigate", language= "en")
 	    print(paste0(gettext("The file ",domain="R-Factoshiny"),input$titleFile,gettext(" as well as the RData objects are available in the sub-directory: ",domain="R-Factoshiny"),getwd()))
         setwd(path.aux)
     }

@@ -242,7 +242,7 @@ Voici des vidéos décrivant la classification et la description des classes:
            <li><a href='https://www.youtube.com/watch?v=3XVoGXVG1mo' target='_blank'>Exemple et choix du nombre de classes</a></li>
            <li><a href='Méthode de partitionnement et complémentarité avec la CAH' target='_blank'>Méthode de partitionnement et complémentarité avec la CAH</a></li>
            <li><a href='https://www.youtube.com/watch?v=S-vfGS-VTDI' target='_blank'>Caractérisation des classes d'individus</a></li>
-           <li><a href='' target='_blank'>Mise en oeuvre avec Factoshiny</a></li>
+           <li><a href='https://youtu.be/6AqPc_kZQ0g' target='_blank'>Mise en oeuvre avec Factoshiny</a></li>
            </ul>")
     } else {
       HTML("Clustering constructs a hierarchical tree on individuals based on quantitative variables. 

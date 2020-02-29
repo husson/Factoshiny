@@ -23,7 +23,7 @@ if(inherits(x, "data.frame") | inherits(x, "CA")){
   valueselec2CAshiny <- NULL
   sizeCAshiny <- 1
   title1CAshiny <- gettext("CA factor map",domain="R-Factoshiny")
-  title2CAshiny <- gettext("Quantitative supplementary variables",domain="R-Factoshiny")
+  title2CAshiny <- gettext("Supplementary quantitative variables",domain="R-Factoshiny")
   color_pointInit <- gettext("row/column",domain="R-Factoshiny")
   col1CAshiny <- "blue"
   col2CAshiny <- "red"
@@ -63,7 +63,6 @@ ellipsesCAshiny <- x$ellip
 hcpcparaCAshiny <- x$hcpcparam
 nbdimclustCAshiny <- x$nbdimclustCAshiny
 }
-
 
 VariableChoicesCAshiny <- names(which(sapply(newdataCAshiny,is.numeric)))
 QualiChoiceCAshiny <- names(which(!(sapply(newdataCAshiny,is.numeric))))

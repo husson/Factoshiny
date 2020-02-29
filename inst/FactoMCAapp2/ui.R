@@ -13,7 +13,7 @@ fluidPage(
 		tags$style(type="text/css", "#loadmessage { padding: 5px 0px 5px 0px; text-align: center; font-weight: bold; font-size: 100%; color: #000000; background-color: #ff8533; z-index: 105; }")
       ),
       wellPanel(
-        div(align="center",checkboxInput("mcaparam",gettext("Show MCA parameters",domain="R-Factoshiny"),FALSE)),
+        div(align="center",checkboxInput("mcaparam",gettext("MCA parameters",domain="R-Factoshiny"),FALSE)),
         conditionalPanel(
           condition="input.mcaparam==true",
             selectizeInput("supvar",label=gettext("Select supplementary categorical variables",domain="R-Factoshiny"), choices=VariableChoicesMCAshiny, selected=supqualiMCAshiny,multiple=TRUE),

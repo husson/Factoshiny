@@ -403,8 +403,8 @@
     if(any(is.na(newdataMFAshiny))){
 	  return(radioButtons("impute",gettext("Handling missing values",domain="R-Factoshiny"),choices=list(gettext("Impute by means and add NA categories (fast but not recommended)",domain="R-Factoshiny"),gettext("Impute by means and proportions",domain="R-Factoshiny"),gettext("Impute with 2-dimensional MFA-model (good compromise)",domain="R-Factoshiny")),selected=gettext("Impute by means and add NA categories (fast but not recommended)",domain="R-Factoshiny")))
 	} else {
-      return(tags$div(tags$label(class="control-label", "Handling missing values"),
-	   tags$div(HTML("No missing values"))))
+      return(tags$div(tags$label(class="control-label", gettext("Handling missing values",domain="R-Factoshiny")),
+	   tags$div(HTML(gettext("No missing values",domain="R-Factoshiny")))))
 	}
   })
 

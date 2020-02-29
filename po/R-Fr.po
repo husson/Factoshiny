@@ -552,9 +552,6 @@ msgstr "Colorier les variables par groupe"
 msgid "Color the partial axes by group"
 msgstr "Colorier les axes partiels par groupe"
 
-msgid "Draw labels for the colonnes"
-msgstr "Libellés des colonnes"
-
 msgid "Get the MFA code"
 msgstr "Lignes de code de l'AFM"
 
@@ -2161,34 +2158,34 @@ msgid "Handling missing values"
 msgstr "Gestion des données manquantes"
 
 msgid "Impute by the mean (fast but not recommended)"
-msgstr "Impute par la moyenne (rapide - non recommandé)"
+msgstr "Imputer par la moyenne (rapide - non recommandé)"
 
 msgid "Impute with 2-dimensional PCA-model (good compromise)"
-msgstr "Impute par un modèle d'ACP à 2 dimensions (bon compromis)"
+msgstr "Imputer par un modèle d'ACP à 2 dimensions (bon compromis)"
 
 msgid "Impute with k-dimensional PCA-model (estime k, time consuming)"
-msgstr "Impute par un modèle d'ACP à k dimensions (estime k, chronophage)"
+msgstr "Imputer par un modèle d'ACP à k dimensions (estime k, chronophage)"
 
 msgid "Impute by the proportions"
-msgstr "Impute par les proportions"
+msgstr "Imputer par les proportions"
 
 msgid "Impute with 2-dimensional MCA-model (good compromise)"
-msgstr "Impute par un modèle d'ACM à 2 dimensions (bon compromis)"
+msgstr "Imputer par un modèle d'ACM à 2 dimensions (bon compromis)"
 
 msgid "Impute with k-dimensional MCA-model (estime k, time consuming)"
-msgstr "Impute par un modèle d'ACM à k dimensions (estime k, chronophage)"
+msgstr "Imputer par un modèle d'ACM à k dimensions (estime k, chronophage)"
 
 msgid "Consider NA as new category"
-msgstr "Considère NA comme nouvelle modalité"
+msgstr "Considérer NA comme nouvelle modalité"
 
 msgid "Consider NA as supplementary"
-msgstr "Considère NA comme supplémentaire"
+msgstr "Considérer NA comme supplémentaire"
 
 msgid "Impute by the independance model"
-msgstr "Impute par le modèle d'indépendence"
+msgstr "Imputer par le modèle d'indépendence"
 
 msgid "Impute with 2-dimensional CA-model (preferred)"
-msgstr "Impute par un modèle d'AFC 2-dimensionnel (préféré)"
+msgstr "Imputer par un modèle d'AFC 2-dimensionnel (préféré)"
 
 msgid "No missing values"
 msgstr "Pas de données manquantes"
@@ -2320,13 +2317,13 @@ msgid "Number of dim to draw"
 msgstr "Nombre de dim à dessiner"
 
 msgid "Impute with the proportions"
-msgstr "Impute par les proportions"
+msgstr "Imputer par les proportions"
 
 msgid "Impute by means and proportions"
-msgstr "Impute par les moyennes et les proportions"
+msgstr "Imputer par les moyennes et les proportions"
 
 msgid "Impute with 2-dimensional MFA-model (good compromise)"
-msgstr "Impute par le modèle d'AFM en 2 dimensions (bon compromis)"
+msgstr "Imputer par le modèle d'AFM en 2 dimensions (bon compromis)"
 
 msgid "Description of each cluster by quantitative variables and categories"
 msgstr "Description de chaque classe par les variables et les modalités"
@@ -2347,4 +2344,32 @@ msgid "Specificity"
 msgstr "Specificité"
 
 msgid "Impute by means and add NA categories (fast but not recommended)"
-msgstr "Impute par la moyenne et ajoute des modalités NA (rapide - non recommandé)"
+msgstr "Imputer par la moyenne et ajouter des modalités NA (rapide - non recommandé)"
+
+msgid "active rows"
+msgstr "lignes actives"
+
+msgid "active columns"
+msgstr "colonnes actives"
+
+msgid "supplementary rows"
+msgstr "lignes supplémentaires"
+
+msgid "supplementary columns"
+msgstr "colonnes supplémentaires"
+
+msgid "supplementary categories"
+msgstr "modalités supplémentaires"
+
+msgid "active categories"
+msgstr "modalités actives"
+
+msgid "supplementary categorical variables"
+msgstr "variables qualitatives suplémentaires"
+
+msgid "supplementary quantitative variables"
+msgstr "variables quantitatives suplémentaires"
+
+msgid "Supplementary quantitatives variables"
+msgstr "Variables quantitatives suplémentaires"
+

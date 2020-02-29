@@ -23,7 +23,7 @@ if(is.data.frame(x)==TRUE){
   indsuplMCAshiny=NULL
   title1MCAshiny=gettext("MCA factor map",domain="R-Factoshiny")
   title2MCAshiny=gettext("Variables representation",domain="R-Factoshiny")
-  title3MCAshiny=gettext("Supplementary variables on the MCA map",domain="R-Factoshiny")
+  title3MCAshiny=gettext("Supplementary quantitatives variables",domain="R-Factoshiny")
   color1MCAshiny="black"
   color2MCAshiny="blue" #   #0C2B94
   color3MCAshiny="red"
@@ -99,7 +99,7 @@ if(inherits(x, "MCA")){
   selection4MCAshiny=NULL
   title1MCAshiny=gettext("MCA factor map",domain="R-Factoshiny")
   title2MCAshiny=gettext("Variables representation",domain="R-Factoshiny")
-  title3MCAshiny=gettext("Supplementary variables on the MCA map",domain="R-Factoshiny")
+  title3MCAshiny=gettext("Supplementary quantitatives variables",domain="R-Factoshiny")
   color1MCAshiny="black"
   color2MCAshiny="blue" #   #0C2B94
   color3MCAshiny="red"

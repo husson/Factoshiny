@@ -489,9 +489,6 @@ msgstr "Colorier les variables par groupe"
 msgid "Color the partial axe by group"
 msgstr "Colorier les axes partiels par groupe"
 
-msgid "Draw labels for the colonnes"
-msgstr "Libellés des colonnes"
-
 msgid "Get the MFA code"
 msgstr "Lignes de code de l'AFM"
 

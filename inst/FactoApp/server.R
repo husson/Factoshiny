@@ -139,7 +139,7 @@ shinyServer(function(input, output) {
          <li><a href='https://www.youtube.com/watch?v=ffZb9wAiElk' target='_blank'>Inertia and percentage of inertia</a></li>
          <li><a href='https://www.youtube.com/watch?v=3-zxmzZZTIQ' target='_blank'>Simultaneous representation</a></li>
          <li><a href='https://www.youtube.com/watch?v=Jg9IXaAi98w' target='_blank'>Interpretation aids</a></li>
-         <li><a href='https://youtu.be/vP4korRby0Q' target='_blank'>Implementation with FactoMineR</a></li>
+         <li><a href='https://youtu.be/2P-u8XlFFoc' target='_blank'>Implementation with Factoshiny</a></li>
          <li><a href='https://www.youtube.com/watch?v=62N0JMf5hOs' target='_blank'>Example on textual data</a></li>
          </ul>")
     }
@@ -174,7 +174,7 @@ shinyServer(function(input, output) {
          <li><a href='https://www.youtube.com/watch?v=b4kRAt4mkB8' target='_blank'>Visualizing the point cloud of individuals</a></li>
          <li><a href='https://www.youtube.com/watch?v=OZW1KrKO5Ac' target='_blank'>Visualizing the cloud of categories</a></li>
          <li><a href='https://www.youtube.com/watch?v=wTCuThGiy4w' target='_blank'>Interpretation aids</a></li>
-         <li><a href='https://youtu.be/Sl1-UYD6iac' target='_blank'>Implementation with FactoMineR</a></li>
+         <li><a href='https://youtu.be/0z30RDikYaw' target='_blank'>Implementation with Factoshiny</a></li>
          <li><a href='https://www.youtube.com/watch?v=uyIH1CtrfsU' target='_blank'>Handling missing values in MCA</a></li>
          </ul>")
     }

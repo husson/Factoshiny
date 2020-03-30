@@ -45,6 +45,7 @@ fluidPage(
                 uiOutput("col4CAshiny"),
                 uiOutput("col5CAshiny")
 		    ),
+        uiOutput("habillage2"),
         selectInput("selecrow",gettext("Labels for rows selected by:",domain="R-Factoshiny"), choices=list(gettext("No selection",domain="R-Factoshiny"),"Cos2"="cos2","Contribution"="contrib"),selected=selec2CAshiny),
         conditionalPanel(
           condition="input.selecrow=='cos2'",

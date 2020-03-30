@@ -230,8 +230,7 @@
     if(input$color_point == gettext("quantitative variable",domain="R-Factoshiny")) hab <- paste0("'",input$habiller,"'")
     if(input$color_point == "cos2") hab <- "'cos2'"
     if(input$color_point == "contribution") hab <- "'contrib'"
-    if(input$color_point==gettext("qualitative variable",domain="R-Factoshiny")) hab <- which(colnames(values()$res.CA$call$X)==input$habiller)
-
+    if(input$color_point==gettext("qualitative variable",domain="R-Factoshiny")) hab <- paste0("'",input$habiller,"'")
       if(is.null(input$ellip)||length(input$ellip)==0){
 	    myellip=NULL
       }else{
@@ -250,6 +249,12 @@
         p <- print(codeGraph()$Plot)
     })
     
+    output$habillage2=renderUI({
+      if (input$color_point == gettext("qualitative variable",domain="R-Factoshiny")){
+        return(selectizeInput("habiller",gettext("select the variable",domain="R-Factoshiny"), choices=QualiChoiceCAshiny, multiple=FALSE, selected=QualiChoiceCAshiny))
+      }
+    }) 
+
   codeGraphQuanti <- function(){
     validate(
       need(input$nb1 != input$nb2, gettext("Please select two different dimensions",domain="R-Factoshiny")),

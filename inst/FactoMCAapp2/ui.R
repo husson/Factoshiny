@@ -98,9 +98,9 @@ fluidPage(
             conditionalPanel(
               condition=paste("input.select=='",gettext("Manual",domain="R-Factoshiny"),"'",sep=''),
               if(selectionMCAshiny==gettext("Manual",domain="R-Factoshiny")){
-                selectInput("indiv",label=gettext("Select individuals:",domain="R-Factoshiny"),  choices=nomMCAshiny,multiple=TRUE,selected=selection2MCAshiny) 
+                selectInput("indiv",label=gettext("Select individuals",domain="R-Factoshiny"),  choices=nomMCAshiny,multiple=TRUE,selected=selection2MCAshiny) 
               } else{
-                selectInput("indiv",label=gettext("Select individuals:",domain="R-Factoshiny"), choices=nomMCAshiny,multiple=TRUE)  
+                selectInput("indiv",label=gettext("Select individuals",domain="R-Factoshiny"), choices=nomMCAshiny,multiple=TRUE)  
               }),
             conditionalPanel(
               condition="input.select=='Contrib'",

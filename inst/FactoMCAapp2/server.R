@@ -78,10 +78,10 @@
 
 	boolImpute <- FALSE
     if(length(input$impute>0)){
-      validate(
-        need(length(input$supvar)==0 | input$impute==gettext("Consider NA as new category",domain="R-Factoshiny"),gettext("No supplementary variables are allowed with imputation methods",domain="R-Factoshiny")),
-		need(length(input$supquanti)==0 | input$impute==gettext("Consider NA as new category",domain="R-Factoshiny"), gettext("No supplementary variables are allowed with imputation methods",domain="R-Factoshiny"))
-      )
+      # validate(
+        # need(length(input$supvar)==0 | input$impute==gettext("Consider NA as new category",domain="R-Factoshiny"),gettext("No supplementary variables are allowed with imputation methods",domain="R-Factoshiny")),
+		# need(length(input$supquanti)==0 | input$impute==gettext("Consider NA as new category",domain="R-Factoshiny"), gettext("No supplementary variables are allowed with imputation methods",domain="R-Factoshiny"))
+      # )
 	 if (input$impute!=gettext("Consider NA as new category",domain="R-Factoshiny")){
 	  boolImpute <- TRUE
 	  if (input$impute==gettext("Impute with k-dimensional MCA-model (estime k, time consuming)",domain="R-Factoshiny")){
@@ -226,8 +226,8 @@
 	  if(length(inv)>1) vecinv<-paste0("c(",paste0(inv,collapse=","),")")
       if(length(inv)==1) vecinv <- inv
       if(length(inv)==0) vecinv<-"NULL"
-      if(input$select==gettext("Manual",domain="R-Factoshiny")) selecindivText <- paste0("c(",paste0(input$indiv,collapse=","),")")
       selecindivText="NULL"
+      if(input$select==gettext("Manual",domain="R-Factoshiny")) selecindivText <- paste0("c(",paste0(input$indiv,collapse=","),")")
       if(input$select=="cos2"){
         if(input$slider1!=1){
           selecindivText=paste0("'cos2 ",input$slider1,"'")

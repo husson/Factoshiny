@@ -227,7 +227,7 @@
       if(length(inv)==1) vecinv <- inv
       if(length(inv)==0) vecinv<-"NULL"
       selecindivText="NULL"
-      if(input$select==gettext("Manual",domain="R-Factoshiny")) selecindivText <- paste0("c(",paste0(input$indiv,collapse=","),")")
+      if(input$select==gettext("Manual",domain="R-Factoshiny")) selecindivText <- paste0("c('",paste0(input$indiv,collapse="','"),"')")
       if(input$select=="cos2"){
         if(input$slider1!=1){
           selecindivText=paste0("'cos2 ",input$slider1,"'")

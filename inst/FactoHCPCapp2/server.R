@@ -200,7 +200,7 @@
       contentType=NA)
         
     output$printDescVar=renderPrint({
-      print.catdes(values()$res.HCPC$desc.var)
+      print(values()$res.HCPC$desc.var)
     })
 
     output$descriptquantivar=renderTable({
@@ -243,10 +243,14 @@
      output$parangons=renderTable({
        bibi=list()
        for (i in 1:input$clust){
-         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$para[[i]]),values()$res.HCPC$desc.ind$para[[i]])
-		 rownames(bibi[[i]])="Distance"
+#         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$para[[i]]),values()$res.HCPC$desc.ind$para[[i]])
+          aux <- values()$res.HCPC$desc.ind$para[[i]]
+		  if (length(aux)==1 & aux[1]==0) aux <- 0  #stupid but necessary !!
+		 bibi[[i]] <- matrix(aux,nrow=1)
+		 rownames(bibi[[i]]) <- "Distance"
+		 colnames(bibi[[i]]) <- names(values()$res.HCPC$desc.ind$para[[i]])
        }
-       write.infile(X=bibi,file=paste(getwd(),"essai3.csv"),sep=";",nb.dec=8)
+       write.infile(X=bibi,file=paste(getwd(),"essai3.csv"),sep=";",nb.dec=2)
        baba=read.csv(paste(getwd(),"essai3.csv"),sep=";",header=FALSE)
        colnames(baba)=NULL
        file.remove(paste(getwd(),"essai3.csv"))
@@ -257,10 +261,12 @@
     output$distind=renderTable({
        bibi=list()
        for (i in 1:input$clust){
-         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$dist[[i]]),values()$res.HCPC$desc.ind$dist[[i]])
-		 rownames(bibi[[i]])="Distance"
+#         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$dist[[i]]),values()$res.HCPC$desc.ind$dist[[i]])
+         bibi[[i]] <- matrix(values()$res.HCPC$desc.ind$dist[[i]],nrow=1)
+		 rownames(bibi[[i]]) <- "Distance"
+		 colnames(bibi[[i]]) <- names(values()$res.HCPC$desc.ind$dist[[i]])
        }
-       write.infile(X=bibi,file=paste(getwd(),"essai3b.csv"),sep=";",nb.dec=8)
+       write.infile(X=bibi,file=paste(getwd(),"essai3b.csv"),sep=";",nb.dec=2)
        baba=read.csv(paste(getwd(),"essai3b.csv"),sep=";",header=FALSE)
        colnames(baba)=NULL
        file.remove(paste(getwd(),"essai3b.csv"))

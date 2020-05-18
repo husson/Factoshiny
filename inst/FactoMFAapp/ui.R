@@ -215,7 +215,7 @@ fluidPage(
                                     column(3,
                                            textInput("nameG4", label = " ", value = "Gr 4"),
                                            conditionalPanel(
-                                             condition=paste("input.typeG4=='",gettext("Quantitative"),"'",sep=''),
+                                             condition=paste("input.typeG4=='",gettext("Quantitative",domain="R-Factoshiny"),"'",sep=''),
                                              br(),
                                              radioButtons("scale4","",choices=list(gettext("Scaled",domain="R-Factoshiny"),gettext("Unscaled",domain="R-Factoshiny")),selected=gettext("Scaled",domain="R-Factoshiny"),inline=TRUE))),
                                     column(3,

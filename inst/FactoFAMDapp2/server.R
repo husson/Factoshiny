@@ -80,7 +80,7 @@
 	  codeFAMD <- paste0(codeFAMD, "dfcompleted <- missMDA::imputeFAMD(",nomData,",ncp=",Nbncp,if (length(choixsup)!=0) paste0(",sup.var=c(",paste0(choixsup,collapse=","),")"),if (length(suple)!=0) paste0(",ind.sup=c(",paste0(suple,collapse=","),")"),")\n")	
 	}
 	codeFAMD <- paste0(codeFAMD,"res.FAMD<-FAMD(",nomData)
-	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.comp=dfcompleted$tab.disj")
+	if (boolImpute) codeFAMD <- paste0(codeFAMD,",tab.disj=dfcompleted$tab.disj")
 	if (length(input$nb1)>0) codeFAMD <- paste0(codeFAMD,if(max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))!=5) paste0(",ncp=",max(5*as.integer(!input$hcpcparam),as.numeric(input$nb1),as.numeric(input$nb2),as.numeric(input$nbDimClustering))),if(length(choixsup)!=0) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
 	else codeFAMD <- paste0(codeFAMD,if(max(axe1,axe2,nbdimclustFAMDshiny)!=5) paste0(",ncp=",max(axe1,axe2,nbdimclustFAMDshiny)),if(length(choixsup)!=0) paste0(",sup.var=c(",paste(choixsup,collapse=","),")"),if(length(suple)!=0) paste0(",ind.sup=c(",paste(suple,collapse=","),")"),",graph=FALSE)")
 	list(res.FAMD=eval(parse(text=codeFAMD)), codeFAMD=codeFAMD)

@@ -133,15 +133,24 @@ fluidRow(
                                # condition=paste("input.out=='",gettext("Description of classes by qualitative variables",domain="R-Factoshiny"),"'",sep=''),
                                # div(align="center",tableOutput("descriptquali"))
                                # ),
+                             # conditionalPanel(
+                               # condition=paste("input.out=='",gettext("Parangons",domain="R-Factoshiny"),"'",sep=''),
+                               # div(align="center",tableOutput("parangons"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Parangons",domain="R-Factoshiny"),"'",sep=''),
-                               div(align="center",tableOutput("parangons"))),
+                               verbatimTextOutput("printDescPara")),
+                             # conditionalPanel(
+                               # condition=paste("input.out=='",gettext("Specificity",domain="R-Factoshiny"),"'",sep=''),
+                               # div(align="center",tableOutput("distind"))),
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Specificity",domain="R-Factoshiny"),"'",sep=''),
-                               div(align="center",tableOutput("distind"))),
+                               verbatimTextOutput("printDescDist")),
+                             # conditionalPanel(
+                               # condition=paste("input.out=='",gettext("Description of classes by axes",domain="R-Factoshiny"),"'",sep=''),
+                               # div(align="center",tableOutput("axes")))
                              conditionalPanel(
                                condition=paste("input.out=='",gettext("Description of classes by axes",domain="R-Factoshiny"),"'",sep=''),
-                               div(align="center",tableOutput("axes")))
+                               verbatimTextOutput("printDescAxes"))
                              )
         )
       ,width=9)

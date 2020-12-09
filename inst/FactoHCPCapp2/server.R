@@ -203,86 +203,100 @@
       print(values()$res.HCPC$desc.var)
     })
 
-    output$descriptquantivar=renderTable({
-      write.infile(X=values()$res.HCPC$desc.var$quanti.var, file=paste(getwd(),"essaib.csv"),sep=";")
-	  baba=read.csv(paste(getwd(),"essaib.csv"),sep=";",header=FALSE)
-      colnames(baba)=NULL
-      file.remove(paste(getwd(),"essaib.csv")) 
-      baba[,-ncol(baba)]
-    },
-    rownames=FALSE)
-    
-    output$descriptquanti=renderTable({
-      write.infile(X=values()$res.HCPC$desc.var$quanti,file=paste(getwd(),"essai.csv"),sep=";")
-      baba=read.csv(paste(getwd(),"essai.csv"),sep=";",header=FALSE)
-      colnames(baba)=NULL
-      # b=which(baba[,1]=="format non affichable")
-      file.remove(paste(getwd(),"essai.csv")) 
-      baba[,-ncol(baba),drop=FALSE]
-    },
-    rownames=FALSE)
+    output$printDescPara=renderPrint({
+      print(values()$res.HCPC$desc.ind$para)
+    })
 
-    output$descriptqualivar=renderTable({
-      write.infile(X=values()$res.HCPC$desc.var$test.chi2, file=paste(getwd(),"essaic.csv"),sep=";")
-	  baba=read.csv(paste(getwd(),"essaic.csv"),sep=";",header=FALSE)
-      colnames(baba)=NULL
-      file.remove(paste(getwd(),"essaic.csv")) 
-      baba[,-ncol(baba),drop=FALSE]
-    },
-    rownames=FALSE)
-    
-    output$descriptquali=renderTable({
-      write.infile(X=values()$res.HCPC$desc.var$category,file=paste(getwd(),"essai.csv"),sep=";")
-      baba=read.csv(paste(getwd(),"essai.csv"),sep=";",header=FALSE)
-      colnames(baba)=NULL
-      file.remove(paste(getwd(),"essai.csv")) 
-      baba[,-ncol(baba),drop=FALSE]
-    },
-    rownames=FALSE)
+    output$printDescAxes=renderPrint({
+      print(values()$res.HCPC$desc.axes)
+    })
 
-     output$parangons=renderTable({
-       bibi=list()
-       for (i in 1:input$clust){
-#         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$para[[i]]),values()$res.HCPC$desc.ind$para[[i]])
-          aux <- values()$res.HCPC$desc.ind$para[[i]]
-		  if (length(aux)==1 & aux[1]==0) aux <- 0  #stupid but necessary !!
-		 bibi[[i]] <- matrix(aux,nrow=1)
-		 rownames(bibi[[i]]) <- "Distance"
-		 colnames(bibi[[i]]) <- names(values()$res.HCPC$desc.ind$para[[i]])
-       }
-       write.infile(X=bibi,file=paste(getwd(),"essai3.csv"),sep=";",nb.dec=2)
-       baba=read.csv(paste(getwd(),"essai3.csv"),sep=";",header=FALSE)
-       colnames(baba)=NULL
-       file.remove(paste(getwd(),"essai3.csv"))
-      baba[,-ncol(baba)]
-     },
-     rownames=FALSE)
+    output$printDescDist=renderPrint({
+      print(values()$res.HCPC$desc.ind$dist)
+    })
+
+    # output$descriptquantivar=renderTable({
+      # write.infile(X=values()$res.HCPC$desc.var$quanti.var, file=paste(getwd(),"essaib.csv"),sep=";")
+	  # baba=read.csv(paste(getwd(),"essaib.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+      # colnames(baba)=NULL
+      # file.remove(paste(getwd(),"essaib.csv")) 
+      # baba[,-ncol(baba)]
+    # },
+    # rownames=FALSE)
     
-    output$distind=renderTable({
-       bibi=list()
-       for (i in 1:input$clust){
-#         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$dist[[i]]),values()$res.HCPC$desc.ind$dist[[i]])
-         bibi[[i]] <- matrix(values()$res.HCPC$desc.ind$dist[[i]],nrow=1)
-		 rownames(bibi[[i]]) <- "Distance"
-		 colnames(bibi[[i]]) <- names(values()$res.HCPC$desc.ind$dist[[i]])
-       }
-       write.infile(X=bibi,file=paste(getwd(),"essai3b.csv"),sep=";",nb.dec=2)
-       baba=read.csv(paste(getwd(),"essai3b.csv"),sep=";",header=FALSE)
-       colnames(baba)=NULL
-       file.remove(paste(getwd(),"essai3b.csv"))
-      baba[,-ncol(baba)]
-     },
-     rownames=FALSE)
+    # output$descriptquanti=renderTable({
+      # write.infile(X=values()$res.HCPC$desc.var$quanti,file=paste(getwd(),"essai.csv"),sep=";")
+      # baba=read.csv(paste(getwd(),"essai.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+      # colnames(baba)=NULL
+      ##b=which(baba[,1]=="format non affichable")
+      # file.remove(paste(getwd(),"essai.csv")) 
+      # baba[,-ncol(baba),drop=FALSE]
+    # },
+    # rownames=FALSE)
+
+    # output$descriptqualivar=renderTable({
+      # write.infile(X=values()$res.HCPC$desc.var$test.chi2, file=paste(getwd(),"essaic.csv"),sep=";")
+	  # baba=read.csv(paste(getwd(),"essaic.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+      # colnames(baba)=NULL
+      # file.remove(paste(getwd(),"essaic.csv")) 
+      # baba[,-ncol(baba),drop=FALSE]
+    # },
+    # rownames=FALSE)
+    
+    # output$descriptquali=renderTable({
+      # write.infile(X=values()$res.HCPC$desc.var$category,file=paste(getwd(),"essai.csv"),sep=";")
+      # baba=read.csv(paste(getwd(),"essai.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+      # colnames(baba)=NULL
+      # file.remove(paste(getwd(),"essai.csv")) 
+      # baba[,-ncol(baba),drop=FALSE]
+    # },
+    # rownames=FALSE)
+
+     # output$parangons=renderTable({
+       # bibi=list()
+       # for (i in 1:input$clust){
+##         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$para[[i]]),values()$res.HCPC$desc.ind$para[[i]])
+          # aux <- values()$res.HCPC$desc.ind$para[[i]]
+		  # if (length(aux)==1 & aux[1]==0) aux <- 0  #stupid but necessary !!
+		 # bibi[[i]] <- matrix(aux,nrow=1)
+		 # rownames(bibi[[i]]) <- "Distance"
+		 # colnames(bibi[[i]]) <- names(values()$res.HCPC$desc.ind$para[[i]])
+       # }
+       # write.infile(X=bibi,file=paste(getwd(),"essai3.csv"),sep=";",nb.dec=2)
+       # baba=read.csv(paste(getwd(),"essai3.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+       # colnames(baba)=NULL
+       # file.remove(paste(getwd(),"essai3.csv"))
+      # baba[,-ncol(baba)]
+	  # cat(dim(baba))
+	  # cat(baba)
+     # },
+     # rownames=FALSE)
+    
+    # output$distind=renderTable({
+       # bibi=list()
+       # for (i in 1:input$clust){
+##         bibi[[i]]=rbind(colnames(values()$res.HCPC$desc.ind$dist[[i]]),values()$res.HCPC$desc.ind$dist[[i]])
+         # bibi[[i]] <- matrix(values()$res.HCPC$desc.ind$dist[[i]],nrow=1)
+		 # rownames(bibi[[i]]) <- "Distance"
+		 # colnames(bibi[[i]]) <- names(values()$res.HCPC$desc.ind$dist[[i]])
+       # }
+       # write.infile(X=bibi,file=paste(getwd(),"essai3b.csv"),sep=";",nb.dec=2)
+       # baba=read.csv(paste(getwd(),"essai3b.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+       # colnames(baba)=NULL
+       # file.remove(paste(getwd(),"essai3b.csv"))
+      # baba[,-ncol(baba)]
+     # },
+     # rownames=FALSE)
 
     ### Fonction permettant d'afficher la description des classes par les axes 
-    output$axes=renderTable({
-      write.infile(X=values()$res.HCPC$desc.axes$quanti,file=paste(getwd(),"essai2.csv"),sep=";",nb.dec=8)
-      baba=read.csv(paste(getwd(),"essai2.csv"),sep=";",header=FALSE)
-      colnames(baba)=NULL
-      file.remove(paste(getwd(),"essai2.csv"))
-      baba[,-ncol(baba)]
-    },
-    rownames=FALSE)  
+    # output$axes=renderTable({
+      # write.infile(X=values()$res.HCPC$desc.axes$quanti,file=paste(getwd(),"essai2.csv"),sep=";",nb.dec=8)
+      # baba=read.csv(paste(getwd(),"essai2.csv"),sep=";",header=FALSE, stringAsFactor=TRUE)
+      # colnames(baba)=NULL
+      # file.remove(paste(getwd(),"essai2.csv"))
+      # baba[,-ncol(baba)]
+    # },
+    # rownames=FALSE)  
 
     output$CodePrinted <- renderPrint({
        if (input$HCPCcode!=0){

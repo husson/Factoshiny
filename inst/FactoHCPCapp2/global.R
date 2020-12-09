@@ -12,7 +12,7 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FA
     nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
     clusterOnCA <- NULL
   }
-  if (nbindivHCPCshiny>100) resClusHCPCshiny <- HCPC(resultsHCPCshiny,kk=100,nb.clust=-1,graph=FALSE)$call$t$nb.clust
+  if (nbindivHCPCshiny>10000) resClusHCPCshiny <- HCPC(resultsHCPCshiny,kk=100,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   else resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   clustdfHCPCshiny <- resClusHCPCshiny
   consolidfHCPCshiny <- FALSE
@@ -20,7 +20,7 @@ if((inherits(x, "PCA") | inherits(x, "MCA") | inherits(x, "CA")| inherits(x, "FA
   drawdfHCPCshiny <- FALSE
   dfHCPCshiny <- FALSE
   centerdfHCPCshiny <- FALSE
-  if (nbindivHCPCshiny>100) kkparamInit <- TRUE
+  if (nbindivHCPCshiny>10000) kkparamInit <- TRUE
   else kkparamInit <- FALSE
   kkInit <- min(100,nbindivHCPCshiny-1)
   numdfHCPCshiny <- 60
@@ -63,9 +63,9 @@ if(inherits(x, "PCAshiny") | inherits(x, "CAshiny") | inherits(x, "MCAshiny") | 
     nbcolHCPCshiny <- ncol(resultsHCPCshiny$ind$coord)
     clusterOnCA <- NULL
   }
-  if (nbindivHCPCshiny>100) resClusHCPCshiny <- HCPC(resultsHCPCshiny,kk=100,nb.clust=-1,graph=FALSE)$call$t$nb.clust
+  if (nbindivHCPCshiny>10000) resClusHCPCshiny <- HCPC(resultsHCPCshiny,kk=100,nb.clust=-1,graph=FALSE)$call$t$nb.clust
   else resClusHCPCshiny <- HCPC(resultsHCPCshiny,nb.clust=-1,graph=FALSE)$call$t$nb.clust
-  if (nbindivHCPCshiny>100) kkparamInit <- TRUE
+  if (nbindivHCPCshiny>10000) kkparamInit <- TRUE
   else kkparamInit <- FALSE
   kkInit <- min(100,nbindivHCPCshiny-1)
   clustdfHCPCshiny=resClusHCPCshiny

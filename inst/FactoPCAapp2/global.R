@@ -12,9 +12,9 @@ if(inherits(x, "data.frame")){
   hcpcparaPCAshiny <- FALSE
   habillageindPCAshiny2 <- habillageindPCAshiny <- NULL
   selectionPCAshiny <- gettext("No selection",domain="R-Factoshiny")
-  selection2PCAshiny <- NULL
+  selection2PCAshiny <- 0
   selection3PCAshiny <- gettext("No selection",domain="R-Factoshiny")
-  selection4PCAshiny <- NULL
+  selection4PCAshiny <- 0
   sizePCAshiny <- 1
   size2PCAshiny <- 1
   color_pointInit <- gettext("active/supplementary",domain="R-Factoshiny")
@@ -85,9 +85,9 @@ if(inherits(x, "PCA")){
   hcpcparaPCAshiny <- FALSE
   habillageindPCAshiny2 <- habillageindPCAshiny <- NULL
   selectionPCAshiny <- gettext("No selection",domain="R-Factoshiny")
-  selection2PCAshiny <- NULL
+  selection2PCAshiny <- 0
   selection3PCAshiny <- gettext("No selection",domain="R-Factoshiny")
-  selection4PCAshiny <- NULL
+  selection4PCAshiny <- 0
   sizePCAshiny <- 1
   size2PCAshiny <- 1
   color_arrowInit <- gettext("active/supplementary",domain="R-Factoshiny")

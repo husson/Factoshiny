@@ -19,8 +19,8 @@ if(inherits(x, "data.frame") | inherits(x, "CA")){
   InvisibleCAshiny <- NULL
   selec1CAshiny <- gettext("No selection",domain="R-Factoshiny")
   selec2CAshiny <- gettext("No selection",domain="R-Factoshiny")
-  valueselec1CAshiny <- NULL
-  valueselec2CAshiny <- NULL
+  valueselec1CAshiny <- 0
+  valueselec2CAshiny <- 0
   sizeCAshiny <- 1
   title1CAshiny <- gettext("CA factor map",domain="R-Factoshiny")
   title2CAshiny <- gettext("Supplementary quantitative variables",domain="R-Factoshiny")

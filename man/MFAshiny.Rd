@@ -31,7 +31,7 @@ Returns several tabs:
 \author{Pauline Vaissie, Astrid Monge, Francois Husson \email{Francois.Husson@agrocampus-ouest.fr}}
 
 \seealso{ \code{\link{PCA}}, \code{\link{plot.PCA}}\cr
-\href{http://shiny.rstudio.com}{shiny website}}
+\href{https://shiny.rstudio.com}{shiny website}}
 
 \examples{
 \dontrun{

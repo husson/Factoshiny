@@ -32,7 +32,7 @@ The left part of the application allows to change all the elements of the CA and
 \author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
 
 \seealso{ \code{\link{CA}}, \code{\link{plot.CA}}\cr
-\href{http://shiny.rstudio.com}{shiny website}}
+\href{https://shiny.rstudio.com/}{shiny website}}
 
 \examples{
 \dontrun{

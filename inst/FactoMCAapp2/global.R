@@ -8,9 +8,9 @@ if(is.data.frame(x)==TRUE){
   labvarMCAshiny=c()
   habillageindMCAshiny <- NULL
   selectionMCAshiny=gettext("No selection",domain="R-Factoshiny")
-  selection2MCAshiny=NULL
+  selection2MCAshiny=0
   selection3MCAshiny=gettext("No selection",domain="R-Factoshiny")
-  selection4MCAshiny=NULL
+  selection4MCAshiny=0
   nbdimclustMCAshiny <- 5
   hcpcparaMCAshiny <- FALSE
   poids1MCAshiny <- NULL
@@ -96,7 +96,7 @@ if(inherits(x, "MCA")){
   selectionMCAshiny=gettext("No selection",domain="R-Factoshiny")
   selection2MCAshiny=NULL
   selection3MCAshiny=gettext("No selection",domain="R-Factoshiny")
-  selection4MCAshiny=NULL
+  selection4MCAshiny=0
   title1MCAshiny=gettext("MCA factor map",domain="R-Factoshiny")
   title2MCAshiny=gettext("Variables representation",domain="R-Factoshiny")
   title3MCAshiny=gettext("Supplementary quantitatives variables",domain="R-Factoshiny")

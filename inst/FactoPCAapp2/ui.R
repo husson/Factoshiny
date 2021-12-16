@@ -138,8 +138,6 @@ fluidPage(
                              div(verbatimTextOutput("CodePrinted")),
                            fluidRow(
                              br(),
-##                             column(width = 6,plotOutput("map2", width = "500", brush = brushOpts(id = "plot_brush_ind")),
-                             # column(width = 7,plotOutput("map2", height = "500"),
                              column(width = 7,shinyjqui::jqui_resizable(plotOutput("map2", height = "500")),
                                     br(),
                                     p(gettext("Download as",domain="R-Factoshiny"),downloadButton("downloadData4",gettext("jpg",domain="R-Factoshiny")),downloadButton("downloadData3",gettext("png",domain="R-Factoshiny")),downloadButton("downloadData5",gettext("pdf",domain="R-Factoshiny")),align="center"),

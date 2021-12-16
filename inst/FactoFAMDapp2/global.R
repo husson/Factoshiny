@@ -12,11 +12,11 @@ if(inherits(x, "data.frame")){
   labvar <- TRUE
   habillageind <- NULL
   selection <- "NONE"
-  selection2 <- NULL
+  selection2 <- 0
   selection3 <- "NONE"
-  selection4 <- NULL
+  selection4 <- 0
   selection5 <- "NONE"
-  selection6 <- NULL
+  selection6 <- 0
   size <- 1
   size2 <- 1
   size3 <- 1
@@ -66,11 +66,11 @@ if(inherits(x, "FAMD")){
   axe2 <- 2
   habillageind <- NULL
   selection <- "NONE"
-  selection2 <- NULL
+  selection2 <- 0
   selection3 <- "NONE"
-  selection4 <- NULL
+  selection4 <- 0
   selection5 <- "NONE"
-  selection6 <- NULL
+  selection6 <- 0
   nbdimclustFAMDshiny <- 5
   hcpcparaFAMDshiny <- FALSE
   indmodFAMDshiny <- c(gettext("Individuals",domain="R-Factoshiny"),gettext("Active categories",domain="R-Factoshiny"),gettext("Supplementary individuals",domain="R-Factoshiny"),gettext("Supplementary categories",domain="R-Factoshiny"))

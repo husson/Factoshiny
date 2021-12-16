@@ -19,7 +19,7 @@ data=x
   partial3=FALSE
   selectvar2=NULL
   selectionMFAshiny <- gettext("No selection",domain="R-Factoshiny")
-  selection2MFAshiny <- NULL
+  selection2MFAshiny <- 0
   hide=gettext("Nothing",domain="R-Factoshiny")
   colorvar=TRUE
   freq1=TRUE

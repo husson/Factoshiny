@@ -32,7 +32,7 @@ By default, the numeric value of the number of clusters is set to the value advi
 \author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
 
 \seealso{ \code{\link{HCPC}}, \code{\link{plot.HCPC}}\cr
-\href{http://shiny.rstudio.com}{shiny website}}
+\href{https://shiny.rstudio.com}{shiny website}}
 
 \examples{
 \dontrun{

@@ -34,7 +34,7 @@ The "Get your code" button print the PCA and the plots code in your RStudio sess
 \author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
 
 \seealso{ \code{\link{PCA}}, \code{\link{plot.PCA}}\cr
-\href{http://shiny.rstudio.com}{shiny website}}
+\href{https://shiny.rstudio.com}{shiny website}}
 
 \examples{
 \dontrun{

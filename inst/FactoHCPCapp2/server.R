@@ -351,6 +351,8 @@
         x <- resultat()$quanti[[i]][,2, drop = FALSE]
         tabmean <- cbind(tabmean,as.data.frame(x[sort(rownames(x)),]))
       }
+	  tabvtest[tabvtest> 38.4]=38.4   ## pb if p-value is 0
+	  tabvtest[tabvtest< -38.4]= -38.4
       colnames(tabpvalue) <- colnames(tabvtest) <- colnames(tabmean) <- names(resultat()$quanti)
       tabmean$overall <- resultat()$quanti[[1]][sort(rownames(resultat()$quanti[[1]])),3]
       
@@ -381,6 +383,8 @@
         x <- resultat()$category[[i]][rows,"p.value", drop = FALSE]
         tabpvalue <- cbind(tabpvalue,as.data.frame(x[sort(rownames(x)),,drop=FALSE]))
       }
+	  tabvtest[tabvtest> 38.4]=38.4   ## pb if p-value is 0
+	  tabvtest[tabvtest< -38.4]= -38.4
       colnames(tabpvalue) <- colnames(tabvtest) <- names(resultat()$category)
       validate(
         need(as.numeric(input$select_proba_plot) > 0, paste(gettext("The p-value should be greater than",domain="R-Factoshiny"),0))

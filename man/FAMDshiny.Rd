@@ -31,7 +31,7 @@ The left part of the application allows to change all the elements of the FAMDA 
 \author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
 
 \seealso{ \code{\link{FAMD}},\code{\link{plot.FAMD}}\cr
-\href{http://shiny.rstudio.com}{shiny website}}
+\href{https://shiny.rstudio.com}{shiny website}}
 
 \examples{
 \dontrun{

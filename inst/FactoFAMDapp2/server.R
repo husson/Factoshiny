@@ -656,7 +656,7 @@
       if(input$select=="Manuel") selecindiv=input$indiv
       res$h=input$select
       res$i=selecindiv
-      selecindiv2=NULL
+      selecindiv2=0
       if(input$select0=="cos2") selecindiv2=input$slider00
       if(input$select0=="contrib") selecindiv2=input$slider4
       res$j=input$select0

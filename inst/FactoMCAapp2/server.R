@@ -842,6 +842,7 @@
       }
       res$h=input$select
     
+	res$k=0
     if(input$selectMod=="cos2"){
       res$k=input$sliderCosMod
     }

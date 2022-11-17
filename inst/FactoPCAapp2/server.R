@@ -667,11 +667,11 @@ function(input, output,session) {
           if(input$select=="contrib") res$selection2PCAshiny <- input$slider0
           if(input$select==gettext("Manual",domain="R-Factoshiny")) res$selection2PCAshiny <- input$indiv
         }
-        selecindiv2 <- NULL
+        selecindiv2 <- 0
         if (length(input$select0)>0){
 		  if(input$select0=="cos2") selecindiv2 <- input$slider00
           if(input$select0=="contrib") selecindiv2 <- input$slider4
-        } else selecindiv2 <- 0
+        }
 		res$j <- input$select0
         res$k <- selecindiv2
         res$l <- input$cex

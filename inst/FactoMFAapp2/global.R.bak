@@ -1,10 +1,10 @@
 #global AFM2
 if(inherits(x,"MFA")){
-  ligne <- x$call$call
-  anafact <- x
-  newdataMFAshiny <- x$call$X
-  axe1 <- 1
-  axe2 <- 2
+  ligne=x$call$call
+  anafact=x
+  newdataMFAshiny=x$call$X
+  axe1=1
+  axe2=2
   sizeInd <- 1
   sizeVar <- 1
   sizeGroup <- 1
@@ -30,7 +30,7 @@ if(inherits(x,"MFA")){
   nbdimclustMFAshiny <- 5
   nbDimPartialAxes <- 2
   hcpcparaMFAshiny <- FALSE
-data <- anafact$global.pca$call$X
+data=anafact$global.pca$call$X
 nomMFAshiny <- rownames(data)
 quanti=names(which(sapply(data,is.numeric)))
 quali=names(which(!(sapply(data,is.numeric))))

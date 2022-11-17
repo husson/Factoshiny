@@ -669,7 +669,7 @@
     
     output$CodePrinted <- renderPrint({
        if (input$MFAcode!=0){
-#	        print(ligne)
+	        print(ligne)
           cat(CodeGraphInd()$Code,sep="\n")
           if(!is.null(anafact$quanti.var)) cat(CodeGraphVar()$Code,sep="\n")
           cat(CodeGraphGroup()$Code,sep="\n")

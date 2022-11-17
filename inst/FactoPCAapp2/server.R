@@ -671,7 +671,7 @@ function(input, output,session) {
         if (length(input$select0)>0){
 		  if(input$select0=="cos2") selecindiv2 <- input$slider00
           if(input$select0=="contrib") selecindiv2 <- input$slider4
-        }
+        } else selecindiv2 <- 0
 		res$j <- input$select0
         res$k <- selecindiv2
         res$l <- input$cex

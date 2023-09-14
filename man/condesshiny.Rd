@@ -22,7 +22,7 @@ Returns a list including:
   \item{category}{description of the continuous variable \code{num.var} by each category of all the categorical variables}
 }
 
-\author{Etienne Lancelle, Francois Husson \email{Francois.Husson@agrocampus-ouest.fr}}
+\author{Etienne Lancelle, Francois Husson \email{francois.husson@institut-agro.fr}}
 
 \seealso{ \code{\link[FactoMineR]{condes}}}
 

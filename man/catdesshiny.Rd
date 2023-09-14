@@ -24,7 +24,7 @@ Returns a list including:
   \item{quanti}{the description of each category of the \code{num.var} variable by the quantitative variables.}
 }
 
-\author{Etienne Lancelle, Francois Husson \email{Francois.Husson@agrocampus-ouest.fr}}
+\author{Etienne Lancelle, Francois Husson \email{francois.husson@institut-agro.fr}}
 
 
 \seealso{ \code{\link[FactoMineR]{catdes}}}

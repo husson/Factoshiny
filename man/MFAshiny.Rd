@@ -28,7 +28,7 @@ Returns several tabs:
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{Francois.Husson@agrocampus-ouest.fr}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{francois.husson@institut-agro.fr}}
 
 \seealso{ \code{\link{PCA}}, \code{\link{plot.PCA}}\cr
 \href{https://shiny.rstudio.com}{shiny website}}

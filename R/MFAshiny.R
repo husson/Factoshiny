@@ -2,12 +2,12 @@ utils::globalVariables(c("objMFAshiny","myListOfThingsMFAshiny"))
 MFAshiny <- function(X){
     G <- .GlobalEnv
     assign("objMFAshiny",ls(all.names=TRUE, envir=G),envir=G)
-    assign("x", X, envir=G)
-
-    if (!(inherits(X, "MFA") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "MFAshiny"))){
+    if (inherits(X, "data.table") | inherits(X, "matrix")) 	X <- as.data.frame(X)
+    if (!(inherits(X, "MFA") | inherits(X, "data.frame") | inherits(X, "MFAshiny"))){
       stop(gettext('X is not a dataframe or the result of the MFA function',domain="R-Factoshiny"))
     }
-    if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
+    assign("x", X, envir=G)
+
 	booldf <- FALSE
     if(is.data.frame(X)==TRUE){
 	  booldf <- TRUE

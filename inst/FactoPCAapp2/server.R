@@ -151,11 +151,12 @@ function(input, output,session) {
   output$habillage2 <- renderUI({
    if (input$color_point == gettext("quantitative variable",domain="R-Factoshiny")) return(selectizeInput("habiller",gettext("select the variable",domain="R-Factoshiny"), choices=c(VariableChoicesPCAshiny,input$supvar),multiple=FALSE,selected=habillageindPCAshiny))
    if (input$color_point == gettext("qualitative variable",domain="R-Factoshiny")){
-     if(length(QualiChoicePCAshiny)==0 || input$supquali==FALSE || length(input$supquali)==0) return(p(gettext("No categorical variable",domain="R-Factoshiny")))
+#     if(length(QualiChoicePCAshiny)==0 || input$supquali==FALSE || length(input$supquali)==0) return(p(gettext("No categorical variable",domain="R-Factoshiny")))
+     if(length(QualiChoicePCAshiny)==0 || length(input$supquali)==0) return(p(gettext("No categorical variable",domain="R-Factoshiny")))
      if(length(input$supquali)>=1) return(selectizeInput("habiller",gettext("select the variable",domain="R-Factoshiny"), choices=input$supquali, multiple=FALSE, selected=habillageindPCAshiny))
    }
    if (input$color_point == gettext("2 qualitative variables",domain="R-Factoshiny")){
-     if(length(QualiChoicePCAshiny)==0 || input$supquali==FALSE || length(input$supquali)<2) return(p(gettext("Not enough categorical variable",domain="R-Factoshiny")))
+     if(length(QualiChoicePCAshiny)==0 || length(input$supquali)<2) return(p(gettext("Not enough categorical variable",domain="R-Factoshiny")))
      if(length(input$supquali)>=1) return(selectizeInput("habiller2",gettext("select 2 variables",domain="R-Factoshiny"), choices=input$supquali, multiple=TRUE, selected=habillageindPCAshiny2))
    }
   })

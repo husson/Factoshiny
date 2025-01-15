@@ -14,8 +14,8 @@ fluidPage(
         div(align="center",checkboxInput("caparam",gettext("Show CA parameters",domain="R-Factoshiny"),FALSE)),
         conditionalPanel(
           condition="input.caparam==true",
-            selectizeInput("rowsupl",gettext("Select supplementary rows",domain="R-Factoshiny"),choices=nomCAshiny, multiple=TRUE,selected=lignesupCAshiny),
-            selectizeInput("supvar",label=gettext("Select supplementary columns",domain="R-Factoshiny"), choices=VariableChoicesCAshiny, selected=colonnesupCAshiny,multiple=TRUE),
+            selectizeInput("rowsupl",gettext("Select supplementary rows",domain="R-Factoshiny"),choices=nomCAshiny, multiple=TRUE,selected=lignesupCAshiny, options = list(maxOptions = length(nomCAshiny))),
+            selectizeInput("supvar",label=gettext("Select supplementary columns",domain="R-Factoshiny"), choices=VariableChoicesCAshiny, selected=colonnesupCAshiny,multiple=TRUE, options = list(maxOptions = length(VariableChoicesCAshiny))),
             if(length(QualiChoiceCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables",domain="R-Factoshiny"),choices=QualiChoiceCAshiny,multiple=TRUE,selected=catsupCAshiny),
             selectizeInput("quantisupvar",label=gettext("Select supplementary quantitative variables",domain="R-Factoshiny"), choices=VariableChoicesCAshiny, selected=quantisupCAshiny,multiple=TRUE),
             uiOutput("imputeData"),

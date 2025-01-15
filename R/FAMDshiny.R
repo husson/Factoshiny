@@ -2,12 +2,12 @@ utils::globalVariables(c("objFAMDshiny","myListOfThingsFAMDshiny"))
 FAMDshiny <- function(X){
   G <- .GlobalEnv
   assign("objFAMDshiny",ls(all.names=TRUE, envir=G),envir=G)
-  assign("x",X, envir=G)
-  assign("nomData",sys.calls()[[1]][2], envir=G)
-  if (!(inherits(X, "FAMDshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "FAMD"))){
+  if (inherits(X, "data.table") | inherits(X, "matrix")) 	X <- as.data.frame(X)
+  if (!(inherits(X, "FAMDshiny") | inherits(X, "data.frame") | inherits(X, "FAMD"))){
     stop(gettext('X is not a dataframe, a matrix, the results of the FAMDshiny function or a FAMD result',domain="R-Factoshiny"))
   }
-if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
+  assign("x",X, envir=G)
+  assign("nomData",sys.calls()[[1]][2], envir=G)
   if(is.data.frame(X)==TRUE){
     quanti=names(which(sapply(X,is.numeric)))
     quali=names(which(!(sapply(X,is.numeric))))

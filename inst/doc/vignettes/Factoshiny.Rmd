@@ -1,0 +1,49 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Factoshiny vignette}
+-->
+
+---
+title: "Factoshiny vignette"
+author: "Francois Husson"
+output:
+  pdf_document:
+    fig_height: 6
+    keep_tex: yes
+  html_document: default
+  word_document: default
+---
+
+# Introduction
+
+As its name suggests, the \pkg{Factoshiny} package uses \emph{shiny} technology to produce a graphical interface of the \pkg{FactoMineR} package in the form of an \emph{html} page. 
+Users can fill out different fields to fine tune their analyses. Once the fields are completed, the analyses are conducted instantly and provide the chosen graphs. The following code indicates how \pkg{Factoshiny} can be used to carry out a PCA.
+
+Then the interface is used to choose the parameters of the PCA analysis as well as the parameters of the graphical outputs. 
+Cursors enable users to change the extent to which objects are selected using representation quality or contribution and other cursors can be used to change the size of the font used to label the graph. The graphs and outputs are updated immediately, which makes these selections easier.
+
+It is also possible to first perform the PCA analysis and then to use the PCA outputs in order to modify the graphs.
+
+It is also possible to reuse the object resulting from \pkg{Factoshiny} in order to further modify the graphs, using the configuration described previously:
+
+The functions \code{CAshiny}, \code{MCAshiny} and \code{MFAshiny} operate on exactly the same principle.
+From a certain point of view, the \pkg{Factoshiny} package is a natural evolution of the \pkg{RcmdrPlugin.FactoMineR} package: compared to its predecessor, \pkg{Factoshiny} includes the latest graphical updates in the \pkg{FactoMineR} package, it is more user-friendly, and in particular, it enables the user to handle and explore data directly.
+
+In addition to its \pkg{FactoMineR} interfacing capabilities and its ability to effortlessly create complex graphs, the \pkg{Factoshiny} package can also generate the code used to construct the graphs. 
+
+# The functions of the \pkg{Factoshiny} package
+
+Several functions are available according to the dataset and the nature of the active variables.
+
+\code{
+\begin{tabular}{llll}
+Nature of active variables& Method & Function \\
+continuous & Principal Component Analysis &  PCAshiny\\
+contingency table & Correspondence Analysis &  CAshiny\\
+qualitative & Multiple Correspondence Analysis &  MCAshiny\\
+Group of variables  & Multiple Factor Analysis  & MFAshiny \\
+&Clustering  & HCPCshiny 
+\end{tabular}\\[5mm]
+}
+
+You can see this video: https://youtu.be/6y0NDDQcIXo?si=kFSLXy3xLYuPz1RK

@@ -2,13 +2,13 @@ utils::globalVariables(c("objCAshiny","myListOfThingsCAshiny"))
 CAshiny <- function(X){
   G <- .GlobalEnv
   assign("objCAshiny",ls(all.names=TRUE, envir=G),envir=G)
-  assign("x", X, envir=G)
-  assign("nomDataCAshiny",sys.calls()[[1]][2], envir=G)
   if (is.table(X)) X <- as.data.frame(X)
-  if (!(inherits(X, "CAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "CA"))){
+  if (inherits(X, "data.table") | inherits(X, "matrix")) 	X <- as.data.frame(X)
+  if (!(inherits(X, "CAshiny") | inherits(X, "data.frame") | inherits(X, "CA"))){
     stop(gettext('X is not a dataframe, a matrix, a table, the results of the CAshiny function or a CA result',domain="R-Factoshiny"))
   }
-  if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
+  assign("x", X, envir=G)
+  assign("nomDataCAshiny",sys.calls()[[1]][2], envir=G)
   if(is.data.frame(X)==TRUE){
     if(nrow(X)<3) stop(gettext('not enough rows',domain="R-Factoshiny"))
     if(ncol(X)<3) stop(gettext('not enough columns',domain="R-Factoshiny"))

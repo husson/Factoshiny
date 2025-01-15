@@ -2,12 +2,12 @@ utils::globalVariables(c("objcondesshiny","quanticondesshiny","myListOfThingscon
 condesshiny <- function(X){
   G <- .GlobalEnv
   assign("objcondesshiny",ls(all.names=TRUE, envir=G),envir=G)
-  assign("jdd",X, envir=G)
-  assign("nomDatacondesshiny",sys.calls()[[1]][2], envir=G)
-  if (!(inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "condes"))){
+  if (inherits(X, "data.table") | inherits(X, "matrix")) 	X <- as.data.frame(X)
+  if (!(inherits(X, "data.frame")  | inherits(X, "condes"))){
     stop(gettext('X is not a dataframe, a matrix, the results of the condesshiny function or a condes result',domain="R-Factoshiny"))
   }
-  if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
+  assign("jdd",X, envir=G)
+  assign("nomDatacondesshiny",sys.calls()[[1]][2], envir=G)
   if(is.data.frame(X)==TRUE){
     assign("quanticondesshiny",names(which(sapply(X,is.numeric))),envir=G)
     if(length(quanticondesshiny)==0)

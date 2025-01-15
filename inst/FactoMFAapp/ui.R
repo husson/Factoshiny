@@ -39,7 +39,7 @@ fluidPage(
       div(align="center",checkboxInput("mfaparam",gettext("Other MFA parameters",domain="R-Factoshiny"),FALSE)),
       conditionalPanel(
         condition="input.mfaparam==true",
-          selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomMFAshiny, multiple=TRUE,selected=indsupl),
+          selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomMFAshiny, multiple=TRUE,selected=indsupl, options = list(maxOptions = length(nomMFAshiny))),
           uiOutput("imputeData"),
           actionButton("submit", label = gettext("Submit",domain="R-Factoshiny"))
       ),

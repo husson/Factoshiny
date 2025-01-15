@@ -1,12 +1,12 @@
 utils::globalVariables(c("objHCPCshiny","myListOfThingsHCPCshiny","nomDataHCPCshiny"))
 HCPCshiny <- function(res){
+
   G <- .GlobalEnv
   assign("objHCPCshiny",ls(all.names=TRUE, envir=G),envir=G)
-
-  if (!(inherits(res, "PCA") | inherits(res,"HCPC") | inherits(res, "MCA") | inherits(res, "CA") | inherits(res, "FAMD") | inherits(res, "MFA")| inherits(res, "data.frame") | inherits(res, "matrix") | inherits(res, "MCAshiny") | inherits(res, "PCAshiny")| inherits(res, "HCPCshiny")| inherits(res, "FAMDshiny")| inherits(res, "MFAshiny") | inherits(res, "CAshiny"))){
+  if (inherits(res, "data.table") | inherits(res, "matrix")) 	res <- as.data.frame(res)
+  if (!(inherits(res, "PCA") | inherits(res,"HCPC") | inherits(res, "MCA") | inherits(res, "CA") | inherits(res, "FAMD") | inherits(res, "MFA")| inherits(res, "data.frame") | inherits(res, "MCAshiny") | inherits(res, "PCAshiny")| inherits(res, "HCPCshiny")| inherits(res, "FAMDshiny")| inherits(res, "MFAshiny") | inherits(res, "CAshiny"))){
     stop(gettext('res is not the result of a factorial analysis or a dataframe or a matrix'))
   }
-  if (is.matrix(res)==TRUE) 	res <- as.data.frame(res)
   if(inherits(res,"data.frame")){
     quantiHCPCshiny=which(sapply(res,is.numeric))
     qualiHCPCshiny=which(!(1:ncol(res)%in%which(sapply(res,is.numeric))))

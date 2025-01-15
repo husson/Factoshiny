@@ -3,15 +3,14 @@ MCAshiny <-
   function(X){
     G <- .GlobalEnv
     assign("objMCAshiny",ls(all.names=TRUE, envir=G),envir=G)
-    assign("x", X, envir=G)
-    # assign("nomDataMCAshiny",sys.calls()[[1]][2], envir=G)	
-    assign("nomDataMCAshiny",as.character(sys.calls()[[1]][2]), envir=G)	
-
-    if (!(inherits(X, "MCAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "MCA"))){
+    if (inherits(X, "data.table") | inherits(X, "matrix")) 	X <- as.data.frame(X)
+    if (!(inherits(X, "MCAshiny") | inherits(X, "data.frame") | inherits(X, "MCA"))){
         stop(gettext('X is not a dataframe, a matrix, the results of the MCAshiny function or a MCA result',domain="R-Factoshiny"))
     }
+    assign("x", X, envir=G)
+    assign("nomDataMCAshiny",as.character(sys.calls()[[1]][2]), envir=G)	
+
     
-      if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
       if(is.data.frame(X)==TRUE){
         qualiMCAshiny=names(which(!(sapply(X,is.numeric))))
       if(length(qualiMCAshiny)<=2)

@@ -18,7 +18,7 @@ fluidPage(
           condition="input.mcaparam==true",
             selectizeInput("supvar",label=gettext("Select supplementary categorical variables",domain="R-Factoshiny"), choices=VariableChoicesMCAshiny, selected=supqualiMCAshiny,multiple=TRUE),
             if(length(QuantiChoiceMCAshiny)>=1) selectInput("supquanti",label=gettext("Select supplementary quantitative variables",domain="R-Factoshiny"),choices=QuantiChoiceMCAshiny,multiple=TRUE,selected=quantiMCAshiny),
-            selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomMCAshiny, multiple=TRUE,selected=indsuplMCAshiny),
+            selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomMCAshiny, multiple=TRUE,selected=indsuplMCAshiny, options = list(maxOptions = length(nomMCAshiny))),
             uiOutput("imputeData"),
             actionButton("submit", label = gettext("Submit",domain="R-Factoshiny"))
 

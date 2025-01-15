@@ -14,7 +14,7 @@ fluidPage(
           condition="input.pcaparam==true",
             selectizeInput("supvar",label=gettext("Select supplementary quantitative variables",domain="R-Factoshiny"), choices=VariableChoicesPCAshiny, selected=quantisupPCAshiny,multiple=TRUE),
             if(length(QualiChoicePCAshiny)>=1) selectInput("supquali",label=gettext("Select supplementary categorical variables",domain="R-Factoshiny"),choices=QualiChoicePCAshiny,multiple=TRUE,selected=qualisupPCAshiny),
-            selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomPCAshiny, multiple=TRUE,selected=indsuplPCAshiny),
+            selectizeInput("indsup",gettext("Select supplementary individuals",domain="R-Factoshiny"),choices=nomPCAshiny, multiple=TRUE,selected=indsuplPCAshiny, options = list(maxOptions = length(nomPCAshiny))),
             checkboxInput("nor",gettext("Scale data to unit value",domain="R-Factoshiny"),normePCAshiny),
             uiOutput("imputeData"),
             actionButton("submit", label = gettext("Submit",domain="R-Factoshiny"))

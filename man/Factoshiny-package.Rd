@@ -18,9 +18,8 @@ Pauline Vaissie, Astrid Monge, Francois Husson
 Maintainer: Who to complain to <Magalie.Houee@agrocampus-ouest.fr>
 }
 \references{
-~~ Literature or other references for background information ~~
+A website: \url{http://factominer.free.fr/graphs/factoshiny.html}
+
+Some videos: \url{https://youtu.be/6y0NDDQcIXo}
 }
 \keyword{ package }
-\seealso{
-~~ Optional links to other man pages, e.g. ~~
-}

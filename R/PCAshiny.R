@@ -2,12 +2,12 @@ utils::globalVariables(c("objPCAshiny","quantiPCAshiny","myListOfThingsPCAshiny"
 PCAshiny <- function(X){
   G <- .GlobalEnv
   assign("objPCAshiny",ls(all.names=TRUE, envir=G),envir=G)
-  if (is.matrix(X)==TRUE) 	X <- as.data.frame(X)
-  assign("x",X, envir=G)
-  assign("nomDataPCAshiny",sys.calls()[[1]][2], envir=G)
   if (!(inherits(X, "PCAshiny") | inherits(X, "data.frame") | inherits(X, "matrix") | inherits(X, "PCA"))){
     stop(gettext('X is not a dataframe, a matrix, the results of the PCAshiny function or a PCA result'))
   }
+  if (inherits(X, "data.table") | inherits(X, "matrix")) 	X <- as.data.frame(X)
+  assign("x",X, envir=G)
+  assign("nomDataPCAshiny",sys.calls()[[1]][2], envir=G)
   if(is.data.frame(X)==TRUE){
     assign("quantiPCAshiny",names(which(sapply(X,is.numeric))),envir=G)
     if(length(quantiPCAshiny)<=2)

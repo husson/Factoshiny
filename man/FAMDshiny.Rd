@@ -28,9 +28,9 @@ The left part of the application allows to change all the elements of the FAMDA 
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
-\seealso{ \code{\link{FAMD}},\code{\link{plot.FAMD}}\cr
+\seealso{ \code{\link[FactoMineR]{FAMD}},\code{\link[FactoMineR]{plot.FAMD}}\cr
 \href{https://shiny.posit.co}{shiny website}}
 
 \examples{

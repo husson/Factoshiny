@@ -1,8 +1,13 @@
 Package: Factoshiny
 Type: Package
 Title: Perform Factorial Analysis from 'FactoMineR' with a Shiny Application
+Authors@R: c(person(given = "Pauline", family = "Vaissie", role = "aut"),
+             person(given = "Astrid", family = "Monge", role = "aut"),
+			 person(given = "Francois", family = "Husson", role = c("aut", "cre"), email = "francois.husson@institut-agro.fr",
+             comment = c(ORCID = "0000-0002-7271-8877")))
 Version: 2.7
-Author: Pauline Vaissie, Astrid Monge, Francois Husson
+Author: Pauline Vaissie [aut], Astrid Monge [aut], 
+  Francois Husson [aut, cre] (<https://orcid.org/0000-0002-7271-8877>)
 Maintainer: Francois Husson <francois.husson@institut-agro.fr>
 Depends: R (>= 4.0), FactoMineR (>= 2.3),shiny,FactoInvestigate (>= 1.5),ggplot2
 Imports: DT,colourpicker,grDevices,tcltk,ggrepel,shinydashboard,shinyjqui,missMDA

@@ -28,10 +28,11 @@ Returns several tabs:
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{francois.husson@institut-agro.fr}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
-\seealso{ \code{\link{PCA}}, \code{\link{plot.PCA}}\cr
-\href{https://shiny.posit.co}{shiny website}}
+\seealso{ \code{\link[FactoMineR]{MFA}}, \code{\link[FactoMineR]{plot.MFA}}\cr
+\href{https://shiny.posit.co}{shiny website},\cr
+\href{https://youtu.be/ffCM2RHccqk?si=ts9Li31Yjrgcwes0}{Video showing how to perform MFA with Factoshiny}}
 
 \examples{
 \dontrun{

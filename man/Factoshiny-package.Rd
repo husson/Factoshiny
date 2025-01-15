@@ -1,6 +1,5 @@
 \name{Factoshiny-package}
 \alias{Factoshiny-package}
-\alias{Factoshiny}
 \docType{package}
 \title{
 Perform classical factorial analysis from FactoMineR within a Shiny app
@@ -15,7 +14,7 @@ Factoshiny has been created to be as easy to use as possible. Thus, only the dat
 \author{
 Pauline Vaissie, Astrid Monge, Francois Husson
 
-Maintainer: Who to complain to <Magalie.Houee@agrocampus-ouest.fr>
+Maintainer: Who to complain to <francois.husson@institut-agro.fr>
 }
 \references{
 A website: \url{http://factominer.free.fr/graphs/factoshiny.html}

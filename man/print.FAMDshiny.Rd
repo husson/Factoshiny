@@ -17,7 +17,7 @@ Print the FAMDshiny results i.e the R corresponding script
   \item{\dots}{further arguments passed to or from other methods}
 }
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
 \seealso{ \code{\link{FAMDshiny}}}
 

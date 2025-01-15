@@ -29,10 +29,11 @@ The left part of the application allows to change all the elements of the MCA an
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
-\seealso{ \code{\link{MCA}},\code{\link{dimdesc}},\code{\link{plot.MCA}}\cr
-\href{https://shiny.posit.co}{shiny website}}
+\seealso{ \code{\link[FactoMineR]{MCA}},\code{\link[FactoMineR]{dimdesc}},\code{\link[FactoMineR]{plot.MCA}}\cr
+\href{https://shiny.posit.co}{shiny website},\cr
+\href{https://youtu.be/0z30RDikYaw?si=Rwl2YSqyQvM57Zza}{Video showing how to perform MCA with Factoshiny}}
 
 \examples{
 \dontrun{

@@ -31,10 +31,11 @@ The "Get your code" button print the PCA and the plots code in your RStudio sess
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
-\seealso{ \code{\link{PCA}}, \code{\link{plot.PCA}}\cr
-\href{https://shiny.posit.co}{shiny website}}
+\seealso{ \code{\link[FactoMineR]{PCA}}, \code{\link[FactoMineR]{plot.PCA}}\cr
+\href{https://shiny.posit.co}{shiny website},\cr
+\href{https://youtu.be/6y0NDDQcIXo?si=Oi71rLV4UKbU7LVc}{Video showing how to perform PCA with Factoshiny}}
 
 \examples{
 \dontrun{

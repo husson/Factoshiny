@@ -29,10 +29,11 @@ By default, the numeric value of the number of clusters is set to the value advi
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
-\seealso{ \code{\link{HCPC}}, \code{\link{plot.HCPC}}\cr
-\href{https://shiny.posit.co}{shiny website}}
+\seealso{ \code{\link[FactoMineR]{HCPC}}, \code{\link[FactoMineR]{plot.HCPC}}\cr
+\href{https://shiny.posit.co}{shiny website},\cr
+\href{https://youtu.be/pmFCosCzRN8?si=76y3JXUhup4dwnXW}{Video showing how to perform clustering with Factoshiny}}
 
 \examples{
 \dontrun{

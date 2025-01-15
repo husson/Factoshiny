@@ -29,10 +29,11 @@ The left part of the application allows to change all the elements of the CA and
 }
 
 
-\author{Pauline Vaissie, Astrid Monge, Francois Husson \email{paulinevaissie@gmail.com}}
+\author{Pauline Vaissie, Astrid Monge, Francois Husson}
 
-\seealso{ \code{\link{CA}}, \code{\link{plot.CA}}\cr
-\href{https://shiny.posit.co/}{shiny website}}
+\seealso{ \code{\link[FactoMineR]{CA}}, \code{\link[FactoMineR]{plot.CA}}\cr
+\href{https://shiny.posit.co/}{shiny website},\cr
+\href{https://youtu.be/6y0NDDQcIXo?si=eo8c9nMUiWPjI_xH}{Video showing how to perform CA with Factoshiny}}
 
 \examples{
 \dontrun{

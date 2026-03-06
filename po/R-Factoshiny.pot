@@ -210,6 +210,9 @@ msgstr "Résultats des variables"
 msgid "Results of the supplementary variables"
 msgstr "Résultats sur les variables supplémentaires"
 
+msgid "Results of the supplementary categorical variables"
+msgstr "Résultats sur les variables qualitatives supplémentaires"
+
 msgid "Summary of outputs"
 msgstr "Résumé des résultats"
 
